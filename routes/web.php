@@ -2,9 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DarkModeController;
-use App\Http\Controllers\ColorSchemeController;
-
+use Illuminate\Support\Facades\DB;
 
 //Estimado prestador de servicio que tiene que dar mantenimiento a esta fregadera
 
@@ -20,36 +18,24 @@ Auth::routes([
     'verify' => false,
 ]);
 
-//PRIMERA PRACTICA
-
+//PRUEBAS
 Route::get('/dash', function (){
     return view('/newUI/calendar');
 });
+
+Route::get('/crud', function (){
+    return view('/newUI/crud-data-list');
+});
+
+Route::get('/homeP', function (){
+    return view('/newHomeP');
+});
+
 
 Route::get('/land', function (){
     $users=DB::select("SELECT name, experiencia FROM `users` order by experiencia desc limit 3;");
     return view('landingPageTEMP',['users'=>$users]);
 });
-
-Route::get('/landing', function(){
-
-    return view('landingPageAlt');
-});
-
-Route::get('/test', function(){
-    return view('auth.registerTest');
-});
-
-Route::get('/newHome', function(){
-    return view('newHomeP');
-});
-
-Route::get('/dashboard', function(){
-    return view('newUI.calendar');
-});
-
-Route::get('dark-mode-switcher', [DarkModeController::class, 'switch'])->name('dark-mode-switcher');
-Route::get('color-scheme-switcher/{color_scheme}', [ColorSchemeController::class, 'switch'])->name('color-scheme-switcher');    
 
 Route::controller(App\Http\Controllers\Auth\RegisterController::class)->group(function(){
     Route::post('/registro', 'register')->name('registrar');
@@ -181,7 +167,8 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
     });
     Route::middleware('role:prestador')->group(function() {
 
-        Route::get('/prestador/home', 'horas');
+        Route::get('/prestador/home', 'home');
+        Route::get('/prestador/horas', 'horas');
         Route::post('prestador/completar_impresion','completar_impresion')->name('completar_impresion');
         Route::post('prestador/completar_actividad', 'completar_actividad')->name('completar_actividad');
         Route::get('prestador/completar_impresion_tabla', 'prestadoresProyectosCompletados')->name('prestadoresProyectosCompletados');
@@ -289,7 +276,6 @@ Route::get('/bot', function () {
 Route::match(['get', 'post'], '/botman', [App\Http\Controllers\BotManController::class, 'handle']);
 
 /*
-
 Route::get('/registroImpresion',[App\Http\Controllers\HomeController::class, 'registroImpresion'])->middleware('guest')->name('registroImpresion');
 Route::post('/crearImpresion', [App\Http\Controllers\HomeController::class, 'crearImpresion'])->name('crearImpresion')->middleware('guest');
 Route::post('update', 'App\Http\Controllers\HomeController@update')->name('update');

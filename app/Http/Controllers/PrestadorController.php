@@ -29,6 +29,12 @@ class PrestadorController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+
+    public function home(){
+
+        return view('newHomeP');
+    }
+
     public function horas()
     {
         $columns = array(["data" => "id", "visible" => false], ["data" => "fecha"], ["data" => "hora_entrada", "sortable" => false], ["data" => "hora_salida", "sortable" => false], ["data" => "tiempo"], ["data" => "horas"], ["data" => "estado", "sortable" => false], ["data" => "nota", "sortable" => false]);
