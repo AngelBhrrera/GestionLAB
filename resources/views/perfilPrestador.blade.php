@@ -1,4 +1,7 @@
-@extends('layouts.app')
+@extends('layouts/main-layout')
+@section('head')
+    <title>Mi Perfil | Gestion LAB</title>
+@endsection
 
 @section('content')
 <div class="container">

@@ -30,7 +30,7 @@
                 <div class="pt-4 mb-4">
                     <div class="side-nav__header flex items-center">
                         <a href="" class="intro-x flex items-center">
-                            <img alt="logo" class="side-nav__header__logo" src="build/assets/images/Inventores.png">
+                            <img alt="logo" class="side-nav__header__logo" src="{{ asset('build/assets/images/Inventores.png') }}">
                             <span class="side-nav__header__text pt-0.5 text-lg ml-2.5"> Menu </span> 
                         </a>
                         <a href="javascript:;" class="side-nav__header__toggler hidden xl:block ml-auto text-primary dark:text-slate-500 text-opacity-70 hover:text-opacity-100 transition-all duration-300 ease-in-out pr-5"> <i data-lucide="arrow-left-circle" class="w-5 h-5"></i> </a>
@@ -215,120 +215,19 @@
                         <!-- END: Breadcrumb -->
                         <!-- BEGIN: Mobile Menu -->
                         <div class="-intro-x xl:hidden mr-3 sm:mr-6">
+                           
                             <div class="mobile-menu-toggler cursor-pointer"> <i data-lucide="bar-chart-2" class="mobile-menu-toggler__icon transform rotate-90 dark:text-slate-500"></i> </div>
                         </div>
                         <!-- END: Mobile Menu -->
                         <!-- BEGIN: Search -->
-                        <div class="intro-x relative ml-auto sm:mx-auto">
-                            <div class="search hidden sm:block">
-                                <input type="text" class="search__input form-control" placeholder="Quick Search... (Ctrl+k)">
-                                <i data-lucide="search" class="search__icon"></i> 
-                            </div>
-                            <a class="notification sm:hidden" href=""> <i data-lucide="search" class="notification__icon dark:text-slate-500 mr-5"></i> </a>
-                        </div>
+                        <div class="intro-x relative ml-auto sm:mx-auto"> </div>
                         <!-- END: Search -->
-                        <!-- BEGIN: Search Result -->
-                        <div id="search-result-modal" class="modal flex items-center justify-center" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-body p-0">
-                                        <div class="relative border-b border-slate-200/60">
-                                            <i data-lucide="search" class="w-5 h-5 absolute inset-y-0 my-auto ml-4 text-slate-500"></i> 
-                                            <input type="text" class="form-control border-0 shadow-none focus:ring-0 py-5 px-12" placeholder="Quick Search...">
-                                            <div class="h-6 text-xs bg-slate-200 text-slate-500 px-2 flex items-center rounded-md absolute inset-y-0 right-0 my-auto mr-4">ESC</div>
-                                        </div>
-                                        <div class="p-5">
-                                            <div class="font-medium mb-3">Applications</div>
-                                            <div class="mb-5">
-                                                <a href="" class="flex items-center mt-3 first:mt-0">
-                                                    <div class="w-7 h-7 bg-success/20 dark:bg-success/10 text-success flex items-center justify-center rounded-full"> <i class="w-3.5 h-3.5" data-lucide="inbox"></i> </div>
-                                                    <div class="ml-3 truncate">Compose New Mail</div>
-                                                    <div class="ml-auto w-48 truncate text-slate-500 text-xs flex justify-end items-center"> <i class="w-3.5 h-3.5 mr-2" data-lucide="link"></i> Quick Access </div>
-                                                </a>
-                                                <a href="" class="flex items-center mt-3 first:mt-0">
-                                                    <div class="w-7 h-7 bg-pending/10 text-pending flex items-center justify-center rounded-full"> <i class="w-3.5 h-3.5" data-lucide="users"></i> </div>
-                                                    <div class="ml-3 truncate">Contacts</div>
-                                                    <div class="ml-auto w-48 truncate text-slate-500 text-xs flex justify-end items-center"> <i class="w-3.5 h-3.5 mr-2" data-lucide="link"></i> Quick Access </div>
-                                                </a>
-                                                <a href="" class="flex items-center mt-3 first:mt-0">
-                                                    <div class="w-7 h-7 bg-primary/10 dark:bg-primary/20 text-primary/80 flex items-center justify-center rounded-full"> <i class="w-3.5 h-3.5" data-lucide="credit-card"></i> </div>
-                                                    <div class="ml-3 truncate">Product Reports</div>
-                                                    <div class="ml-auto w-48 truncate text-slate-500 text-xs flex justify-end items-center"> <i class="w-3.5 h-3.5 mr-2" data-lucide="link"></i> Quick Access </div>
-                                                </a>
-                                            </div>
-                                            <div class="font-medium mb-3">Contacts</div>
-                                            <div class="mb-5">
-                                                <a href="" class="flex items-center mt-3 first:mt-0">
-                                                    <div class="w-7 h-7 image-fit">
-                                                        <img alt="profile" class="rounded-full" src="dist/images/profile-2.jpg">
-                                                    </div>
-                                                    <div class="w-36 truncate ml-3">Al Pacino</div>
-                                                    <div class="ml-auto w-36 truncate text-slate-500 text-xs text-right">alpacino@left4code.com</div>
-                                                </a>
-                                                <a href="" class="flex items-center mt-3 first:mt-0">
-                                                    <div class="w-7 h-7 image-fit">
-                                                        <img alt="profile2" class="rounded-full" src="dist/images/profile-9.jpg">
-                                                    </div>
-                                                    <div class="w-36 truncate ml-3">Johnny Depp</div>
-                                                    <div class="ml-auto w-36 truncate text-slate-500 text-xs text-right">johnnydepp@left4code.com</div>
-                                                </a>
-                                                <a href="" class="flex items-center mt-3 first:mt-0">
-                                                    <div class="w-7 h-7 image-fit">
-                                                        <img alt="profile3" class="rounded-full" src="dist/images/profile-12.jpg">
-                                                    </div>
-                                                    <div class="w-36 truncate ml-3">Arnold Schwarzenegger</div>
-                                                    <div class="ml-auto w-36 truncate text-slate-500 text-xs text-right">arnoldschwarzenegger@left4code.com</div>
-                                                </a>
-                                                <a href="" class="flex items-center mt-3 first:mt-0">
-                                                    <div class="w-7 h-7 image-fit">
-                                                        <img alt="profile4" class="rounded-full" src="dist/images/profile-5.jpg">
-                                                    </div>
-                                                    <div class="w-36 truncate ml-3">John Travolta</div>
-                                                    <div class="ml-auto w-36 truncate text-slate-500 text-xs text-right">johntravolta@left4code.com</div>
-                                                </a>
-                                            </div>
-                                            <div class="font-medium mb-3">Products</div>
-                                            <div>
-                                                <a href="" class="flex items-center mt-3 first:mt-0">
-                                                    <div class="w-7 h-7 image-fit">
-                                                        <img alt="profile5" class="rounded-full" src="dist/images/preview-12.jpg">
-                                                    </div>
-                                                    <div class="w-36 truncate ml-3">Sony Master Series A9G</div>
-                                                    <div class="ml-auto w-36 truncate text-slate-500 text-xs text-right">Electronic</div>
-                                                </a>
-                                                <a href="" class="flex items-center mt-3 first:mt-0">
-                                                    <div class="w-7 h-7 image-fit">
-                                                        <img alt="profile6" class="rounded-full" src="dist/images/preview-15.jpg">
-                                                    </div>
-                                                    <div class="w-36 truncate ml-3">Sony A7 III</div>
-                                                    <div class="ml-auto w-36 truncate text-slate-500 text-xs text-right">Photography</div>
-                                                </a>
-                                                <a href="" class="flex items-center mt-3 first:mt-0">
-                                                    <div class="w-7 h-7 image-fit">
-                                                        <img alt="profile7" class="rounded-full" src="dist/images/preview-3.jpg">
-                                                    </div>
-                                                    <div class="w-36 truncate ml-3">Nike Air Max 270</div>
-                                                    <div class="ml-auto w-36 truncate text-slate-500 text-xs text-right">Sport &amp; Outdoor</div>
-                                                </a>
-                                                <a href="" class="flex items-center mt-3 first:mt-0">
-                                                    <div class="w-7 h-7 image-fit">
-                                                        <img alt="profile8" class="rounded-full" src="dist/images/preview-2.jpg">
-                                                    </div>
-                                                    <div class="w-36 truncate ml-3">Samsung Galaxy S20 Ultra</div>
-                                                    <div class="ml-auto w-36 truncate text-slate-500 text-xs text-right">Smartphone &amp; Tablet</div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Termina buscador -->
+                       
                         <!-- Comienza menu cuenta-->
                         <div class="intro-x dropdown h-10">
                             <div class="h-full dropdown-toggle flex items-center" role="button" aria-expanded="false" data-tw-toggle="dropdown">
                                 <div class="w-10 h-10 image-fit">
-                                    <img alt="Usr" class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" src="build/assets/images/barrera.jpg">
+                                    <img alt="Usr" class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" src="{{ asset('build/assets/images/barrera.jpg') }}">
                                 </div>
                                 <div class="hidden md:block ml-3">
                                     <div class="max-w-[7rem] truncate font-medium">Usuario</div>

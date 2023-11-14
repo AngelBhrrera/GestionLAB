@@ -158,6 +158,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
 //Rutas Prestador
 Route::controller(App\Http\Controllers\PrestadorController::class)->group(function(){
+
     Route::post('prestador/nota', 'guardarNota')->middleware('role:Superadmin')->name('nota');
     Route::post('prestador/horario_guardar', 'horario_guardar')->middleware('role:prestador,admin,Superadmin')->name('horario_guardar');
     // Route::post('/marcar', 'marcar')->middleware('role:admin,checkin,Superadmin')->name('marcar');
@@ -167,8 +168,8 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
     });
     Route::middleware('role:prestador')->group(function() {
 
-        Route::get('/prestador/home', 'home');
-        Route::get('/prestador/horas', 'horas');
+        Route::get('prestador/home', 'home');
+        Route::get('prestador/horas', 'horas');
         Route::post('prestador/completar_impresion','completar_impresion')->name('completar_impresion');
         Route::post('prestador/completar_actividad', 'completar_actividad')->name('completar_actividad');
         Route::get('prestador/completar_impresion_tabla', 'prestadoresProyectosCompletados')->name('prestadoresProyectosCompletados');
@@ -196,6 +197,7 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         // Route::get('/proyectos_prendientes', 'proyectos_prendientes')->name('proyectos_prendientes');
 
     });
+
 });
 
 Route::controller(App\Http\Controllers\MedallasController::class)->group(function(){
