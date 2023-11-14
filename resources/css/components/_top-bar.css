@@ -1,0 +1,20 @@
+.top-bar {
+    height: 63px;
+    z-index: 51;
+    @apply sticky top-[10px] xl:mx-[10px] flex items-center px-5;
+    &:before {
+        content: "";
+        @apply absolute h-3 top-0 inset-x-0 -mt-3 z-[-1] bg-gradient-to-b from-slate-100/50 to-slate-100/[0.93] dark:from-darkmode-700/50 dark:to-darkmode-700/[0.93];
+    }
+    &:after {
+        content: "";
+        box-shadow: 0 3px 15px rgb(0 0 0 / 7%);
+        @apply absolute inset-0 bg-white border border-slate-200 rounded-xl dark:bg-darkmode-600 dark:border-darkmode-500;
+    }
+    .mobile-menu-toggler {
+        @apply w-[38px] h-[38px] rounded-full border border-slate-200 flex items-center justify-center dark:border-white/20;
+        .mobile-menu-toggler__icon {
+            @apply w-5 h-5;
+        }
+    }
+}
