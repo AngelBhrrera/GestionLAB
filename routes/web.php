@@ -31,15 +31,6 @@ Route::get('/land', function (){
     return view('landingPageTEMP',['users'=>$users]);
 });
 
-Route::get('/landing', function(){
-
-    return view('landingPageAlt');
-});
-
-Route::get('/test', function(){
-    return view('auth.registerTest');
-});
-
 Route::get('/newHome', function(){
     return view('newHomeP');
 });
@@ -180,8 +171,7 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::post('/afirmas', 'asirgarfirmas')->name('afirmas');    
     });
     Route::middleware('role:prestador')->group(function() {
-
-        Route::get('/prestador/home', 'horas');
+        Route::get('/prestador/home', 'show');
         Route::post('prestador/completar_impresion','completar_impresion')->name('completar_impresion');
         Route::post('prestador/completar_actividad', 'completar_actividad')->name('completar_actividad');
         Route::get('prestador/completar_impresion_tabla', 'prestadoresProyectosCompletados')->name('prestadoresProyectosCompletados');

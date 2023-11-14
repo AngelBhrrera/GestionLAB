@@ -105,7 +105,7 @@
                                     <h4 class="card-title">Objetivo</h4>
                                     <p class="card-text">Ser el mejor laboratorio de  innovación tecnológica  
                                         de la red UDG el cual vincule a los estudiantes con tecnologías  de 
-                                        vanguardia en proyectos afocados a impresión   3D, sistemas interactivos, 
+                                        vanguardia en proyectos enfocados a impresión   3D, sistemas interactivos, 
                                         realidad virtual, videojuegos ente otros.</p>
 </p>
                                 </div>
@@ -125,7 +125,6 @@
                                         jóvenes llevándolos por el camino de diferentes ámbitos 
                                         académicos y de desarrollo personal que los ayudara en su camino 
                                         a un futuro laboral productivo.</p>
-</p>
                                 </div>
                             </div>
                         </div>
@@ -137,8 +136,8 @@
                             <div class="media">
                                 <span class="ti-bell gradient-fill ti-3x mr-3"></span>
                                 <div class="media-body">
-                                    <h4 class="card-title">Únete</h4>
-                                    <a class="card-text" href="register">Crear una cuenta</a>
+                                    <h4 class="card-title">¿Te gustaría formar parte de la comunidad?</h4>
+                                    <a class="card-text" href="register">¡Regístrate!</a>
                                 </div>
                             </div>
                         </div>
@@ -368,26 +367,48 @@
 
             <div class="row pt-4">
                 <div class="col-md-6">
-                    <h4 class="mb-3">¿Puedo participar si no soy estudiante?</h4>
+                    <h4 class="mb-3">¿Cómo puedo formar parte el laboratorio?</h4>
                     <p class="light-font mb-5">
-                        Sí, puedes ingrisar como un usuario invitado (Pero te invitamos a leer y aceptar el aviso de privacidad y los térmios
-                        de condiciones de uso).
+                        Respuesta
                     </p>
                     <h4 class="mb-3">¿Cuál es su objetivo?</h4>
                     <p class="light-font mb-5">
-                        Brindar una herramienta innovadora para las personas interesadas en conocer el centro universitario o bien para el
-                        uso de la comunidad estudiantil incluyendo alumnos y docentes, ya sea para hacer un recorrido por las instalaciones, conocer aulas, auditorios o
-                        simplemente pasar el rato. Defendemos la idea de fomentar la sana convivencia y mantener orden en la comunidad.
+                        Ser el mejor laboratorio de  innovación tecnológica  
+                        de la red UDG el cual vincule a los estudiantes con 
+                        tecnologías  de vanguardia en proyectos enfocados a impresión  
+                        3D, sistemas interactivos, realidad virtual, videojuegos ente otros.
                     </p>
                 </div>
                 <div class="col-md-6">
-                    <h4 class="mb-3">¿Cómo puedo contactarlos?</h4>
+                    <h4 class="mb-3">¿Que actividades se realizan en el laboratorio?</h4>
                     <p class="light-font mb-5">
-                        En la siguiente sección puedes encontar la información correspondiente tanto para los desarrolladores del proyecto,
-                        como para el asesor del mismo.
+                        Ofrecemos distintos servicios como diseño de modelos en 3D, impresiones, 
+                        cursos de impresión en 3D, desarrollo de proyectos web, videojuegos, y mucho más.
                     </p>
-                    <h4 class="mb-3">¿Es de paga?</h4>
-                    <p class="light-font mb-5">No, es totalmente gratuito.</p> 
+                    <h4 class="mb-3">¿Que aptitudes se espera que tengas?</h4>
+                    <p class="light-font mb-5">Gusto por la tecnología y disposición para adquirir nuevos 
+                        conocimientos son las principales aptitudes con las que debes contar</p> 
+                </div>
+                <div class="col-md-6">
+                    <h4 class="mb-3">¿Dónde se ubican?</h4>
+                    <p class="light-font mb-5">
+                        Nuestra sede se encuentra en el Módulo N planta alta del Centro Universitario de Ciencias Exactas e Ingenierías
+                        con domicilio en Blvd. Marcelino García Barragán #1421, esq Calzada Olímpica, 
+                        C.P. 44430, Guadalajara, Jalisco, México.
+                    </p>
+                    <h4 class="mb-3">¿Cuál es el horario de atención?</h4>
+                    <p class="light-font mb-5">
+                        El laboratorio ofrece sus servicios de 8:00 am a 8:00 pm de lunes a viernes
+                        y sábados de 8:00 am a 2:00 pm.
+                    </p> 
+                </div>
+                <div class="col-md-6">
+                    <h4 class="mb-3">¿?</h4>
+                    <p class="light-font mb-5">
+                        Respuesta
+                    </p> 
+                    <h4 class="mb-3">¿?</h4>
+                    <p class="light-font mb-5">Respuesta</p> 
                 </div>
             </div>
         </div>
@@ -476,6 +497,8 @@
                     <a href="https://www.facebook.com/Comunidadinventores"><img class="mb-4" src="build/assets/images/image-1.png" height="60" width="60" ></a>
                     <a href="https://www.instagram.com/inventores_lab_cucei/"><img class="mb-4" src="build/assets/images/image-4.png" height="60" width="60" ></a>
                     <a href="https://www.tiktok.com/@inventoresudg"><img class="mb-4" src="build/assets/images/tiktok.png" height="60" width="60" ></a>
+                    <h3 style="font-size:15pt">¡Vísita nuestro <a href="https://inventores.org/blog/">blog</a>!</h3>
+                    <a href="https://inventores.org/blog/"></a>
                 </div>
             </div>
 
@@ -529,12 +552,6 @@
     <script src="build/assets/script.js"></script>
     <!-- Dialogflow -->
     <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-    <script>
-        $('.owl-carousel').owlCarousel({
-            items:1,
-            margin:10,
-        });
-    </script>
 
 </body>
 </html>

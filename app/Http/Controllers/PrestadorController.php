@@ -743,4 +743,8 @@ class PrestadorController extends Controller
         return redirect()->back()->with('success', 'La actividad ha sido cancelada exitosamente.');
 
     }
+
+    public function show(){
+        return view('newHomeP');
+    }
 }
