@@ -31,7 +31,6 @@ Route::get('/homeP', function (){
     return view('/newHomeP');
 });
 
-
 Route::get('/land', function (){
     $users=DB::select("SELECT name, experiencia FROM `users` order by experiencia desc limit 3;");
     return view('landingPageTEMP',['users'=>$users]);
@@ -169,7 +168,7 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
     Route::middleware('role:prestador')->group(function() {
 
         Route::get('prestador/home', 'home');
-        Route::get('prestador/horas', 'horas');
+        Route::get('prestador/horas', 'horas')->name('horas');
         Route::post('prestador/completar_impresion','completar_impresion')->name('completar_impresion');
         Route::post('prestador/completar_actividad', 'completar_actividad')->name('completar_actividad');
         Route::get('prestador/completar_impresion_tabla', 'prestadoresProyectosCompletados')->name('prestadoresProyectosCompletados');
@@ -201,7 +200,7 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
 });
 
 Route::controller(App\Http\Controllers\MedallasController::class)->group(function(){
-    Route::get('/medallas', 'index');
+    Route::get('/medallas', 'index')->name('medallas');
     Route::post('/prestadores/{userId}/asignar-medallas', 'asignarMedallas');
     Route::get('/prestadores/medallas','obtenerMedallasUsuario');
     Route::post('/prestadores/{userId}/desasignar-medallas','desasignarMedallas');

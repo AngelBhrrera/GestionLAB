@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.prestador-layout')
 
-@section('content')
+@section('subcontent')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -18,7 +18,7 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="correo" class="col-md-4 col-form-label text-md-right">{{ __('Corre electronico') }}</label>
+                            <label for="correo" class="col-md-4 col-form-label text-md-right">{{ __('Correo electronico') }}</label>
 
                             <div class="col-md-6">
                                 <input id="correo" type="email" class="form-control @error('correo') is-invalid @enderror" name="correo" value="{{ old('correo') }}" required autocomplete="correo" autofocus>

@@ -1,9 +1,6 @@
-@extends('layouts/app')
+@extends('layouts/prestador-layout')
 
-@section('content')
-
-
-
+@section('subcontent')
 
 <div class="container">
         <!-- ---------------------------------------------------------------------------->
