@@ -3,32 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Auth;
 use Illuminate\Support\Facades\DB as FacadesDB;
 use DateTime;
-use PhpParser\Node\Expr\AssignOp\Concat;
-use PhpParser\Node\Stmt\TryCatch;
-use Illuminate\Support\Facades\Storage;
+
 
 class PrestadorController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
 
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
+
+    public function home(){
+
+        return view('prestador/newHomeP');
+    }
+
     public function horas()
     {
         $columns = array(["data" => "id", "visible" => false], ["data" => "fecha"], ["data" => "hora_entrada", "sortable" => false], ["data" => "hora_salida", "sortable" => false], ["data" => "tiempo"], ["data" => "horas"], ["data" => "estado", "sortable" => false], ["data" => "nota", "sortable" => false]);
@@ -37,7 +31,7 @@ class PrestadorController extends Controller
         $horasT = DB::table('users')->where('id', $id)->select('horas')->get();
 
         return view(
-            'homeP',
+            'prestador/homeP',
             [
                 'datos' => ['id', 'fecha', 'hora_entrada', 'hora_salida', 'tiempo', 'horas', 'estado', 'nota'],
                 'titulo' => 'Registro de horas',
@@ -158,7 +152,7 @@ class PrestadorController extends Controller
         $Impresiones_prestador = DB::table('impresionesasignados')->where('id_prestador', $id)->where('status_impresion', 'en proceso')->get();
 
         return view(
-            '/proyectostabla',
+            '/prestador/proyectos_tabla_prestador',
             [
                 'actividades' => $actividad_prestador,
                 'impresiones' => $Impresiones_prestador,
@@ -173,7 +167,7 @@ class PrestadorController extends Controller
         $Impresiones_prestador = DB::table('impresionesasignados')->where('id_prestador', $id)->where('status_impresion', 'en proceso')->get();
 
         return view(
-            '/proyectospendientes',
+            '/prestador/proyectos_pendientes_prestador',
             [
                 'actividades' => $actividad_prestador,
                 'impresiones' => $Impresiones_prestador,
@@ -195,7 +189,7 @@ class PrestadorController extends Controller
         $Impresiones_prestador = DB::table('impresionesasignados')->where('id_prestador', $id2)->where('status_impresion', 'en proceso')->get();
 
         return view(
-            '/proyectostabla',
+            '/prestador/proyectos_tabla_prestador',
             [
                 'actividades' => $actividad_prestador,
                 'impresiones' => $Impresiones_prestador,
@@ -210,7 +204,7 @@ class PrestadorController extends Controller
 
 
         return view(
-            '/proyectospendientes',
+            '/prestador/proyectos_pendientes_prestador',
             [
                 'datos' => ["Proyecto", "Cliente", "Fecha", "Status"],
                 'titulo' => 'Tabla Proyectos-Prestadores',
@@ -227,7 +221,7 @@ class PrestadorController extends Controller
         // echo "<script> alert(JSON.stringify($id)); </script>";
         $modificar = DB::table('c_actividad')->where('id_actividad', $id)->update(['status' => "completado", 'fecha_realizada' => $ldate]);
 
-        return redirect('/proyectospendientes');
+        return redirect('/prestador/proyectos_pendientes_prestador');
     }
 
     public function horario_guardar(Request $request)
@@ -239,7 +233,7 @@ class PrestadorController extends Controller
         // echo "<script> alert(JSON.stringify($id)); </script>";
         $modificar = DB::table('users')->where('id', $id)->update(['horario' => $horario]);
 
-        return redirect('/proyectospendientes');
+        return redirect('/prestador/proyectos_pendientes_prestador');
     }
 
 
@@ -257,7 +251,7 @@ class PrestadorController extends Controller
         $id = Auth::user()->id;
 
         return view(
-            '/P_actividades',
+            '/prestador/P_actividades',
             [
                 'datos' => ['id_actividad', 'nombre', 'tipo de actividades', 'descripcion', 'objetivo', 'fecha', 'status'],
                 'titulo' => 'Tabla Actividades-Prestadores',
@@ -271,7 +265,7 @@ class PrestadorController extends Controller
     {
 
 
-        return view('/horario');
+        return view('/prestador/horario_prestador');
     }
 
     public function regitro_reporte()
@@ -282,7 +276,7 @@ class PrestadorController extends Controller
         $categorias = DB::table('categorias')->get();
         $actividades = DB::table('actividades')->get();
 
-        return view('/registroReporte', compact('prestadores', 'actividades', 'categorias'));
+        return view('/prestador/registro_reporte_prestador', compact('prestadores', 'actividades', 'categorias'));
     }
 
     public function obtenerActividades(Request $request)
@@ -365,7 +359,7 @@ class PrestadorController extends Controller
             ]
         );
 
-        $insertar2 = DB::table('actividades_prestadores')->insert(['llave_actividad' => $insertar, 'id_prestador' => $id_prestador]);
+        $insertar2 = DB::table('prestador/actividades_prestadores')->insert(['llave_actividad' => $insertar, 'id_prestador' => $id_prestador]);
 
         //return $this->horas();
         return redirect('/prestador/home');
@@ -381,7 +375,7 @@ class PrestadorController extends Controller
             ->whereIn('status', ['creado', 'terminado', 'en_proceso'])
             ->get();
 
-        return view('actividades_prestadores', ['actividades' => $actividades]);
+        return view('/prestador/actividades_prestadores', ['actividades' => $actividades]);
     }
 
     public function contarTiempoActividad($id_actividad)
@@ -396,7 +390,7 @@ class PrestadorController extends Controller
             'fecha_inicio' => now()
         ]);
 
-        return view('actividadesPrestadores.verActividad', compact('actividad', 'user'));
+        return view('prestador.actividades_prestadores.verActividad', compact('actividad', 'user'));
     }
 
     public function finalizarActividad($id_actividad)
@@ -412,10 +406,10 @@ class PrestadorController extends Controller
             DB::table('c_actividad')->where('id_actividad', $id_actividad)
                 ->update(['status' => 'terminado', 'fecha_fin' => now(), 'tiempo_real' => $diferencia_segundos]);
 
-            return redirect()->route('actividades_prestadores')->with('success', 'La actividad ha sido finalizada exitosamente.');
+            return redirect()->route('prestador/actividades_prestadores')->with('success', 'La actividad ha sido finalizada exitosamente.');
         }
 
-        return redirect()->route('actividades_prestadores')->with('error', 'La actividad no se puede finalizar.');
+        return redirect()->route('prestador/actividades_prestadores')->with('error', 'La actividad no se puede finalizar.');
     }
 
     public function actividades_creadas()
@@ -427,7 +421,7 @@ class PrestadorController extends Controller
             ->whereIn('status', ['creado'])
             ->get();
 
-        return view('actividades_prestadores', ['actividades' => $actividades, 'title' => 'Actividades Creadas']);
+        return view('prestador/actividades_prestadores', ['actividades' => $actividades, 'title' => 'Actividades Creadas']);
     }
 
     public function enProcesoActividad($id)
@@ -440,7 +434,7 @@ class PrestadorController extends Controller
         $actividad = DB::table('c_actividad')->where('id_actividad', $id)->first();
         $user = DB::table('users')->find($actividad->creacion_id);
 
-        return view('actividadesPrestadores.verActividad', compact('actividad', 'user'));
+        return view('prestador.actividades_prestadores.verActividad', compact('actividad', 'user'));
     }
 
     public function retomarActividad($id_actividad)
@@ -452,7 +446,7 @@ class PrestadorController extends Controller
         $actividad = DB::table('c_actividad')->where('id_actividad', $id_actividad)->first();
         $user = DB::table('users')->find($actividad->creacion_id);
 
-        return view('actividadesPrestadores.verActividad', compact('actividad', 'user'));
+        return view('prestador.actividades_prestadores.verActividad', compact('actividad', 'user'));
     }
 
     public function actividades_en_proceso()
@@ -462,7 +456,7 @@ class PrestadorController extends Controller
             ->whereIn('status', ['en_proceso'])
             ->get();
 
-        return view('actividades_prestadores', ['actividades' => $actividades, 'title' => 'Actividades en Proceso']);
+        return view('prestador/actividades_prestadores', ['actividades' => $actividades, 'title' => 'Actividades en Proceso']);
     }
 
     public function actividadesTerminadas()
@@ -472,7 +466,7 @@ class PrestadorController extends Controller
             ->whereIn('status', ['terminado'])
             ->get();
 
-        return view('actividades_prestadores', ['actividades' => $actividades, 'title' => 'Actividades Terminadas en Revisión']);
+        return view('prestador/actividades_prestadores', ['actividades' => $actividades, 'title' => 'Actividades Terminadas en Revisión']);
     }
 
     public function actividades_prestadores_revisadas()
@@ -482,7 +476,7 @@ class PrestadorController extends Controller
             ->whereIn('status', ['terminado_revisado'])
             ->get();
 
-        return view('actividades_prestadores', ['actividades' => $actividades, 'title' => 'Actividades Revisadas']);
+        return view('prestador/actividades_prestadores', ['actividades' => $actividades, 'title' => 'Actividades Revisadas']);
     }
 
     public function actividades_canceladas()
@@ -492,7 +486,7 @@ class PrestadorController extends Controller
             ->whereIn('status', ['cancelado', 'cancelado_permitido'])
             ->get();
 
-        return view('actividades_prestadores', ['actividades' => $actividades, 'title' => 'Actividades con error']);
+        return view('prestador/actividades_prestadores', ['actividades' => $actividades, 'title' => 'Actividades con error']);
     }
 
 
@@ -525,7 +519,7 @@ class PrestadorController extends Controller
         $actividad = DB::table('c_actividad')->where('id_actividad', $id_actividad)->first();
         $user = DB::table('users')->find($actividad->creacion_id);
 
-        return view('actividadesPrestadores.verActividad', compact('actividad', 'user'));
+        return view('prestador.actividades_prestadores.verActividad', compact('actividad', 'user'));
     }
 
     public function perfil()
@@ -555,7 +549,7 @@ class PrestadorController extends Controller
         $descripcion_medalla = $nivel->descripcion;
 
 
-        return view('perfilPrestador', compact('user', 'nivel_str', 'medalla', 'nivel', 'descripcion_medalla', 'todasMedallasUsuario'));
+        return view('prestador/perfil_prestador', compact('user', 'nivel_str', 'medalla', 'nivel', 'descripcion_medalla', 'todasMedallasUsuario'));
     }
 
     public function cambiarImagenPerfil(Request $request)
@@ -744,7 +738,4 @@ class PrestadorController extends Controller
 
     }
 
-    public function show(){
-        return view('newHomeP');
-    }
 }

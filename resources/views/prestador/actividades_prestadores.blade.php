@@ -1,7 +1,7 @@
 
-@extends('layouts/app')
+@extends('layouts/prestador-layout')
 
-@section('content')
+@section('subcontent')
 
 <head>
     <link rel="stylesheet" href={{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}>
