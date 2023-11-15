@@ -19,8 +19,21 @@ class PrestadorController extends Controller
 
 
     public function home(){
+        $id = Auth::user()->id;
+        $horasAutorizadas = DB::table('horasprestadores')->where('idusuario', $id)->where('estado', 'autorizado')->sum('horas');
+        $horasPendientes = DB::table('horasprestadores')->where('idusuario', $id)->where('estado', 'pendiente')->sum('horas');
+        $horasTotales = DB::table('users')->where('id', $id)->select('horas')->get();
+        $horasRestantes = $horasTotales[0]->horas - $horasAutorizadas;
 
-        return view('prestador/newHomeP');
+        return view(
+            'prestador/newHomeP',
+            [
+                'horasAutorizadas' => $horasAutorizadas,
+                'horasPendientes' => $horasPendientes,
+                'horasTotales'=> $horasTotales[0]->horas,
+                'horasRestantes' => $horasRestantes
+            ]
+        );
     }
 
     public function horas()
@@ -48,7 +61,6 @@ class PrestadorController extends Controller
             ]
         );
     }
-
 
     public function marcar(Request $request)
     {
