@@ -101,7 +101,29 @@ $(function() {
                     items: 1
                 },
                 768: {
-                    items: 3
+                    items: 1
+                }
+            }
+        });
+    }
+
+    var $galleryDiv = $('.main-gallery');
+    if ($galleryDiv.length && $.fn.owlCarousel) {
+        $galleryDiv.owlCarousel({
+            nav: false,
+            center: true,
+            loop: true,
+            autoplay: true,
+            dots: true,
+            autowidth:true,
+            autoheight: true,
+
+            responsive: {
+                0: {
+                    items: 1
+                },
+                768: {
+                    items: 1
                 }
             }
         });
