@@ -14,8 +14,7 @@
         <div class="intro-y box py-30  mt-">
 
             <div style="display: flex;">
-                <img class="mx-auto w-40" alt="CFE" src="{{ asset('build/assets/images/cfe.svg') }}">
-                <img class="mx-auto w-32" src="{{ asset('build/assets/images/logo-UDG.png') }}">
+                <img class="mx-auto my-auto" alt="Inventores" width="80px" height="80px" src="{{ asset('build/assets/logosinventores/InventoresLogoHDWhiteborder.png') }}">
             </div>
 
             <div id="divBase" style="display: flex;"> 
@@ -29,7 +28,7 @@
 
                     <div class="relative before:hidden before:lg:block before:absolute before:w-[69%] before:h-[3px] before:top-0 before:bottom-0 before:mt-4 before:bg-slate-100 before:dark:bg-darkmode-400 flex flex-col lg:flex-row justify-center px-5 sm:px-20" id="stepOne">
                         <div class="intro-x lg:text-center flex items-center lg:block flex-1 z-10">
-                            <div class="w-10 h-10 rounded-full btn btn-primary" style="background-color:#00724E;">1</div>
+                            <div class="w-10 h-10 rounded-full btn btn-primary" style="background-color:#1B1C80;">1</div>
                             <div class="lg:w-32 font-medium text-base lg:mt-3 ml-3 lg:mx-auto">Ingresa Datos Basicos</div>
                         </div>
                         <div class="intro-x lg:text-center flex items-center mt-5 lg:mt-0 lg:block flex-1 z-10">
@@ -48,7 +47,7 @@
                             <div class="lg:w-32 text-base lg:mt-3 ml-3 lg:mx-auto text-slate-600 dark:text-slate-400">Ingresa Datos Basicos</div>
                         </div>
                         <div class="intro-x lg:text-center flex items-center mt-5 lg:mt-0 lg:block flex-1 z-10">
-                            <div class="w-10 h-10 rounded-full btn btn-primary" style="background-color:#00724E;" >2</div>
+                            <div class="w-10 h-10 rounded-full btn btn-primary" style="background-color:#1B1C80;" >2</div>
                             <div class="lg:w-32 font-medium text-base lg:mt-3 ml-3 lg:mx-auto">Ingresa Datos Academicos</div>
                         </div>
                         <div class="intro-x lg:text-center flex items-center mt-5 lg:mt-0 lg:block flex-1 z-10">
@@ -67,7 +66,7 @@
                             <div class="lg:w-32 text-base lg:mt-3 ml-3 lg:mx-auto text-slate-600 dark:text-slate-400">Ingresa Datos Academicos</div>
                         </div>
                         <div class="intro-x lg:text-center flex items-center mt-5 lg:mt-0 lg:block flex-1 z-10">
-                            <div class="w-10 h-10 rounded-full btn btn-primary" style="background-color:#00724E;">3</div>
+                            <div class="w-10 h-10 rounded-full btn btn-primary" style="background-color:#1B1C80;">3</div>
                             <div class="lg:w-32 font-medium text-base lg:mt-3 ml-3 lg:mx-auto">Concluye tu registro</div>
                         </div>
                     </div>
@@ -249,13 +248,13 @@
                     <div class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5">
 
                         <button id="div1C" class="btn btn-secondary w-24" disabled>Anterior</button>
-                        <button id="div1B" class="btn btn-primary w-24 ml-2" style="background-color:#00724E;" onclick="travel(1)" type="button">Siguiente</button>
+                        <button id="div1B" class="btn btn-primary w-24 ml-2" style="background-color:#1B1C80;" onclick="travel(1)" type="button">Siguiente</button>
                         <button id="div2A" class="btn btn-secondary w-24" style= "display:none" onclick="travel(2)" type="button">Anterior</button>
-                        <button id="div2B" class="btn btn-primary w-24 ml-2" style="background-color:#00724E; display:none" onclick="travel(3)" type="button">Siguiente</button>
+                        <button id="div2B" class="btn btn-primary w-24 ml-2" style="background-color:#1B1C80; display:none" onclick="travel(3)" type="button">Siguiente</button>
                         <button id="div3" class="btn btn-secondary w-24" style= "display:none" onclick="travel(1)" type="button">Anterior</button>
                         
                         <a id="btn-login" class="navbar-brand" style= "display:none">
-                            <button  type="submit" class="btn btn-primary w-24 ml-2"  style="background-color:#00724E; border-color:#006646">{{ __('Registrar') }}</button>
+                            <button  type="submit" class="btn btn-primary w-24 ml-2"  style="background-color:#1B1C80; border-color:#006646">{{ __('Registrar') }}</button>
                             </form>
                         </a>
 

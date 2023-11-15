@@ -7,6 +7,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="{{ asset('build/assets/images/inventores.png')}}" rel="shortcut icon">
     <meta name="keywords" content="HTML5, bootstrap, CUCEI , SOCIAL, Node">
     <meta name="viewport" content="width-device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -57,7 +58,11 @@
 			}
 		</script>
         <h3 class="pt-3">¡Bienvenido al Laboratorio de Inventores!</h3>
-        <div class="img-holder mt-3"><img src="build/assets/images/imagenLat.jpg" alt="lab" class="img-fluid"></div>
+        <div class="main-gallery owl-carousel owl-theme">
+            <div class="img-holder mt-3"><img src="{{asset('build/assets/images/imagenLat.jpg')}}" alt="lab" class="img-fluid"></div>
+            <div class="img-holder mt-3"><img src="{{asset('build/assets/images/imagenLab2.jpg')}}" alt="lab" class="img-fluid"></div>
+        </div>
+        
 
     </header>   
 
@@ -76,7 +81,7 @@
                                 <span class="ti-comments gradient-fill ti-3x mr-3"></span>
                                 <div class="media-body">
 
-                                <h4 class="card-title">Creamos</h4>
+                                <h4 class="card-title">Crear</h4>
                                     <p class="card-text">Llevamos a cabo increíbles proyectos de Robótica, Computación, Informática, Mecánica, Electrónica, Industriales, Biomédicos, Diseño de modas.</p>
                                 </div>
                             </div>
@@ -89,7 +94,7 @@
                             <div class="media">
                                 <span class="ti-panel gradient-fill ti-3x mr-3"></span>
                                 <div class="media-body">
-                                    <h4 class="card-title">Innovamos</h4>
+                                    <h4 class="card-title">Innovar</h4>
                                     <p class="card-text">Contamos con un variado inventario de tecnologia que incluye Impresoras 3D, drones, gafas de RV y equipos de computo que nos permiten llevar nuestros proyectos al siguiente nivel!</p>
                                 </div>
                             </div>
@@ -120,8 +125,8 @@
                             <div class="media">
                                 <span class="ti-panel gradient-fill ti-3x mr-3"></span>
                                 <div class="media-body">
-                                    <h4 class="card-title">Funciones</h4>
-                                    <p class="card-text">Crear un ambiente de aprendizaje en los 
+                                    <h4 class="card-title">Aprender</h4>
+                                    <p class="card-text">Creamos un ambiente de aprendizaje en los 
                                         jóvenes llevándolos por el camino de diferentes ámbitos 
                                         académicos y de desarrollo personal que los ayudara en su camino 
                                         a un futuro laboral productivo.</p>
@@ -153,10 +158,10 @@
             <div class="section-title">
                 <h3>Servicios que ofrecemos</h3>
             </div>
-            <div class="container" >
-                <div class="container" >
-                    <div class="grid-container" >
-                        <div class="grid-item" >
+            <div class="container">
+                <div class="container">
+                    <div class="grid-container">
+                        <div class="grid-item">
                             <img src="build/assets/images/creacion-de-piezas-3D.png" alt="image">
                             <p class="pdescripcion">Creación de modelos digitales 3D</p>
                         </div>
@@ -222,11 +227,11 @@
             </div>
 
             <div class="img-gallery owl-carousel owl-theme">
-
                 <img src="build/assets/images/labMedia.jpg" alt="image">
                 <img src="build/assets/images/labMedia2.jpg" alt="image">
                 <img src="build/assets/images/labMedia3.jpg" alt="image">
                 <img src="build/assets/images/labMedia4.jpg" alt="image">
+                {{--<img src="build/assets/images/labMedia5.jpg" alt="image" width="200px" height="500px">--}}
             </div>
         </div>
     </div>
