@@ -19,17 +19,6 @@ Auth::routes([
 ]);
 
 //PRUEBAS
-Route::get('/dash', function (){
-    return view('/newUI/calendar');
-});
-
-Route::get('/crud', function (){
-    return view('/newUI/crud-data-list');
-});
-
-Route::get('/homeP', function (){
-    return view('/newHomeP');
-});
 
 Route::get('/land', function (){
     $users=DB::select("SELECT name, experiencia FROM `users` order by experiencia desc limit 3;");
