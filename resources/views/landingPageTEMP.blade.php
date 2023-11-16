@@ -88,6 +88,7 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="col-12 col-lg-4">
                     <div class="card features">
                         <div class="card-body">
@@ -101,7 +102,23 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-lg-4">
+                 <div class="col-12 col-lg-4">
+                    <div class="card features">
+                        <div class="card-body">
+                            <div class="media">
+                                <span class="ti-panel gradient-fill ti-3x mr-3"></span>
+                                <div class="media-body">
+                                    <h4 class="card-title">Aprender</h4>
+                                    <p class="card-text">Creamos un ambiente de aprendizaje en los 
+                                        jóvenes llevándolos por el camino de diferentes ámbitos 
+                                        académicos y de desarrollo personal que los ayudara en su camino 
+                                        a un futuro laboral productivo.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4" >
                     <div class="card features">
                         <div class="card-body">
                             <div class="media">
@@ -119,23 +136,7 @@
                     </div>
                 </div>
                 
-                <div class="col-12 col-lg-4">
-                    <div class="card features">
-                        <div class="card-body">
-                            <div class="media">
-                                <span class="ti-panel gradient-fill ti-3x mr-3"></span>
-                                <div class="media-body">
-                                    <h4 class="card-title">Aprender</h4>
-                                    <p class="card-text">Creamos un ambiente de aprendizaje en los 
-                                        jóvenes llevándolos por el camino de diferentes ámbitos 
-                                        académicos y de desarrollo personal que los ayudara en su camino 
-                                        a un futuro laboral productivo.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-4">
+                <div class="col-12 col-lg-4" style="margin: 20px 0 0 0">
                     <div class="card features">
                         <div class="card-body">
                             <div class="media">
@@ -374,8 +375,43 @@
                 <div class="col-md-6">
                     <h4 class="mb-3">¿Cómo puedo formar parte el laboratorio?</h4>
                     <p class="light-font mb-5">
-                        Respuesta
+                        Existen diversas maneras de unirte al laboratorio, para más información puedes asistir al laboratorio 
+                        en el Módulo N planta alta en el Centro Universitario de Ciencias Exactas e Ingenierías en un horario de 
+                        lunes a viernes de 8am a 8 pm o sábados de 8am a 2pm. Puedes venir y registrarte como visitante, podrás solicitar impresiones
+                        3D o bien conocer las actividades que se realizan. Si eres estudiante puedes aplicar para realizar tu servicio social aquí siguiendo
+                        los lineamientos de la convocatoria al 60% de tus créditos escolares. Se te puee solicitar asistir a una entrevista en la cual se te preguntará
+                        sobre tus aptitudes y resolver dudas que puedas tener sobre el laboratorio de forma más directa, se hará un seguimiento de los alumnos
+                        que hicieron su entrevista para apoyarlos al momento de hacer su registro en el servicio social (esto no garaniza tu plaza dentro del laboratorio).
                     </p>
+                </div>
+                
+                <div class="col-md-6">
+                    <h4 class="mb-3">¿Que actividades se realizan en el laboratorio?</h4>
+                    <p class="light-font mb-5">
+                        Ofrecemos distintos servicios como diseño de modelos en 3D, impresiones, 
+                        cursos de impresión en 3D, desarrollo de proyectos web, videojuegos, y mucho más.
+                    </p>
+                    <h4 class="mb-3">¿Dónde se ubican?</h4>
+                    <p class="light-font mb-5">
+                        Nuestra sede se encuentra en el Módulo N planta alta del Centro Universitario de Ciencias Exactas e Ingenierías
+                        con domicilio en Blvd. Marcelino García Barragán #1421, esq Calzada Olímpica, 
+                        C.P. 44430, Guadalajara, Jalisco, México.
+                    </p>
+                   
+                </div>
+                <div class="col-md-6">
+                    <h4 class="mb-3">¿Cuál es el horario de atención?</h4>
+                    <p class="light-font mb-5">
+                        El laboratorio ofrece sus servicios de 8:00 am a 8:00 pm de lunes a viernes
+                        y sábados de 8:00 am a 2:00 pm.
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <h4 class="mb-3">¿Que aptitudes se espera que tengas?</h4>
+                    <p class="light-font mb-5">Gusto por la tecnología y disposición para adquirir nuevos 
+                        conocimientos son las principales aptitudes con las que debes contar</p> 
+                </div>
+                <div class="col-md-6">
                     <h4 class="mb-3">¿Cuál es su objetivo?</h4>
                     <p class="light-font mb-5">
                         Ser el mejor laboratorio de  innovación tecnológica  
@@ -384,37 +420,7 @@
                         3D, sistemas interactivos, realidad virtual, videojuegos ente otros.
                     </p>
                 </div>
-                <div class="col-md-6">
-                    <h4 class="mb-3">¿Que actividades se realizan en el laboratorio?</h4>
-                    <p class="light-font mb-5">
-                        Ofrecemos distintos servicios como diseño de modelos en 3D, impresiones, 
-                        cursos de impresión en 3D, desarrollo de proyectos web, videojuegos, y mucho más.
-                    </p>
-                    <h4 class="mb-3">¿Que aptitudes se espera que tengas?</h4>
-                    <p class="light-font mb-5">Gusto por la tecnología y disposición para adquirir nuevos 
-                        conocimientos son las principales aptitudes con las que debes contar</p> 
-                </div>
-                <div class="col-md-6">
-                    <h4 class="mb-3">¿Dónde se ubican?</h4>
-                    <p class="light-font mb-5">
-                        Nuestra sede se encuentra en el Módulo N planta alta del Centro Universitario de Ciencias Exactas e Ingenierías
-                        con domicilio en Blvd. Marcelino García Barragán #1421, esq Calzada Olímpica, 
-                        C.P. 44430, Guadalajara, Jalisco, México.
-                    </p>
-                    <h4 class="mb-3">¿Cuál es el horario de atención?</h4>
-                    <p class="light-font mb-5">
-                        El laboratorio ofrece sus servicios de 8:00 am a 8:00 pm de lunes a viernes
-                        y sábados de 8:00 am a 2:00 pm.
-                    </p> 
-                </div>
-                <div class="col-md-6">
-                    <h4 class="mb-3">¿?</h4>
-                    <p class="light-font mb-5">
-                        Respuesta
-                    </p> 
-                    <h4 class="mb-3">¿?</h4>
-                    <p class="light-font mb-5">Respuesta</p> 
-                </div>
+                
             </div>
         </div>
     </div>

@@ -22,14 +22,9 @@
                             <div class="report-box__item__icon text-primary bg-primary/20 border border-success/20 border-primary/20 flex items-center justify-center rounded-full">
                                 <i data-lucide="pie-chart"></i>
                             </div>
-                            <div class="ml-auto">
-                                <div class="report-box__item__indicator text-primary tooltip cursor-pointer" title="5.2% Higher than last month">
-                                    100% 
-                                </div>
-                            </div>
                         </div>
-                        <div class="text-2xl font-medium leading-7 mt-6">480</div>
-                        <div class="text-slate-500 mt-1">NUMERO TOTAL DE HORAS</div>
+                        <div class="text-2xl font-medium leading-7 mt-6">{{$horasTotales}}</div>
+                        <div class="text-slate-500 mt-1">TOTAL DE HORAS</div>
                     </div>
                 </div>
                 <div class="report-box__item py-5 xl:py-0 px-5 sm:!border-t-0 col-span-12 sm:col-span-6 xl:col-span-3">
@@ -38,14 +33,9 @@
                             <div class="report-box__item__icon text-success bg-success/20 border flex items-center justify-center rounded-full">                                           
                                 <i data-lucide="pie-chart"></i>
                             </div>
-                            <div class="ml-auto">
-                                <div class="report-box__item__indicator text-success tooltip cursor-pointer" title="2% Lower than last month">
-                                    31.25% <i data-lucide="arrow-up" class="w-4 h-4 ml-0.5"></i>
-                                </div>
-                            </div>
                         </div>
-                        <div class="text-2xl font-medium leading-7 mt-6">150</div>
-                        <div class="text-slate-500 mt-1">NUMERO DE HORAS AUTORIZADAS</div>
+                        <div class="text-2xl font-medium leading-7 mt-6">{{$horasAutorizadas}}</div>
+                        <div class="text-slate-500 mt-1">HORAS AUTORIZADAS</div>
                     </div>
                 </div>
                 <div class="report-box__item py-5 xl:py-0 px-5 col-span-12 sm:col-span-6 xl:col-span-3">
@@ -54,14 +44,9 @@
                             <div class="report-box__item__icon text-warning bg-warning/20 border border-warning/20 flex items-center justify-center rounded-full">
                                 <i data-lucide="pie-chart"></i>
                             </div>
-                            <div class="ml-auto">
-                                <div class="report-box__item__indicator text-warning tooltip cursor-pointer" title="4.1% Higher than last month">
-                                    -10.4% 
-                                </div>
-                            </div>
                         </div>
-                        <div class="text-2xl font-medium leading-7 mt-6">50</div>
-                        <div class="text-slate-500 mt-1">NUMERO DE HORAS PENDIENTES</div>
+                        <div class="text-2xl font-medium leading-7 mt-6">{{$horasPendientes}}</div>
+                        <div class="text-slate-500 mt-1">HORAS PENDIENTES</div>
                     </div>
                 </div>
                 <div class="report-box__item py-5 xl:py-0 px-5 col-span-12 sm:col-span-6 xl:col-span-3">
@@ -70,14 +55,9 @@
                             <div class="report-box__item__icon text-pending bg-pending/20 border border-pending/20 flex items-center justify-center rounded-full"> 
                                 <i data-lucide="pie-chart"></i>
                             </div>
-                        <div class="ml-auto">
-                            <div class="report-box__item__indicator text-danger tooltip cursor-pointer" title="1% Lower than last month">
-                                58.3% <i data-lucide="arrow-down" class="w-4 h-4 ml-0.5"></i>
-                            </div>
-                        </div>
                     </div>
-                    <div class="text-2xl font-medium leading-7 mt-6">280</div>
-                    <div class="text-slate-500 mt-1 text-align center">NUMERO DE HORAS FALTANTES</div>
+                    <div class="text-2xl font-medium leading-7 mt-6">{{$horasRestantes}}</div>
+                    <div class="text-slate-500 mt-1 text-align center">HORAS RESTANTES</div>
                 </div>
             </div>
         </div>
