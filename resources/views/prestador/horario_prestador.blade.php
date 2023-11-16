@@ -34,7 +34,19 @@
                 </div>
             </div>
         </form> 
+
+      
     </div>
+      <!-- BEGIN: Calendar Content -->
+      <div class="container" style="padding: 20px 20px 20px 20px" >
+            <div class="col-span-12 xl:col-span-8 2xl:col-span-9">
+                <div class="box p-5">
+                    <div class="full-calendar" id="calendar"></div>
+                </div>
+            </div>
+        </div>
+        <!-- END: Calendar Content -->
+
 
 @endsection
 

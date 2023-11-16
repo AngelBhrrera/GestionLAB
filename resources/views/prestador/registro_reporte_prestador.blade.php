@@ -2,16 +2,7 @@
 
 @section('subcontent')
 
-    <head>
-        <link rel="stylesheet" href={{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}>
-        <link rel="stylesheet" href={{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}>
-        <link rel="stylesheet" href={{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}>
-        <link rel="stylesheet" href={{ asset('css/dobletabla.css') }}>
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    </head>
-
-    <div class="container">
+    <div class="container" style="padding: 20px 350px 0px 350px">
 
 
         <h1 class="text-center"> Registro de actividad </h1>

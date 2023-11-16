@@ -125,10 +125,10 @@
                             <td>3</td>
                         </tr>
                         <tr>
-                            <td>77</td>
-                            <td>Tu nombre y apellido</td>
-                            <td>Tu experiencia</td>
-                            <td>Tus actividades completadas</td>
+                            <td> <strong> 77 </strong> </td>
+                            <td> <strong> Tu nombre y apellido </strong> </td>
+                            <td> <strong> Tu experiencia </strong> </td>
+                            <td> <strong> Tus actividades completadas </strong> </td>
                         </tr>
                     </tbody>
                 </table>
