@@ -25,6 +25,7 @@ Route::get('/land', function (){
     return view('landingPageTEMP',['users'=>$users]);
 });
 
+
 Route::controller(App\Http\Controllers\Auth\RegisterController::class)->group(function(){
     Route::post('/registro', 'register')->name('registrar');
 });
