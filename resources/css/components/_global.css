@@ -1,7 +1,7 @@
 html {
     &:before {
         content: "";
-        @apply absolute inset-0 z-[-2] bg-cover grayscale xl:bg-[url("../../images/bg-main.jpg")] bg-no-repeat;
+        @apply absolute inset-0 z-[-2] bg-cover grayscale xl:bg-[url("../../images/techBG.jpg")] bg-no-repeat;
     }
     &:after {
         content: "";
