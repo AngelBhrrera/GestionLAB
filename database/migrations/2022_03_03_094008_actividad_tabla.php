@@ -41,6 +41,6 @@ class ActividadTabla extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('actividad_tabla');
     }
 }

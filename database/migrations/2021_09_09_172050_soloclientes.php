@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Soloclientes extends Migration
+class soloclientes extends Migration
 {
     /**
      * Run the migrations.
@@ -20,15 +20,13 @@ class Soloclientes extends Migration
         `users`.`name` AS `name`,
         `users`.`apellido` AS `apellido`,
         `users`.`correo` AS `correo`,
-        `users`.`codigo` AS `codigo`,
-        `users`.`created_at` AS `created_at`,
-        `users`.`tipo_cliente` AS `tipo_cliente`
+        `users`.`codigo` AS `codigo`
         FROM
             (
                 `users`
             )
         WHERE
-            (`users`.`tipo` = 'clientes')
+            (`users`.`tipo` = 'clientA') || (`users`.`tipo` = 'clientM') || (`users`.`tipo` = 'clientO')
         ");
     }
 
@@ -39,6 +37,7 @@ class Soloclientes extends Migration
      */
     public function down()
     {
+
         Schema::dropIfExists('soloclientes');
     }
 }

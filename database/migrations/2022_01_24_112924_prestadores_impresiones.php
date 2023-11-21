@@ -56,6 +56,6 @@ class PrestadoresImpresiones extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('prestadores_impresiones');
     }
 }

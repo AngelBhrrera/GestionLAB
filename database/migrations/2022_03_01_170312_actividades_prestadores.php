@@ -28,6 +28,6 @@ class ActividadesPrestadores extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('actividades_prestadores');
     }
 }

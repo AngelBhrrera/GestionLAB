@@ -1,6 +1,6 @@
-@extends('layouts.main')
+@extends('layouts.prestador-layout')
 
-@section('content')
+@section('subcontent')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">

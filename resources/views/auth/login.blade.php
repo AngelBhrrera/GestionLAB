@@ -10,6 +10,8 @@
 
 
     <div class="container">
+        
+                
         <div class="w-full min-h-screen p-5 md:p-20 flex items-center justify-center">
             <div class="w-96 intro-y">
 
@@ -17,11 +19,7 @@
                 <img class="mx-auto my-auto" alt="Inventores" width="200px" height="150px" src="{{ asset('build/assets/logosinventores/InventoresBannerHDBlueBorder2.png') }}">
                 
                 <div class="box px-5 py-8 mt-10 max-w-[450px] relative before:content-[''] before:z-[-1] before:w-[95%] before:h-full before:bg-slate-200 before:border before:border-slate-200 before:-mt-5 before:absolute before:rounded-lg before:mx-auto before:inset-x-0 before:dark:bg-darkmode-600/70 before:dark:border-darkmode-500/60">
-                    @if (session('FAIL'))
-                        <div class="alert alert-danger md-5">
-                            {{ session('FAIL') }} 
-                        </div> 
-                    @endif
+
                     <div class="container pt-3">
                     <form method="POST" id="login-form">
                         @csrf
@@ -39,7 +37,7 @@
                     </form>
                         <div class="text-center xl:text-left">
                             <a href="{{route('register')}}">
-                                <button class="btn btn-outline-secondary w-full mt-3">
+                                <button class="btn btn-outline-secondary w-full mt-3" type="submit">
                                     Registrarse
                                 </button>
                             </a>
@@ -49,6 +47,24 @@
             </div>
         </div>
     </div>
+
+    <div id="success-notification-content" class="toastify-content hidden flex">
+        <i class="text-success" data-lucide="check-circle"></i>
+        <div class="ml-4 mr-4">
+            <div class="font-medium">Registration success!</div>
+        </div>
+    </div>
+
+    <div id="failed-notification-content" class="toastify-content hidden flex">
+        <i class="text-danger" data-lucide="x-circle"></i>
+        <div class="ml-4 mr-4">
+            <div class="font-medium">Registro fallido</div>
+            <div class="text-slate-500 mt-1">
+                Los datos ingresados son incorrectos.
+            </div>
+        </div>
+    </div>
+
     {{-- <button  class="btn btn-lg btn-block btn-primary" href="{{ route('admin.firmas') }}">bot</button> --}}
 @endsection
 

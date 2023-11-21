@@ -241,6 +241,9 @@ header {
 }
 
 .bg-gradient {
+
+    background-image: url("/build/assets/images/techBG.jpg");
+
     background-image: -moz-linear-gradient( 135deg, rgba(124, 146, 213, 0.8) 0%, rgba(124, 146, 213, 0.8) 100%);
     background-image: -webkit-linear-gradient( 135deg, rgba(124, 146, 213, 0.8) 0%, rgba(124, 146, 213, 0.8) 100%);
     background-image: -ms-linear-gradient( 135deg, rgba(124, 146, 213, 0.8) 0%, rgba(124, 146, 213, 0.8) 100%);
