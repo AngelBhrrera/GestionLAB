@@ -1,5 +1,14 @@
 @extends('layouts/prestador-layout')
 
+@section('breadcrumb')
+    <nav aria-label="breadcrumb" class="-intro-x hidden xl:flex">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{route('homeP')}}">Prestador</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Crear actividad</li>
+        </ol>
+    </nav>
+@endsection
+
 @section('subcontent')
 
     <div class="container" style="padding: 20px 350px 0px 350px">
@@ -7,7 +16,7 @@
 
         <h1 class="text-center"> Registro de actividad </h1>
 
-        <form method="POST" action="{{ route('regitro_reporte_guardar') }}" enctype="multipart/form-data" >
+        <form method="POST" action="{{ route('registro_reporte_guardar') }}" enctype="multipart/form-data" >
 
             @csrf
 

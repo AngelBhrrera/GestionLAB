@@ -157,17 +157,17 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
     });
     Route::middleware('role:prestador')->group(function() {
 
-        Route::get('prestador/home', 'home');
+        Route::get('prestador/home', 'home')->name('homeP');
         Route::get('prestador/horas', 'horas')->name('horas');
         Route::post('prestador/completar_impresion','completar_impresion')->name('completar_impresion');
         Route::post('prestador/completar_actividad', 'completar_actividad')->name('completar_actividad');
         Route::get('prestador/completar_impresion_tabla', 'prestadoresProyectosCompletados')->name('prestadoresProyectosCompletados');
         Route::get('prestador/completar_actividad_tabla', 'Pactividadterminada')->name('Pactividadterminada');
         Route::get('prestador/horario', 'horario')->name('horario');
-        Route::get('prestador/regitro_reporte', 'regitro_reporte')->name('regitro_reporte');
+        Route::get('prestador/registro_reporte', 'registro_reporte')->name('registro_reporte');
         Route::get('prestador/obtenerActividades', 'obtenerActividades')->name('obtenerActividades');
         Route::get('prestador/actividades_prestadores', 'actividades_prestadores')->name('actividades_prestadores');
-        Route::post('prestador/regitro_reporte_guardar', 'regitro_reporte_guardar')->name('regitro_reporte_guardar');
+        Route::post('prestador/registro_reporte_guardar', 'registro_reporte_guardar')->name('registro_reporte_guardar');
         Route::put('prestador/actividades_prestadores/{id}', 'contarTiempoActividad')->name('contarTiempoActividad');
         Route::put('prestador/actividades_prestadores/{id_actividad}', 'finalizarActividad')->name('finalizarActividad');
         Route::get('prestador/actividades_creadas', 'actividades_creadas')->name('actividades_creadas');

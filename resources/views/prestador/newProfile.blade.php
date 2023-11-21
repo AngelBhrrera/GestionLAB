@@ -1,5 +1,14 @@
 @extends('layouts/prestador-layout')
 
+@section('breadcrumb')
+    <nav aria-label="breadcrumb" class="-intro-x hidden xl:flex">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{route('homeP')}}">Prestador</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Perfil</li>
+        </ol>
+    </nav>
+@endsection
+
 @section('subcontent')
 <!-- BEGIN: Profile Cover -->
 <div class="col-span-12">

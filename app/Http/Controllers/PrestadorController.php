@@ -275,12 +275,10 @@ class PrestadorController extends Controller
 
     public function horario()
     {
-
-
         return view('/prestador/horario_prestador');
     }
 
-    public function regitro_reporte()
+    public function registro_reporte()
     {
         $encargado_id = auth()->user()->encargado_id;
         // $prestadores = DB::table('users')::where('encargado_id', $encargado_id)->get();
@@ -303,7 +301,7 @@ class PrestadorController extends Controller
     }
 
 
-    public function regitro_reporte_guardar(Request $request)
+    public function registro_reporte_guardar(Request $request)
     {
 
         $nomact = $request->input('nombre');
@@ -433,7 +431,7 @@ class PrestadorController extends Controller
             ->whereIn('status', ['creado'])
             ->get();
 
-        return view('prestador/actividades_prestadores', ['actividades' => $actividades, 'title' => 'Actividades Creadas']);
+        return view('prestador/actividades_prestadores', ['actividades' => $actividades, 'title' => 'Actividades Creadas','breadcrumb'=>'Actividades creadas']);
     }
 
     public function enProcesoActividad($id)
@@ -468,7 +466,7 @@ class PrestadorController extends Controller
             ->whereIn('status', ['en_proceso'])
             ->get();
 
-        return view('prestador/actividades_prestadores', ['actividades' => $actividades, 'title' => 'Actividades en Proceso']);
+        return view('prestador/actividades_prestadores', ['actividades' => $actividades, 'title' => 'Actividades en Proceso', 'breadcrumb'=>'Activiadades terminadas']);
     }
 
     public function actividadesTerminadas()
@@ -478,7 +476,7 @@ class PrestadorController extends Controller
             ->whereIn('status', ['terminado'])
             ->get();
 
-        return view('prestador/actividades_prestadores', ['actividades' => $actividades, 'title' => 'Actividades Terminadas en Revisión']);
+        return view('prestador/actividades_prestadores', ['actividades' => $actividades, 'title' => 'Actividades Terminadas en Revisión','breadcrumb'=>'Actividades en revisión']);
     }
 
     public function actividades_prestadores_revisadas()
@@ -488,7 +486,7 @@ class PrestadorController extends Controller
             ->whereIn('status', ['terminado_revisado'])
             ->get();
 
-        return view('prestador/actividades_prestadores', ['actividades' => $actividades, 'title' => 'Actividades Revisadas']);
+        return view('prestador/actividades_prestadores', ['actividades' => $actividades, 'title' => 'Actividades Revisadas','breadcrumb'=>'Actididades revisadas']);
     }
 
     public function actividades_canceladas()
@@ -498,7 +496,7 @@ class PrestadorController extends Controller
             ->whereIn('status', ['cancelado', 'cancelado_permitido'])
             ->get();
 
-        return view('prestador/actividades_prestadores', ['actividades' => $actividades, 'title' => 'Actividades con error']);
+        return view('prestador/actividades_prestadores', ['actividades' => $actividades, 'title' => 'Actividades con error','breadcrumb'=>'Actividades con error']);
     }
 
 

@@ -108,7 +108,7 @@
                         </a>
                         <ul class="">
                             <li>
-                                <a href="{{route('regitro_reporte')}}" class="side-menu">
+                                <a href="{{route('registro_reporte')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="plus-circle"></i> </div>
                                     <div class="side-menu__title"> Crear nueva actividad </div>
                                 </a>
@@ -187,8 +187,7 @@
                     <!-- BEGIN: Breadcrumb -->
                     <nav aria-label="breadcrumb" class="-intro-x hidden xl:flex">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Prestador</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Home</li>
+                            @yield('breadcrumb')
                         </ol>
                     </nav>
                     <!-- END: Breadcrumb -->

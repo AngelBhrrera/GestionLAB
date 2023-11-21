@@ -1,5 +1,16 @@
 @extends('layouts/prestador-layout')
 
+@section('breadcrumb')
+    <nav aria-label="breadcrumb" class="-intro-x hidden xl:flex">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{route('homeP')}}">Prestador</a></li>
+            @if(isset($breadcrumb))
+                <li class="breadcrumb-item active" aria-current="page">{{$breadcrumb}}</li>
+            @endif
+        </ol>
+    </nav>
+@endsection
+
 @section('subcontent')
 
 <head>

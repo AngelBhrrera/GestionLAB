@@ -34,9 +34,9 @@
                         <div class="collapse navbar-collapse" id="navbar">
                             <ul class="navbar-nav ml-auto">
                                 <li class="nav-item"> <a class="nav-link active" href="#home">Inicio <span class="sr-only">(current)</span></a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="#features">Detalles</a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="#features">Acerca de nosotros</a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="#servicios">Servicios</a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="#gallery">Galería</a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="#gallery">Difusión</a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="#leaderboard">Torneo</a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="#faq">FAQ</a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="#contact">Contactos</a> </li>
@@ -61,6 +61,10 @@
         <div class="main-gallery owl-carousel owl-theme">
             <div class="img-holder mt-3"><img src="{{asset('build/assets/images/imagenLat.jpg')}}" alt="lab" class="img-fluid"></div>
             <div class="img-holder mt-3"><img src="{{asset('build/assets/images/imagenLab2.jpg')}}" alt="lab" class="img-fluid"></div>
+            <div class="img-holder mt-3"><img src="{{asset('build/assets/images/labMedia.jpg')}}" alt="image" class="img-fluid"></div>
+            <div class="img-holder mt-3"><img src="{{asset('build/assets/images/labMedia2.jpg')}}" alt="image" class="img-fluid"></div>
+            <div class="img-holder mt-3"><img src="{{asset('build/assets/images/labMedia3.jpg')}}" alt="image" class="img-fluid"></div>
+            <div class="img-holder mt-3"><img src="{{asset('build/assets/images/labMedia4.jpg')}}" alt="image" class="img-fluid"></div>
         </div>
         
 
@@ -135,7 +139,26 @@
                         </div>
                     </div>
                 </div>
-                
+                <div class="col-12 col-lg-4" style="margin: 20px 0 0 0">
+                    <div class="card features">
+                        <div class="card-body">
+                            <div class="media">
+                                <span class="ti-panel gradient-fill ti-3x mr-3"></span>
+                                <div class="media-body">
+                                    <h4 class="card-title">Beneficios</h4>
+                                    <p class="card-text">Formar parte de este laboratorio trae 
+                                        consigo distintos beneficios:
+                                    <ul>
+                                        <li><p class="card-text">Conocer personas de distintas carreras.</p></li>
+                                        <li><p class="card-text">Aplicar tus conocimientos obtenidos en distintas áreas dentro del laboratorio.</p></li>
+                                        <li><p class="card-text">Adquirir nuevos conocimientos, que te ayudarán en tu formación profesional y personal</p></li>
+                                    </ul>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-12 col-lg-4" style="margin: 20px 0 0 0">
                     <div class="card features">
                         <div class="card-body">
@@ -143,6 +166,8 @@
                                 <span class="ti-bell gradient-fill ti-3x mr-3"></span>
                                 <div class="media-body">
                                     <h4 class="card-title">¿Te gustaría formar parte de la comunidad?</h4>
+                                    <p class="card-text">En el siguiente enlace podrás registrarte para solicitar algún servicio, 
+                                        ser prestador de servicio social o volutario de laboratorio.</p>
                                     <a class="card-text" href="register">¡Regístrate!</a>
                                 </div>
                             </div>
@@ -158,55 +183,90 @@
         <div class="container">
             <div class="section-title">
                 <h3>Servicios que ofrecemos</h3>
+                <p>Puedes solicitar cualquiera de nuestros servicios, con gusto te atenderemos.</p>
             </div>
             <div class="container">
                 <div class="container">
                     <div class="grid-container">
                         <div class="grid-item">
-                            <img src="build/assets/images/creacion-de-piezas-3D.png" alt="image">
-                            <p class="pdescripcion">Creación de modelos digitales 3D</p>
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLScPiGL-g7Os1pJoHGtLqpiA2vJAKslYmVKqW9Mp6mZuTUr2mQ/viewform">
+                                <img src="build/assets/images/creacion-de-piezas-3D.png" alt="image">
+                                <p class="pdescripcion">Creación de modelos digitales 3D</p>
+                            </a>
+                            
                         </div>
                         <div class="grid-item">
-                            <img src="build/assets/images/capacitacion-de-uso-de-impresoras-3D.png" alt="image">
-                            <p class="pdescripcion">Capacitación de uso de impresoras 3D</p>
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdtHIY-jHHlseVQNvtwobPxLEdkk0JXSpYXmodqwCdMGMJIHg/viewform">
+                                <img src="build/assets/images/capacitacion-de-uso-de-impresoras-3D.png" alt="image">
+                                <p class="pdescripcion">Capacitación de uso de impresoras 3D</p>
+                            </a>
+                            
                         </div>
                         <div class="grid-item">
-                            <img src="build/assets/images/creacion-de-aplicaciones-de-realidad-virtual.png" alt="image">
-                            <p class="pdescripcion">Creación de aplicaciones de realidad virtual (Próximamente)</p>
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSd2KBuqIvoCTGOX8rx8hihQNkO17cbSaC9V01Iix9I3pW1-Ew/viewform">
+                               <img src="build/assets/images/creacion-de-aplicaciones-de-realidad-virtual.png" alt="image">
+                               <p class="pdescripcion">Creación de aplicaciones de realidad virtual</p>
+                            </a>
+                            
                         </div>
                         <div class="grid-item">
-                            <img src="build/assets/images/creacion-de-prototipos.png" alt="image">
-                            <p class="pdescripcion">Creación de prototipos</p>
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLScijczjpr9Klw9XVV4ynSR-mNrRwzwEVESFOQLYI_LKCz1clg/viewform">
+                                <img src="build/assets/images/creacion-de-prototipos.png" alt="image">
+                                <p class="pdescripcion">Creación de prototipos</p>
+                            </a>
+                            
                         </div>
                         <div class="grid-item">
-                            <img src="build/assets/images/creacion-de-sistemas-web.png" alt="image">
-                            <p class="pdescripcion">Creación de sistemas web</p>
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdoTy4RdctUfzyZGzHQYkDXqA1A_OY80-9ex9CwcpB0jE-MGQ/viewform">
+                                <img src="build/assets/images/creacion-de-sistemas-web.png" alt="image">
+                                <p class="pdescripcion">Creación de sistemas web</p>
+                            </a>
+                            
                         </div>
                         <div class="grid-item">
-                            <img src="build/assets/images/creacion-de-videojuegos.png" alt="image">
-                            <p class="pdescripcion">Creación de videojuegos</p>
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSerKEtn2s3XaeNaXEw_PQhelRVc2TlPdeVrlTIQmVetotby0g/closedform">
+                                <img src="build/assets/images/creacion-de-videojuegos.png" alt="image">
+                                <p class="pdescripcion">Creación de videojuegos</p>
+                            </a>
+                            
                         </div>
                         <div class="grid-item">
-                            <img src="build/assets/images/nivel.png" alt="image">
-                            <p class="pdescripcion">Capacitación de desarrollo de videojuegos</p>
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfkOt8vekS_ix9Y8ePYk-SQARCiVuz9rjPzWFOBYTrGJ6WpvA/viewform">
+                                <img src="build/assets/images/nivel.png" alt="image">
+                                <p class="pdescripcion">Capacitación de desarrollo de videojuegos</p>
+                            </a>
+                            
                         </div>
                         <div class="grid-item">
-                            <img src="build/assets/images/uso-de-impresoras-3D.png" alt="image">
-                            <p class="pdescripcion">Solicitud de impresión de modelos 3D</p>
+                            
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLScN0dNRm0MbuRs9uT6d-WoUmuizEa7Z5JwI4Bt4BHvuraHATQ/viewform">
+                                <img src="build/assets/images/uso-de-impresoras-3D.png" alt="image">   
+                                <p class="pdescripcion">Solicitud de impresión de modelos 3D</p>
+                            </a>
+                            
                         </div>
                         <div class="grid-item">
-                            <img src="build/assets/images/capacitacion-de-app-de-realidad-virtual.png" alt="image">
-                            <p class="pdescripcion">Capacitación de app de realidad virtual</p>
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdQUseThOoCQ3gz287sDFoXRRV7BHA6Vti74_8tWXxKcqaOFA/viewform">
+                              <img src="build/assets/images/capacitacion-de-app-de-realidad-virtual.png" alt="image">
+                              <p class="pdescripcion">Capacitación de app de realidad virtual</p>
+                            </a>
+                            
                         </div>
                     </div>
                     <div class="grid-containerSec">
                         <div class="grid-item">
-                            <img src="build/assets/images/capacitacion-de-desarrollo-de-aplicacion-interactiva.png" alt="image">
-                            <p class="pdescripcion">Capacitación de desarrollo de aplicación interactiva</p>
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSe4_sPzMttqcztP821RoMMNY5K9GMxij7xDD86cE05px57u2Q/viewform">
+                               <img src="build/assets/images/capacitacion-de-desarrollo-de-aplicacion-interactiva.png" alt="image">
+                               <p class="pdescripcion">Capacitación de desarrollo de aplicación interactiva</p>
+                            </a>
+                            
                         </div>
                         <div class="grid-item">
-                            <img src="build/assets/images/capacitacion-de-modelado-3D.png" alt="image">
-                            <p class="pdescripcion">Capacitación de modelado 3D</p>
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeOcS6S_OwXiBvDWrflv5AQ44H1DUYQWN8aPMymLa3d-XvSWw/viewform">
+                                <img src="build/assets/images/capacitacion-de-modelado-3D.png" alt="image">
+                                <p class="pdescripcion">Capacitación de modelado 3D</p>
+                            </a>
+                           
                         </div>
                     </div>
                 </div>
@@ -224,7 +284,7 @@
     <div class="section">
         <div class="container">
             <div class="section-title">
-                <h3>Galería</h3>
+                <h3>Difusión y divulgación</h3>
             </div>
 
             <div class="img-gallery owl-carousel owl-theme">
@@ -243,6 +303,8 @@
         <div style="padding:0 10%;">
             <div class="section-title">
                 <h3>¡Mejores prestadores!</h3>
+                <p>Aquí podrás ver los mejores prestadores que realizan servicio social 
+                 el laboratorio de inventores de acuerdo a sus puntos de experiencia.</p>
             </div>
 
 
@@ -475,8 +537,12 @@
                                     <span class="ti-user mr-2"></span> <a>José Luis David Bonilla Carranza</a>
                                 </p>
                                 <p class="mb-2">                            
-                                    <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:support@mobileapp.com">cdcomp@cucei.udg.mx</a>                            
+                                    <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:support@mobileapp.com">jose.bcarranza@academicos.udg.mx</a>                            
                                 </p>
+                                <p class="mb-2 ml-2">                            
+                                    Jefe de laboratorio
+                                </p>
+
                             </td>
                             <td>
                                 <p class="mb-2">
@@ -484,6 +550,9 @@
                                 </p>
                                 <p class="mb-2">                            
                                     <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:support@mobileapp.com">luis.munoz.m@academicos.udg.mx</a>                            
+                                </p>
+                                <p class="mb-2 ml-2">                            
+                                    Jefe de laboratorio
                                 </p>
                             </td>
                         </tr>

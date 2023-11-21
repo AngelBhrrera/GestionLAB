@@ -1,5 +1,4 @@
 @extends('layouts/prestador-layout')
-
 @section('content')
 
 <head>
