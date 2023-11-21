@@ -52,6 +52,6 @@ class ImpresionesPrestadoresPendientes extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('impresiones_prestadores_pendientes');
     }
 }

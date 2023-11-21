@@ -53,6 +53,6 @@ class Prestadoresterminado extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('prestadoresterminados');
     }
 }

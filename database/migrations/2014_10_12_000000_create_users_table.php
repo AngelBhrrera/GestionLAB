@@ -16,25 +16,31 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
+
             $table->string('name', 191);
             $table->string('apellido', 191);
             $table->string('correo', 50)->unique();
             $table->string('codigo', 191)->unique()->nullable();
             $table->string('tipo', 50);
+            $table->string('telefono', 10)->nullable();
+
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password', 191);
             $table->rememberToken();
             $table->timestamps();
+            $table->boolean('can_admin')->nullable()->default(0);
+
             $table->unsignedInteger('horas_servicio')->nullable()->default(0);
             $table->unsignedInteger('horas')->nullable();
-            $table->tinyText('centro')->nullable();
-            $table->string('carrera');
-            $table->string('tipo_cliente', 50)->nullable();
             $table->string('fecha_salida', 100)->nullable();
+
+
+            $table->string('carrera')->nullable();
+            $table->tinyText('centro')->nullable();
+            $table->string('sede', 100)->nullable();
             $table->string('horario', 100)->nullable();
-            $table->boolean('can_admin')->nullable()->default(0);
             $table->unsignedBigInteger('encargado_id')->nullable();
-            $table->string('telefono', 10)->nullable();
+
             $table->string('photo_path', 255)->nullable();
             $table->unsignedInteger('experiencia')->nullable();
         });
@@ -52,7 +58,6 @@ class CreateUsersTable extends Migration
             "horas"=>null,
             "centro"=> null,
             "carrera"=> "INCO",
-            "tipo_cliente" => null,
             "fecha_salida" => null,
             "horario" => null,
             "can_admin" => null,

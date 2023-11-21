@@ -46,6 +46,6 @@ class ActividadEnProceso extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('actividad_en_proceso');
     }
 }

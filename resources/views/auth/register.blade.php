@@ -130,26 +130,36 @@
                                     </div>
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divEscuela" style="display:none">
                                         <label for="input-wizard-3" class="form-label">Escuela *</label>
-                                        <select class="form-control @if(old('opc')=='1') @error('centro') is-invalid @enderror @endif" name="centro" id="centro" >
-                                                                @if (isset($centros))
-                                                                    <option id="centronull" value="{{null}}" {{isset($dV[0]->centro) ? $dV[0]->centro == null ? 'selected="selected"' : '' : ''}}>Seleccione un centro</option>
-                                                                    @foreach ($centros as $dato )
-                                                                    <option id="{{$dato->centro}}" value="{{$dato->centro}}" {{old('centro') == $dato->centro ? 'selected="selected"' : '' }}>{{$dato->centro}}</option>
-                                                                    @endforeach
-                                                                @endif
-                                                            </select>
-                                                            @if(old('opc')=='1')
-                                                                @error('centro')
-                                                                    <span class="invalid-feedback" role="alert">
-                                                                        <strong>{{ $message }}</strong>
-                                                                    </span>
-                                                                @enderror
-                                                            @endif
+                                            <select class="form-control" name="carrera" id="carrera">
+                                            <option selected id="1" value='null'>Seleccione un centro</option>
+                                                <option id="1" value='prestadorp'>CUCEI</option>
+                                                <option id="2" value='practicantep'>CUAAD</option>
+                                                <option id="3" value='voluntariop'>CUCEA</option>
+                                                <option id="4" value='alumno' >CUCBA</option>
+                                                <option id="5" value='maestro'>CUCSH</option>                    
+                                                <option id="6" value='externo' >CUCS</option>
+                                                <option id="7" value='alumno' >CUNORTE</option>
+                                                <option id="8" value='maestro'>CULAGOS</option>                    
+                                                <option id="9" value='externo' >CUVALLE</option>
+                                                <option id="10" value='alumno' >CUALTOS</option>
+                                                <option id="11" value='maestro'>CUCOSTA</option>                    
+                                                <option id="12" value='externo' >CUTONALA</option>
+                                                <option id="13" value='alumno' >CUCIENEGA</option>
+                                                <option id="14" value='maestro'>CUCSUR</option>                    
+                                                <option id="15" value='externo' >CUSUR</option>
+                                            </select>
+                                            @if(old('opc')=='1')
+                                                @error('centro')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            @endif
                                     </div>
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divCarrera" style="display:none">
                                         <label for="input-wizard-4" class="form-label">Carrera</label>
-                                        <input id="carrera" type="text" class="form-control @if(old('opc')=='1') @error('carrera') is-invalid @enderror @endif" name="carrera" placeholder="Carrera" >
+                                            <input id="carrera" type="text" class="form-control @if(old('opc')=='1') @error('carrera') is-invalid @enderror @endif" name="carrera" placeholder="Carrera" >
                                             @error('carrera')
                                                 <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>

@@ -51,6 +51,6 @@ class Impresionesasignados extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('impresionesasignados');
     }
 }

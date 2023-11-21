@@ -49,6 +49,6 @@ class Horaspendientes extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('horaspendientes');
     }
 }

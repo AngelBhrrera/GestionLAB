@@ -40,6 +40,6 @@ class ActividadTerminada extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('actividad_terminada');
     }
 }

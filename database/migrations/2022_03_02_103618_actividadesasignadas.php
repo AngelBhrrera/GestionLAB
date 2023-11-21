@@ -42,6 +42,6 @@ class Actividadesasignadas extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('actividadesasignadas');
     }
 }
