@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class soloclientes extends Migration
 {
@@ -13,7 +14,7 @@ class soloclientes extends Migration
      */
     public function up()
     {
-        \DB::statement("
+        DB::statement("
         CREATE VIEW soloclientes AS
         SELECT
         `users`.`id` AS `id`,

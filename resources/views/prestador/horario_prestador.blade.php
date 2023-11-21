@@ -1,5 +1,10 @@
 @extends('layouts/prestador-layout')
 
+@section('breadcrumb')
+            <li class="breadcrumb-item"><a href="#">Horario</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Horario Prestador</li>
+@endsection
+
 @section('subcontent')
 
     <div class="container">
