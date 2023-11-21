@@ -6,7 +6,6 @@
 
 @section('content')
 <body class="main">
-
     <div class="xl:pl-5 xl:py-5 flex h-screen">
         <nav class="side-nav">
             <!-- BEGIN: Side Menu -->
@@ -116,38 +115,38 @@
                             </li>
                             <li>
                                 <a href="{{route('obtenerActividades')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
-                                    <div class="side-menu__title">  Mostrar todas las actividades </div>
+                                    <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
+                                    <div class="side-menu__title">Todas las actividades </div>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{route('actividades_creadas')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
-                                    <div class="side-menu__title"> Mostrar actividades creadas</div>
+                                    <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
+                                    <div class="side-menu__title"> Actividades creadas</div>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{route('actividades_en_proceso')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
-                                    <div class="side-menu__title">Mostrar actividades en proceso </div>
+                                    <div class="side-menu__icon"> <i data-lucide="file-input"></i> </div>
+                                    <div class="side-menu__title">Actividades en proceso </div>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{route('actividadesTerminadas')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
-                                    <div class="side-menu__title"> Mostrar actividades terminadas en revisión </div>
+                                    <div class="side-menu__icon"> <i data-lucide="list-checks"></i> </div>
+                                    <div class="side-menu__title"> Actividades terminadas en revisión </div>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{route('actividades_prestadores_revisadas')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
-                                    <div class="side-menu__title"> Mostrar actividades revisadas </div>
+                                    <div class="side-menu__icon"> <i data-lucide="file-check-2"></i> </div>
+                                    <div class="side-menu__title"> Actividades revisadas </div>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{route('actividades_canceladas')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
-                                    <div class="side-menu__title"> Mostrar actividades con error </div>
+                                    <div class="side-menu__icon"> <i data-lucide="file-x-2"></i> </div>
+                                    <div class="side-menu__title"> Actividades con error </div>
                                 </a>
                             </li>
                         </ul>
@@ -205,11 +204,15 @@
                     <div class="intro-x dropdown h-10">
                         <div class="h-full dropdown-toggle flex items-center" role="button" aria-expanded="false" data-tw-toggle="dropdown">
                             <div class="w-10 h-10 image-fit">
-                                <img alt="Usr" class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" src="{{ asset('build/assets/images/barrera.jpg') }}">
+                            @if(isset(Auth::user()->image))
+                                <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('build/assets/images/placeholders/avatar5.png')}}">
+                            @else
+                                <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('build/assets/images/placeholders/'.Auth::user()->imagen_perfil)}}">
+                            @endif
                             </div>
                             <div class="hidden md:block ml-3">
-                                <div class="max-w-[7rem] truncate font-medium">Usuario</div>
-                                <div class="text-xs text-slate-400">Rol</div>
+                                <div class="max-w-[7rem] truncate font-medium">{{$username=Auth::user()->name}}</div>
+                                <div class="text-xs text-slate-400">{{$userRol=ucfirst(Auth::user()->tipo)}}</div>
                             </div>
                         </div>
 
@@ -264,3 +267,4 @@
   <script src={{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}></script>
 
 @endsection
+

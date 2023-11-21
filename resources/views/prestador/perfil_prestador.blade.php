@@ -87,11 +87,11 @@
             <div class="col-md-4">
               <h1>Mi Perfil</h1>
               <hr>
-              <p><strong>Nombre:</strong> {{ $user->name }}</p>
-              <p><strong>Apellido:</strong> {{ $user->apellido }}</p>
-              <p><strong>Correo:</strong> {{ $user->correo }}</p>
-              <p><strong>Codigo:</strong> {{ $user->codigo }}</p>
-              <p><strong>Centro:</strong> {{ $user->centro }}</p>
+              <p><strong>Nombre:</strong> {{$user->name}}</p>
+              <p><strong>Apellido:</strong> {{$user->apellido}}</p>
+              <p><strong>Correo:</strong> {{$user->correo}}</p>
+              <p><strong>Codigo:</strong> {{$user->codigo}}</p>
+              <p><strong>Centro:</strong> {{$user->centro}}</p>
               <p><strong>Carrera:</strong> {{ $user->carrera }}</p>
               <p><strong>Experiencia:</strong> {{ $user->experiencia ?? '0' }}</p>
               <p><strong>Nivel:</strong> {{ $nivel_str }}</p>
