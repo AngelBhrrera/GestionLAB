@@ -19,17 +19,17 @@ class ActividadTerminada extends Migration
         `users`.`name` AS `nombre_prestador`,
         `users`.`apellido` AS `apellido_prestador`,
         `users`.`codigo` AS `codigo_prestador`,
-        `actividadesasignadas`.`id_prestador` AS `id_prestador`,
-        `actividadesasignadas`.`llave_actividad` AS `llave_actividad`,
-        `actividadesasignadas`.`id_actcreada` AS `id_actcreada`,
-        `actividadesasignadas`.`nombre_act` AS `nombre_act`,
-        `actividadesasignadas`.`tipo_act` AS `tipo_act`,
-        `actividadesasignadas`.`descripcion` AS `descripcion`,
-        `actividadesasignadas`.`objetivo` AS `objetivo`,
-        `actividadesasignadas`.`fecha` AS `fecha`,
-        `actividadesasignadas`.`status` AS `status`
-        FROM (`actividadesasignadas` join `users` on((`actividadesasignadas`.`id_prestador` = `users`.`id`)))
-        WHERE (`actividadesasignadas`.`status` = 'terminado');
+        `actividades_asignadas`.`id_prestador` AS `id_prestador`,
+        `actividades_asignadas`.`llave_actividad` AS `llave_actividad`,
+        `actividades_asignadas`.`id_actcreada` AS `id_actcreada`,
+        `actividades_asignadas`.`nombre_act` AS `nombre_act`,
+        `actividades_asignadas`.`tipo_act` AS `tipo_act`,
+        `actividades_asignadas`.`descripcion` AS `descripcion`,
+        `actividades_asignadas`.`objetivo` AS `objetivo`,
+        `actividades_asignadas`.`fecha` AS `fecha`,
+        `actividades_asignadas`.`status` AS `status`
+        FROM (`actividades_asignadas` join `users` on((`actividades_asignadas`.`id_prestador` = `users`.`id`)))
+        WHERE (`actividades_asignadas`.`status` = 'terminado');
        ");
     }
 
@@ -40,6 +40,6 @@ class ActividadTerminada extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('actividad_terminada');
+        DB::statement("DROP VIEW actividad_terminada");
     }
 }

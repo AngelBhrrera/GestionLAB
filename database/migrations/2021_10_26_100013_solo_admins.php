@@ -14,7 +14,7 @@ class Soloadmins extends Migration
     public function up()
     {
         \DB::statement("
-        CREATE VIEW soloadmins AS
+        CREATE VIEW solo_admins AS
         SELECT
         `users`.`id` AS `id`, `users`.`name` AS `name`,
         `users`.`apellido` AS `apellido`,
@@ -31,6 +31,6 @@ class Soloadmins extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('soloadmins');
+        DB::statement("DROP VIEW solo_admins");
     }
 }

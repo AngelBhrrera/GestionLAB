@@ -43,6 +43,6 @@ class ActividadTerminada2 extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('actividad_terminada_2');
+        DB::statement("DROP VIEW actividad_terminada_2");
     }
 }

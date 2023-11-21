@@ -14,7 +14,7 @@ class PrestadoresInactivos extends Migration
     public function up()
     {
         \DB::statement("
-        CREATE VIEW prestadoresinactivos AS
+        CREATE VIEW prestadores_inactivos AS
         SELECT
         `users`.`id` AS `id`,
         `users`.`name` AS `name`,
@@ -29,15 +29,15 @@ class PrestadoresInactivos extends Migration
         `users`.`carrera` AS `carrera`,
         `users`.`updated_at` AS `updated_at`,
         `users`.`horas` AS `horas`,
-        `cuentahoras`.`horas_servicio` AS `horas_cumplidas`,
-        `cuentahoras`.`horas_restantes` AS `horas_restantes`
+        `cuenta_horas`.`horas_servicio` AS `horas_cumplidas`,
+        `cuenta_horas`.`horas_restantes` AS `horas_restantes`
         FROM
             (
                 `users`
-            LEFT JOIN `cuentahoras` ON
+            LEFT JOIN `cuenta_horas` ON
                 (
                     (
-                        `users`.`codigo` = `cuentahoras`.`codigo`
+                        `users`.`codigo` = `cuenta_horas`.`codigo`
                     )
                 )
             )
@@ -53,6 +53,6 @@ class PrestadoresInactivos extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('prestadoresinactivos');
+        DB::statement("DROP VIEW prestadores_inactivos");
     }
 }

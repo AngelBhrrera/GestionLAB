@@ -49,6 +49,6 @@ class ActividadCompletada2 extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('actividad_completada_2');
+        DB::statement("DROP VIEW actividad_completada_2");
     }
 }

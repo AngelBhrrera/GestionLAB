@@ -15,7 +15,7 @@ class soloclientes extends Migration
     public function up()
     {
         DB::statement("
-        CREATE VIEW soloclientes AS
+        CREATE VIEW solo_clientes AS
         SELECT
         `users`.`id` AS `id`,
         `users`.`name` AS `name`,
@@ -39,6 +39,6 @@ class soloclientes extends Migration
     public function down()
     {
 
-        Schema::dropIfExists('soloclientes');
+        DB::statement("DROP VIEW solo_clientes");
     }
 }

@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateSedeTable extends Migration
 {
+    protected $table =  'sede';
+
     /**
      * Run the migrations.
      *
@@ -14,15 +16,16 @@ class CreateSedeTable extends Migration
     public function up()
     {
         Schema::create('sede', function (Blueprint $table) {
-
             $table->id('id_Sede');
-            $table->string('nombre_Sede', 150);
-            $table->integer('turnoMatutino', 10);
-            $table->integer('turnoMediodia', 10);
-            $table->integer('turnoVespertino', 10);
-            $table->integer('turnoSabatino', 10);
-            $table->integer('turnoTiempoCompleto', 10);
-            $table->integer('No Aplica', 10);
+            $table->string('nombre_Sede')->length(150);
+            $table->integer('turnoMatutino')->length(10);
+            $table->integer('turnoMediodia')->length(10);
+            $table->integer('turnoVespertino')->length(10);
+            $table->integer('turnoSabatino')->length(10);
+            $table->integer('turnoTiempoCompleto')->length(10);
+            $table->integer('no_Aplica')->length(10);
+
+        });
 
             DB::table('sede')->insert([
                 "nombre_Sede" => "CUCEI Laboratorio",
@@ -31,7 +34,7 @@ class CreateSedeTable extends Migration
                 'turnoVespertino'=> 1,
                 'turnoSabatino'=> 1,
                 'turnoTiempoCompleto'=> 1,
-                'turnoNoAplica'=> 1,
+                'no_Aplica'=> 1,
             ]);
             DB::table('sede')->insert([
                 "nombre_Sede" => "CUCEI Coordinación",
@@ -40,7 +43,7 @@ class CreateSedeTable extends Migration
                 'turnoVespertino'=> 1,
                 'turnoSabatino'=> 0,
                 'turnoTiempoCompleto'=> 0,
-                'turnoNoAplica'=> 1,
+                'no_Aplica'=> 1,
             ]);
             DB::table('sede')->insert([
                 "nombre_Sede" => "CUCEI Innovación",
@@ -49,7 +52,7 @@ class CreateSedeTable extends Migration
                 'turnoVespertino'=> 1,
                 'turnoSabatino'=> 1,
                 'turnoTiempoCompleto'=> 1,
-                'turnoNoAplica'=> 0,
+                'no_Aplica'=> 0,
             ]);
             DB::table('sede')->insert([
                 "nombre_Sede" => "CFE",
@@ -58,7 +61,7 @@ class CreateSedeTable extends Migration
                 'turnoVespertino'=> 0,
                 'turnoSabatino'=> 1,
                 'turnoTiempoCompleto'=> 1,
-                'turnoNoAplica'=> 1,
+                'no_Aplica'=> 1,
             ]);
             DB::table('sede')->insert([
                 "nombre_Sede" => "CUCS",
@@ -67,10 +70,10 @@ class CreateSedeTable extends Migration
                 'turnoVespertino'=> 1,
                 'turnoSabatino'=> 1,
                 'turnoTiempoCompleto'=> 1,
-                'turnoNoAplica'=> 1,
+                'no_Aplica'=> 1,
             ]);
-        });
     }
+
 
     /**
      * Reverse the migrations.

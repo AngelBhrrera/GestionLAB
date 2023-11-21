@@ -4,9 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Prestadorespendientes extends Migration
+class Soloprestadores extends Migration
 {
-    /**
+   /**
      * Run the migrations.
      *
      * @return void
@@ -14,7 +14,7 @@ class Prestadorespendientes extends Migration
     public function up()
     {
         \DB::statement("
-        CREATE VIEW prestadorespendientes AS
+        CREATE VIEW solo_prestadores AS
         SELECT
         `users`.`id` AS `id`,
         `users`.`name` AS `name`,
@@ -26,11 +26,24 @@ class Prestadorespendientes extends Migration
         `users`.`password` AS `password`,
         `users`.`remember_token` AS `remember_token`,
         `users`.`created_at` AS `created_at`,
-        `users`.`updated_at` AS `updated_at`
+        `users`.`carrera` AS `carrera`,
+        `users`.`updated_at` AS `updated_at`,
+        `users`.`horas` AS `horas`,
+        `cuenta_horas`.`horas_servicio` AS `horas_cumplidas`,
+        `cuenta_horas`.`horas_restantes` AS `horas_restantes`,
+        `users`.`encargado_id` AS `encargado_id`
         FROM
-            `users`
+            (
+                `users`
+            LEFT JOIN `cuenta_horas` ON
+                (
+                    (
+                        `users`.`codigo` = `cuenta_horas`.`codigo`
+                    )
+                )
+            )
         WHERE
-            (`users`.`tipo` = 'prestadorP')
+            (`users`.`tipo` = 'prestador')
         ");
     }
 
@@ -41,6 +54,6 @@ class Prestadorespendientes extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('prestadoraspendientes');
+        DB::statement("DROP VIEW solo_prestadores");
     }
 }
