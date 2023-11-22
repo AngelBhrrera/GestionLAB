@@ -14,7 +14,7 @@ class Impresionesasignados extends Migration
     public function up()
     {
         \DB::statement("
-        CREATE VIEW `impresionesasignados` AS SELECT
+        CREATE VIEW `impresiones_asignados` AS SELECT
         `proyectos_prestadores`.`id_prestador` AS `id_prestador`,
         `proyectos_prestadores`.`id_proyecto` AS `id_proyecto`,
         `proyectos_prestadores`.`id` AS `id_impresion_prestador`,
@@ -51,6 +51,6 @@ class Impresionesasignados extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('impresionesasignados');
+        DB::statement("DROP VIEW impresiones_asignados");
     }
 }

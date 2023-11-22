@@ -14,7 +14,7 @@ class Horaspendientes extends Migration
     public function up()
     {
         \DB::statement("
-        CREATE VIEW horaspendientes AS
+        CREATE VIEW horas_pendientes AS
         SELECT
         `horasprestadores`.`id` AS `id`,
         `horasprestadores`.`codigo` AS `codigo`,
@@ -49,6 +49,6 @@ class Horaspendientes extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('horaspendientes');
+        DB::statement("DROP VIEW horas_pendientes");
     }
 }

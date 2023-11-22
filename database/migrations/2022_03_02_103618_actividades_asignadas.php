@@ -14,7 +14,7 @@ class Actividadesasignadas extends Migration
     public function up()
     {
         \DB::statement("
-        CREATE VIEW `actividadesasignadas` AS SELECT
+        CREATE VIEW `actividades_asignadas` AS SELECT
         `actividades_prestadores`.`id_prestador` AS `id_prestador`,
         `actividades_prestadores`.`llave_actividad` AS `llave_actividad`,
         `c_actividad`.`id_actividad` AS `id_actcreada`,
@@ -42,6 +42,6 @@ class Actividadesasignadas extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('actividadesasignadas');
+        DB::statement("DROP VIEW actividades_asignadas");
     }
 }

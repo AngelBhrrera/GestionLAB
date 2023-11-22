@@ -14,7 +14,7 @@ class Cuentahoras extends Migration
     public function up()
     {
         \DB::statement("
-        CREATE VIEW cuentahoras AS 
+        CREATE VIEW cuenta_horas AS 
         SELECT
         `horasprestadores`.`codigo` AS `codigo`,
         SUM(`horasprestadores`.`horas`) AS `horas_servicio`,
@@ -48,6 +48,6 @@ class Cuentahoras extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cuentahoras');
+        DB::statement("DROP VIEW cuenta_horas");
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class PrestadoresInactivos extends Migration
+class PrestadoresServicioConcluido extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class PrestadoresInactivos extends Migration
     public function up()
     {
         \DB::statement("
-        CREATE VIEW prestadores_inactivos AS
+        CREATE VIEW prestadores_servicio_concluido AS
         SELECT
         `users`.`id` AS `id`,
         `users`.`name` AS `name`,
@@ -42,7 +42,7 @@ class PrestadoresInactivos extends Migration
                 )
             )
         WHERE
-            (`users`.`tipo` = 'prestador_inactivo' )
+            (`users`.`tipo` = 'prestador' and `cuenta_horas`.`horas_restantes` <= '0')
         ");
     }
 
@@ -53,6 +53,6 @@ class PrestadoresInactivos extends Migration
      */
     public function down()
     {
-        DB::statement("DROP VIEW prestadores_inactivos");
+        DB::statement("DROP VIEW prestadores_servicio_concluido");
     }
 }
