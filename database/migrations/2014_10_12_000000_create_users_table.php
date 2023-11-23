@@ -30,18 +30,17 @@ class CreateUsersTable extends Migration
             $table->timestamps();
             $table->boolean('can_admin')->nullable()->default(0);
 
-            $table->unsignedInteger('horas_servicio')->nullable()->default(0);
             $table->unsignedInteger('horas')->nullable();
             $table->string('fecha_salida', 100)->nullable();
 
 
             $table->string('carrera')->nullable();
             $table->tinyText('centro')->nullable();
-            $table->string('sede', 100)->nullable();
+            $table->tinyInteger('sede')->nullable();
             $table->string('horario', 100)->nullable();
             $table->unsignedBigInteger('encargado_id')->nullable();
 
-            $table->string('photo_path', 255)->nullable();
+            $table->string('imagen_perfil', 255)->nullable();
             $table->unsignedInteger('experiencia')->nullable();
         });
 
@@ -54,7 +53,6 @@ class CreateUsersTable extends Migration
             "email_verified_at" => null,
             "password" => Hash::make('123'),
             "remember_token"=> null,
-            "horas_servicio" => null,
             "horas"=>null,
             "centro"=> null,
             "carrera"=> "INCO",

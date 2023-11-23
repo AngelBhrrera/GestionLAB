@@ -545,7 +545,7 @@ class PrestadorController extends Controller
 
         $todasMedallasUsuario = DB::table('niveles')
                 ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
-                ->select('medallas.ruta', 'medallas.descripcion')
+                ->select('medallas.ruta', 'medallas.nivel', 'medallas.descripcion')
                 ->where('niveles.experiencia_acumulada', '<=', $user->experiencia ?? 0) // Si la experiencia es null, establece la experiencia acumulada en 0.
                 ->orderBy('niveles.experiencia_acumulada', 'asc')
                 ->get();
@@ -559,8 +559,8 @@ class PrestadorController extends Controller
         $descripcion_medalla = $nivel->descripcion;
 
 
-        //return view('prestador/perfil_prestador', compact('user', 'nivel_str', 'medalla', 'nivel', 'descripcion_medalla', 'todasMedallasUsuario'));
-        return view('prestador.newProfile', ['user'=>$user]);
+        return view('prestador.newProfile', compact('user', 'nivel_str', 'medalla', 'nivel', 'descripcion_medalla', 'todasMedallasUsuario'));
+        //return view('prestador.newProfile', ['user'=>$user]);
     }
 
     public function cambiarImagenPerfil(Request $request)

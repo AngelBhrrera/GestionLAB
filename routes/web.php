@@ -20,10 +20,14 @@ Auth::routes([
 
 //PRUEBAS
 
-Route::get('/land', function (){
+Route::get('/laboratorioInventores', function (){
     $users=DB::select("SELECT name, experiencia FROM `users` order by experiencia desc limit 3;");
     return view('landingPageTEMP',['users'=>$users]);
-});
+})->name('landing');
+
+Route::get('/devTeam', function(){
+    return view('devTeam');
+})->name('devTeam');
 
 
 Route::controller(App\Http\Controllers\Auth\RegisterController::class)->group(function(){
