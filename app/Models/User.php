@@ -29,7 +29,8 @@ class User extends Authenticatable
         'centro',
         'carrera',
         'telefono',
-        'tipo_cliente',
+        'sede',
+        'horario',
         'can_admin',
         'encargado_id'
     ];

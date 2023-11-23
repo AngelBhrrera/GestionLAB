@@ -24,138 +24,163 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         switch($data['tipo']){
-            case 'admin':
-                $rHoras =  ['nullable'];
-                $rCentro = ['nullable'];
-                $rCodigo = ['nullable'];
-                $rTelefono = ['nullable'];
-                break;
-            case 'prestadorp':
-                $rHoras =  ['required'];
-                $rCentro = ['required','string'];
-                $rTelefono = ['required'];
+            
+            case 'voluntariop':
+            case 'voluntario':
+
                 $rCodigo = ['required','string','unique:users'];
+                $rTelefono = ['required'];
+                $rCentro = ['required','string'];
+                $rCarrera = ['required', 'string', 'max:255'];
+                $rSede = ['required'];
+                $rhorario = ['required','string'];
+                $rHoras =  ['nullable'];
+                $rEncargado = ['required'];
+               
                 break;
+    
+            case 'practicantep':
+            case 'practicante':
             case 'prestador':
-                $rHoras =  ['required'];
-                $rCentro = ['required','string'];
-                $rTelefono = ['required'];
-                $rCodigo = ['required','string','unique:users'];
-                break;
+            case 'prestadorp':
                 
-            // case 'clientes':
-            //     switch($data['tipo_cliente']){
-            //         case 'Alumno':
-            //         case 'Maestro':
-            //             $rHoras =  ['nullable'];
-            //             $rCentro = ['required','string'];
-            //             $rTelefono = ['required','string'];
-            //             $rCodigo = ['required','string','unique:users'];
-            //             break;
-            //         case 'Otro':
-            //             $rHoras =  ['nullable'];
-            //             $rCentro = ['nullable'];
-            //             $rTelefono = ['nullable'];
-            //             $rCodigo = ['nullable'];
-                        
-            //     }
-            //     break;
-            case 'Alumno':
-            case 'Maestro':
-                $rHoras =  ['nullable'];
-                $rCentro = ['required','string'];
-                $rTelefono = ['required','string'];
                 $rCodigo = ['required','string','unique:users'];
+                $rTelefono = ['required'];
+                $rCentro = ['required','string'];
+                $rCarrera = ['required', 'string', 'max:255'];
+                $rSede = ['required'];
+                $rhorario = ['required','string'];
+                $rHoras =  ['required'];
+                $rEncargado = ['required'];
+
                 break;
-            case 'Otro':
+
+            case 'maestro':
+            case 'alumno':
+                $rCentro = ['required','string'];
+                $rTelefono = ['nullable', 'string', 'max:10'];
+                $rCodigo = ['nullable'];
+                $rCarrera = ['nullable', 'string', 'max:255'];
+
+                $rSede = ['nullable'];
+                $rhorario = ['nullable'];
                 $rHoras =  ['nullable'];
+                $rEncargado = ['nullable'];
+                break;
+
+            case 'admin':
+
                 $rCentro = ['nullable'];
                 $rTelefono = ['nullable'];
                 $rCodigo = ['nullable'];
+                $rCarrera = ['nullable'];
+                $rSede = ['nullable'];
+                $rhorario = ['nullable'];
+                $rHoras =  ['nullable'];
+                $rEncargado = ['nullable'];
+                break;
         }
-        
 
         return Validator::make($data, [
+
+            //OBLIGATORIOS
             'name' => ['required', 'string', 'max:255'],
             'apellido' => ['required', 'string', 'max:255'],
-            'codigo' => $rCodigo,
             'password' => ['required', 'string', 'min:3', 'confirmed'],
             'tipo' => ['required', 'string'],
             'correo' => ['required', 'email', 'unique:users'],
-            'horas' => $rHoras,
+            
+            //VISITANTES
             'centro' => $rCentro,
-            'carrera' => ['required', 'string', 'max:255'],
-            'telefono' => ['required', 'string', 'max:10'],
-            // 'telefono' => $rTelefono,
-            'tipo_cliente' => ['nullable']
+            'telefono' => $rTelefono,
+
+            'carrera' => $rCarrera,
+            'codigo' =>  $rCodigo,
+
+            //PRESTADORES Y VOLUNTARIOS
+
+            'sede' =>  $rSede,
+            'horario' => $rhorario,
+            'horas' => $rHoras,
+            'encargado_id' =>  ['nullable'],
 
         ]);
     }
 
     protected function create(array $data)
     {
+
+        $vCodigo = null;
+        $vTelefono =  null;
+        $vCentro =  null;
+        $vCarrera = null;
+        $vSede = null;
+        $vhorario = null;
+        $vHoras =  null;
+        $vEncargado = null;
+
         switch($data['tipo']){
             case 'admin':
-                $vHoras =  null;
-                $vCentro =  null;
-                $vCarrera = null;
-                $vTelefono =  null;
-                $vCodigo = null;
-                $vTipo_cliente = null;
+
+                $vSede = $data['sede'];    
                 break;
-            case 'prestador':
-                $vHoras =  $data['horas'];
-                $vCentro =  $data['centro'];
-                $vCarrera = $data['carrera'];
-                $vTelefono =  $data['telefono'];
-                $vCodigo = $data['codigo'];
-                $vTipo_cliente = null;
-                break;
+
+            case 'practicantep':
+            case 'practicante':
             case 'prestadorp':
-                $vHoras =  $data['horas'];
+            case 'prestador':
+
+                $vCodigo = $data['codigo'];
+                $vTelefono =  $data['telefono'];
                 $vCentro =  $data['centro'];
                 $vCarrera = $data['carrera'];
-                $vTelefono =  $data['telefono'];
-                $vCodigo = $data['codigo'];
-                $vTipo_cliente = null;
+                $vSede = $data['sede'];
+                $vhorario = $data['horario'];    
+                $vHoras =  $data['horas'];
+                $vEncargado = $data['id_encargado'];
                 break;
-            case 'clientes':
-                switch($data['tipo_cliente']){
-                    case 'Alumno':
-                    case 'Maestro':
-                        $vHoras =  null;
-                        $vCarrera = $data['carrera'];
-                        $vCodigo = $data['codigo'];
-                        $vCentro =  $data['centro'];
-                        $vTelefono =  $data['telefono'];
-                        $vTipo_cliente = $data['tipo_cliente'];
-                        break;
-                    case 'Otro':
-                        $vHoras =  null;
-                        $vCarrera = null;
-                        $vCodigo = null;
-                        $vCentro =  $data['centro'];
-                        $vTelefono =  $data['telefono'];
-                        $vTipo_cliente = $data['tipo_cliente'];
-                }
+
+            case 'voluntario':
+            case 'voluntariop':
+                $vCodigo = $data['codigo'];
+                $vTelefono =  $data['telefono'];
+                $vCentro =  $data['centro'];
+                $vCarrera = $data['carrera'];
+                $vSede = $data['sede'];
+                $vhorario = $data['horario'];    
+                $vHoras =  null;
+                $vEncargado = $data['id_encargado'];
+                break;
+
+            case 'alumno':
+            case 'maestro':
+
+                $vCarrera = $data['carrera'];
+                $vCodigo = $data['codigo'];
+                $vCentro =  $data['centro'];
+                $vTelefono =  $data['telefono'];
+
                 break;
         }
-
-        // $centro = isset($data['centro']) ? $data['centro'] : null;
 
         return User::create([
             'name' => $data['name'],
             'apellido' => $data['apellido'],
-            'codigo' => $vCodigo,
-            'password' => Hash::make($data['password']),
-            'tipo' => $data['tipo'],
             'correo' => $data['correo'],
-            'horas' => $vHoras,
-            'centro' => $vCentro,
-            'carrera' => $data['carrera'],
+            'tipo' => $data['tipo'],
+
+            'codigo' => $vCodigo,
             'telefono' => $vTelefono,
-            'tipo_cliente' => $vTipo_cliente,
-            'encargado_id' => $data['encargado_id']
+            'centro' => $vCentro,
+
+            'carrera' => $vCarrera,
+            'sede' => $vSede,
+            'horario' => $vhorario,
+
+            'horas' => $vHoras,
+            'encargado_id' => $vEncargado,
+            'password' => Hash::make($data['password']),
+
         ]);
     }
 }

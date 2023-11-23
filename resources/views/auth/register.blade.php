@@ -130,23 +130,23 @@
                                     </div>
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divEscuela" style="display:none">
                                         <label for="input-wizard-3" class="form-label">Escuela *</label>
-                                            <select class="form-control" name="carrera" id="carrera">
+                                            <select class="form-control" name="centro" id="centro">
                                             <option selected id="1" value='null'>Seleccione un centro</option>
-                                                <option id="1" value='prestadorp'>CUCEI</option>
-                                                <option id="2" value='practicantep'>CUAAD</option>
-                                                <option id="3" value='voluntariop'>CUCEA</option>
-                                                <option id="4" value='alumno' >CUCBA</option>
-                                                <option id="5" value='maestro'>CUCSH</option>                    
-                                                <option id="6" value='externo' >CUCS</option>
-                                                <option id="7" value='alumno' >CUNORTE</option>
-                                                <option id="8" value='maestro'>CULAGOS</option>                    
-                                                <option id="9" value='externo' >CUVALLE</option>
-                                                <option id="10" value='alumno' >CUALTOS</option>
-                                                <option id="11" value='maestro'>CUCOSTA</option>                    
-                                                <option id="12" value='externo' >CUTONALA</option>
-                                                <option id="13" value='alumno' >CUCIENEGA</option>
-                                                <option id="14" value='maestro'>CUCSUR</option>                    
-                                                <option id="15" value='externo' >CUSUR</option>
+                                                <option id="1" value='CUCEI'>CUCEI</option>
+                                                <option id="2" value='CUAAD'>CUAAD</option>
+                                                <option id="3" value='CUCEA'>CUCEA</option>
+                                                <option id="4" value='CUCBA' >CUCBA</option>
+                                                <option id="5" value='CUCSH'>CUCSH</option>                    
+                                                <option id="6" value='CUCS' >CUCS</option>
+                                                <option id="7" value='CUNORTE' >CUNORTE</option>
+                                                <option id="8" value='CULAGOS'>CULAGOS</option>                    
+                                                <option id="9" value='CUVALLE' >CUVALLE</option>
+                                                <option id="10" value='CUALTOS' >CUALTOS</option>
+                                                <option id="11" value='CUCOSTA'>CUCOSTA</option>                    
+                                                <option id="12" value='CUCOSTA' >CUTONALA</option>
+                                                <option id="13" value='CUCIENEGA' >CUCIENEGA</option>
+                                                <option id="14" value='CUCSUR'>CUCSUR</option>                    
+                                                <option id="15" value='CUSUR' >CUSUR</option>
                                             </select>
                                             @if(old('opc')=='1')
                                                 @error('centro')
@@ -188,8 +188,16 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divTurno" style="display:none">
                                         <label for="input-wizard-4" class="form-label">Turno</label>
-                                        <input id="turno" type="text" class="form-control @if(old('opc')=='1') @error('turno') is-invalid @enderror @endif" name="turno" placeholder="Turno" >
-                                            @error('turno')
+                                        <select class="form-control" name="horario" id="horario">
+                                            <option selected id="1" value='null'>Seleccione un turno</option>
+                                                <option id="1" value='Matutino'>Matutino (8-12) </option>
+                                                <option id="2" value='Mediodia'>Mediodia (12-4)</option>
+                                                <option id="3" value='Vespertino'>Vespertino (4-8)</option>
+                                                <option id="4" value='Sabatino' >Sabados</option>
+                                                <option id="5" value='TC'>Tiempo completo</option>                    
+                                                <option id="6" value='NA' >No Aplica</option>
+                                        </select>
+                                            @error('horario')
                                                 <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                                 </span>
