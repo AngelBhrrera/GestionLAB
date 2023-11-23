@@ -40,7 +40,7 @@ class CreateUsersTable extends Migration
             $table->string('horario', 100)->nullable();
             $table->unsignedBigInteger('encargado_id')->nullable();
 
-            $table->string('photo_path', 255)->nullable();
+            $table->string('imagen_perfil', 255)->nullable();
             $table->unsignedInteger('experiencia')->nullable();
         });
 
@@ -61,7 +61,7 @@ class CreateUsersTable extends Migration
             "can_admin" => null,
             "encargado_id" => null,
             "telefono" => null,
-            "photo_path" => null,
+            "imagen_perfil" => null,
             "experiencia" => null
         ]);
 

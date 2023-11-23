@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\premio;
 use App\Models\Visitas;
-use ProyectosPrestadores;
 use App\Models\cita_cliente;
 use Illuminate\Http\Request;
-use PhpParser\Node\Stmt\Switch_;
-use PhpParser\Node\Stmt\TryCatch;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+
+use ProyectosPrestadores;
+use PhpParser\Node\Stmt\Switch_;
+use PhpParser\Node\Stmt\TryCatch;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\MailController;
-use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -55,12 +56,12 @@ class AdminController extends Controller
 
     public function registro()
     {
-        $centros = DB::table('centros')->get();
+
         //Despliega la tabla de los encargados cuando su tipo == admin
         $encargado = DB::table('users')->where('tipo', 'admin')->get();
 
         // return view('/home',['opcion'=> 'auth.registerAdmin', 'nombre' => 'Registro', 'ruta' => 'registrar']);
-        return view('/home', ['opcion' => 'auth.registerAdmin', 'centros' => $centros, 'encargado' => $encargado, 'nombre' => 'Registro', 'ruta' => 'registrar']);
+        return view('/home', ['opcion' => 'auth.registerAdmin', 'encargado' => $encargado, 'nombre' => 'Registro', 'ruta' => 'registrar']);
     }
 
     // public function registro($centros = null, $encargado = null)
@@ -417,12 +418,12 @@ class AdminController extends Controller
     }
     public function general()
     {
-        $columns = array(["data" => "id"], ["data" => "name"], ["data" => "apellido"], ["data" => "correo"], ["data" => "tipo"], ["data" => "tipo_cliente"], ["data" => "acciones", "sortable" => false], ["data" => "eliminar", "sortable" => false]);
+        $columns = array(["data" => "id"], ["data" => "name"], ["data" => "apellido"], ["data" => "correo"], ["data" => "tipo"], ["data" => "acciones", "sortable" => false], ["data" => "eliminar", "sortable" => false]);
 
         return view(
             'home',
             [
-                'datos' => ['Id', 'Nombre', 'Apellido', 'Correo', 'Tipo de usuario', 'Tipo de Cliente', 'Modificar', 'Eliminar'],
+                'datos' => ['Id', 'Nombre', 'Apellido', 'Correo', 'Tipo de usuario',  'Modificar', 'Eliminar'],
                 'tipo' => 'general',
                 'opcion' => 'table',
                 'titulo' => 'Tabla General',

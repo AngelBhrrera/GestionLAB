@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class Horasprestadores extends Migration
 {
@@ -29,12 +30,14 @@ class Horasprestadores extends Migration
 
             $table->string('nota',255)->default('');
 
-            $table->string('srcimagen',1000)->default('');
+            $table->binary('pdf')->nullable();
+
             $table->timestamp('fecha_actual')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('idusuario',0,0)->nullable();
             $table->string('origen',50)->default('');
             $table->string('responsable',50)->nullable();
             $table->string('tipo',50);
+            $table->string('srcimagen',1000)->default('')->nullable();
             $table->bigInteger('encargado_id')->unsigned()->nullable()->default(null);
         });
 

@@ -25,7 +25,6 @@ Route::get('/land', function (){
     return view('landingPageTEMP',['users'=>$users]);
 });
 
-
 Route::controller(App\Http\Controllers\Auth\RegisterController::class)->group(function(){
     Route::post('/registro', 'register')->name('registrar');
 });
@@ -198,14 +197,15 @@ Route::controller(App\Http\Controllers\MedallasController::class)->group(functio
 });
 
 Route::controller(App\Http\Controllers\VisitanteController::class)->group(function(){
+
     Route::name('cliente.')->group(function () {
         Route::get('/registro','registro')->name('registro');
-        Route::middleware('role:clientes')->group(function() {
-            Route::get('/home','principal')->name('home');
-            Route::post('/confirmar_cita','confirmar_cita')->name('confirmar_cita');
-            Route::post('/cita','guardarCita')->name('cita');
-            Route::post('/visitaguardar','guardarVisita')->name('guardarVisita');
-            Route::get('/visitas', 'principal')->name('visitas');
+        Route::middleware('role:alumno,maestro,externo')->group(function() {
+            Route::get('/cliente/home','principal')->name('home');
+            Route::post('/cliente/confirmar_cita','confirmar_cita')->name('confirmar_cita');
+            Route::post('/cliente/cita','guardarCita')->name('cita');
+            Route::post('/cliente/visitaguardar','guardarVisita')->name('guardarVisita');
+            Route::get('/cliente/visitas', 'principal')->name('visitas');
 
             // Route::get('/visita','visita')->name('visitas');
         });
@@ -254,7 +254,7 @@ Route::controller(App\Http\Controllers\empController::class)->group(function(){
 
 Route::controller(App\Http\Controllers\MailController::class)->group(function(){
     Route::name('email.')->group(function () {
-        Route::middleware('role:clientes')->group(function() {
+        Route::middleware('guest')->group(function() {
             Route::get('visitante/correo', 'sendEmail')->name('impresion');
         });
     });

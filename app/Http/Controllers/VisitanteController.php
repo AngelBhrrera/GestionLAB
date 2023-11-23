@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\cita_cliente;
 use Illuminate\Http\Request;
-use DB;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use App\Rules\MaxWordsRule;
+
 use Illuminate\Support\Facades\DB as FacadesDB;
 use DateTime;
-use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Console\Input\Input;
-use App\Rules\MaxWordsRule;
 use App\Http\Controllers\MailController;
 
 class VisitanteController extends Controller
@@ -32,16 +33,16 @@ class VisitanteController extends Controller
 
         $codigo = Auth::user()->id;
         $correo = Auth::user()->correo;
-        $users = DB::table('clientes')->where('id',$codigo)->get();
+        $users = DB::table('users')->where('id',$codigo)->get();
         $cita = DB::table('cita_clientes')->where('correo',$correo)->get();
 
-        return view('/homeV',['opcion'=>'principal_clientes', 'users'=>$users, 'cita'=>$cita, 'datos'=>['curso1', 'curso2', 'curso3'], 'datos2'=>['proyecto', 'fecha', 'status']]);
+        return view('/visitante/homeV',['opcion'=>'principal_clientes', 'users'=>$users, 'cita'=>$cita, 'datos'=>['curso1', 'curso2', 'curso3'], 'datos2'=>['proyecto', 'fecha', 'status']]);
     }
 
 
     public function visita()
     {
-        return view('/homeV',['opcion'=>'visitas']);
+        return view('/visitante/homeV',['opcion'=>'visitas']);
 
     }
 
@@ -232,7 +233,7 @@ class VisitanteController extends Controller
     public function registro()
     {
         $carreras = DB::table('carreras')->get();
-        return view('/homeV',['opcion'=>'registro_clientes','carreras' => $carreras]);
+        return view('/visitante/homeV',['opcion'=>'registro_clientes','carreras' => $carreras]);
     }
     public function confirmar_cita(Request $request)
     {
