@@ -55,7 +55,7 @@
                             </div>
                         </div>
                         <div class="text-2xl font-medium leading-7 mt-6">{{$horasPendientes}}</div>
-                        <div class="text-slate-500 mt-1">HORAS PENDIENTES</div>
+                        <div class="text-slate-500 mt-1">HORAS PENDIENTES POR AUTORIZAR</div>
                     </div>
                 </div>
                 <div class="report-box__item py-5 xl:py-0 px-5 col-span-12 sm:col-span-6 xl:col-span-3">
