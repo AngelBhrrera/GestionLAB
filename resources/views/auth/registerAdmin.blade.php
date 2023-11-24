@@ -113,22 +113,30 @@
 
                                 <div class="col-md-6">
                                     <select class="form-control @error('centro') is-invalid @enderror" name="centro" id="centro" >
-                                        @if (isset($centros))
-                                        <option id="centronull" value="{{null}}" {{(old('centro',isset($dV[0]->centro) ? $dV[0]->centro : '') == null) ? "selected" : ''}}>Seleccione un centro</option>
-                                        @foreach ($centros as $dato )
-                                        <option id="{{$dato->centro}}" value="{{$dato->centro}}" {{(old('centro',isset($dV[0]->centro) ? $dV[0]->centro : '') == $dato->centro) ? "selected" : ''}}>{{$dato->centro}}</option>
-
-                                        @endforeach
-
-                                        @endif
-
-                                    </select>
-                                    @error('centro')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-
+                                    <option selected id="1" value='null'>Seleccione un centro</option>
+                                                <option id="1" value='CUCEI'>CUCEI</option>
+                                                <option id="2" value='CUAAD'>CUAAD</option>
+                                                <option id="3" value='CUCEA'>CUCEA</option>
+                                                <option id="4" value='CUCBA' >CUCBA</option>
+                                                <option id="5" value='CUCSH'>CUCSH</option>                    
+                                                <option id="6" value='CUCS' >CUCS</option>
+                                                <option id="7" value='CUNORTE' >CUNORTE</option>
+                                                <option id="8" value='CULAGOS'>CULAGOS</option>                    
+                                                <option id="9" value='CUVALLE' >CUVALLE</option>
+                                                <option id="10" value='CUALTOS' >CUALTOS</option>
+                                                <option id="11" value='CUCOSTA'>CUCOSTA</option>                    
+                                                <option id="12" value='CUCOSTA' >CUTONALA</option>
+                                                <option id="13" value='CUCIENEGA' >CUCIENEGA</option>
+                                                <option id="14" value='CUCSUR'>CUCSUR</option>                    
+                                                <option id="15" value='CUSUR' >CUSUR</option>
+                                            </select>
+                                            @if(old('opc')=='1')
+                                                @error('centro')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            @endif
                                 </div>
 
                             </div>

@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\faltas;
 use Illuminate\Http\Request;
 
-use DateTime;
-use DB;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -24,7 +23,7 @@ class empController extends Controller
 
         $query = DB::table('horasprestadores');
 
-        $tipo = DB::table('users')->select('id', 'name', 'apellido', 'correo', 'tipo', 'tipo_cliente', 'can_admin');
+        $tipo = DB::table('users')->select('id', 'name', 'apellido', 'correo', 'tipo', 'can_admin');
 
         $encargado_id = auth()->user()->encargado_id;
 
@@ -81,11 +80,13 @@ class empController extends Controller
             ->rawColumns(['estado', 'nota', 'eliminar', 'ver'])
             ->make(true);
     }
+
+
     public function ssPrestadoresA()
     {
-        $query = DB::table('soloprestadores')->where('horas', '>', 0);
+        $query = DB::table('solo_prestadores')->where('horas', '>', 0);
         // $query = DB::table('soloprestadores')->where('horas_restantes', '>', 0 );
-        $tipo = DB::table('users')->select('id', 'name', 'apellido', 'correo', 'tipo', 'tipo_cliente', 'can_admin');
+        $tipo = DB::table('users')->select('id', 'name', 'apellido', 'correo','tipo', 'can_admin');
 
         $encargado_id = auth()->user()->encargado_id;
 
@@ -118,10 +119,12 @@ class empController extends Controller
             ->rawColumns(['acciones', 'eliminar', 'horas_cumplidas'])
             ->make(true);
     }
+
+
     public function ssPrestadoresP()
     {
-        $query = DB::table('prestadorespendientes');
-        $tipo = DB::table('users')->select('id', 'name', 'apellido', 'correo', 'tipo', 'tipo_cliente', 'can_admin');
+        $query = DB::table('prestadores_pendientes');
+        $tipo = DB::table('users')->select('id', 'name', 'apellido', 'correo', 'tipo', 'can_admin');
 
         $encargado_id = auth()->user()->encargado_id;
 
@@ -150,7 +153,7 @@ class empController extends Controller
     }
     public function ssClientes()
     {
-        $query = DB::table('soloclientes');
+        $query = DB::table('solo_clientes');
 
         return DataTables::queryBuilder($query)
             ->addColumn('horas_voluntario', function ($query) {
@@ -169,7 +172,7 @@ class empController extends Controller
     }
     public function ssAdministradores()
     {
-        $query = DB::table('soloadmins');
+        $query = DB::table('solo_admins');
         return DataTables::queryBuilder($query)
             ->addColumn('acciones', function ($query) {
                 return view('columnTable.prestadoresA.acciones')->with(["name" => $query->name, "id" => $query->id, 'tipo' => 'admin']);
@@ -187,7 +190,7 @@ class empController extends Controller
         $query = DB::table('cita_clientes')->where('status', 'solicitud_de_impresion');
         return DataTables::queryBuilder($query)
             ->addColumn('btn', function ($query) {
-                $query2 = DB::table('soloprestadores')->where('tipo', 'prestador')->get();
+                $query2 = DB::table('solo_prestadores')->where('tipo', 'prestador')->get();
                 $prestadoresa = $query2;
 
                 // if($query->status == "solicitud_aceptada"){
@@ -216,7 +219,7 @@ class empController extends Controller
         $query = DB::table('cita_clientes')->where('status', 'cita_pendiente');
         return DataTables::queryBuilder($query)
             ->addColumn('btn', function ($query) {
-                $query2 = DB::table('soloprestadores')->where('tipo', 'prestador')->get();
+                $query2 = DB::table('solo_prestadores')->where('tipo', 'prestador')->get();
                 $prestadoresa = $query2;
 
                 if ($query) {
@@ -236,8 +239,8 @@ class empController extends Controller
 
     public function ssFirmaspendientes()
     {
-        $query = DB::table('horaspendientes');
-        $tipo = DB::table('users')->select('id', 'name', 'apellido', 'correo', 'tipo', 'tipo_cliente', 'can_admin');
+        $query = DB::table('horas_pendientes');
+        $tipo = DB::table('users')->select('id', 'name', 'apellido', 'correo', 'tipo', 'can_admin');
 
         $encargado_id = auth()->user()->encargado_id;
 
@@ -314,7 +317,7 @@ class empController extends Controller
     public function sstablaUserGeneral()
     {
 
-        $query = DB::table('users')->select('id', 'name', 'apellido', 'correo', 'tipo', 'tipo_cliente', 'can_admin');
+        $query = DB::table('users')->select('id', 'name', 'apellido', 'correo', 'tipo', 'can_admin');
 
         $encargado_id = auth()->user()->encargado_id;
 
@@ -616,7 +619,7 @@ class empController extends Controller
         return DataTables::queryBuilder($query)
             ->addColumn('acciones', function ($query) {
 
-                $query2 = DB::table('soloprestadores')->where('tipo', 'prestador')->get();
+                $query2 = DB::table('solo_prestadores')->where('tipo', 'prestador')->get();
                 $prestadoresa = $query2;
                 $verificar = DB::table('impresionesasignados')->where("id_proyecto", $query->id_citas)->select("id_prestador")->get();
                 $prestadores =  $verificar;
@@ -652,7 +655,7 @@ class empController extends Controller
     }
     public function ssPrestadoresI()
     {
-        $query = DB::table('prestadoresinactivos');
+        $query = DB::table('prestadores_inactivos');
         return DataTables::queryBuilder($query)
             ->addColumn('acciones', function ($query) {
                 return view('columnTable.prestadoresI.acciones')->with(["name" => $query->name, "id" => $query->id, 'tipo' => 'prestador',]);
@@ -663,7 +666,7 @@ class empController extends Controller
 
     public function ssPrestadoresL()
     {
-        $query = DB::table('prestadores_liberados_servicio');
+        $query = DB::table('prestadores_servicio_liberado');
         return DataTables::queryBuilder($query)
             ->addColumn('acciones', function ($query) {
                 return view('columnTable.prestadoresI.acciones')->with(["name" => $query->name, "id" => $query->id, 'tipo' => 'prestador',]);
@@ -674,7 +677,7 @@ class empController extends Controller
 
     public function ssPrestadoresT()
     {
-        $query = DB::table('prestadoresterminados');
+        $query = DB::table('prestadores_servicio_concluido');
         return DataTables::queryBuilder($query)
             ->addColumn('acciones', function ($query) {
                 return view('columnTable.prestadoresT.acciones')->with(["name" => $query->name, "id" => $query->id, 'tipo' => 'prestador',]);

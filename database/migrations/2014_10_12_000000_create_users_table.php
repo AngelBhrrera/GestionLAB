@@ -61,7 +61,7 @@ class CreateUsersTable extends Migration
             "can_admin" => null,
             "encargado_id" => null,
             "telefono" => null,
-            "photo_path" => null,
+            "imagen_perfil" => null,
             "experiencia" => null
         ]);
 

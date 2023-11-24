@@ -3,7 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
-class PrestadoresServicioConcluido extends Migration
+
+class PrestadoresServicioLiberado extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +14,7 @@ class PrestadoresServicioConcluido extends Migration
     public function up()
     {
         DB::statement("
-        CREATE VIEW prestadores_servicio_concluido AS
+        CREATE VIEW prestadores_servicio_liberado AS
         SELECT
         `users`.`id` AS `id`,
         `users`.`name` AS `name`,
@@ -41,18 +42,12 @@ class PrestadoresServicioConcluido extends Migration
                     )
             )
         WHERE
-            (`users`.`tipo` = 'prestador' and `cuenta_horas`.`horas_restantes` <= '0')
+            (`users`.`tipo` = 'prestador_terminado')
         ");
-
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        DB::statement("DROP VIEW prestadores_servicio_concluido");
+        DB::statement("DROP VIEW prestadores_servicio_liberado");
     }
 }

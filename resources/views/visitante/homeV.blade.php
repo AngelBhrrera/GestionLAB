@@ -1,6 +1,6 @@
-@extends('layouts/app')
+@extends('layouts/visitante-layout')
 
-@section('content')
+@section('subcontent')
 
 <head>
 

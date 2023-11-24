@@ -37,6 +37,7 @@ class logsysController extends Controller
     }
 
     public function redirectTo(){
+
       if(Auth::check()){
         $role = Auth::user()->tipo;
         switch ($role) {
@@ -44,10 +45,14 @@ class logsysController extends Controller
                 return redirect('/admin/home');
                 break;
             case 'prestador':
+            case 'voluntario':
+            case 'practicante':
                 return redirect('/prestador/home');
                 break;
-            case 'clientes':
-                return redirect('/home');
+            case 'maestro':
+            case 'alumno':
+            case 'externo':
+                return redirect('/cliente/home');
                 break;
             case 'checkin':
                 return redirect('/check-in');
@@ -73,11 +78,10 @@ class logsysController extends Controller
     }
 
     public function show(){
-        $centros = DB::select("SELECT * from centros;");
         $sede= DB::select("SELECT * FROM sede;");
         $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin';");
         $var = 1;
-        return view('auth.register', ['encargado'=>$encargado,'sede'=>$sede, 'centros'=>$centros]);
+        return view('auth.register', ['encargado'=>$encargado,'sede'=>$sede]);
     }
 
 }
