@@ -1,10 +1,11 @@
-@extends('../layout/' . $layout)
+@extends('../layouts/main')
 
-@section('subhead')
-    <title>Tabulator - Rocketman - Tailwind HTML Admin Template</title>
+@section('head')
+    <html class='dark'>
+    @yield('subhead')
 @endsection
 
-@section('subcontent')
+@section('content')
     <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
         <h2 class="text-lg font-medium mr-auto">Tabulator</h2>
         <div class="w-full sm:w-auto flex mt-4 sm:mt-0">

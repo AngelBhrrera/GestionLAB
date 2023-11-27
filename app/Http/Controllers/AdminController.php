@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\premio;
 use App\Models\Visitas;
@@ -12,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 use ProyectosPrestadores;
 use PhpParser\Node\Stmt\Switch_;
@@ -22,28 +22,18 @@ use App\Http\Controllers\MailController;
 
 class AdminController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
 
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
 
     // public function index()
     // {
     //     $users =DB::table('horasprestadores')->orderBy('id','DESC')->get();;
 
-    //     return view('/home',
+    //     return view('/admin/homeA',
     //         ['users'=>$users,
     //         'datos'=>['codigo','nombre','fecha','hora_entrada','hora_salida','tiempo'],
     //         'opcion'=> 'table',
@@ -54,35 +44,15 @@ class AdminController extends Controller
     //         'cursos'=>false]);
     // }
 
+
     public function registro()
     {
-
         //Despliega la tabla de los encargados cuando su tipo == admin
         $encargado = DB::table('users')->where('tipo', 'admin')->get();
 
-        // return view('/home',['opcion'=> 'auth.registerAdmin', 'nombre' => 'Registro', 'ruta' => 'registrar']);
-        return view('/home', ['opcion' => 'auth.registerAdmin', 'encargado' => $encargado, 'nombre' => 'Registro', 'ruta' => 'registrar']);
+        // return view('/admin/homeA',['opcion'=> 'auth.registerAdmin', 'nombre' => 'Registro', 'ruta' => 'registrar']);
+        return view('/admin/homeA', ['opcion' => 'auth.registerAdmin', 'encargado' => $encargado, 'nombre' => 'Registro', 'ruta' => 'registrar']);
     }
-
-    // public function registro($centros = null, $encargado = null)
-    // {
-    //     if (is_null($centros)) {
-    //         $centros = DB::table('centros')->get();
-    //     }
-
-    //     if (is_null($encargado)) {
-    //         $encargado = DB::table('users')->where('tipo', 'admin')->get();
-    //     }
-
-    //     return view('/home', [
-    //         'opcion' => 'auth.registerAdmin',
-    //         'centros' => $centros,
-    //         'encargado' => $encargado,
-    //         'nombre' => 'Registro',
-    //         'ruta' => 'registrar'
-    //     ]);
-    // }
-
 
     public function horarioadmin(Request $request)
     {
@@ -90,9 +60,8 @@ class AdminController extends Controller
         $id = $request->input('id');
         $nombre = $request->input('nombre');
         $horario = $request->input('horario');
-        return view('/home', ['opcion' => 'horarioadmin', 'id_prestador' => $id, 'horario' => $horario, 'nombre' => $nombre,  'horario2' => $query2]);
+        return view('/admin/homeA', ['opcion' => 'horarioadmin', 'id_prestador' => $id, 'horario' => $horario, 'nombre' => $nombre,  'horario2' => $query2]);
     }
-
 
     public function modificar(Request $request)
     {
@@ -105,14 +74,13 @@ class AdminController extends Controller
             $user = DB::table('users')->where('id', $id)->get();
             // $carreras = DB::table('carreras')->get();
             $centros = DB::table('centros')->get();
-            return view('/home', ['opcion' => 'auth.registerAdmin', 'centros' => $centros, 'nombre' => 'Edicion', 'dV' => $user, 'ruta' => 'admin.update', 'encargado' => $encargados]);
+            return view('/admin/homeA', ['opcion' => 'auth.registerAdmin', 'centros' => $centros, 'nombre' => 'Edicion', 'dV' => $user, 'ruta' => 'admin.update', 'encargado' => $encargados]);
         } else {
             return redirect('/');
         }
     }
 
-    //guardar estado
-
+    //Guardar estado
     public function guardar(Request $request)
     {
         print_r("hola");
@@ -121,19 +89,6 @@ class AdminController extends Controller
         $responsable = $request->input('responsable');
         $modificar = DB::table('horasprestadores')->where('id', $id)->update(['estado' => $estado, 'responsable' => $responsable]);
     }
-
-    //guardar horas
-
-    public function guardar2(Request $request)
-    {
-
-        print_r("hola");
-        $id = $request->input('id');
-        $horas = $request->input('horas');
-        $responsable = $request->input('responsable');
-        $modificar = DB::table('horasprestadores')->where('id', $id)->update(['horas' => $horas, 'responsable' => $responsable]);
-    }
-
 
     public function guardarstatus(Request $request)
     {
@@ -144,19 +99,25 @@ class AdminController extends Controller
         $modificar = DB::table('cita_clientes')->where('id_citas', $id_citas)->update(['status' => $status]);
     }
 
+    //Guardar horas
+    public function guardar2(Request $request)
+    {
+        print_r("hola");
+        $id = $request->input('id');
+        $horas = $request->input('horas');
+        $responsable = $request->input('responsable');
+        $modificar = DB::table('horasprestadores')->where('id', $id)->update(['horas' => $horas, 'responsable' => $responsable]);
+    }
 
     public function consultacursos1(Request $request)
     {
-
         print_r("consulta1");
         $id = $request->input('id');
         $curso3 = $request->input('curso3');
         $modificar = DB::table('clientes')->select('curso1')->where('id', $id)->get();
         print_r($modificar);
-        return ($modificar
-        );
+        return ($modificar);
     }
-
 
     public function clientes()
     {
@@ -174,7 +135,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => [
                     'Id',
@@ -198,13 +159,19 @@ class AdminController extends Controller
 
     public function citas()
     {
-        $columns = array(["data" => "id", "visible" => false], ["data" => "fecha"], ["data" => "correo"], ["data" => "nombre"], ["data" => "proyecto"], ["data" => "status", "sortable" => false], ["data" => "btn", "sortable" => false], ["data" => "eliminar", "sortable" => false], ["data" => "link", "sortable" => false]);
+        $columns = array(["data" => "id", "visible" => false], 
+                ["data" => "fecha"], ["data" => "correo"], 
+                ["data" => "nombre"], 
+                ["data" => "proyecto"], 
+                ["data" => "status", "sortable" => false], 
+                ["data" => "btn", "sortable" => false], 
+                ["data" => "eliminar", "sortable" => false], 
+                ["data" => "link", "sortable" => false]);
 
-        $prestadores = DB::table('soloprestadores')->where('tipo', 'prestador')->get();
-
+        $prestadores = DB::table('solo_prestadores')->where('tipo', 'prestador')->get();
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['ID', 'Fecha del documento', 'Correo', 'Nombre', 'Proyecto', 'Status', 'Acciones', 'Eliminar', 'Enlace Drive'],
                 'opcion' => 'table',
@@ -224,13 +191,18 @@ class AdminController extends Controller
 
     public function citas_pendientes()
     {
-        $columns = array(["data" => "id", "visible" => false], ["data" => "fecha"], ["data" => "correo"], ["data" => "nombre"], ["data" => "proyecto"], ["data" => "status", "sortable" => false], ["data" => "btn", "sortable" => false], ["data" => "link", "sortable" => false]);
+        $columns = array(["data" => "id", "visible" => false], 
+                ["data" => "fecha"], ["data" => "correo"], 
+                ["data" => "nombre"], 
+                ["data" => "proyecto"], 
+                ["data" => "status", "sortable" => false], 
+                ["data" => "btn", "sortable" => false], 
+                ["data" => "link", "sortable" => false]);
 
-        $prestadores = DB::table('soloprestadores')->where('tipo', 'prestador')->get();
-
+        $prestadores = DB::table('solo_prestadores')->where('tipo', 'prestador')->get();
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['ID', 'Fecha del documento', 'Correo', 'Nombre', 'Proyecto', 'Status', 'Acciones', 'Enlace Drive'],
                 'opcion' => 'table',
@@ -250,7 +222,7 @@ class AdminController extends Controller
     public function registroVisitas()
     {
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'fecha' => date("d/m/Y"),
                 'opcion' => 'registroVisitas',
@@ -280,6 +252,8 @@ class AdminController extends Controller
         $vmodificar->save();
         return redirect()->route('admin.visitas');
     }
+
+    //??????
 
     public function verCredencial(Request $request)
     {
@@ -332,10 +306,8 @@ class AdminController extends Controller
             ["data" => "eliminar", "sortable" => false]
         );
 
-
-
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id', 'Nombre(s)', 'Apellido(s)', 'Codigo', 'Correo', 'Horario', 'Telefono', 'Centro', 'Carrera', 'Horas a cumplir', 'Horas restantes', 'Horas cumplidas', 'Faltas', 'Modificar', 'Eliminar'],
                 'opcion' => 'table',
@@ -353,10 +325,19 @@ class AdminController extends Controller
     public function visitas()
     {
 
-        $columns = array(["data" => "id", "visible" => false], ["data" => "name"], ["data" => "apellido"], ["data" => "fecha"], ["data" => "hora_llegada", "sortable" => false], ["data" => "hora_salida", "sortable" => false], ["data" => "numero", "sortable" => false], ["data" => "motivo", "sortable" => false], ["data" => "responsable"], ["data" => "eliminar", "sortable" => false]);
+        $columns = array(["data" => "id", "visible" => false], 
+                ["data" => "name"], 
+                ["data" => "apellido"], 
+                ["data" => "fecha"], 
+                ["data" => "hora_llegada", "sortable" => false], 
+                ["data" => "hora_salida", "sortable" => false], 
+                ["data" => "numero", "sortable" => false], 
+                ["data" => "motivo", "sortable" => false], 
+                ["data" => "responsable"], 
+                ["data" => "eliminar", "sortable" => false]);
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => [
                     'id',
@@ -394,7 +375,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => [
                     'Id',
@@ -418,10 +399,16 @@ class AdminController extends Controller
     }
     public function general()
     {
-        $columns = array(["data" => "id"], ["data" => "name"], ["data" => "apellido"], ["data" => "correo"], ["data" => "tipo"], ["data" => "acciones", "sortable" => false], ["data" => "eliminar", "sortable" => false]);
+        $columns = array(["data" => "id"], 
+                ["data" => "name"], 
+                ["data" => "apellido"], 
+                ["data" => "correo"], 
+                ["data" => "tipo"], 
+                ["data" => "acciones", "sortable" => false], 
+                ["data" => "eliminar", "sortable" => false]);
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['Id', 'Nombre', 'Apellido', 'Correo', 'Tipo de usuario',  'Modificar', 'Eliminar'],
                 'tipo' => 'general',
@@ -442,7 +429,7 @@ class AdminController extends Controller
         $users = DB::table('premios')->orderBy('id', 'DESC')->get();
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'users' => $users, 'datos' => ['nombre', 'descripcion', 'tipo', 'horas'],
                 'tipo' => 'admin',
@@ -458,14 +445,22 @@ class AdminController extends Controller
 
     public function prestadoresPendientes()
     {
-        $columns = array(["data" => "id"], ["data" => "name"], ["data" => "apellido"], ["data" => "correo"], ["data" => "codigo"], ["data" => "tipo"], ["data" => "created_at"], ["data" => "activacion", "sortable" => false], ["data" => "eliminar", "sortable" => false]);
+        $columns = array(["data" => "id"], 
+                ["data" => "name"], 
+                ["data" => "apellido"], 
+                ["data" => "correo"], 
+                ["data" => "codigo"], 
+                ["data" => "tipo"], 
+                ["data" => "created_at"], 
+                ["data" => "activacion", "sortable" => false], 
+                ["data" => "eliminar", "sortable" => false]);
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['Id', 'Nombre', 'Apellido', 'Correo', 'Codigo', 'Tipo', 'Fecha de creación', 'Modificar', 'Eliminar'],
                 'tipo' => 'prestador',
-                'opcion' => 'table',
+                'opcion' => 'tabulator',
                 'titulo' => 'Tabla Prestadores pendientes',
                 'ajaxroute' => 'ss.ssPrestadoresP',
                 "columnas" => json_encode($columns),
@@ -480,40 +475,6 @@ class AdminController extends Controller
 
     public function firmas()
     {
-
-        $tUser = Auth::user()->tipo;
-        if (($tUser == "admin")) {
-            // $columns = array(["data"=>"id","visible"=>false],
-            //                 ["data"=>"codigo"],
-            //                 ["data"=>"nombre"],
-            //                 ["data"=>"apellido"],
-            //                 ["name"=>"fecha","data"=>['_'=>"fecha.display",'sort'=>"fecha.timestamp"]],
-            //                 ["data"=>"hora_entrada","sortable"=> false],
-            //                 ["data"=>"hora_salida","sortable"=> false],
-            //                 ["data"=>"tiempo","sortable"=> false],
-            //                 ["data"=>"estado","sortable"=> false, "visible"=>false],
-            //                 ["data"=>"horas","sortable"=> false],
-            //                 ["data"=>"responsable","visible"=>false],
-            //                 ["data"=>"tipo"],
-            //                 ["data"=>"nota","sortable"=> false],
-            //                 ["name"=>"srcimagen","data"=>"ver","sortable"=> false],
-            //                 ["data"=>"eliminar","sortable"=> false, "visible"=>false]
-            //             );
-
-            // return view(
-            //     '/home',
-            //     ['datos'=>['id','codigo','Nombre(s)','Apellido(s)','Fecha','Entrada','Salida','Tiempo','Estado','Horas','Responsable','Tipo','Reporte','Actividades','Eliminar'],
-
-            //     'opcion'=> 'table',
-            //     'titulo' => 'Registro de asistencia',
-            //     'button'=>true,
-            //     'accion'=>false,
-            //     'cursos'=>false,
-            //     'ajaxroute'=>'ss.sshorasP',
-            //     "columnas"=> json_encode($columns),
-            //     'btneliminar'=>true,
-            //     'modal'=>true,
-            //     'descarga'=>false,]);
             $columns = array(
                 ["data" => "id", "visible" => false],
                 ["data" => "codigo"],
@@ -550,79 +511,12 @@ class AdminController extends Controller
                     'descarga' => false,
                 ]
             );
-        } else {
-            $columns = array(
-                ["data" => "id", "visible" => false],
-                ["data" => "codigo"],
-                ["data" => "nombre"],
-                ["data" => "apellido"],
-                ["name" => "fecha", "data" => ['_' => "fecha.display", 'sort' => "fecha.timestamp"]],
-                ["data" => "hora_entrada", "sortable" => false],
-                ["data" => "hora_salida", "sortable" => false],
-                ["data" => "tiempo", "sortable" => false],
-                ["data" => "estado", "sortable" => false],
-                ["data" => "horas", "sortable" => false],
-                ["data" => "act_t", "sortable" => false],
-                ["data" => "responsable"],
-                ["data" => 'origen'],
-                ["data" => "tipo"],
-                ["data" => "nota", "sortable" => false],
-                ["name" => "srcimagen", "data" => "ver", "sortable" => false],
-                ["data" => "eliminar", "sortable" => false]
-            );
 
-            return view(
-                '/home',
-                [
-                    'datos' => ['id', 'codigo', 'Nombre(s)', 'Apellido(s)', 'Fecha', 'Entrada', 'Salida', 'Tiempo', 'Estado', 'Horas', 'Actividades terminadas', 'Autorización Horas', 'origen', 'Tipo', 'Reporte', 'Actividades', 'Eliminar'],
-                    'opcion' => 'table',
-                    'titulo' => 'Registro de asistencia',
-                    'button' => true,
-                    'accion' => false,
-                    'cursos' => false,
-                    'ajaxroute' => 'ss.sshorasP',
-                    "columnas" => json_encode($columns),
-                    'btneliminar' => true,
-                    'modal' => true,
-                    'descarga' => false,
-                ]
-            );
-        }
     }
 
     public function firmasPendientes()
     {
-        $tUser = Auth::user()->tipo;
-        if (($tUser == "admin")) {
-            // $columns = array(["data"=>"id","visible"=>false],
-            // ["data"=>"codigo"],
-            // ["data"=>"nombre"],
-            // ["data"=>"apellido"],
-            // ["data"=>"fecha"],
-            // ["data"=>"hora_entrada","sortable"=> false],
-            // ["data"=>"hora_salida","sortable"=> false],
-            // ["data"=>"tiempo","sortable"=> false],
-            // ["data"=>"estado","visible"=>false],
-            // ["data"=>"horas"],
-            // ["data"=>"responsable","visible"=>false]
-            // ,["data"=>"nota","sortable"=> false],
-            // [ "name"=>"srcimagen","data"=>"ver","sortable"=> false],
-            // ["data"=>"eliminar","sortable"=> false, "visible"=>false]);
 
-            // return view(
-            //     '/home',
-            //     ['datos'=>['id','codigo','Nombre(s)','Apellido(s)','Fecha','Hora_entrada','Hora_salida','Tiempo','Estado','Horas','Responsable','Reporte','Actividades','Eliminar'],
-            //     'opcion'=> 'table',
-            //     'titulo' => 'Registro de asistencia pendientes',
-            //     'ajaxroute'=>'ss.ssFirmaspendientes',
-            //     "columnas"=> json_encode($columns),
-            //     'button'=>true,
-            //     'accion'=>false,
-            //     'cursos'=>false,
-            //     'btneliminar'=>true,
-            //     'fecha'=>date("d/m/Y"),
-            //     'modal'=>true,
-            //     'descarga'=>false,]);
             $columns = array(
                 ["data" => "id", "visible" => false],
                 ["data" => "codigo"],
@@ -641,7 +535,7 @@ class AdminController extends Controller
             );
 
             return view(
-                '/home',
+                '/admin/homeA',
                 [
                     'datos' => ['id', 'codigo', 'Nombre(s)', 'Apellido(s)', 'Fecha', 'Hora_entrada', 'Hora_salida', 'Tiempo', 'Estado', 'Horas', 'Actividades terminadas', 'Autorización Horas', 'Reporte', 'Actividades', 'Eliminar'],
                     'opcion' => 'table',
@@ -657,42 +551,6 @@ class AdminController extends Controller
                     'descarga' => false,
                 ]
             );
-        } else {
-            $columns = array(
-                ["data" => "id", "visible" => false],
-                ["data" => "codigo"],
-                ["data" => "nombre"],
-                ["data" => "apellido"],
-                ["data" => "fecha"],
-                ["data" => "hora_entrada", "sortable" => false],
-                ["data" => "hora_salida", "sortable" => false],
-                ["data" => "tiempo", "sortable" => false],
-                ["data" => "estado"],
-                ["data" => "horas"],
-                ["data" => "act_t", "sortable" => false],
-                ["data" => "responsable"], ["data" => "nota", "sortable" => false],
-                ["name" => "srcimagen", "data" => "ver", "sortable" => false],
-                ["data" => "eliminar", "sortable" => false]
-            );
-
-            return view(
-                '/home',
-                [
-                    'datos' => ['id', 'codigo', 'Nombre(s)', 'Apellido(s)', 'Fecha', 'Hora_entrada', 'Hora_salida', 'Tiempo', 'Estado', 'Horas', 'Actividades terminadas', 'Autorización Horas', 'Reporte', 'Actividades', 'Eliminar'],
-                    'opcion' => 'table',
-                    'titulo' => 'Registro de asistencia pendientes',
-                    'ajaxroute' => 'ss.ssFirmaspendientes',
-                    "columnas" => json_encode($columns),
-                    'button' => true,
-                    'accion' => false,
-                    'cursos' => false,
-                    'btneliminar' => true,
-                    'fecha' => date("d/m/Y"),
-                    'modal' => true,
-                    'descarga' => false,
-                ]
-            );
-        }
     }
 
     public function proyectos_prestador_terminados(Request $request)
@@ -700,17 +558,14 @@ class AdminController extends Controller
 
         $id_usuario = $request->input('id_usuario');
         $fecha = $request->input('fecha');
-
-        // var_dump( $id_usuario,  $fecha);
-
-        // return('hola mundo');
-
         $id = Auth::user()->id;
         $actividad_prestador = DB::table('actividad_tabla')->where('id_prestador', $id_usuario)->where('fecha_realizada', $fecha)->where('status', 'terminado')->get();
 
+        // var_dump( $id_usuario,  $fecha);
+        // return('hola mundo');
 
         return view(
-            'home',
+            '/admin/homeA',
 
             [
                 'opcion' => 'proyectostabla2',
@@ -725,7 +580,7 @@ class AdminController extends Controller
     public function recompensas()
     {
         return view(
-            '/home',
+            '/admin/homeA',
             [
                 'opcion' => 'registro_recompensas'
             ]
@@ -742,11 +597,10 @@ class AdminController extends Controller
 
         $actividades = DB::table('actividades')->get();
         $categorias = DB::table('categorias')->get();
-
         // echo "<script> alert(JSON.stringify( $prestadores )); </script>";
 
         return view(
-            '/home',
+            '/admin/homeA',
             [
                 'prestadores' => $prestadores,
                 'tipo' => 'agregar',
@@ -762,7 +616,7 @@ class AdminController extends Controller
         $actividades = DB::table('actividades')->get();
         $categorias = DB::table('categorias')->get();
         return view(
-            '/home',
+            '/admin/homeA',
             [
                 'tipo' => 'agregar',
                 'categorias' => $categorias,
@@ -771,6 +625,8 @@ class AdminController extends Controller
             ]
         );
     }
+
+    //IMPORTANTE PARA LA GAMIFICACION
     public function actividad_asignada(Request $request)
     {
         $nomact = $request->input('nombre');
@@ -975,7 +831,7 @@ class AdminController extends Controller
             ["data" => "eliminar", "sortable" => false]
         );
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id_actividad', 'llave_act', 'Prestador', 'Nombre act.', 'Tipo categoria', 'Tipo act.', 'descripción', 'objetivo', 'fecha', 'acciones', 'eliminar'],
                 'opcion' => 'table',
@@ -1011,7 +867,7 @@ class AdminController extends Controller
 
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id_actividad', 'Prestador', 'Nombre act.', 'Tipo de categoria', 'Tipo act.', 'Descripcion', 'Objetivo', 'Fecha', 'Estimacion tiempo', 'Duracion', 'Acciones'],
                 'opcion' => 'table',
@@ -1053,7 +909,7 @@ class AdminController extends Controller
             // ["data" => "acciones", "sortable" => false]
         );
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id_actividad', 'Prestador', 'Nombre act.', 'Tipo categoria', 'Tipo act.', 'Descripcion', 'Objetivo', 'Fecha', 'Estimacion tiempo', 'Duración', 'Experiencia obtenida'],
                 'opcion' => 'table',
@@ -1085,7 +941,7 @@ class AdminController extends Controller
 
         );
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id_actividad', 'Prestador', 'Nombre act.', 'Tipo categoria', 'Tipo act.', 'Descripcion', 'Objetivo', 'Fecha', 'Estimacion tiempo', 'Nota', 'Acciones'],
                 'opcion' => 'table',
@@ -1115,7 +971,7 @@ class AdminController extends Controller
             ["data" => "acciones", "sortable" => false]
         );
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id_actividad', 'Prestador', 'Nombre act.', 'Tipo categoria', 'Tipo act.', 'Descripcion', 'Objetivo', 'Fecha', 'Estimacion tiempo', 'Acciones'],
                 'opcion' => 'table',
@@ -1144,7 +1000,7 @@ class AdminController extends Controller
 
         // echo "<script> alert(JSON.stringify($actividad2)); </script>";
         return view(
-            '/home',
+            '/admin/homeA',
             [
                 'id_actividad' => $id,
                 'prestadores' => $prestadores,
@@ -1171,7 +1027,7 @@ class AdminController extends Controller
         $categorias = DB::table('categorias')->get();
 
         return view(
-            '/home',
+            '/admin/homeA',
             [
                 'id_actividad' => $id,
                 'prestadores' => $prestadores,
@@ -1192,7 +1048,7 @@ class AdminController extends Controller
         $actividad = DB::table('actividad_tabla')->where('id_actcreada', $id)->get();
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'actividades' => $actividad,
                 "opcion" => 'Participantes_act'
@@ -1362,10 +1218,8 @@ class AdminController extends Controller
     public function destroy(Request $request)
     {
 
-
         $id = $request->input('id');
         $opcion = $request->input('opcion');
-
 
         // echo "<script> alert(JSON.stringify($id)); </script>";
 
@@ -1420,7 +1274,7 @@ class AdminController extends Controller
 
     public function checkin()
     {
-        return view('home', ['opcion' => 'auth.checkin', 'nombre' => 'Check-In', 'ruta' => 'registrar']);
+        return view('/admin/homeA', ['opcion' => 'auth.checkin', 'nombre' => 'Check-In', 'ruta' => 'registrar']);
     }
 
     public function rutaRegreso($tipoOriginal)
@@ -1565,7 +1419,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => [
                     "id",
@@ -1601,7 +1455,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => [
                     "id",
@@ -1637,7 +1491,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => [
                     "id",
@@ -1677,7 +1531,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => [
                     "id",
@@ -1789,7 +1643,7 @@ class AdminController extends Controller
     //     $columns = array(["data"=>"id","visible"=>false],["data"=>"name"],["data"=>"apellido"],["data"=>"fecha"],["data"=>"hora_llegada","sortable"=> false],["data"=>"hora_salida","sortable"=> false],["data"=>"numero","sortable"=> false],["data"=>"motivo","sortable"=> false],["data"=>"responsable"],["data"=>"eliminar","sortable"=> false]);
 
     //     return view(
-    //         'home',
+    //         '/admin/homeA',
     //         ['datos'=>['id','name','apellido','fecha','hora_llegada', 'hora_salida','numero','motivo','responsable'],
     //         'opcion'=> 'table',
     //         'titulo' => 'Tabla Visitas',
@@ -1830,7 +1684,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id', 'name', 'apellido', 'codigo', 'carrera', 'horas', 'horas_cumplidas', 'horas_restantes', 'acciones'],
                 'opcion' => 'table',
@@ -1857,7 +1711,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['Id', 'Nombre', 'Apellido(s)', 'Codigo', 'Carrera', 'Fecha de inicio', 'Fecha de liberación de servicio', 'acciones'],
                 'opcion' => 'table',
@@ -1893,7 +1747,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id', 'name', 'apellido', 'codigo', 'carrera', 'horas', 'horas_cumplidas', 'horas_restantes', 'acciones'],
                 'opcion' => 'table',
@@ -1928,7 +1782,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id', 'name', 'apellido', 'codigo', 'carrera', 'horas', 'horas_cumplidas', 'horas_restantes', 'acciones'],
                 'opcion' => 'table',
@@ -1949,7 +1803,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['nombre', 'apellido', 'correo', 'fecha'],
                 'opcion' => 'table',
@@ -1989,7 +1843,7 @@ class AdminController extends Controller
             ["data" => "acciones", "sortable" => false]
         );
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id_actividad', 'nombre', 'tipo de actividades', 'descripcion', 'objetivo', 'fecha', 'status', 'acciones'],
                 'opcion' => 'table2',
@@ -2022,7 +1876,7 @@ class AdminController extends Controller
             ["data" => "acciones", "sortable" => false]
         );
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id_actividad', 'nombre', 'tipo de actividades', 'descripcion', 'objetivo', 'fecha', 'status', 'acciones'],
                 'opcion' => 'table2',
@@ -2055,7 +1909,7 @@ class AdminController extends Controller
             ["data" => "acciones", "sortable" => false]
         );
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id_actividad', 'nombre', 'tipo de actividades', 'descripcion', 'objetivo', 'fecha', 'status', 'acciones'],
                 'opcion' => 'table2',
@@ -2108,7 +1962,7 @@ class AdminController extends Controller
             ["data" => "acciones", "sortable" => false]
         );
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['fecha', 'acciones'],
                 'opcion' => 'tablecalendario',
@@ -2147,7 +2001,7 @@ class AdminController extends Controller
             ["data" => "acciones", "sortable" => false]
         );
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['Id', 'descripcion', 'dias', 'acciones'],
                 'opcion' => 'tableHorario',

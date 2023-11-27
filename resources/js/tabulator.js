@@ -7,9 +7,10 @@ import Tabulator from "tabulator-tables";
 
     // Tabulator
     if ($("#tabulator").length) {
+
         // Setup Tabulator
         let table = new Tabulator("#tabulator", {
-            ajaxURL: "https://dummy-data.left4code.com",
+
             ajaxFiltering: true,
             ajaxSorting: true,
             printAsHtml: true,
@@ -32,7 +33,7 @@ import Tabulator from "tabulator-tables";
 
                 // For HTML table
                 {
-                    title: "PRODUCT NAME",
+                    title: "A",
                     minWidth: 200,
                     responsive: 0,
                     field: "name",
@@ -51,35 +52,7 @@ import Tabulator from "tabulator-tables";
                     },
                 },
                 {
-                    title: "IMAGES",
-                    minWidth: 200,
-                    field: "images",
-                    hozAlign: "center",
-                    vertAlign: "middle",
-                    print: false,
-                    download: false,
-                    formatter(cell, formatterParams) {
-                        return `<div class="flex lg:justify-center">
-                            <div class="intro-x w-10 h-10 image-fit">
-                                <img alt="Rocketman - HTML Admin Template" class="rounded-full" src="/build/assets/images/${
-                                    cell.getData().images[0]
-                                }">
-                            </div>
-                            <div class="intro-x w-10 h-10 image-fit -ml-5">
-                                <img alt="Rocketman - HTML Admin Template" class="rounded-full" src="/build/assets/images/${
-                                    cell.getData().images[1]
-                                }">
-                            </div>
-                            <div class="intro-x w-10 h-10 image-fit -ml-5">
-                                <img alt="Rocketman - HTML Admin Template" class="rounded-full" src="/build/assets/images/${
-                                    cell.getData().images[2]
-                                }">
-                            </div>
-                        </div>`;
-                    },
-                },
-                {
-                    title: "REMAINING STOCK",
+                    title: "B",
                     minWidth: 200,
                     field: "remaining_stock",
                     hozAlign: "center",
@@ -88,7 +61,7 @@ import Tabulator from "tabulator-tables";
                     download: false,
                 },
                 {
-                    title: "STATUS",
+                    title: "C",
                     minWidth: 200,
                     field: "status",
                     hozAlign: "center",
@@ -108,7 +81,7 @@ import Tabulator from "tabulator-tables";
                     },
                 },
                 {
-                    title: "ACTIONS",
+                    title: "D",
                     minWidth: 200,
                     field: "actions",
                     responsive: 1,

@@ -20,6 +20,10 @@ Auth::routes([
 
 //PRUEBAS
 
+Route::get('/table', function (){
+    return view ('table');
+})->name('table');
+
 Route::get('/laboratorioInventores', function (){
     $users=DB::select("SELECT name, experiencia FROM `users` order by experiencia desc limit 3;");
     return view('landingPageTEMP',['users'=>$users]);
@@ -216,6 +220,8 @@ Route::controller(App\Http\Controllers\VisitanteController::class)->group(functi
     });
 });
 
+
+//INCLUYE LAS SENTENCIAS SQL para obtener datos y generar tablas.
 Route::controller(App\Http\Controllers\empController::class)->group(function(){
     Route::name('ss.')->group(function () {
 
