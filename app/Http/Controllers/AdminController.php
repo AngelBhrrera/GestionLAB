@@ -460,7 +460,7 @@ class AdminController extends Controller
             [
                 'datos' => ['Id', 'Nombre', 'Apellido', 'Correo', 'Codigo', 'Tipo', 'Fecha de creación', 'Modificar', 'Eliminar'],
                 'tipo' => 'prestador',
-                'opcion' => 'tabulator',
+                'opcion' => 'table',
                 'titulo' => 'Tabla Prestadores pendientes',
                 'ajaxroute' => 'ss.ssPrestadoresP',
                 "columnas" => json_encode($columns),
@@ -1274,7 +1274,7 @@ class AdminController extends Controller
 
     public function checkin()
     {
-        return view('/admin/homeA', ['opcion' => 'auth.checkin', 'nombre' => 'Check-In', 'ruta' => 'registrar']);
+        return view('/home', ['opcion' => 'auth.checkin', 'nombre' => 'Check-In', 'ruta' => 'registrar']);
     }
 
     public function rutaRegreso($tipoOriginal)

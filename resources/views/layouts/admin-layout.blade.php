@@ -1,7 +1,15 @@
 @extends('../layouts/main')
 
 @section('head')
-<html class='dark'>
+    <html class='dark'>
+    <meta charset="UTF-8">
+        <title>Laravel 10 Ajax DataTables CRUD (Create Read Update and Delete) - Cairocoders</title>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" >
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+        <link  href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
+        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     @yield('subhead')
 @endsection
 
@@ -412,8 +420,6 @@
 
 @endsection
 
-
-
 @section('script')
     
         <!-- JQuery -->
@@ -608,6 +614,99 @@
                 document.getElementById("divexperienciaobtenida").style.display = "none";
             }
         }
+
+//NUEVA IMPLEMENTACION
+
+
+        $(document).ready( function () {
+            $.ajaxSetup({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        
+            $('#ajax-crud-datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ url('ss.ssFirmaspendientes') }}",
+                columns: [
+                    { data: 'id', name: 'id', visible: false },
+                    { data: 'nombre', name: 'name' },
+                    { data: 'apell', name: 'name' },
+                    { data: 'nombre', name: 'name' },
+                    { data: 'email', name: 'email' },
+                    { data: 'address', name: 'address' },
+                    { data: 'created_at', name: 'created_at' },
+                    { data: 'action', name: 'action', orderable: false},
+                ],
+                order: [[0, 'desc']]
+            });
+        });
+        
+        function add(){
+            $('#EmployeeForm').trigger("reset");
+            $('#EmployeeModal').html("Add Employee");
+            $('#employee-modal').modal('show');
+            $('#id').val('');
+        }   
+            
+        function editFunc(id){
+            $.ajax({
+                type:"POST",
+                url: "{{ url('edit') }}",
+                data: { id: id },
+                dataType: 'json',
+                success: function(res){
+                    $('#EmployeeModal').html("Edit Employee");
+                    $('#employee-modal').modal('show');
+                    $('#id').val(res.id);
+                    $('#name').val(res.name);
+                    $('#address').val(res.address);
+                    $('#email').val(res.email);
+                }
+            });
+        }  
+        
+        function deleteFunc(id){
+            if (confirm("Delete Record?") == true) {
+                var id = id;
+                // ajax
+                $.ajax({
+                    type:"POST",
+                    url: "{{ url('delete') }}",
+                    data: { id: id },
+                    dataType: 'json',
+                    success: function(res){
+                        var oTable = $('#ajax-crud-datatable').dataTable();
+                        oTable.fnDraw(false);
+                    }
+                });
+            }
+        }
+        
+        $('#EmployeeForm').submit(function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+                type:'POST',
+                url: "{{ url('store')}}",
+                data: formData,
+                cache:false,
+                contentType: false,
+                processData: false,
+                success: (data) => {
+                    $("#employee-modal").modal('hide');
+                    var oTable = $('#ajax-crud-datatable').dataTable();
+                    oTable.fnDraw(false);
+                    $("#btn-save").html('Submit');
+                    $("#btn-save"). attr("disabled", false);
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            });
+        });
+
 
     </script>
 
