@@ -281,7 +281,7 @@ class PrestadorController extends Controller
     {
         $encargado_id = auth()->user()->encargado_id;
         // $prestadores = DB::table('users')::where('encargado_id', $encargado_id)->get();
-        $prestadores = DB::table('users')->select('id', 'name')->where('encargado_id', $encargado_id)->get();
+        $prestadores = DB::table('users')->select('id', 'name', 'apellido')->where('id', auth()->user()->id)->get();
         $categorias = DB::table('categorias')->get();
         $actividades = DB::table('actividades')->get();
 
@@ -353,7 +353,7 @@ class PrestadorController extends Controller
                 'nombre_act' => $nomact,
                 'acti_id' => $tipo,
                 // 'tipo_categoria'=>$tipo_categoria,
-                // 'tipo_actividad'=>$tipo_actividad,
+                'tipo_act'=>$tipo_actividad,
                 'descripcion' => $desc,
                 'objetivo' => $obj,
                 'fecha' => $fecha,
@@ -746,6 +746,14 @@ class PrestadorController extends Controller
             );
         return redirect()->back()->with('success', 'La actividad ha sido cancelada exitosamente.');
 
+    }
+
+    public function asistencias(){
+        return view('prestador.asistencias_prestador');
+    }
+
+    public function faltas(){
+        return view('prestador.faltas_prestador');
     }
 
 }

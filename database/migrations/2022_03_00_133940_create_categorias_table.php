@@ -16,19 +16,15 @@ class CreateCategoriasTable extends Migration
         Schema::create('categorias', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 255)->collation('utf8mb4_unicode_ci');
-            $table->timestamps();
         });
 
         DB::table('categorias')->insert([
-            "nombre" => "Administracion",
-            "nombre" => "Desarrollo de videojuegos",
-            "nombre" => "Diseño",
-            "nombre" => "Drones",
-            "nombre" => "Impresion 3D",
-            "nombre" => "Modelado 3D",
-            "nombre" => "Mantenimiento",
-            "nombre" => "Programacion",
-            "nombre" => "Sistema Web",
+            ["nombre" => "Programacion"],
+            ["nombre" => "Administracion"],
+            ["nombre" => "Mantenimiento"],
+            ["nombre" => "Diseño Gráfico"],
+            ["nombre" => "Robotica"],
+            ["nombre" => "Impresion 3D"],
         ]);
     }
 
