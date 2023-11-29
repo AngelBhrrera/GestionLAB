@@ -150,6 +150,9 @@
           </div>
           @endforeach
         </div>
+
+
+        
 @endsection
 
     <!-- Modal para cambiar la imagen -->

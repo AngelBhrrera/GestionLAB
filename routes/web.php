@@ -187,6 +187,8 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::post('prestador/cancelacion_prestador', 'cancelacion_prestador')->name('cancelacion_prestador');
         // Route::get('/proyectospendientes', 'proyectos')->name('proyectos');
         // Route::get('/proyectos_prendientes', 'proyectos_prendientes')->name('proyectos_prendientes');
+        Route::get('/prestador/asistencias', 'asistencias')->name('asistencias');
+        Route::get('/prestador/faltas', 'faltas')->name('faltas');
 
     });
 
