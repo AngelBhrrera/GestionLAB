@@ -559,7 +559,7 @@ class PrestadorController extends Controller
 
 
         return view('prestador.newProfile', compact('user', 'nivel_str', 'medalla', 'nivel', 'descripcion_medalla', 'todasMedallasUsuario'));
-        //return view('prestador.newProfile', ['user'=>$user]);
+
     }
 
     public function cambiarImagenPerfil(Request $request)

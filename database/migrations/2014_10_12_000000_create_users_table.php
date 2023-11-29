@@ -41,7 +41,7 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('encargado_id')->nullable();
 
             $table->string('imagen_perfil', 255)->nullable();
-            $table->unsignedInteger('experiencia')->nullable();
+            $table->unsignedInteger('experiencia')->default(0);
         });
 
         DB::table('users')->insert([
