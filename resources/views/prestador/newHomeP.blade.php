@@ -90,35 +90,43 @@
                             <th class="whitespace-nowrap">#</th>
                             <th class="whitespace-nowrap">Prestador</th>
                             <th class="whitespace-nowrap">Experiencia</th>
-                            <th class="whitespace-nowrap">Actividades completadas</th>
+                            <th class="whitespace-nowrap">Rango</th>
+
                         </tr>
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Angelina Jolie</td>
-                            <td>5518</td>
-                            <td>30</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Brad Pitt</td>
-                            <td>250</td>
-                            <td>12</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Luis Roberto</td>
-                            <td>100</td>
-                            <td>3</td>
-                        </tr>
-                        <tr>
-                            <td> <strong> 77 </strong> </td>
-                            <td> <strong> Tu nombre y apellido </strong> </td>
-                            <td> <strong> Tu experiencia </strong> </td>
-                            <td> <strong> Tus actividades completadas </strong> </td>
-                        </tr>
+
+                        <?php $bandera = false; ?>
+                        @foreach ( $leaderBoard as $top)  
+                            <tr>
+                                @if ($top->codigo == Auth::user()->codigo)
+                                    <?php $bandera = true; ?>
+                                    <td><strong>{{$top->Posicion}}</strong></td>
+                                    <td><strong>{{$top->Inventor}}</strong></td>
+                                    <td><strong>{{$top->experiencia}}</strong></td>
+                                    <td><img src="{{asset('build/assets/'.$usuarioMedalla->ruta)}}"  width="40" height="80" alt=""></td>
+                                            
+                                @else
+                                    <td>{{$top->Posicion}}</td>
+                                    <td>{{$top->Inventor}}</td>
+                                    <td>{{$top->experiencia}}</td>
+                                    <td><img src="{{asset('build/assets/'.$top->ruta)}}"  width="40" height="80" alt=""></td>
+                                @endif
+                                
+                            </tr>
+                        @endforeach
+                        @if (!$bandera)
+                            <tr>
+                                <td> <strong>{{$posicionUsuario[0]->position}} </strong> </td>
+                                <td> <strong> {{$posicionUsuario[0]->Nombre}}</strong> </td>
+                                <td> <strong>{{$posicionUsuario[0]->experiencia}}</strong> </td>
+                                <td><img src="{{asset('build/assets/'.$usuarioMedalla->ruta)}}" width="40" height="80"alt=""></td>
+                            </tr>
+                        @endif
+                            
+
+                        
                     </tbody>
                 </table>
             </div>
