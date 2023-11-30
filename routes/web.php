@@ -18,7 +18,13 @@ Auth::routes([
     'verify' => false,
 ]);
 
+
+
 //PRUEBAS
+Route::get('/adminLayout', function(){
+    return view('prestador.PruebaAdminLayout');
+});
+
 
 Route::get('/laboratorioInventores', function (){
     $users=DB::select("SELECT name, experiencia FROM `users` order by experiencia desc limit 3;");
