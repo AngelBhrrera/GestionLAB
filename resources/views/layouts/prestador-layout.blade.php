@@ -191,7 +191,12 @@
                         </ol>
                     </nav>
                     <!-- END: Breadcrumb -->
-
+                    <div class="intro-x relative ml-auto flex sm:mx-auto">
+                            @if (Auth::user()->can_admin == 1)
+                            <button class="btn btn-primary ml-5"><a href="{{ route('admin.cambiorol') }}">
+                                {{ __('Cambiar a admin') }}</a></button>
+                            @endif
+                    </div>
                     <!-- BEGIN: Intermede -->
                         <div class="-intro-x xl:hidden mr-3 sm:mr-6">
                             <div class="mobile-menu-toggler cursor-pointer"> <i data-lucide="bar-chart-2" class="mobile-menu-toggler__icon transform rotate-90 dark:text-slate-500"></i> </div>

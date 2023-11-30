@@ -32,6 +32,6 @@ class LeaderboardFull extends Migration
      */
     public function down()
     {
-        DB::statement("DROP VIEW leaderboard_full");
+        DB::statement("DROP VIEW full_leaderboard");
     }
 }

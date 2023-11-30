@@ -102,6 +102,8 @@
                             <tr>
                                 @if ($top->codigo == Auth::user()->codigo)
                                     <?php $bandera = true; ?>
+                                    <style>
+                                    </style>
                                     <td><strong>{{$top->Posicion}}</strong></td>
                                     <td><strong>{{$top->Inventor}}</strong></td>
                                     <td><strong>{{$top->experiencia}}</strong></td>
