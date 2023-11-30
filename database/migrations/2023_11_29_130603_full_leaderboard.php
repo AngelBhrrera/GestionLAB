@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
-class LeaderboardFull extends Migration
+class fullLeaderboard extends Migration
 {
 
     public function up()
@@ -32,6 +32,6 @@ class LeaderboardFull extends Migration
      */
     public function down()
     {
-        DB::statement("DROP VIEW leaderboard_full");
+        DB::statement("DROP VIEW full_leaderboard");
     }
 }
