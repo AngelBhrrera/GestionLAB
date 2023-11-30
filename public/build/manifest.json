@@ -1,0 +1,69 @@
+{
+  "resources/images/bg-main.jpg": {
+    "file": "assets/bg-main.3423f63e.jpg",
+    "src": "resources/images/bg-main.jpg"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app.6c589841.js",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "imports": [
+      "__commonjsHelpers.712cc82f.js"
+    ],
+    "css": [
+      "assets/app.c469cfb8.css"
+    ]
+  },
+  "resources/js/ckeditor-classic.js": {
+    "file": "assets/ckeditor-classic.8c3e1850.js",
+    "src": "resources/js/ckeditor-classic.js",
+    "isEntry": true,
+    "imports": [
+      "__commonjsHelpers.712cc82f.js"
+    ]
+  },
+  "resources/js/ckeditor-inline.js": {
+    "file": "assets/ckeditor-inline.529db8b2.js",
+    "src": "resources/js/ckeditor-inline.js",
+    "isEntry": true,
+    "imports": [
+      "__commonjsHelpers.712cc82f.js"
+    ]
+  },
+  "resources/js/ckeditor-balloon.js": {
+    "file": "assets/ckeditor-balloon.66c2988e.js",
+    "src": "resources/js/ckeditor-balloon.js",
+    "isEntry": true,
+    "imports": [
+      "__commonjsHelpers.712cc82f.js"
+    ]
+  },
+  "resources/js/ckeditor-balloon-block.js": {
+    "file": "assets/ckeditor-balloon-block.d464df42.js",
+    "src": "resources/js/ckeditor-balloon-block.js",
+    "isEntry": true,
+    "imports": [
+      "__commonjsHelpers.712cc82f.js"
+    ]
+  },
+  "resources/js/ckeditor-document.js": {
+    "file": "assets/ckeditor-document.bb4d140b.js",
+    "src": "resources/js/ckeditor-document.js",
+    "isEntry": true,
+    "imports": [
+      "__commonjsHelpers.712cc82f.js"
+    ]
+  },
+  "__commonjsHelpers.712cc82f.js": {
+    "file": "assets/_commonjsHelpers.712cc82f.js"
+  },
+  "resources/js/app.css": {
+    "file": "assets/app.c469cfb8.css",
+    "src": "resources/js/app.css"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app.c07cb30e.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  }
+}
