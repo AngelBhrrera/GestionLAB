@@ -11,17 +11,6 @@
 @endsection
 
 @section('subcontent')
-    <div class="container">
-        @include('table')
-        <div class="row justify-content-center">
-            <div class="col-12">
-                <div class="card-footer" style="background-color: white">
-                    <h4 class=" float-left">Horas Totales: {{$horas}}</h4>
-                    <h4 class=" float-right">Horas Pendientes: {{$horasT}}</h4>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
         <h2 class="text-lg font-medium mr-auto">REGISTRO DE HORAS</h2>
@@ -97,13 +86,21 @@
                         </ul>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div>   
         <!--END: HTML Table Data -->
-
-        <div class="overflow-x-auto scrollbar-hidden">
-            <div id="tabulator" class="mt-5 table-report table-report--tabulator tabulator" role="grid" tabulator-layout="fitColumns"> </div>
         </div>
+        <div> <br> <br> <br> </div>
+        <div class="container">
+            @include('table')
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        <div class="card-footer" style="background-color: white">
+                            <h4 class=" float-left">Horas Totales: {{$horas}}</h4>
+                            <h4 class=" float-right">Horas Pendientes: {{$horasT}}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
     </div>
 

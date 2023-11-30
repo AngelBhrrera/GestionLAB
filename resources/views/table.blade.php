@@ -6,25 +6,17 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <!-- Google Font: Source Sans Pro -->
-        <link rel="stylesheet"
-            href={{asset('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback')}}>
-        <!-- Font Awesome -->
-        <link rel="stylesheet" href={{ asset('plugins/fontawesome-free/css/all.min.css') }}>
+
         <!-- DataTables -->
         
 
-        <link rel="stylesheet" href={{ asset('css/dobletabla.css') }}>
         <link rel="stylesheet" href="{{asset('plugins/daterangepicker/daterangepicker.css')}}">
         <!-- iCheck for checkboxes and radio inputs -->
         <link rel="stylesheet" href="{{asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
         <!-- Tempusdominus Bootstrap 4 -->
         <link rel="stylesheet" href="{{asset('plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css')}}">
         <!-- Theme style -->
-        <link rel="stylesheet" href={{ asset('dist/css/adminlte.min.css') }}>
-        <link rel="icon" href="{{asset('img/recursos/logo-bowser.ico') }}" />
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
     </head>
 
@@ -415,33 +407,6 @@
                 <!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
-        <script src={{asset('plugins/jquery/jquery.min.js')}}></script>
-        <!-- Bootstrap 4 -->
-        <script src={{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}></script>
-        <!-- AdminLTE App -->
-        <script src={{asset('dist/js/adminlte.min.js')}}></script>
-        <!-- Bootstrap 4 -->
-        <!-- DataTables  & Plugins -->
-        <script src={{asset('plugins/datatables/jquery.dataTables.min.js')}}></script>
-        <script src={{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}></script>
-        <script src={{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}></script>
-        <script src={{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}></script>
-        <script src={{asset('plugins/datatables-buttons/js/dataTables.buttons.min.js')}}></script>
-        <script src={{asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}></script>
-        <script src={{asset('plugins/jszip/jszip.min.js')}}></script>
-        <script src={{asset('plugins/pdfmake/pdfmake.min.js')}}></script>
-        <script src={{asset('plugins/pdfmake/vfs_fonts.js')}}></script>
-        <script src={{asset('plugins/datatables-buttons/js/buttons.html5.min.js')}}></script>
-        <script src={{asset('plugins/datatables-buttons/js/buttons.print.min.js')}}></script>
-        <script src={{asset('plugins/datatables-buttons/js/buttons.colVis.min.js')}}></script>
-        {{-- <script src={{asset('plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}></script> --}}
-        <script src="{{asset('plugins/daterangepicker/daterangepicker.js')}}"></script>
-
-        <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
-        {{-- <script src="{{asset('plugins/moment/moment.min.js')}}"></script> --}}
-        <script src="{{asset('plugins/inputmask/jquery.inputmask.min.js')}}"></script>
-        {{-- <script src="{{asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script> --}}
-
 
 
 
