@@ -16,6 +16,23 @@ class PrestadorController extends Controller
         $this->middleware('auth');
     }
 
+    public function index()
+    {
+
+        $code = Auth::user()->codigo;
+        if(request()->ajax()) {
+            $data = DB::table('horasprestadores')
+            ->select('SELECT `fecha`, `hora_entrada`, `hora_salida`, `tiempo`, `horas`, `estado` FROM `horasprestadores` WHERE `codigo` =' + $code )
+            ->get();
+
+            return datatables()->of($data)
+        //->addColumn('action', 'employee-action')
+          //  ->rawColumns(['action'])
+            ->addIndexColumn()
+            ->make(true);
+        }
+        return view('homeP');
+    }
 
     public function home(){
         $id = Auth::user()->id;

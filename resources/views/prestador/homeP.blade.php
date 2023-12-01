@@ -16,26 +16,24 @@
         <h2 class="text-lg font-medium mr-auto">REGISTRO DE HORAS</h2>
     </div>
 
+
     <div class="intro-y box p-5 mt-5">
         
         <!--BEGIN: HTML Table Data-->
         <div class="flex flex-col sm:flex-row sm:items-end xl:items-start">
             <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto" >
                 <div class="sm:flex items-center sm:mr-4">
-                    <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Campo</label>
+                    <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Field</label>
                     <select id="tabulator-html-filter-field" class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto">
-                        <option value="date">Fecha</option>
-                        <option value="enter">Entrada</option>
-                        <option value="exit">Salida</option>
-                        <option value="time">Tiempo</option>
-                        <option value="hour">Horas</option>
-                        <option value="status">Estado</option>
+                        <option value="name">Name</option>
+                        <option value="category">Category</option>
+                        <option value="remaining_stock">Remaining Stock</option>
                     </select>
                 </div>
                 <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
-                    <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2"> </label>
+                    <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Type</label>
                     <select id="tabulator-html-filter-type" class="form-select w-full mt-2 sm:mt-0 sm:w-auto" >
-                        <option value="like" selected>es</option>
+                        <option value="like" selected>like</option>
                         <option value="=">=</option>
                         <option value="<">&lt;</option>
                         <option value="<=">&lt;=</option>
@@ -45,63 +43,54 @@
                     </select>
                 </div>
                 <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
-                    <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Valor</label>
-                    <input id="tabulator-html-filter-value" type="text" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0"  placeholder=" ">
+                    <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Value</label>
+                    <input id="tabulator-html-filter-value" type="text" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0"  placeholder="Search...">
                 </div>
                 <div class="mt-2 xl:mt-0">
-                    <button id="tabulator-html-filter-go" type="button" class="btn btn-primary w-full sm:w-16" >Filtrar</button>
-                    <button id="tabulator-html-filter-reset" type="button" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" >Reiniciar</button>
+                    <button id="tabulator-html-filter-go" type="button" class="btn btn-primary w-full sm:w-16" >Go</button>
+                    <button id="tabulator-html-filter-reset" type="button" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" >Reset</button>
                 </div>
             </form>
             <div class="flex mt-5 sm:mt-0">
                 <button id="tabulator-print" class="btn btn-outline-secondary w-1/2 sm:w-auto mr-2">
-                    <i data-lucide="printer" class="w-4 h-4 mr-2"></i> Imprimir
+                    <i data-lucide="printer" class="w-4 h-4 mr-2"></i> Print
                 </button>
                 <div class="dropdown w-1/2 sm:w-auto">
                     <button class="dropdown-toggle btn btn-outline-secondary w-full sm:w-auto" aria-expanded="false" data-tw-toggle="dropdown">
-                        <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Exportar <i data-lucide="chevron-down" class="w-4 h-4 ml-auto sm:ml-2"></i>
+                        <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export <i data-lucide="chevron-down" class="w-4 h-4 ml-auto sm:ml-2"></i>
                     </button>
                     <div class="dropdown-menu w-40">
                         <ul class="dropdown-content">
                             <li>
                                 <a id="tabulator-export-csv" href="javascript:;" class="dropdown-item">
-                                    <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Exportar CSV
+                                    <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export CSV
                                 </a>
                             </li>
                             <li>
                                 <a id="tabulator-export-json" href="javascript:;" class="dropdown-item">
-                                    <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Exportar JSON
+                                    <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export JSON
                                 </a>
                             </li>
                             <li>
                                 <a id="tabulator-export-xlsx" href="javascript:;" class="dropdown-item">
-                                    <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Exportar XLSX
+                                    <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export XLSX
                                 </a>
                             </li>
                             <li>
                                 <a id="tabulator-export-html" href="javascript:;" class="dropdown-item">
-                                    <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Exportar HTML
+                                    <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export HTML
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </div>
-            </div>   
-        <!--END: HTML Table Data -->
-        </div>
-        <div> <br> <br> <br> </div>
-        <div class="container">
-            @include('table')
-                <div class="row justify-content-center">
-                    <div class="col-12">
-                        <div class="card-footer" style="background-color: white">
-                            <h4 class=" float-left">Horas Totales: {{$horas}}</h4>
-                            <h4 class=" float-right">Horas Pendientes: {{$horasT}}</h4>
-                        </div>
-                    </div>
-                </div>
             </div>
+        </div>
+        <!--END: HTML Table Data -->
 
+        <div class="overflow-x-auto scrollbar-hidden">
+            @include('new_table')
+        </div>
     </div>
 
 @endsection
