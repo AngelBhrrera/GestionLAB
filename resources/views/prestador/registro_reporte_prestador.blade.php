@@ -14,7 +14,7 @@
     <div class="container" style="padding: 20px 350px 0px 350px">
 
 
-        <h1 class="text-center"> Registro de actividad </h1>
+        <h1 class="text-center"><strong> Registro de actividad </strong></h1>
 
         <form method="POST" action="{{ route('registro_reporte_guardar') }}" enctype="multipart/form-data" >
 
@@ -36,34 +36,67 @@
 
                         <textarea class="form-control" name="objetivo" id="objetivo" required rows="3" ></textarea>
 
-
-                        <h5 class="text-center">Imagen</h5>
-
-                        <input name="imagen" id="imagen" type='file'  accept="image/jpg, image/jpeg" />
-
-                        <h5 class="text-center">Zip</h5>
-
-                        <input name="zip" id="zip" type='file' accept=".zip"/>
-
-                        <br>
-                        <br>
-
-                        <h5 class="text-center">Estimación de tiempo (HH:MM)</h5>
-                        <div class="row">
-                            <div class="col">
-                                <input id="horas" type="number" class="form-control" name="horas"  required min="0" max="23" step="1" placeholder="Horas" autocomplete="off">
+                            <div class="text-center pt-5">
+                                <label class="form-block-input btn-primary" style="
+                                    border-radius: 15px;
+                                    font-size: 14px;
+                                    font-weight: 600;
+                                    display: inline-block;
+                                    transition: all .5s;
+                                    cursor: pointer;
+                                    padding: 15px 40px !important;
+                                    text-transform: uppercase;
+                                    width: fit-content;
+                                    text-align: center;
+                                    " >
+                                    <div style="display:flex;">
+                                        <i data-lucide="image" height="20" width="20"></i>
+                                        <input type="file" name="custom-file" class="form-file" style="display: none;"  accept="image/jpg, image/jpeg"/>
+                                        <span class="form-file-span pl-5">Selecciona una imagen</span>
+                                    </div>
+                                </label>
                             </div>
+                            <div class="text-center pt-5">
+                                
+                                <label class="form-block-input btn-primary" style="
+                                    border-radius: 15px;
+                                    font-size: 14px;
+                                    font-weight: 600;
+                                    display: inline-block;
+                                    transition: all .5s;
+                                    cursor: pointer;
+                                    padding: 15px 40px !important;
+                                    text-transform: uppercase;
+                                    width: fit-content;
+                                    text-align: center;
+                                    " >
+                                    <div style="display:flex;">
+                                        <i class="pr-5" ><svg xmlns="http://www.w3.org/2000/svg" 
+                                        width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+                                        class="lucide lucide-folder-archive"><circle cx="15" cy="19" r="2"/>
+                                        <path d="M20.9 19.8A2 2 0 0 0 22 18V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 
+                                        3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h5.1"/><path d="M15 11v-1"/><path d="M15 17v-2"/></svg></i>
+                                        <input type="file" name="custom-file" class="form-file" style="display: none;"  accept=".zip"/>
+                                        <span class="form-file-span">Selecciona un archivo zip</span>
+                                    </div>
+                                </label>
+                            </div>
+                        <br>
+                        <h5 class="text-center">Estimación de tiempo (HH:MM)</h5>
+                        <div class="row text-center">
                             <div class="col">
-                                <input id="minutos" type="number" class="form-control" name="minutos"  required min="0" max="59" step="1" placeholder="Minutos" autocomplete="off">
+                                <input id="horas" type="number" class="form-control sm:w-56 box pl-10" name="horas"  required min="0" max="23" step="1" placeholder="Horas" autocomplete="off">
+                                <input id="minutos" type="number" class="form-control sm:w-56 box pl-10" name="minutos"  required min="0" max="59" step="1" placeholder="Minutos" autocomplete="off">
                             </div>
                         </div>
-
+                        <br>
                         <div class="form-group">
                             <label for="asignado_a">Asignado a</label>
                             <select class="form-control" id="asignado_a" name="asignado_a" required>
                                 <option value="">Selecciona un prestador</option>
                                 @foreach ($prestadores as $prestador)
-                                    <option value="{{ $prestador->id }}">{{ $prestador->name }}</option>
+                                    <option value="{{ $prestador->id }}">{{ $prestador->name.' '.$prestador->apellido }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -83,6 +116,7 @@
 
                         </div> --}}
 
+                        <br>
                         <div class="form-group">
                             <label for="tipo_categoria">Categoría</label>
                             <select class="form-control" id="tipo_categoria" name="tipo_categoria" required onchange="filtrarActividades()">
@@ -92,7 +126,8 @@
                                 @endforeach
                             </select>
                         </div>
-
+                        
+                        <br>
                         <div class="form-group">
                             <label for="tipo_actividad">Tipo de actividad</label>
                             <select class="form-control" id="tipo_actividad" name="tipo_actividad" required>
@@ -103,8 +138,8 @@
                         <br>
                         <br>
 
-                        <div class="row justify-content-center">
-                            <button type="submit" class="btn btn-success">Guardar</button>
+                        <div class="row justify-content-center text-center">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
                         </div>
 
                     </div>
@@ -122,7 +157,38 @@
 
 
     </div>
+    
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Obtener inputs tipo file
+        const fileInputs = document.querySelectorAll('input[type=file]');
+        const fileButtons = document.querySelectorAll('.form-file-button');
+        // Asignar eventos a inputs
+        fileInputs.forEach(file => file.addEventListener('change', fileChange));
+        fileButtons.forEach(button => button.addEventListener('click', fileClick));
+        
+    });
+
+    // Cambios en inputs
+    function fileChange(e) {
+        let input = e.target;
+        let spanBlock = e.target.closest('label').querySelector('.form-file-span');
+        // Limpiar contenedor
+        spanBlock.innerHTML = '';
+        // Recorrer archivos para agregarlos al contenedor
+        Array.from(input.files).forEach(file => {
+            spanBlock.innerHTML += `<span class="form-files">${file.name}</span>`;
+        });
+    }
+    // Clics en botones
+    function fileClick(e) {
+        // Desde el botón se obtiene el input y se abre la ventana para seleccionar archivos
+        let input = e.target.closest('label').querySelector('input');
+        input.click();
+    }
+</script>
 
 <script src={{ asset('plugins/jquery/jquery.min.js') }}></script>
 <script src={{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}></script>
