@@ -22,22 +22,25 @@ class RedirectIfAuthenticated
           $role = Auth::user()->tipo;
 
           switch ($role) {
+
+            case 'encargado':
             case 'admin':
-               return redirect('/admin/home');
-               break;
             case 'Superadmin':
                 return redirect('/admin/home');
                 break;
             case 'prestador':
+            case 'practicante':
+            case 'voluntario':
                return redirect('/prestador/home');
                break;
-            case 'clientes':
+            case 'maestro':
+            case 'alumno':
+            case 'externo':
                 return redirect('/home');
                 break;
             case 'checkin':
                 return redirect('/check-in');
                 break;
-
           }
         }
         return $next($request);

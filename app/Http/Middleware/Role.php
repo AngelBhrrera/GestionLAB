@@ -16,7 +16,7 @@ class Role {
     foreach($roles as $role) {
       if($user->tipo == $role)
           return $next($request);
-  }
+    }
 
     return redirect('/login');
   }

@@ -94,7 +94,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::post('/actualizarb', 'guardar2')->name('actualizarb');
         });
     });
-    Route::middleware('role:admin,Superadmin')->group(function() {
+    Route::middleware('role:admin,Superadmin, encargado')->group(function() {
         Route::name('admin.')->group(function () {
 
             Route::get('/admin/faltas', 'faltas')->name('faltas');
@@ -143,7 +143,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/veractividades', 'veractividades')->name('veractividades');
             Route::get('/admin/veractividades_pendientes', 'veractividades_pendientes')->name('veractividades_pendientes');
             Route::get('/admin/veractividades_completadas', 'veractividades_completadas')->name('veractividades_completadas');
-            Route::get('/admin/cambiorol', 'cambiarRol')->name('cambiorol');
+            //Route::get('/admin/cambiorol', 'cambiarRol')->name('cambiorol');
             Route::get('/admin/Dias_no_laborables', 'diasfestivos')->name('diasfestivos');
             Route::get('/admin/horarios', 'horarios')->name('horarios');
             Route::get('/admin/obtenerActividades', 'obtenerActividades')->name('obtenerActividades');
@@ -167,7 +167,7 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::post('/marcar', 'marcar')->middleware('role:admin,checkin,Superadmin')->name('marcar');
         Route::post('/afirmas', 'asirgarfirmas')->name('afirmas');    
     });
-    Route::middleware('role:prestador')->group(function() {
+    Route::middleware('role:prestador, voluntario, practicante, encargado')->group(function() {
 
         Route::get('prestador/home', 'home')->name('homeP');
         Route::get('prestador/horas', 'horas')->name('horas');
