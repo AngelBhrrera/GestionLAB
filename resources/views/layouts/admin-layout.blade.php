@@ -386,7 +386,7 @@
                     <div class="intro-x relative ml-auto flex sm:mx-auto">
                             <button class="btn btn-primary ml-5"><a href="{{ route('admin.checkin')  }}">Check-In</a></button>
                             @if (Auth::user()->can_admin == 1)
-                            <button class="btn btn-primary ml-5"><a href="{{ route('homeP') }}">
+                            <button class="btn btn-primary ml-5"><a href="{{ route('admin.cambiorol') }}">
                                 {{ __('Cambiar a prestador') }}</a></button>
                             @endif
                     </div>

@@ -2082,7 +2082,27 @@ class AdminController extends Controller
 
     public function cambiarRol()
     {
-        redirect(route('homeP'));
+        if (Auth::user()->can_admin == 1) {
+
+            try {
+                $user = User::find(Auth::user()->id);
+                switch ($user->tipo) {
+                    case 'prestador':
+                        $user->tipo = 'admin';
+                        $user->save();
+                        Log::info('era prestador');
+                        break;
+                    case 'admin':
+                        $user->tipo = 'prestador';
+                        $user->save();
+                        Log::info('era admin');
+                        break;
+                }
+                return redirect('/');
+            } catch (\Throwable $th) {
+                Log::info($th);
+            }
+        }
     }
 
     public function diasfestivos(Request $request)
