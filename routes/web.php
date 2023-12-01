@@ -18,17 +18,20 @@ Auth::routes([
     'verify' => false,
 ]);
 
-
-
 //PRUEBAS
 Route::get('/adminLayout', function(){
     return view('prestador.PruebaAdminLayout');
 });
 
+Route::get('/inventores', function (){
+    $leaderBoard= DB::select("SELECT * from full_leaderboard limit 10");  
 
-Route::get('/laboratorioInventores', function (){
-    $users=DB::select("SELECT name, experiencia FROM `users` order by experiencia desc limit 3;");
-    return view('landingPageTEMP',['users'=>$users]);
+    return view(
+        'landingPageTEMP',
+        [
+            'leaderBoard'=> $leaderBoard,
+        ]
+    );
 })->name('landing');
 
 Route::get('/devTeam', function(){
