@@ -11,9 +11,7 @@
         <link rel="stylesheet" href="{{ asset('/build/assets/app.c469cfb8.css') }}" />
         <script type="module" src="{{ asset('/build/assets/app.6c589841.js')}}"></script>
         <!-- END: JS Assets-->
-        
 
         @yield('script')
-        
     </body>
 @endsection

@@ -19,19 +19,14 @@ Auth::routes([
 ]);
 
 //PRUEBAS
-Route::get('/adminLayout', function(){
-    return view('prestador.PruebaAdminLayout');
-});
 
-Route::get('/inventores', function (){
-    $leaderBoard= DB::select("SELECT * from full_leaderboard limit 10");  
+Route::get('/table', function (){
+    return view ('table');
+})->name('table');
 
-    return view(
-        'landingPageTEMP',
-        [
-            'leaderBoard'=> $leaderBoard,
-        ]
-    );
+Route::get('/laboratorioInventores', function (){
+    $users=DB::select("SELECT name, experiencia FROM `users` order by experiencia desc limit 3;");
+    return view('landingPageTEMP',['users'=>$users]);
 })->name('landing');
 
 Route::get('/devTeam', function(){
@@ -55,45 +50,46 @@ Route::controller(App\Http\Controllers\HomeController::class)->group(function(){
     Route::get('modificaradmin', 'modificaradmin')->name('modificaradmin');
 });
 
-//Rutas de Admin gestionadas desde el AdminController
-//Requieres el rol admin o superadmin para acceder 
-//Por el momento no encuentro diferencias entre admin y superadmin palpables
-Route::controller(App\Http\Controllers\AdminController::class)->group(function(){
-    Route::name('api.')->group(function () {
+    //Rutas de Admin gestionadas desde el AdminController
+    //Requieres el rol admin o superadmin para acceder 
+    //Por el momento no encuentro diferencias entre admin y superadmin palpables
+    Route::controller(App\Http\Controllers\AdminController::class)->group(function(){
+        Route::name('api.')->group(function () {
 
-        Route::post('/actualizarcursos1',  'guardarcursos1')->name('actualizarcursos1');
-        Route::post('/actualizarcursos2', 'guardarcursos2')->name('actualizarcursos2');
-        Route::post('/actualizarcursos3',  'guardarcursos3')->name('actualizarcursos3');
-        Route::post('/actualizarstatus','guardarstatus')->name('actualizarstatus');
-        Route::post('/eliminar', 'destroy')->name('eliminar');
-        Route::post('/activar',  'activar')->name('activar');
-        Route::post('/cita_programar', 'cita_programar')->name('cita_programar');
-        Route::post('/cita_programar_2',  'cita_programar_2')->name('cita_programar_2');
-        Route::post('/cita_programar_3',  'cita_programar_3')->name('cita_programar_3');
-        Route::post('/create_premios', 'create_premios')->name('create_premios');
-        Route::get('/check-in','checkin')->name('checkin')->middleware('role:checkin');
-        Route::post('/prestadores_asignados','prestadores_asignados')->name('prestadores_asignados');
-        Route::post('/impresion_terminada',  'impresion_terminada')->name('impresion_terminada');
-        Route::post('/documento','documento')->name('documento');
-        Route::post('/actividad_asignada', 'actividad_asignada')->name('actividad_asignada');
-        Route::post('/actividad_reasignada', 'actividad_reasignada')->name('actividad_reasignada');
-        Route::post('/agregar_categoria_y_actividad','agregarCategoriaActividad')->name('agregarCategoriaActividad');
-        Route::post('/desactivar_prestadores','desactivar_prestadores')->name('desactivar_prestadores');
-        Route::post('/activar_prestadores', 'activar_prestadores')->name('activar_prestadores');
-        Route::post('/denegar_impresion',  'denegar_impresion')->name('denegar_impresion');
-        Route::post('/impresion_marcha', 'impresion_marcha')->name('impresion_marcha');
-        Route::post('/eliminar_prestadores_impresion', 'eliminar_prestadores_impresion')->name('eliminar_prestadores_impresion');
-        Route::post('/proyectos_prestador_terminados','proyectos_prestador_terminados')->name('proyectos_prestador_terminados');
-        Route::post('/terminar_prestadores','terminar_prestadores')->name('terminar_prestadores');
-        Route::post('/admin/guardardias',  'guardardiafestivo')->name('guardardiasfestivos');
-        Route::post('/admin/eliminardias', 'eliminardiafestivo')->name('eliminardiafestivo');
-        Route::post('/admin/eliminarhorario','eliminarhorario')->name('eliminarhorario');
-        Route::post('/admin/guardarhorario',  'guardarhorario')->name('guardarhorario');
-        Route::middleware('role:admin,Superadmin')->group(function() {
-            Route::post('/actualizar', 'guardar')->name('actualizar');
-            Route::post('/actualizarb', 'guardar2')->name('actualizarb');
-        });
+            Route::middleware('role:admin,Superadmin')->group(function() {
+                Route::post('/actualizar', 'guardar')->name('actualizar');
+                Route::post('/actualizarb', 'guardar2')->name('actualizarb');
+            });
+            Route::post('/actualizarcursos1',  'guardarcursos1')->name('actualizarcursos1');
+            Route::post('/actualizarcursos2', 'guardarcursos2')->name('actualizarcursos2');
+            Route::post('/actualizarcursos3',  'guardarcursos3')->name('actualizarcursos3');
+            Route::post('/actualizarstatus','guardarstatus')->name('actualizarstatus');
+            Route::post('/eliminar', 'destroy')->name('eliminar');
+            Route::post('/activar',  'activar')->name('activar');
+            Route::post('/cita_programar', 'cita_programar')->name('cita_programar');
+            Route::post('/cita_programar_2',  'cita_programar_2')->name('cita_programar_2');
+            Route::post('/cita_programar_3',  'cita_programar_3')->name('cita_programar_3');
+            Route::post('/create_premios', 'create_premios')->name('create_premios');
+            Route::get('/check-in','checkin')->name('checkin')->middleware('role:checkin');
+            Route::post('/prestadores_asignados','prestadores_asignados')->name('prestadores_asignados');
+            Route::post('/impresion_terminada',  'impresion_terminada')->name('impresion_terminada');
+            Route::post('/documento','documento')->name('documento');
+            Route::post('/actividad_asignada', 'actividad_asignada')->name('actividad_asignada');
+            Route::post('/actividad_reasignada', 'actividad_reasignada')->name('actividad_reasignada');
+            Route::post('/agregar_categoria_y_actividad','agregarCategoriaActividad')->name('agregarCategoriaActividad');
+            Route::post('/desactivar_prestadores','desactivar_prestadores')->name('desactivar_prestadores');
+            Route::post('/activar_prestadores', 'activar_prestadores')->name('activar_prestadores');
+            Route::post('/denegar_impresion',  'denegar_impresion')->name('denegar_impresion');
+            Route::post('/impresion_marcha', 'impresion_marcha')->name('impresion_marcha');
+            Route::post('/eliminar_prestadores_impresion', 'eliminar_prestadores_impresion')->name('eliminar_prestadores_impresion');
+            Route::post('/proyectos_prestador_terminados','proyectos_prestador_terminados')->name('proyectos_prestador_terminados');
+            Route::post('/terminar_prestadores','terminar_prestadores')->name('terminar_prestadores');
+            Route::post('/admin/guardardias',  'guardardiafestivo')->name('guardardiasfestivos');
+            Route::post('/admin/eliminardias', 'eliminardiafestivo')->name('eliminardiafestivo');
+            Route::post('/admin/eliminarhorario','eliminarhorario')->name('eliminarhorario');
+            Route::post('/admin/guardarhorario',  'guardarhorario')->name('guardarhorario');
     });
+
     Route::middleware('role:admin,Superadmin')->group(function() {
         Route::name('admin.')->group(function () {
 
@@ -167,8 +163,9 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::post('/marcar', 'marcar')->middleware('role:admin,checkin,Superadmin')->name('marcar');
         Route::post('/afirmas', 'asirgarfirmas')->name('afirmas');    
     });
-    Route::middleware('role:prestador')->group(function() {
+    Route::middleware('role:prestador, voluntario, practicante')->group(function() {
 
+        Route::get('ajax-crud-datatable', 'index')->name('index');
         Route::get('prestador/home', 'home')->name('homeP');
         Route::get('prestador/horas', 'horas')->name('horas');
         Route::post('prestador/completar_impresion','completar_impresion')->name('completar_impresion');
@@ -196,8 +193,6 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::post('prestador/cancelacion_prestador', 'cancelacion_prestador')->name('cancelacion_prestador');
         // Route::get('/proyectospendientes', 'proyectos')->name('proyectos');
         // Route::get('/proyectos_prendientes', 'proyectos_prendientes')->name('proyectos_prendientes');
-        Route::get('/prestador/asistencias', 'asistencias')->name('asistencias');
-        Route::get('/prestador/faltas', 'faltas')->name('faltas');
 
     });
 
@@ -227,6 +222,8 @@ Route::controller(App\Http\Controllers\VisitanteController::class)->group(functi
     });
 });
 
+
+//INCLUYE LAS SENTENCIAS SQL para obtener datos y generar tablas.
 Route::controller(App\Http\Controllers\empController::class)->group(function(){
     Route::name('ss.')->group(function () {
 

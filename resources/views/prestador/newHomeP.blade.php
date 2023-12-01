@@ -90,45 +90,35 @@
                             <th class="whitespace-nowrap">#</th>
                             <th class="whitespace-nowrap">Prestador</th>
                             <th class="whitespace-nowrap">Experiencia</th>
-                            <th class="whitespace-nowrap">Rango</th>
-
+                            <th class="whitespace-nowrap">Actividades completadas</th>
                         </tr>
                     </thead>
 
                     <tbody>
-
-                        <?php $bandera = false; ?>
-                        @foreach ( $leaderBoard as $top)  
-                            <tr>
-                                @if ($top->codigo == Auth::user()->codigo)
-                                    <?php $bandera = true; ?>
-                                    <style>
-                                    </style>
-                                    <td><strong>{{$top->Posicion}}</strong></td>
-                                    <td><strong>{{$top->Inventor}}</strong></td>
-                                    <td><strong>{{$top->experiencia}}</strong></td>
-                                    <td><img src="{{asset('build/assets/'.$usuarioMedalla->ruta)}}"  width="40" height="80" alt=""></td>
-                                            
-                                @else
-                                    <td>{{$top->Posicion}}</td>
-                                    <td>{{$top->Inventor}}</td>
-                                    <td>{{$top->experiencia}}</td>
-                                    <td><img src="{{asset('build/assets/'.$top->ruta)}}"  width="40" height="80" alt=""></td>
-                                @endif
-                                
-                            </tr>
-                        @endforeach
-                        @if (!$bandera)
-                            <tr>
-                                <td> <strong>{{$posicionUsuario[0]->position}} </strong> </td>
-                                <td> <strong> {{$posicionUsuario[0]->Nombre}}</strong> </td>
-                                <td> <strong>{{$posicionUsuario[0]->experiencia}}</strong> </td>
-                                <td><img src="{{asset('build/assets/'.$usuarioMedalla->ruta)}}" width="40" height="80"alt=""></td>
-                            </tr>
-                        @endif
-                            
-
-                        
+                        <tr>
+                            <td>1</td>
+                            <td>Angelina Jolie</td>
+                            <td>5518</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Brad Pitt</td>
+                            <td>250</td>
+                            <td>12</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Luis Roberto</td>
+                            <td>100</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td> <strong> 77 </strong> </td>
+                            <td> <strong> Tu nombre y apellido </strong> </td>
+                            <td> <strong> Tu experiencia </strong> </td>
+                            <td> <strong> Tus actividades completadas </strong> </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -137,3 +127,115 @@
 
 @endsection
 
+
+        <!--  <div class="overflow-x-auto scrollbar-hidden">
+                              <div id="tabulator" class="mt-5 table-report table-report--tabulator"></div>
+                            </div>
+            <div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
+            <table class="table table-report -mt-2">
+                <thead>
+                    <tr>
+                        <th class="whitespace-nowrap">IMAGES</th>
+                        <th class="whitespace-nowrap">PRODUCT NAME</th>
+                        <th class="text-center whitespace-nowrap">STOCK</th>
+                        <th class="text-center whitespace-nowrap">STATUS</th>
+                        <th class="text-center whitespace-nowrap">ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                        <tr class="intro-x">
+                            <td class="w-40">
+                                <div class="flex">
+                                    <div class="w-10 h-10 image-fit zoom-in">
+                                        <img alt="SS" class="tooltip rounded-full" src="{{ asset('build/assets/images/image-6') }}" title="Uploaded at 2023">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <a href="" class="font-medium whitespace-nowrap">products : name</a>
+                                <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5">products : category</div>
+                            </td>
+                            <td class="text-center">STOCKS</td>
+                            <td class="w-40">
+                                <div class="flex items-center justify-center 'text-success' ">
+                                    <i data-lucide="check-square" class="w-4 h-4 mr-2"></i> Active
+                                </div>
+                            </td>
+                            <td class="w-40">
+                                <div class="flex items-center justify-center 'text-danger' ">
+                                    <i data-lucide="check-square" class="w-4 h-4 mr-2"></i> Inactive
+                                </div>
+                            </td>
+                            <td class="table-report__action w-56">
+                                <div class="flex justify-center items-center">
+                                    <a class="flex items-center mr-3" href="javascript:;">
+                                        <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
+                                    </a>
+                                    <a class="flex items-center text-danger" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal">
+                                        <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+  
+                </tbody>
+            </table>
+        </div>
+        END: Data List
+        BEGIN: Pagination
+        <div class="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
+            <nav class="w-full sm:w-auto sm:mr-auto">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="#">
+                            <i class="w-4 h-4" data-lucide="chevrons-left"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">
+                            <i class="w-4 h-4" data-lucide="chevron-left"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">...</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item active">
+                        <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">...</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">
+                            <i class="w-4 h-4" data-lucide="chevron-right"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">
+                            <i class="w-4 h-4" data-lucide="chevrons-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <select class="w-20 form-select box mt-3 sm:mt-0">
+                <option>10</option>
+                <option>25</option>
+                <option>35</option>
+                <option>50</option>
+            </select>
+        </div>
+        END: Pagination
+    </div>-->
+        
+        <!-- BEGIN: JS Assets
+        <script src="p/dist/js/app.js"></script>
+        END: JS Assets-->
+
+</html>

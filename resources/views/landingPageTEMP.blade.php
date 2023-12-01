@@ -334,54 +334,68 @@
                     </li>
 
                 </ul>
-                
+
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="semanal">
                         <ul class="nav nav-tabs nav-justified" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active">Posición</a>
-                                @foreach ($leaderBoard as $top)
-                                    <p id="leaderBoard" class="nav-link">{{$top->Posicion}}</p>
-                                @endforeach
+                                <p class="nav-link">#1</p>
+                                <p class="nav-link">#2</p>
+                                <p class="nav-link">#3</p>
                             </li>
 
                             <li class="nav-item">
                                 <a class="nav-link active">Usuario</a>
-                                @foreach ($leaderBoard as $top)
-                                    <p id="leaderBoard"  class="nav-link">{{$top->Inventor}}</p>
-                                @endforeach
+                                <p class="nav-link">{{$users[0]->name}}</p>
+                                <p class="nav-link">{{$users[1]->name}}</p>
+                                <p class="nav-link">{{$users[2]->name}}</p>
                             </li>
 
                             <li class="nav-item">
                                 <a class="nav-link active">Experiecia</a>
-                                @foreach ($leaderBoard as $top)
-                                    <p id="leaderBoard" class="nav-link">{{$top->experiencia}}</p>
-                                @endforeach
+                                <p class="nav-link">{{$users[0]->experiencia}}</p>
+                                <p class="nav-link">{{$users[1]->experiencia}}</p>
+                                <p class="nav-link">{{$users[2]->experiencia}}</p>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link active">Actividades completadas</a>
+                                <p class="nav-link">30</p>
+                                <p class="nav-link">30</p>
+                                <p class="nav-link">30</p>
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="tab-pane fade" id="mensual">
                             <ul class="nav nav-tabs nav-justified" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active">Posición</a>
-                                    @foreach ($leaderBoard as $top)
-                                        <p id="leaderBoard" class="nav-link">{{$top->Posicion}}</p>
-                                    @endforeach
+                                    <p class="nav-link">#1</p>
+                                    <p class="nav-link">#2</p>
+                                    <p class="nav-link">#3</p>
                                 </li>
 
                                 <li class="nav-item">
                                     <a class="nav-link active">Usuario</a>
-                                    @foreach ($leaderBoard as $top)
-                                        <p id="leaderBoard" class="nav-link leaderBoard">{{$top->Inventor}}</p>
-                                    @endforeach
+                                    <p class="nav-link">{{$users[0]->name}}</p>
+                                    <p class="nav-link">{{$users[1]->name}}</p>
+                                    <p class="nav-link">{{$users[2]->name}}</p>
                                 </li>
 
                                 <li class="nav-item">
                                     <a class="nav-link active">Experiecia</a>
-                                    @foreach ($leaderBoard as $top)
-                                        <p  id="leaderBoard"class="nav-link">{{$top->experiencia}}</p>
-                                    @endforeach
+                                    <p class="nav-link">{{$users[0]->experiencia}}</p>
+                                    <p class="nav-link">{{$users[1]->experiencia}}</p>
+                                    <p class="nav-link">{{$users[2]->experiencia}}</p>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link active">Actividades completadas</a>
+                                    <p class="nav-link">30</p>
+                                    <p class="nav-link">30</p>
+                                    <p class="nav-link">30</p>
                                 </li>
                             </ul>
                     </div>                
@@ -390,23 +404,30 @@
                         <ul class="nav nav-tabs nav-justified" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active">Posición</a>
-                                @foreach ($leaderBoard as $top)
-                                    <p  id="leaderBoard" class="nav-link">{{$top->Posicion}}</p>
-                                @endforeach
+                                <p class="nav-link">#1</p>
+                                <p class="nav-link">#2</p>
+                                <p class="nav-link">#3</p>
                             </li>
 
                             <li class="nav-item">
                                 <a class="nav-link active">Usuario</a>
-                                @foreach ($leaderBoard as $top)
-                                    <p id="leaderBoard" class="nav-link">{{$top->Inventor}}</p>
-                                @endforeach
+                                <p class="nav-link">{{$users[0]->name}}</p>
+                                <p class="nav-link">{{$users[1]->name}}</p>
+                                <p class="nav-link">{{$users[2]->name}}</p>
                             </li>
 
                             <li class="nav-item">
                                 <a class="nav-link active">Experiecia</a>
-                                @foreach ($leaderBoard as $top)
-                                    <p  id="leaderBoard" class="nav-link">{{$top->experiencia}}</p>
-                                @endforeach
+                                <p class="nav-link">{{$users[0]->experiencia}}</p>
+                                <p class="nav-link">{{$users[1]->experiencia}}</p>
+                                <p class="nav-link">{{$users[2]->experiencia}}</p>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link active">Actividades completadas</a>
+                                <p class="nav-link">30</p>
+                                <p class="nav-link">30</p>
+                                <p class="nav-link">30</p>
                             </li>
                         </ul>
                     </div> 
@@ -538,10 +559,9 @@
                     </p>
                 </div>
                 <div class="col-md-6">
-                <h4 class="mb-3">Quiero una impresión ¿Qué necesito?</h4>
+                <h4 class="mb-3"></h4>
                     <p class="light-font mb-5">
-                        Comprar el filamento suficiente, preparar un donativo, que puede ser material para el laboratorio
-                        llenar el formulario correspondiente.
+                        
                     </p>
                 </div>
                 <div class="col-md-6">

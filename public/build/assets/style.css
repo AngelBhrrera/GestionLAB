@@ -757,10 +757,6 @@ header {
     animation: gradient 10s ease infinite;
   }
 
-  #leaderBoard {
-    font-size: 15px;
-  }
-
   @keyframes gradient {
     0% {
       background-position: 0% 50%;

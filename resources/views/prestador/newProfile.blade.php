@@ -16,10 +16,10 @@
             <div class="flex flex-col 2xl:flex-row items-center justify-center text-center 2xl:text-left">
                 <div class="image-fit w-40 h-40 rounded-full border-4 border-white shadow-md overflow-hidden">
                 
-                @if(!isset($user->imagen_perfil))
+                @if(isset($user->image))
                     <img alt="{{$user->name.' '.$user->apellido}}" src="{{asset('build/assets/images/placeholders/avatar5.png')}}">
                 @else
-                    <img alt="{{$user->name.' '.$user->apellido}}" src="{{asset('build/assets/images/placeholders/userImg/'.$user->imagen_perfil)}}">
+                    <img alt="{{$user->name.' '.$user->apellido}}" src="{{asset('build/assets/images/placeholders/'.$user->imagen_perfil)}}">
                 @endif
                 </div>
                     
