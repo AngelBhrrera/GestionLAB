@@ -1,7 +1,0 @@
-.breadcrumb {
-    &.breadcrumb-light {
-        .active {
-            @apply !text-white/70;
-        }
-    }
-}

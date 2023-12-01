@@ -36,18 +36,33 @@ class PrestadorController extends Controller
 
     public function home(){
         $id = Auth::user()->id;
+        $experiencia = Auth::user()->experiencia;
         $horasAutorizadas = DB::table('horasprestadores')->where('idusuario', $id)->where('estado', 'autorizado')->sum('horas');
         $horasPendientes = DB::table('horasprestadores')->where('idusuario', $id)->where('estado', 'pendiente')->sum('horas');
         $horasTotales = DB::table('users')->where('id', $id)->select('horas')->get();
         $horasRestantes = $horasTotales[0]->horas - $horasAutorizadas;
-
+        $leaderBoard= DB::select("SELECT * from full_leaderboard limit 10");
+        $posicionUsuario = DB::select("SELECT x.experiencia, x.id, x.position, CONCAT(x.name, ' ', x.apellido) AS 'Nombre' FROM (SELECT users.id, users.name, users.apellido, @rownum := @rownum + 1 AS position, 
+        users.experiencia FROM users JOIN (SELECT @rownum := 0) r ORDER BY users.experiencia DESC) x WHERE x.id = $id;");
+        $usuarioMedalla = DB::table('niveles')
+        ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
+        ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion')
+        ->where('niveles.experiencia_acumulada', '<=', $experiencia?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
+        ->orderByDesc('niveles.experiencia_acumulada')
+        ->first();
+        
+        
         return view(
             'prestador/newHomeP',
             [
                 'horasAutorizadas' => $horasAutorizadas,
                 'horasPendientes' => $horasPendientes,
                 'horasTotales'=> $horasTotales[0]->horas,
-                'horasRestantes' => $horasRestantes
+                'horasRestantes' => $horasRestantes,
+                'leaderBoard'=> $leaderBoard,
+                'posicionUsuario'=> $posicionUsuario,
+                'usuarioMedalla'=>$usuarioMedalla,
+
             ]
         );
     }
@@ -298,7 +313,7 @@ class PrestadorController extends Controller
     {
         $encargado_id = auth()->user()->encargado_id;
         // $prestadores = DB::table('users')::where('encargado_id', $encargado_id)->get();
-        $prestadores = DB::table('users')->select('id', 'name')->where('encargado_id', $encargado_id)->get();
+        $prestadores = DB::table('users')->select('id', 'name', 'apellido')->where('id', auth()->user()->id)->get();
         $categorias = DB::table('categorias')->get();
         $actividades = DB::table('actividades')->get();
 
@@ -370,7 +385,7 @@ class PrestadorController extends Controller
                 'nombre_act' => $nomact,
                 'acti_id' => $tipo,
                 // 'tipo_categoria'=>$tipo_categoria,
-                // 'tipo_actividad'=>$tipo_actividad,
+                'tipo_act'=>$tipo_actividad,
                 'descripcion' => $desc,
                 'objetivo' => $obj,
                 'fecha' => $fecha,
@@ -558,7 +573,6 @@ class PrestadorController extends Controller
             ->where('niveles.experiencia_acumulada', '<=', $user->experiencia ?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
             ->orderByDesc('niveles.experiencia_acumulada')
             ->first();
-
         $todasMedallasUsuario = DB::table('niveles')
                 ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
                 ->select('medallas.ruta', 'medallas.nivel', 'medallas.descripcion')
@@ -576,7 +590,6 @@ class PrestadorController extends Controller
 
 
         return view('prestador.newProfile', compact('user', 'nivel_str', 'medalla', 'nivel', 'descripcion_medalla', 'todasMedallasUsuario'));
-        //return view('prestador.newProfile', ['user'=>$user]);
     }
 
     public function cambiarImagenPerfil(Request $request)
@@ -763,6 +776,14 @@ class PrestadorController extends Controller
             );
         return redirect()->back()->with('success', 'La actividad ha sido cancelada exitosamente.');
 
+    }
+
+    public function asistencias(){
+        return view('prestador.asistencias_prestador');
+    }
+
+    public function faltas(){
+        return view('prestador.faltas_prestador');
     }
 
 }
