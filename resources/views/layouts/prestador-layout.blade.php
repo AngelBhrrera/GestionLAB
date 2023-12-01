@@ -193,8 +193,10 @@
                     <!-- END: Breadcrumb -->
                     <div class="intro-x relative ml-auto flex sm:mx-auto">
                             @if (Auth::user()->can_admin == 1)
-                            <button class="btn btn-primary ml-5"><a href="{{ route('admin.cambiorol') }}">
-                                {{ __('Cambiar a admin') }}</a></button>
+                            <a href="{{ route('admin.home') }}">
+                                <button class="btn btn-primary ml-5">
+                                    {{ __('Cambiar a admin') }}</button>
+                            </a>    
                             @endif
                     </div>
                     <!-- BEGIN: Intermede -->

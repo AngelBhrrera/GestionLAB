@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
-class LeaderBoard extends Migration
+class Leaderboard extends Migration
 {
 
     public function up()
