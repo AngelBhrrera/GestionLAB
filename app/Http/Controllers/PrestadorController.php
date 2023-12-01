@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use DateTime;
+use Illuminate\Support\Facades\Log;
+use App\Models\User;
 
 
 class PrestadorController extends Controller
@@ -791,4 +793,25 @@ class PrestadorController extends Controller
         return view('prestador.faltas_prestador');
     }
 
+    public function cambiarRol()
+    {
+        if (Auth::user()->can_admin == 1) {
+
+                $user = User::find(Auth::user()->id);
+                switch ($user->tipo) {
+                    case 'prestador':
+                        $user->tipo = 'admin';
+                        $user->save();
+                        Log::info('era prestador');
+                        break;
+                    case 'admin':
+                        $user->tipo = 'prestador';
+                        $user->save();
+                        Log::info('era admin');
+                        break;
+                }
+                return redirect('/');
+        }
+
+    }
 }

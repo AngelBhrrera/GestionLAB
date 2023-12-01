@@ -198,6 +198,7 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         // Route::get('/proyectos_prendientes', 'proyectos_prendientes')->name('proyectos_prendientes');
         Route::get('/prestador/asistencias', 'asistencias')->name('asistencias');
         Route::get('/prestador/faltas', 'faltas')->name('faltas');
+        Route::get('/prestador/cambiarRol', 'cambiarRol')->name('cambiarRol');
 
     });
 
