@@ -68,7 +68,7 @@
             <div class="img-holder mt-3"><img src="{{asset('build/assets/images/labMedia6.jpg')}}" alt="image" class="img-fluid"></div>
             <div class="img-holder mt-3"><img src="{{asset('build/assets/images/labMedia7.jpg')}}" alt="image" class="img-fluid"></div>
             <div class="img-holder mt-3"><img src="{{asset('build/assets/images/labMedia8.jpg')}}" alt="image" class="img-fluid"></div>
-        
+            <div class="img-holder mt-3"><img src="{{asset('build/assets/images/labMedia9.jpg')}}" alt="image" class="img-fluid"></div>
         </div>
         
 
@@ -98,24 +98,6 @@
                     </div>
                 </div>
                 
-                <div class="col-12 col-lg-4">
-                    <div class="card features">
-                        <div class="card-body">
-                            <div class="media">
-                                <span class="ti-panel gradient-fill ti-3x mr-3"></span>
-                                <div class="media-body">
-                                    <h4 class="card-title">Artículos</h4>
-                                    <p class="card-text">Se han escrito diversos artículos que puedes consultar:</p>
-                                    <p class="card-text"><a href="https://www.researchgate.net/publication/368779614_Introduccion_al_desarrollo_de_videojuegos_con_GODOT">Introducción al desarrollo de videojuegos con GODOT</a></p>
-                                    <p class="card-text"><a href="https://www.researchgate.net/publication/371636352_Diseno_de_videojuegos_para_el_analisis_de_habilidades_personales">Diseño de videojuegos para el análisis de habilidades personales</a></p>
-                                    <p class="card-text"><a href="https://www.researchgate.net/publication/368433014_Introduction_to_scientific_video_game_design">Introduction to scientific video game desig</a></p>
-                                    <p class="card-text"><a href="https://www.researchgate.net/publication/358856987_RYUJIN_Interfaz_de_Rehabilitacion_y_Juego_Serio_para_la_Patologias_Neuromuscular_de_Miembro_Superior">RYUJIN, Interfaz de Rehabilitación y Juego Serio para la Patologías Neuromuscular de Miembro Superior</a></p>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="col-12 col-lg-4" style="margin: 20px 0 0 0">
                     <div class="card features">
                         <div class="card-body">
@@ -131,6 +113,20 @@
                                         <li><p class="card-text">Adquirir nuevos conocimientos, que te ayudarán en tu formación profesional y personal.</p></li>
                                     </ul>
                                     </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <div class="card features">
+                        <div class="card-body">
+                            <div class="media">
+                                <span class="ti-panel gradient-fill ti-3x mr-3"></span>
+                                <div class="media-body">
+                                    <h4 class="card-title">Artículos</h4>
+                                    <p class="card-text">Se han escrito diversos artículos que puedes consultar  <a href="{{route('articulos')}}">aquí</a>.</p>
+                                   
                                 </div>
                             </div>
                         </div>

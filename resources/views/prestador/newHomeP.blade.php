@@ -104,9 +104,9 @@
                                     <?php $bandera = true; ?>
                                     <style>
                                     </style>
-                                    <td><strong>{{$top->Posicion}}</strong></td>
-                                    <td><strong>{{$top->Inventor}}</strong></td>
-                                    <td><strong>{{$top->experiencia}}</strong></td>
+                                    <td><strong><p style="color: #0023FF;">{{$top->Posicion}}</p></strong></td>
+                                    <td><strong><p style="color: #0023FF">{{$top->Inventor}}</p></strong></td>
+                                    <td><strong><p style="color: #0023FF">{{$top->experiencia}}</p></strong></td>
                                     <td><img src="{{asset('build/assets/'.$usuarioMedalla->ruta)}}"  width="40" height="80" alt=""></td>
                                             
                                 @else
