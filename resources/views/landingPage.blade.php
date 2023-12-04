@@ -568,8 +568,10 @@
             </div>
         </div>
     </div>
+
     <!-- // end .section -->
     <!-- Contacto -->
+
     <div class="section light-bg" id="contact"></div>
     <div class="section">
         <div class="container table-responsive">
@@ -588,7 +590,7 @@
                                     <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:support@mobileapp.com">jose.bcarranza@academicos.udg.mx</a>                            
                                 </p>
                                 <p class="mb-2 ml-2">                            
-                                    Jefe de laboratorio
+                                    Titular del Laboratorio | Coordinador de ICOM
                                 </p>
 
                             </td>
@@ -600,35 +602,76 @@
                                     <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:support@mobileapp.com">luis.munoz.m@academicos.udg.mx</a>                            
                                 </p>
                                 <p class="mb-2 ml-2">                            
-                                    Jefe de laboratorio
+                                    Profesor del laboratorio
                                 </p>
                             </td>
+                        </tr>
+
+                        <tr>
+                            @foreach ($matutino as $mat)
+
+                                <td>
+                                    <p class="mb-2">
+                                        <span class="ti-user mr-2"></span> <a>{{$mat->Nombre}}</a>
+                                    </p>
+                                    <p class="mb-2">                            
+                                        <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:support@mobileapp.com">{{$mat->correo}}</a>                            
+                                    </p>
+                                    <p class="mb-2 ml-2">                            
+                                        Encargado del turno {{$mat->horario}}
+                                    </p>
+                                </td>
+                            @endforeach
                         </tr>
                         <tr>
-                            <td>
-                                <p class="mb-2">
-                                    <span class="ti-user mr-2"></span> <a>Miguel Flores</a>
-                                </p>
-                                <p class="mb-2">                            
-                                    <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:support@mobileapp.com">abraham.flores4433@alumnos.udg.mx</a>                            
-                                </p>
-                                <p class="mb-2 ml-2">                            
-                                    Coordinador de laboratorio turno matutino
-                                </p>
+                            @foreach ($mediodia as $mid)
 
-                            </td>
-                            <td>
-                                <p class="mb-2">
-                                    <span class="ti-user mr-2"></span> <a>Jair Olguín</a>
-                                </p>
-                                <p class="mb-2">                            
-                                    <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:support@mobileapp.com">jair.olguin4397@alumnos.udg.mx</a>                            
-                                </p>
-                                <p class="mb-2 ml-2">                            
-                                    Coordinador de laboratorio turno matutino
-                                </p>
-                            </td>
+                                <td>
+                                    <p class="mb-2">
+                                        <span class="ti-user mr-2"></span> <a>{{$mid->Nombre}}</a>
+                                    </p>
+                                    <p class="mb-2">                            
+                                        <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:support@mobileapp.com">{{$mid->correo}}</a>                            
+                                    </p>
+                                    <p class="mb-2 ml-2">                            
+                                        Encargado del turno {{$mid->horario}}
+                                    </p>
+                                </td>
+                            @endforeach
                         </tr>
+                        <tr>
+                            @foreach ($vespertino as $v)
+
+                                <td>
+                                    <p class="mb-2">
+                                        <span class="ti-user mr-2"></span> <a>{{$v->Nombre}}</a>
+                                    </p>
+                                    <p class="mb-2">                            
+                                        <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:support@mobileapp.com">{{$v->correo}}</a>                            
+                                    </p>
+                                    <p class="mb-2 ml-2">                            
+                                        Encargado del turno {{$v->horario}}
+                                    </p>
+                                </td>
+                            @endforeach
+                        </tr>
+                        <tr>
+                            @foreach ($sabatino as $s)
+
+                                <td>
+                                    <p class="mb-2">
+                                        <span class="ti-user mr-2"></span> <a>{{$s->Nombre}}</a>
+                                    </p>
+                                    <p class="mb-2">                            
+                                        <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:support@mobileapp.com">{{$s->correo}}</a>                            
+                                    </p>
+                                    <p class="mb-2 ml-2">                            
+                                        Encargado del turno {{$s->horario}}
+                                    </p>
+                                </td>
+                            @endforeach
+                        </tr>
+                        
 
                     </tbody>
                 </table>
