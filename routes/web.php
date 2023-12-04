@@ -23,11 +23,15 @@ Route::get('/adminLayout', function(){
     return view('prestador.PruebaAdminLayout');
 });
 
+Route::get('/articulos', function(){
+    return view('landingArticulos');
+})->name('articulos');
+
 Route::get('/inventores', function (){
     $leaderBoard= DB::select("SELECT * from full_leaderboard limit 10");  
 
     return view(
-        'landingPageTEMP',
+        'landingPage',
         [
             'leaderBoard'=> $leaderBoard,
         ]

@@ -264,13 +264,13 @@ header {
     overflow: hidden;
 }
 
-@media (max-width:1200px) {
+@media (max-width:1300px) {
     .img-holder {
         padding-bottom: 50%;
     }
 }
 
-@media (max-width:767px) {
+@media (max-width:800px) {
     .tagline {
         font-size: 17px;
     }
