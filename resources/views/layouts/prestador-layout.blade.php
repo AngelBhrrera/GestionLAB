@@ -5,6 +5,16 @@
 @endsection
 
 @section('content')
+<?php   
+        $nivel = DB::table('niveles')
+            ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
+            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion')
+            ->where('niveles.experiencia_acumulada', '<=', Auth::user()->experiencia ?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
+            ->orderByDesc('niveles.experiencia_acumulada')
+            ->first();
+        $nivel_str = strval($nivel->nivel);?>
+
+            
 <body class="main">
     <div class="xl:pl-5 xl:py-5 flex h-screen">
         <nav class="side-nav">
@@ -194,11 +204,13 @@
                     <div class="intro-x relative ml-auto flex sm:mx-auto">
                             @if (Auth::user()->can_admin == 1)
                             <a href="{{ route('cambiarRol') }}">
-                                <button class="btn btn-primary ml-5">
+                                <button class="btn btn-primary ml-5"><i data-lucide="refresh-cw"></i>
                                     {{ __('Cambiar a admin') }}</button>
                             </a>    
                             @endif
+                            
                     </div>
+                    
                     <!-- BEGIN: Intermede -->
                         <div class="-intro-x xl:hidden mr-3 sm:mr-6">
                             <div class="mobile-menu-toggler cursor-pointer"> <i data-lucide="bar-chart-2" class="mobile-menu-toggler__icon transform rotate-90 dark:text-slate-500"></i> </div>
@@ -207,7 +219,9 @@
                     <!-- END: Intermede -->
                        
                     <!-- Comienza menu cuenta-->
+                    <div class="intro-x relative ml-auto flex sm:mx-auto"><h2 class="text-1xl font-medium">Nivel: {{$nivel_str}} <br> Xp: {{Auth::user()->experiencia}}</h2> <img class="ml-5"width="70" heigth="50" src="{{asset('build/assets/'.$nivel->ruta)}}" alt="medalla"></div>
                     <div class="intro-x dropdown h-10">
+                        
                         <div class="h-full dropdown-toggle flex items-center" role="button" aria-expanded="false" data-tw-toggle="dropdown">
                             <div class="w-10 h-10 image-fit">
                             @if(!isset(Auth::user()->imagen_perfil))
