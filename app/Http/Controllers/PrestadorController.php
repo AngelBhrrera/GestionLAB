@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use DateTime;
+use Illuminate\Support\Facades\Log;
+use App\Models\User;
 
 
 class PrestadorController extends Controller
@@ -567,6 +569,11 @@ class PrestadorController extends Controller
     {
         $user = Auth::user();
 
+        $sede = DB::table('sede')
+        ->select('sede.nombre_Sede', 'sede.id_Sede')
+        ->where('sede.id_Sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
+        ->first();
+        
         $nivel = DB::table('niveles')
             ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
             ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion')
@@ -589,7 +596,7 @@ class PrestadorController extends Controller
         $descripcion_medalla = $nivel->descripcion;
 
 
-        return view('prestador.newProfile', compact('user', 'nivel_str', 'medalla', 'nivel', 'descripcion_medalla', 'todasMedallasUsuario'));
+        return view('prestador.newProfile', compact('user', 'sede', 'nivel_str', 'medalla', 'nivel', 'descripcion_medalla', 'todasMedallasUsuario'));
     }
 
     public function cambiarImagenPerfil(Request $request)
@@ -786,4 +793,25 @@ class PrestadorController extends Controller
         return view('prestador.faltas_prestador');
     }
 
+    public function cambiarRol()
+    {
+        if (Auth::user()->can_admin == 1) {
+
+                $user = User::find(Auth::user()->id);
+                switch ($user->tipo) {
+                    case 'prestador':
+                        $user->tipo = 'admin';
+                        $user->save();
+                        Log::info('era prestador');
+                        break;
+                    case 'admin':
+                        $user->tipo = 'prestador';
+                        $user->save();
+                        Log::info('era admin');
+                        break;
+                }
+                return redirect('/');
+        }
+
+    }
 }
