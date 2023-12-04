@@ -38,6 +38,10 @@ Route::get('/devTeam', function(){
     return view('devTeam');
 })->name('devTeam');
 
+Route::get('/spiderw', function(){
+    return view('/TEST/spider');
+})->name('spider');
+
 Route::controller(App\Http\Controllers\Auth\RegisterController::class)->group(function(){
     Route::post('/registro', 'register')->name('registrar');
 });
