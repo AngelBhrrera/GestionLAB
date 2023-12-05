@@ -94,8 +94,7 @@
         
         <div class="box intro-y p-5 mt-5">
             <div class="flex items-center border-b border-slate-200/60 dark:border-darkmode-400 pb-5 mb-5">
-                <div class="font-medium truncate text-base">Insignias Obtenidas</div>
-                <i data-lucide="edit" class="w-4 h-4 text-slate-500 ml-auto"></i> 
+                <div class="font-medium truncate text-base">Medallas Obtenidas</div>
             </div>
             <div class="grid grid-cols-12 gap-y-7">
                 @foreach($todasMedallasUsuario as $medalla)
@@ -105,9 +104,21 @@
                             <div class="font-medium text-base">{{$medalla->descripcion}}</div>
                             <div class="mt-1 text-slate-500">Obtenida en el nivel {{$medalla->nivel}}</div>
                         </div>
-                        
                     </div>
                 @endforeach
+            </div>
+        </div>
+        <div class="box intro-y p-5 mt-5">
+            <div class="flex items-center border-b border-slate-200/60 dark:border-darkmode-400 pb-5 mb-5">
+                <div class="font-medium truncate text-base">Insignias Obtenidas</div>
+            </div>
+            <div class="grid grid-cols-12 gap-y-7">
+                    <div class="col-span-12 sm:col-span-6 2xl:col-span-4 flex">
+                        <div class="ml-5">
+                            <p>No has obtenido ninguna insignia</p>
+                        </div>
+                        
+                    </div>
             </div>
         </div>
     </div>
