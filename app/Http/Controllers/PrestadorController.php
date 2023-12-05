@@ -602,7 +602,7 @@ class PrestadorController extends Controller
     public function cambiarImagenPerfil(Request $request)
     {
         $request->validate([
-            'imagen_perfil' => 'required|image|max:4096', // la imagen debe ser de tipo imagen y tener un tamaño máximo de 2MB
+            'imagen_perfil' => 'required|image|max:4096', // la imagen debe ser de tipo imagen y tener un tamaño máximo de MB
         ], [
             'imagen_perfil.max' => 'La imagen debe pesar menos de 4MB',
         ]);
@@ -613,7 +613,7 @@ class PrestadorController extends Controller
         // Eliminar la imagen del usuario si es que ya tenia
         if ($user->imagen_perfil) {
             // $image_path = public_path('storage/imagen/imagen/' . $user->imagen_perfil);
-            $image_path = public_path('/public/imagen/' . $user->imagen_perfil);
+            $image_path = public_path('storage/userImg/'.$user->imagen_perfil);
             if (file_exists($image_path)) {
                 unlink($image_path);
             }
@@ -621,8 +621,7 @@ class PrestadorController extends Controller
 
 
         // Almacenar la nueva imagen
-        $imagen_path = $request->file('imagen_perfil')->store('imagen', 'public');
-
+        $imagen_path = $request->file('imagen_perfil')->store('public/userImg/');
 
         $nombre_archivo = basename($imagen_path);
 
