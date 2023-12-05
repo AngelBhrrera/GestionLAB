@@ -107,15 +107,17 @@
                                     <td><strong><p style="color: #0023FF;">{{$top->Posicion}}</p></strong></td>
                                     
                                     <td>
+                                        <div class="w-10 h-10 image-fit">
                                         @if (Auth::user()->imagen_perfil)
                                             <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" 
-                                            src="{{asset('build/assets/images/placeholders/userImg/'.Auth::user()->imagen_perfil)}}" 
+                                            src="{{asset('storage/userImg/'.Auth::user()->imagen_perfil)}}" 
                                             width="40" height="40" alt="">
                                         @else
                                             <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" 
-                                            src="{{asset('build/assets/images/placeholders/avatar5.png')}}"
+                                            src="{{asset('storage/userImg/default-profile-image.png')}}"
                                             width="40" height="40" alt="">
                                         @endif
+                                        </div>
                                     <strong><p style="color: #0023FF"> {{$top->Inventor}}</p></strong></td>
                                     <td><strong><p style="color: #0023FF">{{$top->experiencia}}</p></strong></td>
                                     <td><img src="{{asset('build/assets/'.$usuarioMedalla->ruta)}}"  width="40" height="80" alt=""></td>
@@ -124,16 +126,17 @@
                                     
                                     <td>{{$top->Posicion}}</td>
                                     <td>
+                                        <div class="w-10 h-10 image-fit">
                                         @if(!$imagen[0]->imagen_perfil)
                                             <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" 
-                                            src="{{asset('build/assets/images/placeholders/avatar5.png')}}" 
+                                            src="{{asset('storage/userImg/default-profile-image.png')}}" 
                                             width="40" height="40" alt="">    
                                         @else
                                             <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" 
-                                            src="{{asset('build/assets/images/placeholders/userImg/'.$imagen[0]->imagen_perfil)}}" 
+                                            src="{{asset('storage/userImg/'.$imagen[0]->imagen_perfil)}}" 
                                             width="40" height="40" alt="">
                                         @endif
-                                        
+                                        </div>
                                         {{$top->Inventor}}</td>
                                     <td>{{$top->experiencia}}</td>
                                     <td><img src="{{asset('build/assets/'.$top->ruta)}}"  width="40" height="80" alt=""></td>
@@ -142,16 +145,18 @@
                             </tr>
                         @endforeach
                         @if (!$bandera)
-                            
                             <tr>
                                 <td> <p style="color: #0023FF"><strong>{{$posicionUsuario[0]->position}} </strong> </p></td>
-                                <td> 
+                                <td>
+                                <div class="w-10 h-10 image-fit">
                                 @if(!isset(Auth::user()->imagen_perfil))
-                                    <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('build/assets/images/placeholders/avatar5.png')}}">
+                                    <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/default-profile-image.png')}}">
                                 @else
                                     <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" 
-                                    src="{{asset('build/assets/images/placeholders/userImg/'.Auth::user()->imagen_perfil)}}" 
-                                     width="40" height="40" alt="">                                @endif    
+                                    src="{{asset('storage/userImg/'.Auth::user()->imagen_perfil)}}" 
+                                     width="40" height="40" alt="">                                
+                                @endif
+                                </div>    
                                 <p style="color: #0023FF"><strong> {{$posicionUsuario[0]->Nombre}}</strong></p> </td>
                                 <td> <p style="color: #0023FF"><strong>{{$posicionUsuario[0]->experiencia}}</strong></p> </td>
                                 <td><img src="{{asset('build/assets/'.$usuarioMedalla->ruta)}}" width="40" height="80"alt=""></td>

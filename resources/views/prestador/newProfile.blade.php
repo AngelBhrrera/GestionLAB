@@ -17,9 +17,9 @@
                 <div class="image-fit w-40 h-40 rounded-full border-4 border-white shadow-md overflow-hidden">
                 
                 @if(!isset($user->imagen_perfil))
-                    <img alt="{{$user->name.' '.$user->apellido}}" src="{{asset('build/assets/images/placeholders/avatar5.png')}}">
+                    <img alt="{{$user->name.' '.$user->apellido}}" src="{{asset('storage/userImg/default-profile-image.png')}}">
                 @else
-                    <img alt="{{$user->name.' '.$user->apellido}}" src="{{asset('build/assets/images/placeholders/userImg/'.$user->imagen_perfil)}}">
+                    <img alt="{{$user->name.' '.$user->apellido}}" src="{{asset('storage/userImg/'.$user->imagen_perfil)}}">
                 @endif
                 </div>
                     
@@ -57,38 +57,71 @@
                     </div>
                 </div>
                 <div class="flex 2xl:mr-10 mt-5">
-                    <button class="btn btn-primary mr-2 w-40"> <i class="w-4 h-4 mr-2" data-target="#imagenModal" data-toggle="modal" data-lucide="image-plus"></i> Cambiar imagen</button>
+                    <!-- BEGIN: Modal Toggle -->
+                    <div class="text-center">
+                        <a href="javascript:;" data-tw-toggle="modal" 
+                        data-tw-target="#basic-modal-preview" class="btn btn-primary">
+                        <i class="w-4 h-4 mr-2" data-target="#imagenModal" data-toggle="modal" data-lucide="image-plus"></i> Cambiar imagen</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- END: Profile Cover -->
     <!-- Modal para cambiar la imagen -->
-    <div class="modal fade" id="imagenModal" tabindex="-1" role="dialog" aria-labelledby="imagenModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="imagenModalLabel">Cambiar imagen de perfil</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <form action="{{ route('cambiarImagenPerfil') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="modal-body">
-              <div class="form-group">
-                <label for="imagen_perfil">Imagen de perfil</label>
-                <input type="file" class="form-control-file" id="imagen_perfil" name="imagen_perfil">
-              </div>
+    <div id="blank-modal" class="p-5">
+        <div class="preview">
+            <!-- END: Modal Toggle -->
+            <!-- BEGIN: Modal Content -->
+            <div id="basic-modal-preview" class="modal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body p-10 text-center">
+                            <h2 class="text-2xl mt-5 font-medium">
+                                Cambiar imagen de perfil
+                            </h2>
+                            <form action="{{ route('cambiarImagenPerfil') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                    <div class="modal-body">
+                                            <div class="form-group">
+                                            <div class="text-center pt-5">
+                                        <label class="form-block-input btn-primary" style="
+                                            border-radius: 15px;
+                                            font-size: 14px;
+                                            font-weight: 600;
+                                            display: inline-block;
+                                            transition: all .5s;
+                                            cursor: pointer;
+                                            padding: 15px 40px !important;
+                                            text-transform: uppercase;
+                                            width: fit-content;
+                                            text-align: center;
+                                            " >
+                                            <div style="display:flex;">
+                                                <i data-lucide="image" height="20" width="20"></i>
+                                                <input type="file"  id="imagen_perfil" name="imagen_perfil" class="form-control-file" style="display: none;"  accept="image/jpg, image/jpeg, image/png"/>
+                                                <span class="form-file-span pl-5">Selecciona una imagen</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" id="cancelar" data-tw-dismiss="modal" class="btn btn-danger" data-dismiss="#basic-modal-preview">Cancelar</button>
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-success">Guardar</button>
-            </div>
-          </form>
+            <!-- END: Modal Content -->
         </div>
-      </div>
     </div>
+    <!-- END modal cambiar imagen-->
+        
+    
     <!-- BEGIN: Profile Content -->
     <div class="col-span-12 xl:col-span-8">
         
@@ -123,4 +156,37 @@
         </div>
     </div>
     <!-- END: Profile Content -->
+
 @endsection
+<script>
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        // Obtener inputs tipo file
+        // Asignar eventos a inputs
+        const fileInputs = document.querySelectorAll('input[type=file]');
+        const fileButtons = document.querySelectorAll('.form-file-button');
+        fileInputs[0].addEventListener('change', fileChange);
+        // Agrega el evento de clic al botón de cancelar
+        
+    });
+
+    // Cambios en inputs
+    function fileChange(e) {
+        let input = e.target;
+        let spanBlock = e.target.closest('label').querySelector('.form-file-span');
+        // Limpiar contenedor
+        spanBlock.innerHTML = '';
+        // Recorrer archivos para agregarlos al contenedor
+        Array.from(input.files).forEach(file => {
+            spanBlock.innerHTML += `<span class="form-files">${file.name}</span>`;
+        });
+    }
+    // Clics en botones
+    function fileClick(e) {
+        // Desde el botón se obtiene el input y se abre la ventana para seleccionar archivos
+        let input = e.target.closest('label').querySelector('input');
+        input.click();
+    }
+    
+    
+</script>

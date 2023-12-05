@@ -43,7 +43,7 @@ class CreateUsersTable extends Migration
             $table->string('imagen_perfil', 255)->nullable();
             $table->unsignedInteger('experiencia')->default(1)->nullable();
         });
-        /*
+        
         DB::table('users')->insert([
             "name" =>"admin",
             "apellido" => "admin",
@@ -63,7 +63,7 @@ class CreateUsersTable extends Migration
             "telefono" => null,
             "imagen_perfil" => null,
             "experiencia" => null
-        ]);*/
+        ]);
 
         
     }
