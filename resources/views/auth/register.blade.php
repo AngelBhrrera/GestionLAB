@@ -9,7 +9,6 @@
 @section('content')
 
     <div class="w-full min-h-screen md:p-10 flex items-center justify-center">
-
         <!-- BEGIN: Wizard Layout -->
         <div class="intro-y box py-30  mt-">
 
@@ -169,13 +168,14 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divSede" style="display:none">
                                         <label for="input-wizard-3" class="form-label">Sede *</label>
-                                        <select class="form-control @if(old('opc')=='1') @error('sede') is-invalid @enderror @endif" name="sede" id="sede" >
+                                        <select class="form-control @if(old('opc')=='1') @error('sede') is-invalid @enderror @endif" name="sede" id="sede" onchange="sedeNav()">
                                             @if (isset($sede))
                                                 <option id="sede" value="{{null}}" {{isset($dV[0]->sede) ? $dV[0]->sede == null ? 'selected="selected"' : '' : ''}}>Selecciona una sede</option>
                                                 @foreach ($sede as $dato )
-                                                    <option id="{{$dato->id_Sede}}" value="{{$dato->id_Sede}}" {{old('sede') == $dato->id_Sede ? 'selected="selected"' : '' }}>{{$dato->nombre_Sede }} </option>
+                                                    <option id="{{$dato->nombre_Sede}}" value="{{$dato->id_Sede}}" {{old('sede') == $dato->id_Sede ? 'selected="selected"' : '' }}>{{$dato->nombre_Sede }} </option>
                                                 @endforeach
                                             @endif
+                                        
                                         </select>
                                         @if(old('opc')=='1')
                                             @error('sede')
@@ -189,13 +189,13 @@
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divTurno" style="display:none">
                                         <label for="input-wizard-4" class="form-label">Turno</label>
                                         <select class="form-control" name="horario" id="horario">
-                                            <option selected id="1" value='null'>Seleccione un turno</option>
-                                                <option id="1" value='Matutino'>Matutino (8-12) </option>
-                                                <option id="2" value='Mediodia'>Mediodia (12-4)</option>
-                                                <option id="3" value='Vespertino'>Vespertino (4-8)</option>
-                                                <option id="4" value='Sabatino' >Sabados</option>
-                                                <option id="5" value='TC'>Tiempo completo</option>                    
-                                                <option id="6" value='NA' >No Aplica</option>
+                                            <option selected id="1" value='null'>Seleccione un turno</option> 
+                                            <option id="1" value='Matutino'>Matutino (8-12) </option>
+                                            <option id="2" value='Mediodia'>Mediodia (12-4)</option>
+                                            <option id="3" value='Vespertino'>Vespertino (4-8)</option>
+                                            <option id="4" value='Sabatino' >Sabados</option>
+                                            <option id="5" value='TC'>Tiempo completo</option>                    
+                                            <option id="6" value='NA' >No Aplica</option>
                                         </select>
                                             @error('horario')
                                                 <span class="invalid-feedback" role="alert">
@@ -305,7 +305,117 @@
                 changeCase(2);
             }
         }
-        
+
+        function sedeNav() {
+            window.sedesql = @json($sede);
+            var optionSelect = document.getElementById("horario");
+            if (document.getElementById("CUCEI Laboratorio").selected) {       
+                sedesql.forEach(function(registro) {
+                    if (registro.nombre_Sede === "CUCEI Laboratorio") {
+                        deshabilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 0);
+                        habilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 1);
+                        deshabilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 0);
+                        habilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 1);
+                        deshabilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 0);
+                        habilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 1);
+                        deshabilitarOpcion(optionSelect, "Sabatino", registro.turnoSabatino === 0);
+                        habilitarOpcion(optionSelect, "Sabatino", registro.Sabatino === 1);
+                        deshabilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 0);
+                        habilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 1);
+                        deshabilitarOpcion(optionSelect, "NA", registro.no_Aplica === 0);
+                        habilitarOpcion(optionSelect, "NA", registro.no_Aplica === 1);
+                    }
+                });
+            }
+            if (document.getElementById("CUCEI Coordinación").selected){
+                sedesql.forEach(function(registro) {
+                    if (registro.nombre_Sede === "CUCEI Coordinación") {
+                        deshabilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 0);
+                        habilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 1);
+                        deshabilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 0);
+                        habilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 1);
+                        deshabilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 0);
+                        habilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 1);
+                        deshabilitarOpcion(optionSelect, "Sabatino", registro.turnoSabatino === 0);
+                        habilitarOpcion(optionSelect, "Sabatino", registro.Sabatino === 1);
+                        deshabilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 0);
+                        habilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 1);
+                        deshabilitarOpcion(optionSelect, "NA", registro.no_Aplica === 0);
+                        habilitarOpcion(optionSelect, "NA", registro.no_Aplica === 1);
+                    }
+                });
+            }
+            if (document.getElementById("CUCEI Innovación").selected){
+                sedesql.forEach(function(registro) {
+                    if (registro.nombre_Sede === "CUCEI Innovación") {
+                        deshabilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 0);
+                        habilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 1);
+                        deshabilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 0);
+                        habilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 1);
+                        deshabilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 0);
+                        habilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 1);
+                        deshabilitarOpcion(optionSelect, "Sabatino", registro.turnoSabatino === 0);
+                        habilitarOpcion(optionSelect, "Sabatino", registro.Sabatino === 1);
+                        deshabilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 0);
+                        habilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 1);
+                        deshabilitarOpcion(optionSelect, "NA", registro.no_Aplica === 0);
+                        habilitarOpcion(optionSelect, "NA", registro.no_Aplica === 1);
+                    }
+                });
+            }
+            if (document.getElementById("CFE").selected){
+                sedesql.forEach(function(registro) {
+                    if (registro.nombre_Sede === "CFE") {
+                        deshabilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 0);
+                        habilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 1);
+                        deshabilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 0);
+                        habilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 1);
+                        deshabilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 0);
+                        habilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 1);
+                        deshabilitarOpcion(optionSelect, "Sabatino", registro.turnoSabatino === 0);
+                        habilitarOpcion(optionSelect, "Sabatino", registro.Sabatino === 1);
+                        deshabilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 0);
+                        habilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 1);
+                        deshabilitarOpcion(optionSelect, "NA", registro.no_Aplica === 0);
+                        habilitarOpcion(optionSelect, "NA", registro.no_Aplica === 1);
+                    }
+                });
+            }
+            if (document.getElementById("CUCS").selected){
+                sedesql.forEach(function(registro) {
+                    if (registro.nombre_Sede === "CUCS") {
+                        deshabilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 0);
+                        habilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 1);
+                        deshabilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 0);
+                        habilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 1);
+                        deshabilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 0);
+                        habilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 1);
+                        deshabilitarOpcion(optionSelect, "Sabatino", registro.turnoSabatino === 0);
+                        habilitarOpcion(optionSelect, "Sabatino", registro.Sabatino === 1);
+                        deshabilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 0);
+                        habilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 1);
+                        deshabilitarOpcion(optionSelect, "NA", registro.no_Aplica === 0);
+                        habilitarOpcion(optionSelect, "NA", registro.no_Aplica === 1);
+                    }
+                });
+            }
+        }
+
+        function deshabilitarOpcion(select, opcion, condicion) {
+            for (var k = 0; k < select.options.length; k++) {
+                if (select.options[k].value === opcion && condicion) {
+                    select.options[k].disabled = true;
+                }
+            }
+        }
+        function habilitarOpcion(select, opcion, condicion) {
+            for (var k = 0; k < select.options.length; k++) {
+                if (select.options[k].value === opcion && condicion) {
+                    select.options[k].disabled = false;
+                }
+            }
+        }
+
         function travel($var){
 
             var index = $var; 

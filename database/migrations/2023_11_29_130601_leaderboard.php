@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
-class PrestadoresServicioConcluido extends Migration
+class leaderboard extends Migration
 {
 
     public function up()

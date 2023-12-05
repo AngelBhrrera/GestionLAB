@@ -79,9 +79,8 @@ class logsysController extends Controller
 
     public function show(){
         $sede= DB::select("SELECT * FROM sede;");
-        $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin';");
+        $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin';");   // muestra en el box la lista
         $var = 1;
         return view('auth.register', ['encargado'=>$encargado,'sede'=>$sede]);
     }
-
 }
