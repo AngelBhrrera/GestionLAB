@@ -28,12 +28,17 @@ Route::get('/articulos', function(){
 })->name('articulos');
 
 Route::get('/inventores', function (){
+    $matutino =  DB::select("SELECT CONCAT(name, ' ', apellido) AS Nombre , correo, horario from users WHERE fecha_salida is NULL AND sede = 1 AND horario = 'Matutino' AND (tipo = 'admin' OR tipo = 'encargado')");  
+    $mediodia =  DB::select("SELECT CONCAT(name, ' ', apellido) AS Nombre , correo, horario from users WHERE fecha_salida is NULL AND sede = 1 AND horario = 'Mediodia' AND (tipo = 'admin' OR tipo = 'encargado')");  
+    $vespertino = DB::select("SELECT CONCAT(name, ' ', apellido) AS Nombre , correo, horario from users WHERE fecha_salida is NULL AND sede = 1 AND horario = 'Vespertino' AND (tipo = 'admin' OR tipo = 'encargado')");  
+    $sabatino =  DB::select("SELECT CONCAT(name, ' ', apellido) AS Nombre , correo, horario from users WHERE fecha_salida is NULL AND sede = 1 AND horario = 'Sabatino' AND (tipo = 'admin' OR tipo = 'encargado')");  
+
     $leaderBoard= DB::select("SELECT * from full_leaderboard limit 10");  
 
     return view(
         'landingPage',
         [
-            'leaderBoard'=> $leaderBoard,
+            'leaderBoard'=> $leaderBoard, 'matutino'=>$matutino, 'mediodia'=>$mediodia, 'vespertino'=>$vespertino, 'sabatino'=>$sabatino
         ]
     );
 })->name('landing');
@@ -41,6 +46,10 @@ Route::get('/inventores', function (){
 Route::get('/devTeam', function(){
     return view('devTeam');
 })->name('devTeam');
+
+Route::get('/spiderw', function(){
+    return view('/TEST/spider');
+})->name('spider');
 
 Route::controller(App\Http\Controllers\Auth\RegisterController::class)->group(function(){
     Route::post('/registro', 'register')->name('registrar');
