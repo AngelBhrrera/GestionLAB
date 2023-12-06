@@ -20,7 +20,7 @@ Auth::routes([
 
 //PRUEBAS
 Route::get('/adminLayout', function(){
-    return view('prestador.PruebaAdminLayout');
+    return view('admin.PruebaAdminLayout');
 });
 
 Route::get('/articulos', function(){
@@ -151,6 +151,9 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/Dias_no_laborables', 'diasfestivos')->name('diasfestivos');
             Route::get('/admin/horarios', 'horarios')->name('horarios');
             Route::get('/admin/obtenerActividades', 'obtenerActividades')->name('obtenerActividades');
+
+            Route::get('admin/obtenerActividades', 'gestionSedes')->name('sedes');
+            Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
 
             // Route::get('/admin/registrovisitas', 'registroVisitas')->name('registrovisitas');
             // Route::get('/admin/visitas', 'visitas')->name('visitas');
