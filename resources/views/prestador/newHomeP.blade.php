@@ -77,7 +77,7 @@
         <div class="xl:px-6 mt-2.5">
             <div class="intro-y flex items-center mt-8">
                 <h2 class="text-lg font-medium mr-auto">
-                    LEADERBOARD
+                    TORNEO: MEJORES PRESTADORES DE SERVICIO
                 </h2>
             </div>
         </div>
@@ -97,19 +97,47 @@
 
                     <tbody>
 
-                        <?php $bandera = false; ?>
+                        <?php $bandera = false;?>
+                            
                         @foreach ( $leaderBoard as $top)  
+                            <?php $imagen = DB::select("select imagen_perfil from users where codigo=$top->codigo")?>
                             <tr>
                                 @if ($top->codigo == Auth::user()->codigo)
                                     <?php $bandera = true; ?>
-                                    <td><strong>{{$top->Posicion}}</strong></td>
-                                    <td><strong>{{$top->Inventor}}</strong></td>
-                                    <td><strong>{{$top->experiencia}}</strong></td>
+                                    <td><strong><p style="color: #0023FF;">{{$top->Posicion}}</p></strong></td>
+                                    
+                                    <td>
+                                        <div class="w-10 h-10 image-fit">
+                                        @if (Auth::user()->imagen_perfil)
+                                            <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" 
+                                            src="{{asset('storage/userImg/'.Auth::user()->imagen_perfil)}}" 
+                                            width="40" height="40" alt="">
+                                        @else
+                                            <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" 
+                                            src="{{asset('storage/userImg/default-profile-image.png')}}"
+                                            width="40" height="40" alt="">
+                                        @endif
+                                        </div>
+                                    <strong><p style="color: #0023FF"> {{$top->Inventor}}</p></strong></td>
+                                    <td><strong><p style="color: #0023FF">{{$top->experiencia}}</p></strong></td>
                                     <td><img src="{{asset('build/assets/'.$usuarioMedalla->ruta)}}"  width="40" height="80" alt=""></td>
                                             
                                 @else
+                                    
                                     <td>{{$top->Posicion}}</td>
-                                    <td>{{$top->Inventor}}</td>
+                                    <td>
+                                        <div class="w-10 h-10 image-fit">
+                                        @if(!$imagen[0]->imagen_perfil)
+                                            <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" 
+                                            src="{{asset('storage/userImg/default-profile-image.png')}}" 
+                                            width="40" height="40" alt="">    
+                                        @else
+                                            <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" 
+                                            src="{{asset('storage/userImg/'.$imagen[0]->imagen_perfil)}}" 
+                                            width="40" height="40" alt="">
+                                        @endif
+                                        </div>
+                                        {{$top->Inventor}}</td>
                                     <td>{{$top->experiencia}}</td>
                                     <td><img src="{{asset('build/assets/'.$top->ruta)}}"  width="40" height="80" alt=""></td>
                                 @endif
@@ -118,9 +146,19 @@
                         @endforeach
                         @if (!$bandera)
                             <tr>
-                                <td> <strong>{{$posicionUsuario[0]->position}} </strong> </td>
-                                <td> <strong> {{$posicionUsuario[0]->Nombre}}</strong> </td>
-                                <td> <strong>{{$posicionUsuario[0]->experiencia}}</strong> </td>
+                                <td> <p style="color: #0023FF"><strong>{{$posicionUsuario[0]->position}} </strong> </p></td>
+                                <td>
+                                <div class="w-10 h-10 image-fit">
+                                @if(!isset(Auth::user()->imagen_perfil))
+                                    <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/default-profile-image.png')}}">
+                                @else
+                                    <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" 
+                                    src="{{asset('storage/userImg/'.Auth::user()->imagen_perfil)}}" 
+                                     width="40" height="40" alt="">                                
+                                @endif
+                                </div>    
+                                <p style="color: #0023FF"><strong> {{$posicionUsuario[0]->Nombre}}</strong></p> </td>
+                                <td> <p style="color: #0023FF"><strong>{{$posicionUsuario[0]->experiencia}}</strong></p> </td>
                                 <td><img src="{{asset('build/assets/'.$usuarioMedalla->ruta)}}" width="40" height="80"alt=""></td>
                             </tr>
                         @endif

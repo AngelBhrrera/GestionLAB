@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use DateTime;
+use Illuminate\Support\Facades\Log;
+use App\Models\User;
 
 
 class PrestadorController extends Controller
@@ -16,6 +18,23 @@ class PrestadorController extends Controller
         $this->middleware('auth');
     }
 
+    public function index()
+    {
+
+        $code = Auth::user()->codigo;
+        if(request()->ajax()) {
+            $data = DB::table('horasprestadores')
+            ->select('SELECT `fecha`, `hora_entrada`, `hora_salida`, `tiempo`, `horas`, `estado` FROM `horasprestadores` WHERE `codigo` =' + $code )
+            ->get();
+
+            return datatables()->of($data)
+        //->addColumn('action', 'employee-action')
+          //  ->rawColumns(['action'])
+            ->addIndexColumn()
+            ->make(true);
+        }
+        return view('homeP');
+    }
 
     public function home(){
         $id = Auth::user()->id;
@@ -550,13 +569,17 @@ class PrestadorController extends Controller
     {
         $user = Auth::user();
 
+        $sede = DB::table('sede')
+        ->select('sede.nombre_Sede', 'sede.id_Sede')
+        ->where('sede.id_Sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
+        ->first();
+        
         $nivel = DB::table('niveles')
             ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
             ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion')
             ->where('niveles.experiencia_acumulada', '<=', $user->experiencia ?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
             ->orderByDesc('niveles.experiencia_acumulada')
             ->first();
-
         $todasMedallasUsuario = DB::table('niveles')
                 ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
                 ->select('medallas.ruta', 'medallas.nivel', 'medallas.descripcion')
@@ -573,13 +596,13 @@ class PrestadorController extends Controller
         $descripcion_medalla = $nivel->descripcion;
 
 
-        return view('prestador.newProfile', compact('user', 'nivel_str', 'medalla', 'nivel', 'descripcion_medalla', 'todasMedallasUsuario'));
+        return view('prestador.newProfile', compact('user', 'sede', 'nivel_str', 'medalla', 'nivel', 'descripcion_medalla', 'todasMedallasUsuario'));
     }
 
     public function cambiarImagenPerfil(Request $request)
     {
         $request->validate([
-            'imagen_perfil' => 'required|image|max:4096', // la imagen debe ser de tipo imagen y tener un tamaño máximo de 2MB
+            'imagen_perfil' => 'required|image|max:4096', // la imagen debe ser de tipo imagen y tener un tamaño máximo de MB
         ], [
             'imagen_perfil.max' => 'La imagen debe pesar menos de 4MB',
         ]);
@@ -590,7 +613,7 @@ class PrestadorController extends Controller
         // Eliminar la imagen del usuario si es que ya tenia
         if ($user->imagen_perfil) {
             // $image_path = public_path('storage/imagen/imagen/' . $user->imagen_perfil);
-            $image_path = public_path('/public/imagen/' . $user->imagen_perfil);
+            $image_path = public_path('storage/userImg/'.$user->imagen_perfil);
             if (file_exists($image_path)) {
                 unlink($image_path);
             }
@@ -598,8 +621,7 @@ class PrestadorController extends Controller
 
 
         // Almacenar la nueva imagen
-        $imagen_path = $request->file('imagen_perfil')->store('imagen', 'public');
-
+        $imagen_path = $request->file('imagen_perfil')->store('public/userImg/');
 
         $nombre_archivo = basename($imagen_path);
 
@@ -770,4 +792,25 @@ class PrestadorController extends Controller
         return view('prestador.faltas_prestador');
     }
 
+    public function cambiarRol()
+    {
+        if (Auth::user()->can_admin == 1) {
+
+                $user = User::find(Auth::user()->id);
+                switch ($user->tipo) {
+                    case 'prestador':
+                        $user->tipo = 'admin';
+                        $user->save();
+                        Log::info('era prestador');
+                        break;
+                    case 'admin':
+                        $user->tipo = 'prestador';
+                        $user->save();
+                        Log::info('era admin');
+                        break;
+                }
+                return redirect('/');
+        }
+
+    }
 }

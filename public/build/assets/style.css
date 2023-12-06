@@ -264,13 +264,13 @@ header {
     overflow: hidden;
 }
 
-@media (max-width:1200px) {
+@media (max-width:1300px) {
     .img-holder {
         padding-bottom: 50%;
     }
 }
 
-@media (max-width:767px) {
+@media (max-width:800px) {
     .tagline {
         font-size: 17px;
     }
@@ -755,6 +755,10 @@ header {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: gradient 10s ease infinite;
+  }
+
+  #leaderBoard {
+    font-size: 15px;
   }
 
   @keyframes gradient {

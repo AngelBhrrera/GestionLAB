@@ -36,12 +36,12 @@ class CreateUsersTable extends Migration
 
             $table->string('carrera')->nullable();
             $table->tinyText('centro')->nullable();
-            $table->tinyInteger('sede')->nullable();
+            $table->tinyInteger('sede')->default(0)->nullable();
             $table->string('horario', 100)->nullable();
             $table->unsignedBigInteger('encargado_id')->nullable();
 
             $table->string('imagen_perfil', 255)->nullable();
-            $table->unsignedInteger('experiencia')->nullable();
+            $table->unsignedInteger('experiencia')->default(1)->nullable();
         });
         
         DB::table('users')->insert([

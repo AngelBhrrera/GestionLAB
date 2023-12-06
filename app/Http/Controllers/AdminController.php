@@ -61,7 +61,8 @@ class AdminController extends Controller
         $encargado = DB::table('users')->where('tipo', 'admin')->get();
 
         // return view('/home',['opcion'=> 'auth.registerAdmin', 'nombre' => 'Registro', 'ruta' => 'registrar']);
-        return view('/home', ['opcion' => 'auth.registerAdmin', 'encargado' => $encargado, 'nombre' => 'Registro', 'ruta' => 'registrar']);
+        return view('/auth/registerAdmin');
+        //return view('/auth/registerAdmin', ['encargado' => $encargado, 'nombre' => 'Registro', 'ruta' => 'registrar']);
     }
 
     // public function registro($centros = null, $encargado = null)
@@ -100,15 +101,22 @@ class AdminController extends Controller
         $tUser = Auth::user()->tipo;
         $uModificar = User::findOrFail($id);
         $encargados = User::where('can_admin', true)->get();
-        if (($tUser == "Superadmin") || ($tUser == "admin" && ($uModificar->tipo != "admin" && $uModificar->tipo != "checkin" && $uModificar->tipo != "Superadmin"))) {
+
+        return view ('/auth/registerAdmin');
+        /*if (($tUser == "Superadmin") || ($tUser == "admin" && ($uModificar->tipo != "admin" && $uModificar->tipo != "checkin" && $uModificar->tipo != "Superadmin"))) {
             $id = $request->input('id');
             $user = DB::table('users')->where('id', $id)->get();
             // $carreras = DB::table('carreras')->get();
             $centros = DB::table('centros')->get();
-            return view('/home', ['opcion' => 'auth.registerAdmin', 'centros' => $centros, 'nombre' => 'Edicion', 'dV' => $user, 'ruta' => 'admin.update', 'encargado' => $encargados]);
+            return view('/home', ['opcion' => 'auth.registerAdmin', 
+                                  'centros' => $centros, 
+                                  'nombre' => 'Edicion', 
+                                  'dV' => $user, 
+                                  'ruta' => 'admin.update', 
+                                  'encargado' => $encargados]);
         } else {
             return redirect('/');
-        }
+        }*/
     }
 
     //guardar estado

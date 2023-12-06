@@ -41,9 +41,12 @@ class logsysController extends Controller
       if(Auth::check()){
         $role = Auth::user()->tipo;
         switch ($role) {
+           
             case 'admin':
+            case 'Superadmin':
                 return redirect('/admin/home');
                 break;
+            case 'encargado':
             case 'prestador':
             case 'voluntario':
             case 'practicante':
@@ -57,9 +60,7 @@ class logsysController extends Controller
             case 'checkin':
                 return redirect('/check-in');
                 break;
-            case 'Superadmin':
-                return redirect('/admin/home');
-                break;
+
             default:
                 return redirect('/login');
         }
