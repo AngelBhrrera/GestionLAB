@@ -15,10 +15,6 @@
     <div class="col-span-12 mt-6 grid gap-36">
         <div class="intro-y block sm:flex items-center h-10">
             <h2 class="text-lg font-medium truncate mr-5 text-align center">Seguimiento de horas</h2>
-            <div class="sm:ml-auto mt-3 sm:mt-0 relative text-slate-500">
-                <i data-lucide="calendar" class="w-4 h-4 z-10 absolute my-auto inset-y-0 ml-3 left-0"></i>
-                <input type="text" class="datepicker form-control sm:w-56 box pl-10">
-            </div>
         </div>
 
         <!-- BEGIN: Reporte Horas Generales -->       
@@ -99,7 +95,7 @@
 
                         <?php $bandera = false;?>
                             
-                        @foreach ( $leaderBoard as $top)  
+                        @foreach ( $leaderBoard as $top)
                             <?php $imagen = DB::select("select imagen_perfil from users where codigo=$top->codigo")?>
                             <tr>
                                 @if ($top->codigo == Auth::user()->codigo)
@@ -118,7 +114,7 @@
                                             width="40" height="40" alt="">
                                         @endif
                                         </div>
-                                    <strong><p style="color: #0023FF"> {{$top->Inventor}}</p></strong></td>
+                                        <strong><p style="color: #0023FF"> {{$top->Inventor}}</p></strong></td>
                                     <td><strong><p style="color: #0023FF">{{$top->experiencia}}</p></strong></td>
                                     <td><img src="{{asset('build/assets/'.$usuarioMedalla->ruta)}}"  width="40" height="80" alt=""></td>
                                             

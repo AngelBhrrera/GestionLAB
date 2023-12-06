@@ -289,7 +289,7 @@
                             <a href="#" class="side-menu">
                                 <div class="side-menu__icon"> <i data-lucide="clipboard-copy"></i> </div>
                                 <div class="side-menu__title">
-                                Planificación
+                                PLANIFIACIÓN
                                     <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                                 </div>
                             </a>
@@ -309,6 +309,12 @@
                                         <path d="M16 2v4"/>
                                         <path d="M3 10h7"/><path d="M21 10h-5.5"/><line x1="2" x2="22" y1="2" y2="22"/></svg></i> </div>
                                         <div class="side-menu__title">Dias no Laborales</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{route('admin.sedes')}}" class="side-menu">
+                                        <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                                        <div class="side-menu__title">Gestión sedes</div>
                                     </a>
                                 </li>
 
@@ -384,10 +390,10 @@
                         </ol>
                     </nav>
                     <div class="intro-x relative ml-auto flex sm:mx-auto">
-                            <button class="btn btn-primary ml-5"><a href="{{ route('admin.checkin')  }}">Check-In</a></button>
-                            @if (Auth::user()->can_admin == 1)
-                            <button class="btn btn-primary ml-5"><a href="{{ route('admin.cambiorol') }}">
-                                {{ __('Cambiar a prestador') }}</a></button>
+                            <a href="{{ route('admin.checkin')  }}"><button class="btn btn-primary ml-5"><i data-lucide="check-circle-2"></i>Check-In</button></a>
+                            @if (Auth::user()->can_admin == 1 && Auth::user()->tipo != "Superadmin")
+                                <a href="{{ route('admin.cambiorol') }}"><button class="btn btn-primary ml-5"><i data-lucide="refresh-cw"></i>
+                                {{ __('Cambiar a prestador') }}</button></a>
                             @endif
                     </div>
                     
@@ -436,11 +442,12 @@
                     </div>
                 </div>
             <div  class="container" style="padding: 20px 15px 0px 15px">
-                @yield('subcontent')
-
+                @yield('subcontent')               
             </div>
-        </div>  
-    </div>    
+        </div>
+        
+    </div>
+    
 
 </body>
 

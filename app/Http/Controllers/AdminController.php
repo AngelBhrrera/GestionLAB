@@ -2411,4 +2411,18 @@ class AdminController extends Controller
 
         return response()->json($actividades);
     }
+
+    public function gestionSedes(){
+        $sede= DB::select("SELECT * FROM sede;");
+        return view("admin.sedes", ['sede'=>$sede]);
+    }
+
+    public function nuevaSede(Request $request){
+        $request->validate([
+            'nombre' => 'required|unique:categories|max:255',
+        ]);
+        $nombre=$request->input("nombreSede");
+        DB::insert("INSERT INTO sede (nombre_Sede) Values('$nombre')");
+        return redirect(route('admin.sedes'))->with('success', 'Creada correctamente');
+    }
 }
