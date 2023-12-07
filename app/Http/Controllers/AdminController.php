@@ -2411,4 +2411,10 @@ class AdminController extends Controller
 
         return response()->json($actividades);
     }
+    public function show(Request $request){
+        $sede = DB::select("SELECT * FROM sede;");
+        $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin';");
+        $var = 1;
+        return view('auth/registerAdmin', ['encargado'=>$encargado,'sede'=>$sede]);
+    }
 }

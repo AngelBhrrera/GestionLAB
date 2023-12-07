@@ -103,7 +103,8 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
             Route::get('/admin/faltas', 'faltas')->name('faltas');
             Route::get('/admin/home', 'firmas')->name('home');
-            Route::get('/admin/registro', 'registro')->name('registro');
+            Route::get('/admin/registro', 'show')->name('registro');
+            
             Route::get('/admin/modificar', 'modificar')->name('modificar');
             Route::get('/admin/prestadores', 'prestadores')->name('prestadores');
             Route::get('/admin/administradores', 'administradores')->name('administradores');
