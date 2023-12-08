@@ -1428,8 +1428,7 @@ class AdminController extends Controller
 
     public function checkin()
     {
-        return view('home', ['opcion' => 'auth.checkin', 'nombre' => 'Check-In', 'ruta' => 'registrar']);
-    }
+        return view('/auth/checkin', ['ruta' => 'registrar']);}
 
     public function rutaRegreso($tipoOriginal)
     {
@@ -2463,4 +2462,8 @@ class AdminController extends Controller
         where id_Sede=$id");
         return redirect(route('admin.sedes'))->with('success', 'Modificada correctamente');
     }
+
+    public function visits()
+    {
+        return view('/auth/visitator', ['ruta' => 'registrar']);}
 }

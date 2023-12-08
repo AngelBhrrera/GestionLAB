@@ -150,13 +150,13 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divTurno">
                                         <label for="input-wizard-4" class="form-label">Turno</label>
-                                        <select class="form-control" name="horario" id="horario">
+                                        <select class="form-control" name="horario" id="horarios" onchange="filtroEncargados()">
                                             <option selected id="1" value='null'>Seleccione un turno</option>
-                                                <option id="1" value='Matutino'>Matutino (8-12) </option>
-                                                <option id="2" value='Mediodia'>Mediodia (12-4)</option>
-                                                <option id="3" value='Vespertino'>Vespertino (4-8)</option>
-                                                <option id="4" value='Sabatino' >Sabados</option>
-                                                <option id="5" value='TC'>Tiempo completo</option>                
+                                                <option id="100" value='Matutino'>Matutino (8-12) </option>
+                                                <option id="101" value='Mediodia'>Mediodia (12-4)</option>
+                                                <option id="102" value='Vespertino'>Vespertino (4-8)</option>
+                                                <option id="103" value='Sabatino' >Sabados</option>
+                                                <option id="104" value='TC'>Tiempo completo</option>                
                                         </select>
                                             @error('horario')
                                                 <span class="invalid-feedback" role="alert">
@@ -183,7 +183,7 @@
                                             @if (isset($encargado))
                                                 <option id="null" value="{{null}}" {{isset($dV[0]->id_encargado) ? $dV[0]->id_encargado == null ? 'selected="selected"' : '' : ''}}>Seleccione un encargado</option>
                                                 @foreach ($encargado as $dato )
-                                                    <option id= "{{$dato->id}}" value="{{$dato->id}}" {{old('id_encargado') == $dato->id ? 'selected="selected"' : '' }}> {{$dato->name }} {{$dato->apellido}}</option>
+                                                    <option id= "{{$dato->id}}" value="{{$dato->horario}}" {{old('id_encargado') == $dato->id ? 'selected="selected"' : '' }}> {{$dato->name }} {{$dato->apellido}}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -228,8 +228,8 @@
 
 @section('script')
     <script type="text/javascript">
-        
-        function filtroVisitantes(){
+
+         function filtroVisitantes(){
             var inputSede = document.getElementById("sede");
             var inputTurno = document.getElementById("horario");
             var inputHoras = document.getElementById("horas");
@@ -269,7 +269,5 @@
             }
             
         }
-
-
     </script>
 @endsection

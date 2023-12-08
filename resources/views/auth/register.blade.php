@@ -307,7 +307,7 @@
         }
 
         function sedeNav() {
-            window.sedesql = @json($sede);
+            window.sedesql = json($sede);
             var optionSelect = document.getElementById("horarios");
             if (document.getElementById("CUCEI Laboratorio").selected) {       
                 sedesql.forEach(function(registro) {

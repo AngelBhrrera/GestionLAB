@@ -166,12 +166,16 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
             Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
 
+            Route::get('/admin/visitas', 'visits')->name('visitas'); //Importante
             // Route::get('/admin/registrovisitas', 'registroVisitas')->name('registrovisitas');
-            // Route::get('/admin/visitas', 'visitas')->name('visitas');
+            
             // Route::get('/admin/actividades_revision/{id}/detalles', 'actividadDetalles')->name('actividad.detalles');
             // Route::get('/admin/actividades_revision/{id}', 'finalizarActividad')->name('finalizar.actividad');
             // Route::get('/actividad-revisada/{id}/{experiencia}', 'vistaFinalizacionActividad')->name('admin.actividadRevisada');
         });
+    });
+    Route::name('api.')->group(function () {
+        Route::post('visitator', 'registrarVisita')->middleware('role:admin,checkin,Superadmin')->name('registrarVisita');
     });
 });
 
@@ -183,7 +187,7 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
     // Route::post('/marcar', 'marcar')->middleware('role:admin,checkin,Superadmin')->name('marcar');
     Route::name('api.')->group(function () {
         Route::post('/marcar', 'marcar')->middleware('role:admin,checkin,Superadmin')->name('marcar');
-        Route::post('/afirmas', 'asirgarfirmas')->name('afirmas');    
+        Route::post('/afirmas', 'asignarfirmas')->name('afirmas');  
     });
     Route::middleware('role:prestador,voluntario,practicante,encargado')->group(function() {
 
