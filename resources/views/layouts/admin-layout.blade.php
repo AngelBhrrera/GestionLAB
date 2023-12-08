@@ -50,7 +50,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin.firmasPendientes') }}" class="side-menu">
+                                    <a href="{{ route('admin.visitas') }}" class="side-menu">
                                         <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg"
                                          width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
                                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-check">
@@ -289,7 +289,7 @@
                             <a href="#" class="side-menu">
                                 <div class="side-menu__icon"> <i data-lucide="clipboard-copy"></i> </div>
                                 <div class="side-menu__title">
-                                PLANIFIACIÓN
+                                PLANIFICACIÓN
                                     <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                                 </div>
                             </a>
@@ -445,10 +445,13 @@
                 @yield('subcontent')               
             </div>
         </div>
-        
+        <footer class="main-footer">
+            <div class="float-right d-none d-sm-block">
+                <b>Version</b> 3.1.1
+            </div>
+            <strong>Copyright &copy; 2023 <a href="https://www.inventores.mx/">Laboratorio de Inventores</a>.</strong> All rights reserved.
+        </footer>
     </div>
-    
-
 </body>
 
 @endsection
@@ -482,8 +485,6 @@
         // {{-- <script src={{asset('plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}></script> --}}
         // {{-- <script src="{{asset('plugins/moment/moment.min.js')}}"></script> --}}
     ?>
-
-    
 
 @endsection
 

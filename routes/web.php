@@ -102,17 +102,22 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
         Route::post('/admin/eliminardias', 'eliminardiafestivo')->name('eliminardiafestivo');
         Route::post('/admin/eliminarhorario','eliminarhorario')->name('eliminarhorario');
         Route::post('/admin/guardarhorario',  'guardarhorario')->name('guardarhorario');
+
         Route::middleware('role:admin,Superadmin')->group(function() {
             Route::post('/actualizar', 'guardar')->name('actualizar');
             Route::post('/actualizarb', 'guardar2')->name('actualizarb');
         });
     });
+
     Route::middleware('role:admin,Superadmin,encargado')->group(function() {
         Route::name('admin.')->group(function () {
 
             Route::get('/admin/faltas', 'faltas')->name('faltas');
             Route::get('/admin/home', 'firmas')->name('home');
-            Route::get('/admin/registro', 'registro')->name('registro');
+
+            Route::get('/admin/registro', 'show')->name('registro'); //NUEVA RUTA
+
+
             Route::get('/admin/modificar', 'modificar')->name('modificar');
             Route::get('/admin/prestadores', 'prestadores')->name('prestadores');
             Route::get('/admin/administradores', 'administradores')->name('administradores');
@@ -130,6 +135,9 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/newCategoriaYActividad', 'newCategoriaYActividad')->name('newCategoriaYActividad');
             Route::get('/admin/actividades', 'actividades')->name('actividades');
             Route::get('/admin/check-in', 'checkin')->name('checkin');
+
+            Route::get('/admin/visitas', 'visits')->name('visitas'); //IMPORTANTE
+
             Route::get('/admin/premios', 'premios')->name('premios');
             Route::post('/admin/update',  'App\Http\Controllers\AdminController@adminUpdate')->name('update');
             Route::get('/admin/general', 'general')->name('general');
@@ -181,7 +189,7 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
     // Route::post('/marcar', 'marcar')->middleware('role:admin,checkin,Superadmin')->name('marcar');
     Route::name('api.')->group(function () {
         Route::post('/marcar', 'marcar')->middleware('role:admin,checkin,Superadmin')->name('marcar');
-        Route::post('/afirmas', 'asirgarfirmas')->name('afirmas');    
+        Route::post('/afirmas', 'asignarfirmas')->name('afirmas');    
     });
     Route::middleware('role:prestador,voluntario,practicante,encargado')->group(function() {
 
@@ -241,6 +249,10 @@ Route::controller(App\Http\Controllers\VisitanteController::class)->group(functi
 
             // Route::get('/visita','visita')->name('visitas');
         });
+    });
+
+    Route::name('api.')->group(function () {
+        Route::post('visitator', 'registrarVisita')->middleware('role:admin,checkin,Superadmin')->name('registrarVisita');
     });
 });
 

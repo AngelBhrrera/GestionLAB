@@ -61,13 +61,12 @@
                                     </div>
                                     <div class="intro-y col-span-12 sm:col-span-6">
                                         <label for="input-wizard-3" class="form-label">Tipo</label>
-                                            <select class="form-control" name="tipo" id="tipo" onchange="usrNav()">
+                                        <select class="form-control" name="tipo" id="tipo" onchange="filtroVisitantes()">
                                                 <option selected id="RBprestador" value='prestadorp'>Prestador Servicio Social</option>
                                                 <option id="RBpracticante" value='practicantep'>Practicas Profesionales</option>
                                                 <option id="RBvoluntario" value='voluntariop'>Voluntario</option>
                                                 <option id="clientA" value='alumno' >Visitante Alumno</option>
                                                 <option id="clientM" value='maestro'>Visitante Maestro</option>                    
-                                                <option id="clientO" value='externo' >Visitante Externo</option>
                                             </select>
                                     </div>
                                     <div class="intro-y col-span-12 sm:col-span-6"  id="divCode" >
@@ -158,7 +157,6 @@
                                                 <option id="3" value='Vespertino'>Vespertino (4-8)</option>
                                                 <option id="4" value='Sabatino' >Sabados</option>
                                                 <option id="5" value='TC'>Tiempo completo</option>                    
-                                                <option id="6" value='NA' >No Aplica</option>
                                         </select>
                                             @error('horario')
                                                 <span class="invalid-feedback" role="alert">
@@ -231,5 +229,45 @@
 @section('script')
     <script type="text/javascript">
 
+         function filtroVisitantes(){
+            var inputSede = document.getElementById("sede");
+            var inputTurno = document.getElementById("horario");
+            var inputHoras = document.getElementById("horas");
+            var inputEncargado = document.getElementById("id_encargado");
+            if (document.getElementById("clientA").selected){
+                inputSede.disabled = true;
+                inputTurno.disabled = true;
+                inputHoras.disabled = true;
+                inputEncargado.disabled = true;
+            }
+            if (document.getElementById("clientM").selected){
+                inputSede.disabled = true;
+                inputTurno.disabled = true;
+                inputHoras.disabled = true;
+                inputEncargado.disabled = true;
+            }
+            if (document.getElementById("RBprestador").selected){
+                inputSede.disabled = false;
+                inputTurno.disabled = false;
+                inputHoras.disabled = false;
+                inputEncargado.disabled = false;
+                
+            }
+            if (document.getElementById("RBpracticante").selected){
+                inputSede.disabled = false;
+                inputTurno.disabled = false;
+                inputHoras.disabled = false;
+                inputEncargado.disabled = false;
+                
+            }
+            if (document.getElementById("RBvoluntario").selected){
+                inputSede.disabled = false;
+                inputTurno.disabled = false;
+                inputHoras.disabled = false;
+                inputEncargado.disabled = false;
+                
+            }
+            
+        }
     </script>
 @endsection

@@ -43,7 +43,7 @@ class AdminController extends Controller
     // {
     //     $users =DB::table('horasprestadores')->orderBy('id','DESC')->get();;
 
-    //     return view('/home',
+    //     return view('//admin/homeA',
     //         ['users'=>$users,
     //         'datos'=>['codigo','nombre','fecha','hora_entrada','hora_salida','tiempo'],
     //         'opcion'=> 'table',
@@ -60,7 +60,7 @@ class AdminController extends Controller
         //Despliega la tabla de los encargados cuando su tipo == admin
         $encargado = DB::table('users')->where('tipo', 'admin')->get();
 
-        // return view('/home',['opcion'=> 'auth.registerAdmin', 'nombre' => 'Registro', 'ruta' => 'registrar']);
+        // return view('//admin/homeA',['opcion'=> 'auth.registerAdmin', 'nombre' => 'Registro', 'ruta' => 'registrar']);
         return view('/auth/registerAdmin');
         //return view('/auth/registerAdmin', ['encargado' => $encargado, 'nombre' => 'Registro', 'ruta' => 'registrar']);
     }
@@ -75,7 +75,7 @@ class AdminController extends Controller
     //         $encargado = DB::table('users')->where('tipo', 'admin')->get();
     //     }
 
-    //     return view('/home', [
+    //     return view('//admin/homeA', [
     //         'opcion' => 'auth.registerAdmin',
     //         'centros' => $centros,
     //         'encargado' => $encargado,
@@ -91,7 +91,7 @@ class AdminController extends Controller
         $id = $request->input('id');
         $nombre = $request->input('nombre');
         $horario = $request->input('horario');
-        return view('/home', ['opcion' => 'horarioadmin', 'id_prestador' => $id, 'horario' => $horario, 'nombre' => $nombre,  'horario2' => $query2]);
+        return view('//admin/homeA', ['opcion' => 'horarioadmin', 'id_prestador' => $id, 'horario' => $horario, 'nombre' => $nombre,  'horario2' => $query2]);
     }
 
 
@@ -108,7 +108,7 @@ class AdminController extends Controller
             $user = DB::table('users')->where('id', $id)->get();
             // $carreras = DB::table('carreras')->get();
             $centros = DB::table('centros')->get();
-            return view('/home', ['opcion' => 'auth.registerAdmin', 
+            return view('//admin/homeA', ['opcion' => 'auth.registerAdmin', 
                                   'centros' => $centros, 
                                   'nombre' => 'Edicion', 
                                   'dV' => $user, 
@@ -182,7 +182,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => [
                     'Id',
@@ -212,7 +212,7 @@ class AdminController extends Controller
 
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['ID', 'Fecha del documento', 'Correo', 'Nombre', 'Proyecto', 'Status', 'Acciones', 'Eliminar', 'Enlace Drive'],
                 'opcion' => 'table',
@@ -238,7 +238,7 @@ class AdminController extends Controller
 
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['ID', 'Fecha del documento', 'Correo', 'Nombre', 'Proyecto', 'Status', 'Acciones', 'Enlace Drive'],
                 'opcion' => 'table',
@@ -258,7 +258,7 @@ class AdminController extends Controller
     public function registroVisitas()
     {
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'fecha' => date("d/m/Y"),
                 'opcion' => 'registroVisitas',
@@ -343,7 +343,7 @@ class AdminController extends Controller
 
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id', 'Nombre(s)', 'Apellido(s)', 'Codigo', 'Correo', 'Horario', 'Telefono', 'Centro', 'Carrera', 'Horas a cumplir', 'Horas restantes', 'Horas cumplidas', 'Faltas', 'Modificar', 'Eliminar'],
                 'opcion' => 'table',
@@ -364,7 +364,7 @@ class AdminController extends Controller
         $columns = array(["data" => "id", "visible" => false], ["data" => "name"], ["data" => "apellido"], ["data" => "fecha"], ["data" => "hora_llegada", "sortable" => false], ["data" => "hora_salida", "sortable" => false], ["data" => "numero", "sortable" => false], ["data" => "motivo", "sortable" => false], ["data" => "responsable"], ["data" => "eliminar", "sortable" => false]);
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => [
                     'id',
@@ -402,7 +402,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => [
                     'Id',
@@ -429,7 +429,7 @@ class AdminController extends Controller
         $columns = array(["data" => "id"], ["data" => "name"], ["data" => "apellido"], ["data" => "correo"], ["data" => "tipo"], ["data" => "acciones", "sortable" => false], ["data" => "eliminar", "sortable" => false]);
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['Id', 'Nombre', 'Apellido', 'Correo', 'Tipo de usuario',  'Modificar', 'Eliminar'],
                 'tipo' => 'general',
@@ -450,7 +450,7 @@ class AdminController extends Controller
         $users = DB::table('premios')->orderBy('id', 'DESC')->get();
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'users' => $users, 'datos' => ['nombre', 'descripcion', 'tipo', 'horas'],
                 'tipo' => 'admin',
@@ -469,7 +469,7 @@ class AdminController extends Controller
         $columns = array(["data" => "id"], ["data" => "name"], ["data" => "apellido"], ["data" => "correo"], ["data" => "codigo"], ["data" => "tipo"], ["data" => "created_at"], ["data" => "activacion", "sortable" => false], ["data" => "eliminar", "sortable" => false]);
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['Id', 'Nombre', 'Apellido', 'Correo', 'Codigo', 'Tipo', 'Fecha de creación', 'Modificar', 'Eliminar'],
                 'tipo' => 'prestador',
@@ -509,7 +509,7 @@ class AdminController extends Controller
             //             );
 
             // return view(
-            //     '/home',
+            //     '//admin/homeA',
             //     ['datos'=>['id','codigo','Nombre(s)','Apellido(s)','Fecha','Entrada','Salida','Tiempo','Estado','Horas','Responsable','Tipo','Reporte','Actividades','Eliminar'],
 
             //     'opcion'=> 'table',
@@ -543,7 +543,7 @@ class AdminController extends Controller
             );
 
             return view(
-                '/home',
+                '//admin/homeA',
                 [
                     'datos' => ['id', 'codigo', 'Nombre(s)', 'Apellido(s)', 'Fecha', 'Entrada', 'Salida', 'Tiempo', 'Estado', 'Horas', 'Actividades terminadas', 'Autorización Horas', 'origen', 'Tipo', 'Reporte', 'Actividades', 'Eliminar'],
                     'opcion' => 'table',
@@ -580,7 +580,7 @@ class AdminController extends Controller
             );
 
             return view(
-                '/home',
+                '//admin/homeA',
                 [
                     'datos' => ['id', 'codigo', 'Nombre(s)', 'Apellido(s)', 'Fecha', 'Entrada', 'Salida', 'Tiempo', 'Estado', 'Horas', 'Actividades terminadas', 'Autorización Horas', 'origen', 'Tipo', 'Reporte', 'Actividades', 'Eliminar'],
                     'opcion' => 'table',
@@ -618,7 +618,7 @@ class AdminController extends Controller
             // ["data"=>"eliminar","sortable"=> false, "visible"=>false]);
 
             // return view(
-            //     '/home',
+            //     '//admin/homeA',
             //     ['datos'=>['id','codigo','Nombre(s)','Apellido(s)','Fecha','Hora_entrada','Hora_salida','Tiempo','Estado','Horas','Responsable','Reporte','Actividades','Eliminar'],
             //     'opcion'=> 'table',
             //     'titulo' => 'Registro de asistencia pendientes',
@@ -649,7 +649,7 @@ class AdminController extends Controller
             );
 
             return view(
-                '/home',
+                '//admin/homeA',
                 [
                     'datos' => ['id', 'codigo', 'Nombre(s)', 'Apellido(s)', 'Fecha', 'Hora_entrada', 'Hora_salida', 'Tiempo', 'Estado', 'Horas', 'Actividades terminadas', 'Autorización Horas', 'Reporte', 'Actividades', 'Eliminar'],
                     'opcion' => 'table',
@@ -684,7 +684,7 @@ class AdminController extends Controller
             );
 
             return view(
-                '/home',
+                '//admin/homeA',
                 [
                     'datos' => ['id', 'codigo', 'Nombre(s)', 'Apellido(s)', 'Fecha', 'Hora_entrada', 'Hora_salida', 'Tiempo', 'Estado', 'Horas', 'Actividades terminadas', 'Autorización Horas', 'Reporte', 'Actividades', 'Eliminar'],
                     'opcion' => 'table',
@@ -718,7 +718,7 @@ class AdminController extends Controller
 
 
         return view(
-            'home',
+            '/admin/homeA',
 
             [
                 'opcion' => 'proyectostabla2',
@@ -733,7 +733,7 @@ class AdminController extends Controller
     public function recompensas()
     {
         return view(
-            '/home',
+            '//admin/homeA',
             [
                 'opcion' => 'registro_recompensas'
             ]
@@ -754,7 +754,7 @@ class AdminController extends Controller
         // echo "<script> alert(JSON.stringify( $prestadores )); </script>";
 
         return view(
-            '/home',
+            '//admin/homeA',
             [
                 'prestadores' => $prestadores,
                 'tipo' => 'agregar',
@@ -770,7 +770,7 @@ class AdminController extends Controller
         $actividades = DB::table('actividades')->get();
         $categorias = DB::table('categorias')->get();
         return view(
-            '/home',
+            '//admin/homeA',
             [
                 'tipo' => 'agregar',
                 'categorias' => $categorias,
@@ -983,7 +983,7 @@ class AdminController extends Controller
             ["data" => "eliminar", "sortable" => false]
         );
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id_actividad', 'llave_act', 'Prestador', 'Nombre act.', 'Tipo categoria', 'Tipo act.', 'descripción', 'objetivo', 'fecha', 'acciones', 'eliminar'],
                 'opcion' => 'table',
@@ -1019,7 +1019,7 @@ class AdminController extends Controller
 
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id_actividad', 'Prestador', 'Nombre act.', 'Tipo de categoria', 'Tipo act.', 'Descripcion', 'Objetivo', 'Fecha', 'Estimacion tiempo', 'Duracion', 'Acciones'],
                 'opcion' => 'table',
@@ -1061,7 +1061,7 @@ class AdminController extends Controller
             // ["data" => "acciones", "sortable" => false]
         );
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id_actividad', 'Prestador', 'Nombre act.', 'Tipo categoria', 'Tipo act.', 'Descripcion', 'Objetivo', 'Fecha', 'Estimacion tiempo', 'Duración', 'Experiencia obtenida'],
                 'opcion' => 'table',
@@ -1093,7 +1093,7 @@ class AdminController extends Controller
 
         );
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id_actividad', 'Prestador', 'Nombre act.', 'Tipo categoria', 'Tipo act.', 'Descripcion', 'Objetivo', 'Fecha', 'Estimacion tiempo', 'Nota', 'Acciones'],
                 'opcion' => 'table',
@@ -1123,7 +1123,7 @@ class AdminController extends Controller
             ["data" => "acciones", "sortable" => false]
         );
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id_actividad', 'Prestador', 'Nombre act.', 'Tipo categoria', 'Tipo act.', 'Descripcion', 'Objetivo', 'Fecha', 'Estimacion tiempo', 'Acciones'],
                 'opcion' => 'table',
@@ -1152,7 +1152,7 @@ class AdminController extends Controller
 
         // echo "<script> alert(JSON.stringify($actividad2)); </script>";
         return view(
-            '/home',
+            '//admin/homeA',
             [
                 'id_actividad' => $id,
                 'prestadores' => $prestadores,
@@ -1179,7 +1179,7 @@ class AdminController extends Controller
         $categorias = DB::table('categorias')->get();
 
         return view(
-            '/home',
+            '//admin/homeA',
             [
                 'id_actividad' => $id,
                 'prestadores' => $prestadores,
@@ -1200,7 +1200,7 @@ class AdminController extends Controller
         $actividad = DB::table('actividad_tabla')->where('id_actcreada', $id)->get();
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'actividades' => $actividad,
                 "opcion" => 'Participantes_act'
@@ -1428,7 +1428,12 @@ class AdminController extends Controller
 
     public function checkin()
     {
-        return view('home', ['opcion' => 'auth.checkin', 'nombre' => 'Check-In', 'ruta' => 'registrar']);
+        return view('/auth/checkin', ['ruta' => 'registrar']);
+    }
+
+    public function visits()
+    {
+        return view('/auth/visitator', ['ruta' => 'registrar']);
     }
 
     public function rutaRegreso($tipoOriginal)
@@ -1453,7 +1458,7 @@ class AdminController extends Controller
                 return 'admin.general';
                 break;
             default:
-                return 'admin.home';
+                return 'admin./admin/homeA';
                 break;
         }
     }
@@ -1573,7 +1578,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => [
                     "id",
@@ -1609,7 +1614,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => [
                     "id",
@@ -1645,7 +1650,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => [
                     "id",
@@ -1685,7 +1690,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => [
                     "id",
@@ -1797,7 +1802,7 @@ class AdminController extends Controller
     //     $columns = array(["data"=>"id","visible"=>false],["data"=>"name"],["data"=>"apellido"],["data"=>"fecha"],["data"=>"hora_llegada","sortable"=> false],["data"=>"hora_salida","sortable"=> false],["data"=>"numero","sortable"=> false],["data"=>"motivo","sortable"=> false],["data"=>"responsable"],["data"=>"eliminar","sortable"=> false]);
 
     //     return view(
-    //         'home',
+    //         '/admin/homeA',
     //         ['datos'=>['id','name','apellido','fecha','hora_llegada', 'hora_salida','numero','motivo','responsable'],
     //         'opcion'=> 'table',
     //         'titulo' => 'Tabla Visitas',
@@ -1838,7 +1843,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id', 'name', 'apellido', 'codigo', 'carrera', 'horas', 'horas_cumplidas', 'horas_restantes', 'acciones'],
                 'opcion' => 'table',
@@ -1865,7 +1870,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['Id', 'Nombre', 'Apellido(s)', 'Codigo', 'Carrera', 'Fecha de inicio', 'Fecha de liberación de servicio', 'acciones'],
                 'opcion' => 'table',
@@ -1881,7 +1886,7 @@ class AdminController extends Controller
         $id = $request->input('id_usuario');
         $modificar = DB::table('users')->where('id', $id)->update(['tipo' => "prestador_terminado", 'fecha_salida' => date('Y-m-d')]);
 
-        return redirect()->route("admin.home");
+        return redirect()->route("admin./admin/homeA");
     }
 
     public function activar_prestadores(Request $request)
@@ -1901,7 +1906,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id', 'name', 'apellido', 'codigo', 'carrera', 'horas', 'horas_cumplidas', 'horas_restantes', 'acciones'],
                 'opcion' => 'table',
@@ -1917,7 +1922,7 @@ class AdminController extends Controller
         $id = $request->input('iddesc');
         $modificar = DB::table('users')->where('id', $id)->update(['tipo' => "prestador_inactivo"]);
 
-        return redirect()->route("admin.home");
+        return redirect()->route("admin./admin/homeA");
     }
 
     public function prestadores_terminados()
@@ -1936,7 +1941,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id', 'name', 'apellido', 'codigo', 'carrera', 'horas', 'horas_cumplidas', 'horas_restantes', 'acciones'],
                 'opcion' => 'table',
@@ -1957,7 +1962,7 @@ class AdminController extends Controller
         );
 
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['nombre', 'apellido', 'correo', 'fecha'],
                 'opcion' => 'table',
@@ -1997,7 +2002,7 @@ class AdminController extends Controller
             ["data" => "acciones", "sortable" => false]
         );
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id_actividad', 'nombre', 'tipo de actividades', 'descripcion', 'objetivo', 'fecha', 'status', 'acciones'],
                 'opcion' => 'table2',
@@ -2030,7 +2035,7 @@ class AdminController extends Controller
             ["data" => "acciones", "sortable" => false]
         );
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id_actividad', 'nombre', 'tipo de actividades', 'descripcion', 'objetivo', 'fecha', 'status', 'acciones'],
                 'opcion' => 'table2',
@@ -2063,7 +2068,7 @@ class AdminController extends Controller
             ["data" => "acciones", "sortable" => false]
         );
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['id_actividad', 'nombre', 'tipo de actividades', 'descripcion', 'objetivo', 'fecha', 'status', 'acciones'],
                 'opcion' => 'table2',
@@ -2116,7 +2121,7 @@ class AdminController extends Controller
             ["data" => "acciones", "sortable" => false]
         );
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['fecha', 'acciones'],
                 'opcion' => 'tablecalendario',
@@ -2155,7 +2160,7 @@ class AdminController extends Controller
             ["data" => "acciones", "sortable" => false]
         );
         return view(
-            'home',
+            '/admin/homeA',
             [
                 'datos' => ['Id', 'descripcion', 'dias', 'acciones'],
                 'opcion' => 'tableHorario',
@@ -2424,5 +2429,12 @@ class AdminController extends Controller
         $nombre=$request->input("nombreSede");
         DB::insert("INSERT INTO sede (nombre_Sede) Values('$nombre')");
         return redirect(route('admin.sedes'))->with('success', 'Creada correctamente');
+    }
+
+    public function show(){
+        $sede = DB::select("SELECT * FROM sede;");
+        $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin';");
+        $var = 1;
+        return view('auth/registerAdmin', ['encargado'=>$encargado,'sede'=>$sede]);
     }
 }

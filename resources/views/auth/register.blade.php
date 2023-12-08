@@ -188,14 +188,13 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divTurno" style="display:none">
                                         <label for="input-wizard-4" class="form-label">Turno</label>
-                                        <select class="form-control" name="horario" id="horario">
+                                        <select class="form-control" name="horario" id="horarios" onchange="filtroEncargados()">
                                             <option selected id="1" value='null'>Seleccione un turno</option> 
-                                            <option id="1" value='Matutino'>Matutino (8-12) </option>
-                                            <option id="2" value='Mediodia'>Mediodia (12-4)</option>
-                                            <option id="3" value='Vespertino'>Vespertino (4-8)</option>
-                                            <option id="4" value='Sabatino' >Sabados</option>
-                                            <option id="5" value='TC'>Tiempo completo</option>                    
-                                            <option id="6" value='NA' >No Aplica</option>
+                                            <option id="100" value='Matutino'>Matutino (8-12) </option>
+                                            <option id="101" value='Mediodia'>Mediodia (12-4)</option>
+                                            <option id="102" value='Vespertino'>Vespertino (4-8)</option>
+                                            <option id="103" value='Sabatino' >Sabados</option>
+                                            <option id="104" value='TC'>Tiempo completo</option>     
                                         </select>
                                             @error('horario')
                                                 <span class="invalid-feedback" role="alert">
@@ -222,7 +221,7 @@
                                             @if (isset($encargado))
                                                 <option id="null" value="{{null}}" {{isset($dV[0]->id_encargado) ? $dV[0]->id_encargado == null ? 'selected="selected"' : '' : ''}}>Seleccione un encargado</option>
                                                 @foreach ($encargado as $dato )
-                                                    <option id= "{{$dato->id}}" value="{{$dato->id}}" {{old('id_encargado') == $dato->id ? 'selected="selected"' : '' }}> {{$dato->name }} {{$dato->apellido}}</option>
+                                                    <option id= "{{$dato->id}}" value="{{$dato->horario}}" {{old('id_encargado') == $dato->id ? 'selected="selected"' : '' }}> {{$dato->name }} {{$dato->apellido}}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -307,8 +306,8 @@
         }
 
         function sedeNav() {
-            window.sedesql = @json($sede);
-            var optionSelect = document.getElementById("horario");
+            window.sedesql = json($sede);
+            var optionSelect = document.getElementById("horarios");
             if (document.getElementById("CUCEI Laboratorio").selected) {       
                 sedesql.forEach(function(registro) {
                     if (registro.nombre_Sede === "CUCEI Laboratorio") {
@@ -413,6 +412,70 @@
                 if (select.options[k].value === opcion && condicion) {
                     select.options[k].disabled = false;
                 }
+            }
+        }
+
+        function filtroEncargados(){
+            window.encarSql = json($encargado);
+            var optionSelect = document.getElementById("id_encargado");
+            if (document.getElementById("100").selected){
+                encarSql.forEach(function(registro){
+                    if (registro.horario === "Matutino"){
+                        habilitarTodasLasOpciones(optionSelect);
+                        deshabilitarEncargado(optionSelect, "Vespertino");
+                        deshabilitarEncargado(optionSelect, "Mediodia");
+                        deshabilitarEncargado(optionSelect, "Sabatino");
+                    }     
+                }); 
+            }
+            if (document.getElementById("101").selected){
+                encarSql.forEach(function(registro){
+                    if (registro.horario === "Mediodia"){
+                        habilitarTodasLasOpciones(optionSelect);
+                        deshabilitarEncargado(optionSelect, "Matutino");
+                        deshabilitarEncargado(optionSelect, "Vespertino");
+                        deshabilitarEncargado(optionSelect, "Sabatino");
+                    }     
+                }); 
+            }
+            if (document.getElementById("102").selected){
+                encarSql.forEach(function(registro){
+                    if (registro.horario === "Vespertino"){
+                        habilitarTodasLasOpciones(optionSelect);
+                        deshabilitarEncargado(optionSelect, "Matutino");
+                        deshabilitarEncargado(optionSelect, "Mediodia");
+                        deshabilitarEncargado(optionSelect, "Sabatino");
+                    }     
+                }); 
+            }
+            if (document.getElementById("103").selected){
+                encarSql.forEach(function(registro){
+                    if (registro.horario === "Sabatino"){
+                        habilitarTodasLasOpciones(optionSelect);
+                        deshabilitarEncargado(optionSelect, "Matutino");
+                        deshabilitarEncargado(optionSelect, "Mediodia");
+                        deshabilitarEncargado(optionSelect, "Vespertino");
+                    }     
+                }); 
+            }
+            if (document.getElementById("104").selected){
+                encarSql.forEach(function(registro){
+                    if (registro.horario === "TC"){
+                        habilitarTodasLasOpciones(optionSelect);
+                    }     
+                }); 
+            }
+        }
+        function deshabilitarEncargado(select, opcion){
+            for (var k = 0; k < select.options.length; k++){
+                if(select.options[k].value === opcion){
+                    select.options[k].disabled = true;
+                }
+            }
+        }
+        function habilitarTodasLasOpciones(select) {
+            for (var k = 0; k < select.options.length; k++) {
+                select.options[k].disabled = false;
             }
         }
 
