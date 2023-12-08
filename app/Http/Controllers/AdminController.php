@@ -2425,4 +2425,10 @@ class AdminController extends Controller
         DB::insert("INSERT INTO sede (nombre_Sede) Values('$nombre')");
         return redirect(route('admin.sedes'))->with('success', 'Creada correctamente');
     }
+    public function show(Request $request){
+        $sede = DB::select("SELECT * FROM sede;");
+        $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin';");
+        $var = 1;
+        return view('auth/registerAdmin', ['encargado'=>$encargado,'sede'=>$sede]);
+    }
 }
