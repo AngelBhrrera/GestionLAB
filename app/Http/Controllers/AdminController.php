@@ -2417,18 +2417,50 @@ class AdminController extends Controller
         return view("admin.sedes", ['sede'=>$sede]);
     }
 
-    public function nuevaSede(Request $request){
-        $request->validate([
-            'nombre' => 'required|unique:categories|max:255',
-        ]);
-        $nombre=$request->input("nombreSede");
-        DB::insert("INSERT INTO sede (nombre_Sede) Values('$nombre')");
-        return redirect(route('admin.sedes'))->with('success', 'Creada correctamente');
-    }
     public function show(Request $request){
         $sede = DB::select("SELECT * FROM sede;");
         $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin';");
         $var = 1;
         return view('auth/registerAdmin', ['encargado'=>$encargado,'sede'=>$sede]);
+    }
+
+    public function nuevaSede(Request $request){
+        $request->validate([
+            'nombreSede' => 'required|max:255|unique:sede,nombre_Sede',
+        ]);
+        $nombre=$request->input("nombreSede");
+        DB::insert("INSERT INTO sede (nombre_Sede) Values('$nombre')");
+        return redirect(route('admin.sedes'))->with('success', 'Creada correctamente');
+    }
+
+    public function  modificarSede(Request $request){
+        
+        $nombre=$request->input("nuevoNombre");
+        $id=$request->input("idSede");
+        $matutino=($request->has("matutino")) ? 1 : 0;
+        $mediodia=($request->has("mediodia")) ? 1 : 0;
+        $vespertino=($request->has("vespertino")) ? 1 : 0;
+        $sabatino=($request->has("sabatino")) ? 1 : 0;
+        $completo=($request->has("completo")) ? 1 : 0;
+
+        $nombreAnterior = DB::select("Select nombre_Sede from sede where id_Sede=$id");
+
+        if($nombreAnterior[0]->nombre_Sede === $nombre){
+            //no hace nada xd
+        }else{
+            $request->validate([
+                'nuevoNombre' => 'required|min:3|max:255|unique:sede,nombre_Sede',
+            ]);
+        }
+
+        DB::update("Update sede 
+        set nombre_Sede='$nombre',
+        turnoMatutino=$matutino,
+        turnoMediodia=$mediodia,
+        turnoVespertino=$vespertino,
+        turnoSabatino=$sabatino,
+        turnoTiempoCompleto=$completo 
+        where id_Sede=$id");
+        return redirect(route('admin.sedes'))->with('success', 'Modificada correctamente');
     }
 }
