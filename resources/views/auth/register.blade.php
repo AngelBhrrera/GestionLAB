@@ -194,7 +194,8 @@
                                             <option id="101" value='Mediodia'>Mediodia (12-4)</option>
                                             <option id="102" value='Vespertino'>Vespertino (4-8)</option>
                                             <option id="103" value='Sabatino' >Sabados</option>
-                                            <option id="104" value='TC'>Tiempo completo</option>     
+                                            <option id="104" value='TC'>Tiempo completo</option>                    
+                                            
                                         </select>
                                             @error('horario')
                                                 <span class="invalid-feedback" role="alert">
@@ -306,7 +307,7 @@
         }
 
         function sedeNav() {
-            window.sedesql = json($sede);
+            window.sedesql = @json($sede);
             var optionSelect = document.getElementById("horarios");
             if (document.getElementById("CUCEI Laboratorio").selected) {       
                 sedesql.forEach(function(registro) {
@@ -416,7 +417,7 @@
         }
 
         function filtroEncargados(){
-            window.encarSql = json($encargado);
+            window.encarSql = @json($encargado);
             var optionSelect = document.getElementById("id_encargado");
             if (document.getElementById("100").selected){
                 encarSql.forEach(function(registro){
@@ -466,6 +467,7 @@
                 }); 
             }
         }
+
         function deshabilitarEncargado(select, opcion){
             for (var k = 0; k < select.options.length; k++){
                 if(select.options[k].value === opcion){
