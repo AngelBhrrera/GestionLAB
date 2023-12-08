@@ -818,20 +818,11 @@ class PrestadorController extends Controller
         if (Auth::user()->can_admin == 1) {
 
                 $user = User::find(Auth::user()->id);
-                switch ($user->tipo) {
-                    case 'prestador':
-                        $user->tipo = 'admin';
-                        $user->save();
-                        Log::info('era prestador');
-                        break;
-                    case 'admin':
-                        $user->tipo = 'prestador';
-                        $user->save();
-                        Log::info('era admin');
-                        break;
+                if($user->tipo == "prestador"){
+                    $user->tipo="encargado";
+                    $user->save();
                 }
-                return redirect('/');
+                return redirect('/admin/home');
         }
-
     }
 }

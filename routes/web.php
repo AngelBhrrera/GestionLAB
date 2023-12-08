@@ -171,6 +171,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
             Route::get('admin/obtenerActividades', 'gestionSedes')->name('sedes');
             Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
+            Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
 
             // Route::get('/admin/registrovisitas', 'registroVisitas')->name('registrovisitas');
             // Route::get('/admin/visitas', 'visitas')->name('visitas');
