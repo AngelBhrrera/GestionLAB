@@ -14,18 +14,17 @@ class CreateVisitasTable extends Migration
     public function up()
     {
         Schema::create('visitas', function (Blueprint $table) {
-            
             $table->id();
+            $table->string('correo',100);
             $table->string('name',100);
             $table->string('apellido',100);
-            $table->string('correo',100);
             $table->string('numero',20);
-            $table->string('fecha',20);
-            $table->string('hora_llegada',20);
-            $table->string('hora_salida',20)->nullable();
+            $table->string('hora_llegada',100);
+            $table->string('motivo',100);
             $table->string('responsable',100);
-            $table->string('responsable_id');
-            $table->string('motivo', 255);
+            $table->string('fecha',100)->nullable();
+            $table->string('fecha_salida',100)->nullable();
+            $table->string('hora_salida',100);
 
         });
     }

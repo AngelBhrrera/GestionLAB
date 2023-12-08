@@ -97,68 +97,47 @@ class PrestadorController extends Controller
 
     public function marcar(Request $request)
     {
+
         try {
             $dir = '';
             switch (Auth::user()->tipo) {
                 case 'admin':
+                    $dir = 'admin.checkin';
+                    $origen = Auth::user()->name . ' ' . Auth::user()->apellido;
+                    break;
                 case 'Superadmin':
                     $dir = 'admin.checkin';
                     $origen = Auth::user()->name . ' ' . Auth::user()->apellido;
                     break;
+
                 case 'checkin':
                     $dir = 'api.checkin';
                     $origen = 'checkin';
                     break;
             };
-
             $codigo = $request->input('codigo');
             $usuario = DB::table('users')->where('codigo', $codigo)->where(function ($query) {
                 $query->where('tipo', '=', "prestador")
-                    ->orWhere('tipo', '=', "encargado")
-                    ->orWhere('tipo', '=', "voluntario")
-                    ->orWhere('tipo', '=', "practicante");
+                    ->orWhere('tipo', '=', "clientes");
             })
                 ->select('name', 'id', 'apellido', 'tipo', 'encargado_id')->get();
-            $verificar = DB::table('horasprestadores')
-            ->where('idusuario', $usuario[0]->id)
-            ->where('fecha', date("d/m/Y"))
-            ->where('hora_salida', null)->exists();
+            $verificar = DB::table('horasprestadores')->where('idusuario', $usuario[0]->id)->where('fecha', date("d/m/Y"))->where('hora_salida', null)->exists();
             if ($verificar) {
-
                 $hor = date('H:i:s');
-
-                $tiempo = DB::table('horasprestadores')
-                ->select('hora_entrada')
-                ->where('idusuario', $usuario[0]->id)
-                ->where('fecha', date("d/m/Y"))
-                ->where('hora_salida', null)->get();
-
+                $tiempo = DB::table('horasprestadores')->select('hora_entrada')->where('idusuario', $usuario[0]->id)->where('fecha', date("d/m/Y"))->where('hora_salida', null)->get();
                 $tiempoCompleto = $this->diferencia($tiempo[0]->hora_entrada, $hor);
-
-                $salida = DB::table('horasprestadores')
-                ->where('idusuario', $usuario[0]->id)
-                ->where('fecha', date("d/m/Y"))
-                ->where('hora_salida', null)
-                ->update(['hora_salida' => $hor, 'tiempo' => $tiempoCompleto, 'horas' => $this->horasC($tiempoCompleto)]);
-
+                $salida = DB::table('horasprestadores')->where('idusuario', $usuario[0]->id)->where('fecha', date("d/m/Y"))->where('hora_salida', null)->update(['hora_salida' => $hor, 'tiempo' => $tiempoCompleto, 'horas' => $this->horasC($tiempoCompleto)]);
                 return redirect()->route($dir)->with('success', 'Adios ' . $usuario[0]->name);
             } else {
-
-                $inicio = DB::table('horasprestadores')
-                ->insert([['origen' => $origen, 'idusuario' => $usuario[0]->id, 'codigo' => $codigo, 'nombre' => $usuario[0]->name, 
-                'apellido' => $usuario[0]->apellido, 'fecha' => date("d/m/Y"), 'hora_entrada' => date('H:i:s'), 'horas' => 0, 'tipo' => $usuario[0]->tipo, 
-                'encargado_id' => $usuario[0]->encargado_id]]);
-
-                return redirect()->route($dir)
-                ->with('success', 'Bienvenido ' . $usuario[0]->name . '!');
+                $inicio = DB::table('horasprestadores')->insert([['origen' => $origen, 'idusuario' => $usuario[0]->id, 'codigo' => $codigo, 'nombre' => $usuario[0]->name, 'apellido' => $usuario[0]->apellido, 'fecha' => date("d/m/Y"), 'hora_entrada' => date('H:i:s'), 'horas' => 0, 'tipo' => $usuario[0]->tipo, 'encargado_id' => $usuario[0]->encargado_id]]);
+                return redirect()->route($dir)->with('success', 'Bienvenido ' . $usuario[0]->name . '!');
             }
         } catch (\Throwable $th) {
 
             return redirect()->route($dir)->with('error', $th->getMessage());
         }
     }
-
-    public function asignarfirmas(Request $request)
+    public function asirgarfirmas(Request $request)
     {
         $id = $request->input('id');
         $horas = $request->input('horas');
