@@ -45,7 +45,7 @@
                 <div class="form-check mr-2 pt-5"><label class="pl-5 pr-5" for="completo">Completo</label><input type="checkbox" class=" w-10 h-10 form-check-input" name="completo" id="completo"></div>
             </div>
             <br>
-            <button type="Submit" class="btn btn-primary"> Guardar cambios</button>
+            <button type="Submit" disabled id = "guardar" class="btn btn-primary"> Guardar cambios</button>
         </form>
     </div>
     
@@ -67,6 +67,7 @@
     <script>
         function modificarCamposSede(){
             
+            btn_guardar= document.getElementById("guardar");
             selectSede = document.getElementById("sede");
             campoNombre = document.getElementById("nuevoNombre");
             idSede=document.getElementById("idSede");
@@ -76,12 +77,14 @@
                  // Restablecer los campos al estado inicial
                 campoNombre.value = "";
                 idSede.value = "";
+                btn_guardar.disabled = true;
                 for(var check of checks){
                     check.checked = false;
                 }
+
                 return;
             }
-
+            btn_guardar.disabled = false;
             datoSede = JSON.parse(selectSede.value);
             campoNombre.value=datoSede.nombre_Sede;
             idSede.value = datoSede.id_Sede;
