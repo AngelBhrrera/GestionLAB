@@ -16,9 +16,6 @@
                 <img class="mx-auto my-auto" alt="Inventores" width="80px" height="80px" src="{{ asset('build/assets/logosinventores/InventoresLogoHDWhiteborder.png') }}">
             </div>
 
-            <p id="demo">   </p>
-            <p id="demo2">   </p>
-
             <div id="divBase" style="display: flex;"> 
                 <form method="POST" action="{{ route('registrar') }}"> 
                     <input id="id" name="id" type="hidden" value="{{!isset($dV[0]->id) ? '' : $dV[0]->id }}">

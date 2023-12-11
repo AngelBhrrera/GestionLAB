@@ -106,6 +106,7 @@ class PrestadorController extends Controller
                     $origen = Auth::user()->name . ' ' . Auth::user()->apellido;
                     break;
                 case 'Superadmin':
+                case 'encargado':
                     $dir = 'admin.checkin';
                     $origen = Auth::user()->name . ' ' . Auth::user()->apellido;
                     break;

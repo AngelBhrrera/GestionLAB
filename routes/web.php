@@ -186,8 +186,8 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
     Route::post('prestador/horario_guardar', 'horario_guardar')->middleware('role:prestador,admin,Superadmin')->name('horario_guardar');
     // Route::post('/marcar', 'marcar')->middleware('role:admin,checkin,Superadmin')->name('marcar');
     Route::name('api.')->group(function () {
-        Route::post('/marcar', 'marcar')->middleware('role:admin,checkin,Superadmin')->name('marcar');
-        Route::post('/afirmas', 'asignarfirmas')->name('afirmas');  
+        Route::post('/marcar', 'marcar')->middleware('role:admin,checkin,Superadmin,encargado')->name('marcar');
+        Route::post('/afirmas', 'asignarfirmas')->name('afirmas');    
     });
     Route::middleware('role:prestador,voluntario,practicante,encargado')->group(function() {
 
