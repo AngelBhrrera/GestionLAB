@@ -543,7 +543,7 @@ class AdminController extends Controller
             );
 
             return view(
-                '//admin/homeA',
+                '/home',
                 [
                     'datos' => ['id', 'codigo', 'Nombre(s)', 'Apellido(s)', 'Fecha', 'Entrada', 'Salida', 'Tiempo', 'Estado', 'Horas', 'Actividades terminadas', 'Autorización Horas', 'origen', 'Tipo', 'Reporte', 'Actividades', 'Eliminar'],
                     'opcion' => 'table',
@@ -580,7 +580,7 @@ class AdminController extends Controller
             );
 
             return view(
-                '//admin/homeA',
+                '/home',
                 [
                     'datos' => ['id', 'codigo', 'Nombre(s)', 'Apellido(s)', 'Fecha', 'Entrada', 'Salida', 'Tiempo', 'Estado', 'Horas', 'Actividades terminadas', 'Autorización Horas', 'origen', 'Tipo', 'Reporte', 'Actividades', 'Eliminar'],
                     'opcion' => 'table',
@@ -2431,7 +2431,7 @@ class AdminController extends Controller
         return redirect(route('admin.sedes'))->with('success', 'Creada correctamente');
     }
 
-    public function show(){
+    public function registroUser(){
         $sede = DB::select("SELECT * FROM sede;");
         $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin';");
         $var = 1;

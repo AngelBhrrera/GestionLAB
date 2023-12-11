@@ -115,7 +115,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/faltas', 'faltas')->name('faltas');
             Route::get('/admin/home', 'firmas')->name('home');
 
-            Route::get('/admin/registro', 'show')->name('registro'); //NUEVA RUTA
+            Route::get('/admin/registro', 'registroUser')->name('registro'); //NUEVA RUTA
 
 
             Route::get('/admin/modificar', 'modificar')->name('modificar');

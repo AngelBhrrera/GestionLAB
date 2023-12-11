@@ -214,7 +214,7 @@
                         </div>
 
                         <div class="text-center xl:text-left" style="margin: 0 30% 10px 30%;">
-                                <button id="btn-log" class="btn btn-outline-secondary w-full mt-3" type="submit">
+                                <button id="btn" class="btn btn-outline-secondary w-full mt-3" type="submit">
                                    Registrar
                                 </button>
                         </div>
