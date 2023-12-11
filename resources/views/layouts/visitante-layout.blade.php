@@ -56,25 +56,80 @@
                         <a href="javascript:;" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="hard-drive"></i> </div>
                             <div class="side-menu__title">
-                                IMPRESIONES
+                                CAPACITACIÓN
                                 <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                             </div>
                         </a>
                         <ul class="">
                             <li>
-                                <a href="side-menu-light-crud-data-list.html" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="plus-circle"></i> </div>
-                                    <div class="side-menu__title"> Crear impresión </div>
+                                <a href="{{route('prestadoresProyectosCompletados')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="sidebar"></i> </div>
+                                    <div class="side-menu__title">Modelado 3D </div>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{route('prestadoresProyectosCompletados')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="sidebar"></i> </div>
-                                    <div class="side-menu__title">  Mostrar impresiones </div>
+                                    <div class="side-menu__title">Uso de Impresoras 3D </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="side-menu-light-crud-data-list.html" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="plus-circle"></i> </div>
+                                    <div class="side-menu__title"> Desarrollo de Videojuegos </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{route('prestadoresProyectosCompletados')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="sidebar"></i> </div>
+                                    <div class="side-menu__title">Desarrollo de Aplicaciones Interactivas</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{route('prestadoresProyectosCompletados')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="sidebar"></i> </div>
+                                    <div class="side-menu__title">Desarrollo de Aplicaciones Realidad Virtual</div>
                                 </a>
                             </li>
                         </ul>
                     </li>
+
+                    <li>
+                        <a href="javascript:;" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="hard-drive"></i> </div>
+                            <div class="side-menu__title">
+                                SOLICITUDES
+                                <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a href="{{route('prestadoresProyectosCompletados')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="sidebar"></i> </div>
+                                    <div class="side-menu__title">Modelado 3D</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="side-menu-light-crud-data-list.html" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="plus-circle"></i> </div>
+                                    <div class="side-menu__title"> Prototipos </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{route('prestadoresProyectosCompletados')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="sidebar"></i> </div>
+                                    <div class="side-menu__title">Impresion de Modelos 3D</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{route('prestadoresProyectosCompletados')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="sidebar"></i> </div>
+                                    <div class="side-menu__title">Sistemas Web</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
                 </ul>
             </div>
         <!-- END: Side Menu -->
