@@ -131,11 +131,11 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divSede">
                                         <label for="input-wizard-3" class="form-label">Sede *</label>
-                                        <select class="form-control @if(old('opc')=='1') @error('sede') is-invalid @enderror @endif" name="sede" id="sede" >
+                                        <select class="form-control @if(old('opc')=='1') @error('sede') is-invalid @enderror @endif" name="sede" id="sede" onchange="sedeNavs()" >
                                             @if (isset($sede))
                                                 <option id="sede" value="{{null}}" {{isset($dV[0]->sede) ? $dV[0]->sede == null ? 'selected="selected"' : '' : ''}}>Selecciona una sede</option>
                                                 @foreach ($sede as $dato )
-                                                    <option id="{{$dato->id_Sede}}" value="{{$dato->id_Sede}}" {{old('sede') == $dato->id_Sede ? 'selected="selected"' : '' }}>{{$dato->nombre_Sede }} </option>
+                                                    <option id="{{$dato->nombre_Sede}}" value="{{$dato->nombre_Sede}}" {{old('sede') == $dato->id_Sede ? 'selected="selected"' : '' }}>{{$dato->nombre_Sede }} </option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -150,13 +150,13 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divTurno">
                                         <label for="input-wizard-4" class="form-label">Turno</label>
-                                        <select class="form-control" name="horario" id="horario">
+                                        <select class="form-control" name="horario" id="horarios" onchange="filtroEncargados()">
                                             <option selected id="1" value='null'>Seleccione un turno</option>
-                                                <option id="1" value='Matutino'>Matutino (8-12) </option>
-                                                <option id="2" value='Mediodia'>Mediodia (12-4)</option>
-                                                <option id="3" value='Vespertino'>Vespertino (4-8)</option>
-                                                <option id="4" value='Sabatino' >Sabados</option>
-                                                <option id="5" value='TC'>Tiempo completo</option>                
+                                                <option id="100" value='Matutino'>Matutino (8-12) </option>
+                                                <option id="101" value='Mediodia'>Mediodia (12-4)</option>
+                                                <option id="102" value='Vespertino'>Vespertino (4-8)</option>
+                                                <option id="103" value='Sabatino' >Sabados</option>
+                                                <option id="104" value='TC'>Tiempo completo</option>                
                                         </select>
                                             @error('horario')
                                                 <span class="invalid-feedback" role="alert">
@@ -183,7 +183,7 @@
                                             @if (isset($encargado))
                                                 <option id="null" value="{{null}}" {{isset($dV[0]->id_encargado) ? $dV[0]->id_encargado == null ? 'selected="selected"' : '' : ''}}>Seleccione un encargado</option>
                                                 @foreach ($encargado as $dato )
-                                                    <option id= "{{$dato->id}}" value="{{$dato->id}}" {{old('id_encargado') == $dato->id ? 'selected="selected"' : '' }}> {{$dato->name }} {{$dato->apellido}}</option>
+                                                    <option id= "{{$dato->id}}" value="{{$dato->horario}}" {{old('id_encargado') == $dato->id ? 'selected="selected"' : '' }}> {{$dato->name }} {{$dato->apellido}}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -268,6 +268,77 @@
                 
             }
             
+        }
+
+        function sedeNavs(){
+            window.sedeDinamico = @json($sede);
+            var optionSelect = document.getElementById("horarios");
+            var sedeSelect = document.getElementById("sede").value;
+            sedeDinamico.forEach(function(campo){
+                if (sedeSelect === campo.nombre_Sede){
+                    deshabilitarOpcion(optionSelect, "Matutino", campo.turnoMatutino === 0);
+                    habilitarOpcion(optionSelect, "Matutino", campo.turnoMatutino === 1);
+                    deshabilitarOpcion(optionSelect, "Mediodia", campo.turnoMediodia === 0);
+                    habilitarOpcion(optionSelect, "Mediodia", campo.turnoMediodia === 1);
+                    deshabilitarOpcion(optionSelect, "Vespertino", campo.turnoVespertino === 0);
+                    habilitarOpcion(optionSelect, "Vespertino", campo.turnoVespertino === 1);
+                    deshabilitarOpcion(optionSelect, "Sabatino", campo.turnoSabatino === 0);
+                    habilitarOpcion(optionSelect, "Sabatino", campo.turnoSabatino === 1);
+                    deshabilitarOpcion(optionSelect, "TC", campo.turnoTiempoCompleto === 0);
+                    habilitarOpcion(optionSelect, "TC", campo.turnoTiempoCompleto === 1);
+                    deshabilitarOpcion(optionSelect, "NA", campo.no_Aplica === 0);
+                    habilitarOpcion(optionSelect, "NA", campo.no_Aplica === 1);
+                }
+            });
+        }
+
+        function deshabilitarOpcion(select, opcion, condicion) {
+            for (var k = 0; k < select.options.length; k++) {
+                if (select.options[k].value === opcion && condicion) {
+                    select.options[k].disabled = true;
+                }
+            }
+        }
+        function habilitarOpcion(select, opcion, condicion) {
+            for (var k = 0; k < select.options.length; k++) {
+                if (select.options[k].value === opcion && condicion) {
+                    select.options[k].disabled = false;
+                }
+            }
+        }
+
+        function filtroEncargados(){
+           window.encargadosql = @json($encargado);
+           var optionSelect = document.getElementById("id_encargado");
+           var turnoSelect = document.getElementById("horarios").value;
+           encargadosql.forEach(function(campo){
+                if(turnoSelect === campo.horario){
+                    habilitarTodasLasOpciones(optionSelect);
+                    deshabilitarEncargado(optionSelect, turnoSelect);
+                }else{
+                    deshabilitartodo(optionSelect);
+                }
+           }); 
+        }
+
+        function deshabilitarEncargado(select, opcion){
+            for (var k = 0; k < select.options.length; k++){
+                if(select.options[k].value !== opcion){
+                    select.options[k].disabled = true;
+                }
+            }
+        }
+
+        function deshabilitartodo(select) {
+            for (var k = 0; k < select.options.length; k++) {
+                select.options[k].disabled = true;
+            }
+        }
+
+        function habilitarTodasLasOpciones(select) {
+            for (var k = 0; k < select.options.length; k++) {
+                select.options[k].disabled = false;
+            }
         }
 
 

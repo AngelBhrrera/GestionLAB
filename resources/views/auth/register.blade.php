@@ -168,11 +168,11 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divSede" style="display:none">
                                         <label for="input-wizard-3" class="form-label">Sede *</label>
-                                        <select class="form-control @if(old('opc')=='1') @error('sede') is-invalid @enderror @endif" name="sede" id="sede" onchange="sedeNav()">
+                                        <select class="form-control @if(old('opc')=='1') @error('sede') is-invalid @enderror @endif" name="sede" id="sede" onchange="sedeNavs()">
                                             @if (isset($sede))
                                                 <option id="sede" value="{{null}}" {{isset($dV[0]->sede) ? $dV[0]->sede == null ? 'selected="selected"' : '' : ''}}>Selecciona una sede</option>
                                                 @foreach ($sede as $dato )
-                                                    <option id="{{$dato->nombre_Sede}}" value="{{$dato->id_Sede}}" {{old('sede') == $dato->id_Sede ? 'selected="selected"' : '' }}>{{$dato->nombre_Sede }} </option>
+                                                    <option id="{{$dato->nombre_Sede}}" value="{{$dato->nombre_Sede}}" {{old('sede') == $dato->id_Sede ? 'selected="selected"' : '' }}>{{$dato->nombre_Sede }} </option>
                                                 @endforeach
                                             @endif
                                         
@@ -306,99 +306,26 @@
             }
         }
 
-        function sedeNav() {
-            window.sedesql = @json($sede);
+        function sedeNavs(){
+            window.sedeDinamico = @json($sede);
             var optionSelect = document.getElementById("horarios");
-            if (document.getElementById("CUCEI Laboratorio").selected) {       
-                sedesql.forEach(function(registro) {
-                    if (registro.nombre_Sede === "CUCEI Laboratorio") {
-                        deshabilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 0);
-                        habilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 1);
-                        deshabilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 0);
-                        habilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 1);
-                        deshabilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 0);
-                        habilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 1);
-                        deshabilitarOpcion(optionSelect, "Sabatino", registro.turnoSabatino === 0);
-                        habilitarOpcion(optionSelect, "Sabatino", registro.Sabatino === 1);
-                        deshabilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 0);
-                        habilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 1);
-                        deshabilitarOpcion(optionSelect, "NA", registro.no_Aplica === 0);
-                        habilitarOpcion(optionSelect, "NA", registro.no_Aplica === 1);
-                    }
-                });
-            }
-            if (document.getElementById("CUCEI Coordinación").selected){
-                sedesql.forEach(function(registro) {
-                    if (registro.nombre_Sede === "CUCEI Coordinación") {
-                        deshabilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 0);
-                        habilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 1);
-                        deshabilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 0);
-                        habilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 1);
-                        deshabilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 0);
-                        habilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 1);
-                        deshabilitarOpcion(optionSelect, "Sabatino", registro.turnoSabatino === 0);
-                        habilitarOpcion(optionSelect, "Sabatino", registro.Sabatino === 1);
-                        deshabilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 0);
-                        habilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 1);
-                        deshabilitarOpcion(optionSelect, "NA", registro.no_Aplica === 0);
-                        habilitarOpcion(optionSelect, "NA", registro.no_Aplica === 1);
-                    }
-                });
-            }
-            if (document.getElementById("CUCEI Innovación").selected){
-                sedesql.forEach(function(registro) {
-                    if (registro.nombre_Sede === "CUCEI Innovación") {
-                        deshabilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 0);
-                        habilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 1);
-                        deshabilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 0);
-                        habilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 1);
-                        deshabilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 0);
-                        habilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 1);
-                        deshabilitarOpcion(optionSelect, "Sabatino", registro.turnoSabatino === 0);
-                        habilitarOpcion(optionSelect, "Sabatino", registro.Sabatino === 1);
-                        deshabilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 0);
-                        habilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 1);
-                        deshabilitarOpcion(optionSelect, "NA", registro.no_Aplica === 0);
-                        habilitarOpcion(optionSelect, "NA", registro.no_Aplica === 1);
-                    }
-                });
-            }
-            if (document.getElementById("CFE").selected){
-                sedesql.forEach(function(registro) {
-                    if (registro.nombre_Sede === "CFE") {
-                        deshabilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 0);
-                        habilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 1);
-                        deshabilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 0);
-                        habilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 1);
-                        deshabilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 0);
-                        habilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 1);
-                        deshabilitarOpcion(optionSelect, "Sabatino", registro.turnoSabatino === 0);
-                        habilitarOpcion(optionSelect, "Sabatino", registro.Sabatino === 1);
-                        deshabilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 0);
-                        habilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 1);
-                        deshabilitarOpcion(optionSelect, "NA", registro.no_Aplica === 0);
-                        habilitarOpcion(optionSelect, "NA", registro.no_Aplica === 1);
-                    }
-                });
-            }
-            if (document.getElementById("CUCS").selected){
-                sedesql.forEach(function(registro) {
-                    if (registro.nombre_Sede === "CUCS") {
-                        deshabilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 0);
-                        habilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 1);
-                        deshabilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 0);
-                        habilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 1);
-                        deshabilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 0);
-                        habilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 1);
-                        deshabilitarOpcion(optionSelect, "Sabatino", registro.turnoSabatino === 0);
-                        habilitarOpcion(optionSelect, "Sabatino", registro.Sabatino === 1);
-                        deshabilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 0);
-                        habilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 1);
-                        deshabilitarOpcion(optionSelect, "NA", registro.no_Aplica === 0);
-                        habilitarOpcion(optionSelect, "NA", registro.no_Aplica === 1);
-                    }
-                });
-            }
+            var sedeSelect = document.getElementById("sede").value;
+            sedeDinamico.forEach(function(campo){
+                if (sedeSelect === campo.nombre_Sede){
+                    deshabilitarOpcion(optionSelect, "Matutino", campo.turnoMatutino === 0);
+                    habilitarOpcion(optionSelect, "Matutino", campo.turnoMatutino === 1);
+                    deshabilitarOpcion(optionSelect, "Mediodia", campo.turnoMediodia === 0);
+                    habilitarOpcion(optionSelect, "Mediodia", campo.turnoMediodia === 1);
+                    deshabilitarOpcion(optionSelect, "Vespertino", campo.turnoVespertino === 0);
+                    habilitarOpcion(optionSelect, "Vespertino", campo.turnoVespertino === 1);
+                    deshabilitarOpcion(optionSelect, "Sabatino", campo.turnoSabatino === 0);
+                    habilitarOpcion(optionSelect, "Sabatino", campo.turnoSabatino === 1);
+                    deshabilitarOpcion(optionSelect, "TC", campo.turnoTiempoCompleto === 0);
+                    habilitarOpcion(optionSelect, "TC", campo.turnoTiempoCompleto === 1);
+                    deshabilitarOpcion(optionSelect, "NA", campo.no_Aplica === 0);
+                    habilitarOpcion(optionSelect, "NA", campo.no_Aplica === 1);
+                }
+            });
         }
 
         function deshabilitarOpcion(select, opcion, condicion) {
@@ -415,66 +342,35 @@
                 }
             }
         }
-
+        
         function filtroEncargados(){
-            window.encarSql = @json($encargado);
-            var optionSelect = document.getElementById("id_encargado");
-            if (document.getElementById("100").selected){
-                encarSql.forEach(function(registro){
-                    if (registro.horario === "Matutino"){
-                        habilitarTodasLasOpciones(optionSelect);
-                        deshabilitarEncargado(optionSelect, "Vespertino");
-                        deshabilitarEncargado(optionSelect, "Mediodia");
-                        deshabilitarEncargado(optionSelect, "Sabatino");
-                    }     
-                }); 
-            }
-            if (document.getElementById("101").selected){
-                encarSql.forEach(function(registro){
-                    if (registro.horario === "Mediodia"){
-                        habilitarTodasLasOpciones(optionSelect);
-                        deshabilitarEncargado(optionSelect, "Matutino");
-                        deshabilitarEncargado(optionSelect, "Vespertino");
-                        deshabilitarEncargado(optionSelect, "Sabatino");
-                    }     
-                }); 
-            }
-            if (document.getElementById("102").selected){
-                encarSql.forEach(function(registro){
-                    if (registro.horario === "Vespertino"){
-                        habilitarTodasLasOpciones(optionSelect);
-                        deshabilitarEncargado(optionSelect, "Matutino");
-                        deshabilitarEncargado(optionSelect, "Mediodia");
-                        deshabilitarEncargado(optionSelect, "Sabatino");
-                    }     
-                }); 
-            }
-            if (document.getElementById("103").selected){
-                encarSql.forEach(function(registro){
-                    if (registro.horario === "Sabatino"){
-                        habilitarTodasLasOpciones(optionSelect);
-                        deshabilitarEncargado(optionSelect, "Matutino");
-                        deshabilitarEncargado(optionSelect, "Mediodia");
-                        deshabilitarEncargado(optionSelect, "Vespertino");
-                    }     
-                }); 
-            }
-            if (document.getElementById("104").selected){
-                encarSql.forEach(function(registro){
-                    if (registro.horario === "TC"){
-                        habilitarTodasLasOpciones(optionSelect);
-                    }     
-                }); 
-            }
+           window.encargadosql = @json($encargado);
+           var optionSelect = document.getElementById("id_encargado");
+           var turnoSelect = document.getElementById("horarios").value;
+           encargadosql.forEach(function(campo){
+                if(turnoSelect === campo.horario){
+                    habilitarTodasLasOpciones(optionSelect);
+                    deshabilitarEncargado(optionSelect, turnoSelect);
+                }else{
+                    deshabilitartodo(optionSelect);
+                }
+           }); 
         }
 
         function deshabilitarEncargado(select, opcion){
             for (var k = 0; k < select.options.length; k++){
-                if(select.options[k].value === opcion){
+                if(select.options[k].value !== opcion){
                     select.options[k].disabled = true;
                 }
             }
         }
+
+        function deshabilitartodo(select) {
+            for (var k = 0; k < select.options.length; k++) {
+                select.options[k].disabled = true;
+            }
+        }
+
         function habilitarTodasLasOpciones(select) {
             for (var k = 0; k < select.options.length; k++) {
                 select.options[k].disabled = false;
