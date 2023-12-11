@@ -181,7 +181,7 @@
                                         <label for="input-wizard-4" class="form-label">Encargado *</label>
                                         <select class="form-control @if(old('opc')=='1') @error('id_encargado') is-invalid @enderror @endif" name="id_encargado" id="id_encargado" >
                                             @if (isset($encargado))
-                                                <option id="null" value="{{null}}" {{isset($dV[0]->id_encargado) ? $dV[0]->id_encargado == null ? 'selected="selected"' : '' : ''}}>Seleccione un encargado</option>
+                                                <option id="prede" value="prede" {{isset($dV[0]->id_encargado) ? $dV[0]->id_encargado == null ? 'selected="selected"' : '' : ''}}>Seleccione un encargado</option>
                                                 @foreach ($encargado as $dato )
                                                     <option id= "{{$dato->id}}" value="{{$dato->horario}}" {{old('id_encargado') == $dato->id ? 'selected="selected"' : '' }}> {{$dato->name }} {{$dato->apellido}}</option>
                                                 @endforeach
@@ -273,7 +273,10 @@
         function sedeNavs(){
             window.sedeDinamico = @json($sede);
             var optionSelect = document.getElementById("horarios");
+            var optionSelect2 = document.getElementById("id_encargado");
             var sedeSelect = document.getElementById("sede").value;
+            reiniciarEncargado(optionSelect);
+            reiniciarTurno(optionSelect2);
             sedeDinamico.forEach(function(campo){
                 if (sedeSelect === campo.nombre_Sede){
                     deshabilitarOpcion(optionSelect, "Matutino", campo.turnoMatutino === 0);
@@ -317,6 +320,7 @@
                     deshabilitarEncargado(optionSelect, turnoSelect);
                 }else{
                     deshabilitartodo(optionSelect);
+                    reiniciarEncargado(optionSelect);
                 }
            }); 
         }
@@ -326,12 +330,26 @@
                 if(select.options[k].value !== opcion){
                     select.options[k].disabled = true;
                 }
+                if(select.options[k].value === "prede"){
+                    select.options[k].disabled = false;
+                }
             }
+        }
+
+        function reiniciarEncargado(select){
+            select.selectedIndex = 0;
+        }
+
+        function reiniciarTurno(select){
+            select.selectedIndex = 0;
         }
 
         function deshabilitartodo(select) {
             for (var k = 0; k < select.options.length; k++) {
                 select.options[k].disabled = true;
+                if(select.options[k].value === "prede"){
+                    select.options[k].disabled = false;
+                }
             }
         }
 
