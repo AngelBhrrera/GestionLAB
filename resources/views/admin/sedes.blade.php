@@ -27,7 +27,7 @@
             <input type="hidden" name="idSede" id="idSede" value="">
             <select class="form-control @if(old('opc')=='1') @error('sede') is-invalid @enderror @endif" name="sede" id="sede" onchange="modificarCamposSede()">
                 @if (isset($sede))
-                    <option id="sede" value="{{null}}" {{isset($dV[0]->sede) ? $dV[0]->sede == null ? 'selected="selected"' : '' : ''}}>Selecciona una sede</option>
+                    <option id="sede" value="null">Selecciona una sede</option>
                     @foreach ($sede as $dato )
                         <option id="{{$dato->nombre_Sede}}" value="{{json_encode($dato)}}" {{old('sede') == $dato->id_Sede ? 'selected="selected"' : '' }}>{{$dato->nombre_Sede }} </option>
                     @endforeach
@@ -70,18 +70,27 @@
             selectSede = document.getElementById("sede");
             campoNombre = document.getElementById("nuevoNombre");
             idSede=document.getElementById("idSede");
-            datoSede = JSON.parse(selectSede.value);
-            idSede.value=datoSede.id_Sede;
-            campoNombre.value=datoSede.nombre_Sede;
             checks= document.querySelectorAll('.form-check-input');
             
+            if(selectSede.value === "null"){
+                 // Restablecer los campos al estado inicial
+                campoNombre.value = "";
+                idSede.value = "";
+                for(var check of checks){
+                    check.checked = false;
+                }
+                return;
+            }
+
+            datoSede = JSON.parse(selectSede.value);
+            campoNombre.value=datoSede.nombre_Sede;
+            idSede.value = datoSede.id_Sede;
             //Check turno matituno
             if(datoSede.turnoMatutino == 1){
                 checks[0].checked = true;
             }else{
                 checks[0].checked = false;
             }
-
             //Check turno medio día
             if(datoSede.turnoMediodia == 1){
                 checks[1].checked = true;
@@ -110,8 +119,6 @@
                 checks[4].checked = false;
             }
             
-
-
         }
     </script>
     
