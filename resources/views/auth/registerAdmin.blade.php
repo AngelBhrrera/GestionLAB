@@ -152,11 +152,11 @@
                                         <label for="input-wizard-4" class="form-label">Turno</label>
                                         <select class="form-control" name="horario" id="horarios" onchange="filtroEncargados()">
                                             <option selected id="1" value='null'>Seleccione un turno</option>
-                                                <option id="100" value='Matutino'>Matutino (8-12) </option>
-                                                <option id="101" value='Mediodia'>Mediodia (12-4)</option>
-                                                <option id="102" value='Vespertino'>Vespertino (4-8)</option>
-                                                <option id="103" value='Sabatino' >Sabados</option>
-                                                <option id="104" value='TC'>Tiempo completo</option>                
+                                                <option id="1" value='Matutino'>Matutino (8-12) </option>
+                                                <option id="2" value='Mediodia'>Mediodia (12-4)</option>
+                                                <option id="3" value='Vespertino'>Vespertino (4-8)</option>
+                                                <option id="4" value='Sabatino' >Sabados</option>
+                                                <option id="5" value='TC'>Tiempo completo</option>                
                                         </select>
                                             @error('horario')
                                                 <span class="invalid-feedback" role="alert">
@@ -229,45 +229,6 @@
 @section('script')
     <script type="text/javascript">
 
-         function filtroVisitantes(){
-            var inputSede = document.getElementById("sede");
-            var inputTurno = document.getElementById("horario");
-            var inputHoras = document.getElementById("horas");
-            var inputEncargado = document.getElementById("id_encargado");
-            if (document.getElementById("clientA").selected){
-                inputSede.disabled = true;
-                inputTurno.disabled = true;
-                inputHoras.disabled = true;
-                inputEncargado.disabled = true;
-            }
-            if (document.getElementById("clientM").selected){
-                inputSede.disabled = true;
-                inputTurno.disabled = true;
-                inputHoras.disabled = true;
-                inputEncargado.disabled = true;
-            }
-            if (document.getElementById("RBprestador").selected){
-                inputSede.disabled = false;
-                inputTurno.disabled = false;
-                inputHoras.disabled = false;
-                inputEncargado.disabled = false;
-                
-            }
-            if (document.getElementById("RBpracticante").selected){
-                inputSede.disabled = false;
-                inputTurno.disabled = false;
-                inputHoras.disabled = false;
-                inputEncargado.disabled = false;
-                
-            }
-            if (document.getElementById("RBvoluntario").selected){
-                inputSede.disabled = false;
-                inputTurno.disabled = false;
-                inputHoras.disabled = false;
-                inputEncargado.disabled = false;
-                
-            }
-            
-        }
+
     </script>
 @endsection

@@ -58,7 +58,7 @@ class AdminController extends Controller
     {
 
         //Despliega la tabla de los encargados cuando su tipo == admin
-        $encargado = DB::table('users')->where('tipo', 'admin')->get();
+        $encargado = DB::table('users')->where('tipo', 'admin ')->get(); //falta agregar encargado
 
         // return view('/home',['opcion'=> 'auth.registerAdmin', 'nombre' => 'Registro', 'ruta' => 'registrar']);
         return view('/auth/registerAdmin');
@@ -2416,20 +2416,20 @@ class AdminController extends Controller
         return view("admin.sedes", ['sede'=>$sede]);
     }
 
-    public function show(Request $request){
-        $sede = DB::select("SELECT * FROM sede;");
-        $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin';");
-        $var = 1;
-        return view('auth/registerAdmin', ['encargado'=>$encargado,'sede'=>$sede]);
-    }
-
     public function nuevaSede(Request $request){
         $request->validate([
-            'nombreSede' => 'required|max:255|unique:sede,nombre_Sede',
+            'nombre' => 'required|unique:categories|max:255',
         ]);
         $nombre=$request->input("nombreSede");
         DB::insert("INSERT INTO sede (nombre_Sede) Values('$nombre')");
         return redirect(route('admin.sedes'))->with('success', 'Creada correctamente');
+    }
+
+    public function show(){
+        $sede = DB::select("SELECT * FROM sede;");
+        $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin' OR 'encargado';");
+        $var = 1;
+        return view('auth/registerAdmin', ['encargado'=>$encargado,'sede'=>$sede]);
     }
 
     public function  modificarSede(Request $request){

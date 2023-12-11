@@ -103,7 +103,7 @@
                     <div class="intro-x dropdown h-10">
                         <div class="h-full dropdown-toggle flex items-center" role="button" aria-expanded="false" data-tw-toggle="dropdown">
                             <div class="w-10 h-10 image-fit">
-                            @if(isset(Auth::user()->image))
+                            @if(isset(Auth::user()->imagen_perfil))
                                 <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('build/assets/images/placeholders/avatar5.png')}}">
                             @else
                                 <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('build/assets/images/placeholders/'.Auth::user()->imagen_perfil)}}">
@@ -150,20 +150,5 @@
 @section('script')
 
     
-  <script src={{ asset('plugins/jquery/jquery.min.js') }}></script>
-  <script src={{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}></script>
-  <!-- AdminLTE App -->
-  <script src={{ asset('dist/js/adminlte.min.js') }}></script>
-  <!-- AdminLTE App -->
-  <script src={{ asset('plugins/datatables/jquery.dataTables.min.js') }}></script>
-  <script src={{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}></script>
-  <script src={{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}></script>
-  <script src={{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}></script>
-  <script src={{ asset('plugins/datatables-buttons/js/dataTables.buttons.min.js') }}></script>
-  <script src={{ asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}></script>
-  <script src={{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}></script>
-  <script src={{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}></script>
-  <script src={{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}></script>
-
 @endsection
 

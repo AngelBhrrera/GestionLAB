@@ -16,6 +16,9 @@
                 <img class="mx-auto my-auto" alt="Inventores" width="80px" height="80px" src="{{ asset('build/assets/logosinventores/InventoresLogoHDWhiteborder.png') }}">
             </div>
 
+            <p id="demo">   </p>
+            <p id="demo2">   </p>
+
             <div id="divBase" style="display: flex;"> 
                 <form method="POST" action="{{ route('registrar') }}"> 
                     <input id="id" name="id" type="hidden" value="{{!isset($dV[0]->id) ? '' : $dV[0]->id }}">
@@ -307,6 +310,10 @@
         }
 
         function sedeNav() {
+
+            var optionSelect = document.getElementById("horarios").value;
+            var selectedOption = document.getElementById("sede").value;
+
             window.sedesql = json($sede);
             var optionSelect = document.getElementById("horarios");
             if (document.getElementById("CUCEI Laboratorio").selected) {       
@@ -399,6 +406,29 @@
                     }
                 });
             }
+
+            sedesql.forEach(function(registro) {
+                alert("Valor de registro.id_Sede:", registro.id_Sede);
+                alert("Valor de selectedOption:", selectedOption);
+
+                if (registro.id_Sede == selectedOption) {
+                    alert("Se encontró un registro con el mismo ID de Sede.");
+
+                    deshabilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 0);
+                    habilitarOpcion(optionSelect, "Matutino", registro.turnoMatutino === 1);
+                    deshabilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 0);
+                    habilitarOpcion(optionSelect, "Mediodia", registro.turnoMediodia === 1);
+                    deshabilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 0);
+                    habilitarOpcion(optionSelect, "Vespertino", registro.turnoVespertino === 1);
+                    deshabilitarOpcion(optionSelect, "Sabatino", registro.turnoSabatino === 0);
+                    habilitarOpcion(optionSelect, "Sabatino", registro.Sabatino === 1);
+                    deshabilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 0);
+                    habilitarOpcion(optionSelect, "TC", registro.turnoTiempoCompleto === 1);
+                    deshabilitarOpcion(optionSelect, "NA", registro.no_Aplica === 0);
+                    habilitarOpcion(optionSelect, "NA", registro.no_Aplica === 1);
+                }
+            });
+       
         }
 
         function deshabilitarOpcion(select, opcion, condicion) {

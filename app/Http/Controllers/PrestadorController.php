@@ -803,6 +803,5 @@ class PrestadorController extends Controller
                 }
                 return redirect('/admin/home');
         }
-
     }
 }
