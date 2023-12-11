@@ -162,7 +162,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/horarios', 'horarios')->name('horarios');
             Route::get('/admin/obtenerActividades', 'obtenerActividades')->name('obtenerActividades');
 
-            Route::get('admin/obtenerActividades', 'gestionSedes')->name('sedes');
+            Route::get('admin/gestionarSedes', 'gestionSedes')->name('sedes');
             Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
             Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
 
