@@ -58,7 +58,7 @@ class AdminController extends Controller
     {
 
         //Despliega la tabla de los encargados cuando su tipo == admin
-        $encargado = DB::table('users')->where('tipo', 'admin')->get();
+        $encargado = DB::table('users')->where('tipo', 'admin ')->get(); //falta agregar encargado
 
         // return view('//admin/homeA',['opcion'=> 'auth.registerAdmin', 'nombre' => 'Registro', 'ruta' => 'registrar']);
         return view('/auth/registerAdmin');
@@ -2433,7 +2433,7 @@ class AdminController extends Controller
 
     public function show(){
         $sede = DB::select("SELECT * FROM sede;");
-        $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin';");
+        $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin' OR 'encargado';");
         $var = 1;
         return view('auth/registerAdmin', ['encargado'=>$encargado,'sede'=>$sede]);
     }

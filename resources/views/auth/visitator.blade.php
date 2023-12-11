@@ -23,7 +23,7 @@
                         <form method="POST" id="envio" action="{{ route('api.registrarVisita') }}">
                             @csrf
                             <div class="form-group row justify-content-center"> 
-                                <label  class="col-md-3 col-form-label text-md-right text-lg">{{ __('Codigo') }}</label> 
+                                <label  class="col-md-3 col-form-label text-md-right text-lg">{{ __('Telefono') }}</label> 
                                 <div class="col-md-6">
                                     <input id="codigo" class="form-control form-control-lg" name="codigo"> 
                                 </div>
