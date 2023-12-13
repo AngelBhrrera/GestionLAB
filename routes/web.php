@@ -62,7 +62,6 @@ Route::controller(App\Http\Controllers\Auth\logsysController::class)->group(func
     Route::get('/logout', 'logoutF')->name('logout');
 });
 Route::controller(App\Http\Controllers\HomeController::class)->group(function(){
-    Route::get('/registroImpresion','registroImpresion')->middleware('guest')->name('registroImpresion');
     Route::post('/crearImpresion', 'crearImpresion')->middleware('guest')->name('crearImpresion');
     Route::post('update', 'update')->name('update');
     Route::get('modificaradmin', 'modificaradmin')->name('modificaradmin');
@@ -102,18 +101,40 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
         Route::post('/admin/eliminardias', 'eliminardiafestivo')->name('eliminardiafestivo');
         Route::post('/admin/eliminarhorario','eliminarhorario')->name('eliminarhorario');
         Route::post('/admin/guardarhorario',  'guardarhorario')->name('guardarhorario');
+
         Route::middleware('role:admin,Superadmin')->group(function() {
             Route::post('/actualizar', 'guardar')->name('actualizar');
             Route::post('/actualizarb', 'guardar2')->name('actualizarb');
         });
     });
+
     Route::middleware('role:admin,Superadmin,encargado')->group(function() {
         Route::name('admin.')->group(function () {
 
+            Route::get('/admin/registro', 'show')->name('registro'); //NUEVA RUTA
+
+            Route::get('/admin/C_actividades', 'create_act')->name('create_act');
+            Route::post('/admin/M_actividades', 'make_act')->name('make_act');
+            Route::get('/admin/A_actividades', 'asign_act')->name('asign_act');
+
+            Route::get('/admin/ver_impresoras', 'control_print')->name('control_print');
+            Route::post('/admin/ver_impresoras', 'make_print')->name('make_print');
+
+
+            Route::get('/admin/registrar_impresiones', 'regis_impresion')->name('regis_impresion');
+
+            Route::get('admin/gestionSedes', 'gestionSedes')->name('sedes');
+            Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
+            Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
+
+            Route::get('/admin/cambiorol', 'cambiarRol')->name('cambiorol');
+
+
+
+
             Route::get('/admin/faltas', 'faltas')->name('faltas');
             Route::get('/admin/home', 'firmas')->name('home');
-            Route::get('/admin/registro', 'show')->name('registro');
-            
+
             Route::get('/admin/modificar', 'modificar')->name('modificar');
             Route::get('/admin/prestadores', 'prestadores')->name('prestadores');
             Route::get('/admin/administradores', 'administradores')->name('administradores');
@@ -127,10 +148,11 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/firmas', 'firmas')->name('firmas');
             Route::get('/admin/firmasPendientes', 'firmasPendientes')->name('firmasPendientes');
             Route::get('/admin/recompensasRegistro', 'recompensas')->name('recompensas');
-            Route::get('/admin/C_actividades', 'C_Actividades')->name('C_Actividades');
+
             Route::get('/admin/newCategoriaYActividad', 'newCategoriaYActividad')->name('newCategoriaYActividad');
             Route::get('/admin/actividades', 'actividades')->name('actividades');
             Route::get('/admin/check-in', 'checkin')->name('checkin');
+            Route::get('/admin/visitas', 'visits')->name('visitas');
             Route::get('/admin/premios', 'premios')->name('premios');
             Route::post('/admin/update',  'App\Http\Controllers\AdminController@adminUpdate')->name('update');
             Route::get('/admin/general', 'general')->name('general');
@@ -157,25 +179,17 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/veractividades', 'veractividades')->name('veractividades');
             Route::get('/admin/veractividades_pendientes', 'veractividades_pendientes')->name('veractividades_pendientes');
             Route::get('/admin/veractividades_completadas', 'veractividades_completadas')->name('veractividades_completadas');
-            Route::get('/admin/cambiorol', 'cambiarRol')->name('cambiorol');
+
             Route::get('/admin/Dias_no_laborables', 'diasfestivos')->name('diasfestivos');
             Route::get('/admin/horarios', 'horarios')->name('horarios');
             Route::get('/admin/obtenerActividades', 'obtenerActividades')->name('obtenerActividades');
 
-            Route::get('admin/gestionarSedes', 'gestionSedes')->name('sedes');
-            Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
-            Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
-
-            Route::get('/admin/visitas', 'visits')->name('visitas'); //Importante
             // Route::get('/admin/registrovisitas', 'registroVisitas')->name('registrovisitas');
-            
+            // Route::get('/admin/visitas', 'visitas')->name('visitas');
             // Route::get('/admin/actividades_revision/{id}/detalles', 'actividadDetalles')->name('actividad.detalles');
             // Route::get('/admin/actividades_revision/{id}', 'finalizarActividad')->name('finalizar.actividad');
             // Route::get('/actividad-revisada/{id}/{experiencia}', 'vistaFinalizacionActividad')->name('admin.actividadRevisada');
         });
-    });
-    Route::name('api.')->group(function () {
-        Route::post('visitator', 'registrarVisita')->middleware('role:admin,checkin,Superadmin')->name('registrarVisita');
     });
 });
 
@@ -247,6 +261,10 @@ Route::controller(App\Http\Controllers\VisitanteController::class)->group(functi
 
             // Route::get('/visita','visita')->name('visitas');
         });
+    });
+
+    Route::name('api.')->group(function () {
+        Route::post('visitator', 'registrarVisita')->middleware('role:admin,checkin,Superadmin')->name('registrarVisita');
     });
 });
 

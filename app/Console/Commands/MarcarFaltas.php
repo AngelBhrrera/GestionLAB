@@ -51,7 +51,7 @@ class MarcarFaltas extends Command
         //         Log::info($usuario->horario);
         //         if($usuario->horario != 'sabados' && (date('D') != 'Sat') && date('D') != 'Sun' ){
         //             $today = date('d/m/Y');
-        //             $revisar = DB::table('horasprestadores')->where('idusuario', $usuario->id)->where('fecha', $today)->get();
+        //             $revisar = DB::table('registros_checkin')->where('idusuario', $usuario->id)->where('fecha', $today)->get();
         //             if(count($revisar) <= 0){
         //             $falta = new faltas();
         //             $falta->id_usuario = $usuario->id;
@@ -67,7 +67,7 @@ class MarcarFaltas extends Command
         //         }
         //         elseif($usuario->horario == 'sabados' && (date('D') == 'Sat') ){
         //             $today = date('d/m/Y');
-        //             $revisar = DB::table('horasprestadores')->where('idusuario', $usuario->id)->where('fecha', $today)->get();
+        //             $revisar = DB::table('registros_checkin')->where('idusuario', $usuario->id)->where('fecha', $today)->get();
         //             if(count($revisar) <= 0){
         //             $falta = new faltas();
         //             $falta->id_usuario = $usuario->id;
@@ -92,7 +92,7 @@ class MarcarFaltas extends Command
                 // Log::info(json_encode($horario));
                 if($horario){
                     if($horario->lunes == 1 && date('D') == 'Mon'){
-                        $revisar = DB::table('horasprestadores')->where('idusuario', $usuario->id)->where('fecha', $today1)->get();
+                        $revisar = DB::table('registros_checkin')->where('idusuario', $usuario->id)->where('fecha', $today1)->get();
                         if(count($revisar) <= 0){
                             $falta = new faltas();
                             $falta->id_usuario = $usuario->id;
@@ -104,7 +104,7 @@ class MarcarFaltas extends Command
                         }
                     }
                     if($horario->martes == 1 && date('D') == 'Tue'){
-                        $revisar = DB::table('horasprestadores')->where('idusuario', $usuario->id)->where('fecha', $today1)->get();
+                        $revisar = DB::table('registros_checkin')->where('idusuario', $usuario->id)->where('fecha', $today1)->get();
                         if(count($revisar) <= 0){
                             $falta = new faltas();
                             $falta->id_usuario = $usuario->id;
@@ -116,7 +116,7 @@ class MarcarFaltas extends Command
                         }
                     }
                     if($horario->miercoles == 1 && date('D') == 'Wed'){
-                        $revisar = DB::table('horasprestadores')->where('idusuario', $usuario->id)->where('fecha', $today1)->get();
+                        $revisar = DB::table('registros_checkin')->where('idusuario', $usuario->id)->where('fecha', $today1)->get();
                         if(count($revisar) <= 0){
                             $falta = new faltas();
                             $falta->id_usuario = $usuario->id;
@@ -128,7 +128,7 @@ class MarcarFaltas extends Command
                         }
                     }
                     if($horario->jueves == 1 && date('D') == 'Thu'){
-                        $revisar = DB::table('horasprestadores')->where('idusuario', $usuario->id)->where('fecha', $today1)->get();
+                        $revisar = DB::table('registros_checkin')->where('idusuario', $usuario->id)->where('fecha', $today1)->get();
                         if(count($revisar) <= 0){
                             $falta = new faltas();
                             $falta->id_usuario = $usuario->id;
@@ -140,7 +140,7 @@ class MarcarFaltas extends Command
                         }
                     }
                     if($horario->viernes == 1 && date('D') == 'Fri'){
-                        $revisar = DB::table('horasprestadores')->where('idusuario', $usuario->id)->where('fecha', $today1)->get();
+                        $revisar = DB::table('registros_checkin')->where('idusuario', $usuario->id)->where('fecha', $today1)->get();
                         if(count($revisar) <= 0){
                             $falta = new faltas();
                             $falta->id_usuario = $usuario->id;
@@ -152,7 +152,7 @@ class MarcarFaltas extends Command
                         }
                     }
                     if($horario->sabado == 1 && date('D') == 'Sat'){
-                        $revisar = DB::table('horasprestadores')->where('idusuario', $usuario->id)->where('fecha', $today1)->get();
+                        $revisar = DB::table('registros_checkin')->where('idusuario', $usuario->id)->where('fecha', $today1)->get();
                         if(count($revisar) <= 0){
                             $falta = new faltas();
                             $falta->id_usuario = $usuario->id;
@@ -164,7 +164,7 @@ class MarcarFaltas extends Command
                         }
                     }
                     if($horario->domingo == 1 && date('D') == 'Sun'){
-                        $revisar = DB::table('horasprestadores')->where('idusuario', $usuario->id)->where('fecha', $today1)->get();
+                        $revisar = DB::table('registros_checkin')->where('idusuario', $usuario->id)->where('fecha', $today1)->get();
                         if(count($revisar) <= 0){
                             $falta = new faltas();
                             $falta->id_usuario = $usuario->id;

@@ -228,6 +228,47 @@
 
 @section('script')
     <script type="text/javascript">
+        
+        function filtroVisitantes(){
+            var inputSede = document.getElementById("sede");
+            var inputTurno = document.getElementById("horario");
+            var inputHoras = document.getElementById("horas");
+            var inputEncargado = document.getElementById("id_encargado");
+            if (document.getElementById("clientA").selected){
+                inputSede.disabled = true;
+                inputTurno.disabled = true;
+                inputHoras.disabled = true;
+                inputEncargado.disabled = true;
+            }
+            if (document.getElementById("clientM").selected){
+                inputSede.disabled = true;
+                inputTurno.disabled = true;
+                inputHoras.disabled = true;
+                inputEncargado.disabled = true;
+            }
+            if (document.getElementById("RBprestador").selected){
+                inputSede.disabled = false;
+                inputTurno.disabled = false;
+                inputHoras.disabled = false;
+                inputEncargado.disabled = false;
+                
+            }
+            if (document.getElementById("RBpracticante").selected){
+                inputSede.disabled = false;
+                inputTurno.disabled = false;
+                inputHoras.disabled = false;
+                inputEncargado.disabled = false;
+                
+            }
+            if (document.getElementById("RBvoluntario").selected){
+                inputSede.disabled = false;
+                inputTurno.disabled = false;
+                inputHoras.disabled = false;
+                inputEncargado.disabled = false;
+                
+            }
+            
+        }
 
         function sedeNavs(){
             window.sedeDinamico = @json($sede);

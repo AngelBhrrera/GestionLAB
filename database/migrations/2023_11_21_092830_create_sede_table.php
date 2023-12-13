@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class CreateSedeTable extends Migration
 {
@@ -24,6 +25,7 @@ class CreateSedeTable extends Migration
             $table->integer('turnoSabatino')->length(10);
             $table->integer('turnoTiempoCompleto')->length(10);
             $table->integer('no_Aplica')->length(10);
+            $table->boolean('activa')->default(1);
 
         });
 
