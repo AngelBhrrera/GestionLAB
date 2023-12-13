@@ -66,7 +66,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin.C_Actividades')}}" class="side-menu">
+                                    <a href="{{ route('admin.create_act')}}" class="side-menu">
                                         <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" 
                                         width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-edit">
@@ -317,6 +317,18 @@
                                         <div class="side-menu__title">Gestión sedes</div>
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="{{route('admin.control_print')}}" class="side-menu">
+                                        <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                                        <div class="side-menu__title">Gestión Impresoras</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{route('admin.watch_prints')}}" class="side-menu">
+                                        <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                                        <div class="side-menu__title">Gestión Impresiones</div>
+                                    </a>
+                                </li>
 
                             </ul>
                         </li>
@@ -422,7 +434,9 @@
 
                         <div class="dropdown-menu w-56">
                             <ul class="dropdown-content">
-
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <li>
                                     <a href="{{ route('logout') }}" class="dropdown-item"> <i data-lucide="toggle-right" class="w-4 h-4 mr-2"></i> Cerrar sesión </a>
                                 </li>
@@ -445,7 +459,6 @@
 
 @endsection
 
-@section('script')
     <?php
         // <!-- JQuery -->
         // <script src={{asset('plugins/jquery/jquery.min.js')}}></script>
@@ -474,6 +487,4 @@
         // {{-- <script src={{asset('plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}></script> --}}
         // {{-- <script src="{{asset('plugins/moment/moment.min.js')}}"></script> --}}
     ?>
-
-@endsection
 
