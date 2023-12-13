@@ -11,8 +11,8 @@ class tablaImpresiones extends Migration
         DB::statement("
         CREATE VIEW ver_impresiones AS
         SELECT 
-            i.nombre AS 'No. Impresora', 
-            COALESCE(p.titulo, 'Interno') AS 'Nombre Proyecto', 
+            i.nombre AS 'impresora', 
+            COALESCE(p.titulo, 'Interno') AS 'proyecto', 
             CONCAT(u.name, ' ', u.apellido) AS Prestador, 
             `fecha`,
             `nombre_modelo_stl`,

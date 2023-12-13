@@ -25,6 +25,7 @@ class CreateSedeTable extends Migration
             $table->integer('turnoSabatino')->length(10);
             $table->integer('turnoTiempoCompleto')->length(10);
             $table->integer('no_Aplica')->length(10);
+            $table->boolean('activa')->default(1);
 
         });
 
