@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+
 
 class Soloadmins extends Migration
 {
@@ -13,7 +13,7 @@ class Soloadmins extends Migration
      */
     public function up()
     {
-        \DB::statement("
+        DB::statement("
         CREATE VIEW solo_admins AS
         SELECT
         `users`.`id` AS `id`, `users`.`name` AS `name`,

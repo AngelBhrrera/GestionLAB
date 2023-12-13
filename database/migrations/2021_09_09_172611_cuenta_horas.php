@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class Cuentahoras extends Migration
 {
@@ -13,30 +12,30 @@ class Cuentahoras extends Migration
      */
     public function up()
     {
-        \DB::statement("
+        DB::statement("
         CREATE VIEW cuenta_horas AS 
         SELECT
-        `horasprestadores`.`codigo` AS `codigo`,
-        SUM(`horasprestadores`.`horas`) AS `horas_servicio`,
+        `registros_checkin`.`codigo` AS `codigo`,
+        SUM(`registros_checkin`.`horas`) AS `horas_servicio`,
         (
-            `users`.`horas` - SUM(`horasprestadores`.`horas`)
+            `users`.`horas` - SUM(`registros_checkin`.`horas`)
         ) AS `horas_restantes`
         FROM
             (
                 `users`
-            JOIN `horasprestadores` ON
+            JOIN `registros_checkin` ON
                 (
                     (
-                        `users`.`id` = `horasprestadores`.`idusuario`
+                        `users`.`id` = `registros_checkin`.`idusuario`
                     )
                 )
             )
         WHERE
             (
-                `horasprestadores`.`estado` = 'autorizado'
+                `registros_checkin`.`estado` = 'autorizado'
             )
         GROUP BY
-            `horasprestadores`.`codigo`,
+            `registros_checkin`.`codigo`,
             `users`.`horas`
         ");
     }

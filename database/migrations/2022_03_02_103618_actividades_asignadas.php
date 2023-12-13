@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class Actividadesasignadas extends Migration
 {
@@ -13,10 +12,10 @@ class Actividadesasignadas extends Migration
      */
     public function up()
     {
-        \DB::statement("
+        DB::statement("
         CREATE VIEW `actividades_asignadas` AS SELECT
         `actividades_prestadores`.`id_prestador` AS `id_prestador`,
-        `actividades_prestadores`.`llave_actividad` AS `llave_actividad`,
+        `actividades_prestadores`.`id_actividad` AS `llave_actividad`,
         `c_actividad`.`id_actividad` AS `id_actcreada`,
         `c_actividad`.`nombre_act` AS `nombre_act`,
         `c_actividad`.`tipo_act` AS `tipo_act`,
@@ -26,11 +25,11 @@ class Actividadesasignadas extends Migration
         `c_actividad`.`fecha` AS `fecha`,
         `c_actividad`.`status` AS `status`,
         `c_actividad`.`fecha_realizada` AS `fecha_realizada`,
-        `c_actividad`.`llave_actividad` AS `id_llave`
+        `c_actividad`.`id_actividad` AS `id_llave`
         FROM
         (
             `actividades_prestadores`JOIN `c_actividad` ON(
-                `actividades_prestadores`.`llave_actividad` =`c_actividad`.`id_actividad`
+                `actividades_prestadores`.`id_actividad` =`c_actividad`.`llave_actividad`
             ));"
          );
     }

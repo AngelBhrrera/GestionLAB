@@ -41,7 +41,7 @@ class AdminController extends Controller
 
     // public function index()
     // {
-    //     $users =DB::table('horasprestadores')->orderBy('id','DESC')->get();;
+    //     $users =DB::table('registros_checkin')->orderBy('id','DESC')->get();;
 
     //     return view('//admin/homeA',
     //         ['users'=>$users,
@@ -127,7 +127,7 @@ class AdminController extends Controller
         $id = $request->input('id');
         $estado = $request->input('estado');
         $responsable = $request->input('responsable');
-        $modificar = DB::table('horasprestadores')->where('id', $id)->update(['estado' => $estado, 'responsable' => $responsable]);
+        $modificar = DB::table('registros_checkin')->where('id', $id)->update(['estado' => $estado, 'responsable' => $responsable]);
     }
 
     //guardar horas
@@ -139,7 +139,7 @@ class AdminController extends Controller
         $id = $request->input('id');
         $horas = $request->input('horas');
         $responsable = $request->input('responsable');
-        $modificar = DB::table('horasprestadores')->where('id', $id)->update(['horas' => $horas, 'responsable' => $responsable]);
+        $modificar = DB::table('registros_checkin')->where('id', $id)->update(['horas' => $horas, 'responsable' => $responsable]);
     }
 
 
@@ -208,7 +208,7 @@ class AdminController extends Controller
     {
         $columns = array(["data" => "id", "visible" => false], ["data" => "fecha"], ["data" => "correo"], ["data" => "nombre"], ["data" => "proyecto"], ["data" => "status", "sortable" => false], ["data" => "btn", "sortable" => false], ["data" => "eliminar", "sortable" => false], ["data" => "link", "sortable" => false]);
 
-        $prestadores = DB::table('soloprestadores')->where('tipo', 'prestador')->get();
+        $prestadores = DB::table('solo_prestadores')->where('tipo', 'prestador')->get();
 
 
         return view(
@@ -234,7 +234,7 @@ class AdminController extends Controller
     {
         $columns = array(["data" => "id", "visible" => false], ["data" => "fecha"], ["data" => "correo"], ["data" => "nombre"], ["data" => "proyecto"], ["data" => "status", "sortable" => false], ["data" => "btn", "sortable" => false], ["data" => "link", "sortable" => false]);
 
-        $prestadores = DB::table('soloprestadores')->where('tipo', 'prestador')->get();
+        $prestadores = DB::table('solo_prestadores')->where('tipo', 'prestador')->get();
 
 
         return view(
@@ -743,7 +743,7 @@ class AdminController extends Controller
     public function C_Actividades()
     {
         //$actividad = DB::table('actividad_tabla')->where('id_actcreada',$id)->get();
-        $prestadores = DB::table('soloprestadores')
+        $prestadores = DB::table('solo_prestadores')
             ->where('tipo', 'prestador')
             ->where('encargado_id', auth()->user()->id)
             ->get();
@@ -1143,7 +1143,7 @@ class AdminController extends Controller
         $id = $request->input('id');
         $actividad = DB::table('actividad_tabla')->where('id_actcreada', $id)->get();
         $actividad2 = DB::table('actividades_prestadores')->where('llave_Actividad', $id)->get();
-        $prestadores = DB::table('soloprestadores')
+        $prestadores = DB::table('solo_prestadores')
             ->where('tipo', 'prestador')
             ->where('encargado_id', auth()->user()->id)
             ->get();
@@ -1171,7 +1171,7 @@ class AdminController extends Controller
         $id = $request->input('id');
         $actividad = DB::table('actividad_tabla')->where('id_actcreada', $id)->get();
         $actividad2 = DB::table('actividades_prestadores')->where('llave_Actividad', $id)->get();
-        $prestadores = DB::table('soloprestadores')
+        $prestadores = DB::table('solo_prestadores')
             ->where('tipo', 'prestador')
             ->where('encargado_id', auth()->user()->id)
             ->get();
@@ -1388,8 +1388,8 @@ class AdminController extends Controller
                     break;
                 case 'horas':
                     if (Auth::user()->tipo == "Superadmin") {
-                        if (DB::table('horasprestadores')->where('id', $id)->exists()) {
-                            $eliminar2 = DB::table('horasprestadores')->where('id', $id)->delete();
+                        if (DB::table('registros_checkin')->where('id', $id)->exists()) {
+                            $eliminar2 = DB::table('registros_checkin')->where('id', $id)->delete();
                         }
                     }
                     break;

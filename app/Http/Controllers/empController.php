@@ -21,7 +21,7 @@ class empController extends Controller
     public function sshorasP(Request $request)
     {
 
-        $query = DB::table('horasprestadores');
+        $query = DB::table('registros_checkin');
 
         $tipo = DB::table('users')->select('id', 'name', 'apellido', 'correo', 'tipo', 'can_admin');
 
@@ -158,7 +158,7 @@ class empController extends Controller
         return DataTables::queryBuilder($query)
             ->addColumn('horas_voluntario', function ($query) {
                 $id = $query->id;
-                $horas = DB::table('horasprestadores')->where('idusuario', $id)->where('estado', 'autorizado')->where('tipo', 'clientes')->sum('horas');
+                $horas = DB::table('registros_checkin')->where('idusuario', $id)->where('estado', 'autorizado')->where('tipo', 'clientes')->sum('horas');
                 return $horas;
             })
             ->addColumn('acciones', function ($query) {
@@ -289,7 +289,7 @@ class empController extends Controller
     public function sstablaprestadores()
     {
         $id = Auth::user()->id;
-        $query = DB::table('horasprestadores')->where('idusuario', $id);
+        $query = DB::table('registros_checkin')->where('idusuario', $id);
         return DataTables::queryBuilder($query)
             ->editColumn('nota', function ($query) {
                 return view('columnTable.asistencia.btnnota')->with(["srcimagen" => $query->srcimagen, "nota" => $query->nota, "id" => $query->id, "fechaQ" => $query->fecha, "origen" => $query->origen, "fecha" => date("d/m/Y"), "hora_salida" => $query->hora_salida]);

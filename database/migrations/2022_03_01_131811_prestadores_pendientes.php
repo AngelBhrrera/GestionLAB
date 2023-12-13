@@ -3,9 +3,9 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
-class Soloprestadores extends Migration
+class Prestadorespendientes extends Migration
 {
-   /**
+    /**
      * Run the migrations.
      *
      * @return void
@@ -13,7 +13,7 @@ class Soloprestadores extends Migration
     public function up()
     {
         DB::statement("
-        CREATE VIEW solo_prestadores AS
+        CREATE VIEW prestadores_pendientes AS
         SELECT
         `users`.`id` AS `id`,
         `users`.`name` AS `name`,
@@ -25,24 +25,11 @@ class Soloprestadores extends Migration
         `users`.`password` AS `password`,
         `users`.`remember_token` AS `remember_token`,
         `users`.`created_at` AS `created_at`,
-        `users`.`carrera` AS `carrera`,
-        `users`.`updated_at` AS `updated_at`,
-        `users`.`horas` AS `horas`,
-        `cuenta_horas`.`horas_servicio` AS `horas_cumplidas`,
-        `cuenta_horas`.`horas_restantes` AS `horas_restantes`,
-        `users`.`encargado_id` AS `encargado_id`
+        `users`.`updated_at` AS `updated_at`
         FROM
-            (
-                `users`
-            LEFT JOIN `cuenta_horas` ON
-                (
-                    (
-                        `users`.`codigo` = `cuenta_horas`.`codigo`
-                    )
-                )
-            )
+            `users`
         WHERE
-            (`users`.`tipo` = 'prestador')
+            (`users`.`tipo` = 'prestadorP')
         ");
     }
 
@@ -53,6 +40,6 @@ class Soloprestadores extends Migration
      */
     public function down()
     {
-        DB::statement("DROP VIEW solo_prestadores");
+        DB::statement("DROP VIEW prestadores_pendientes");
     }
 }
