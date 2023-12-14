@@ -55,6 +55,10 @@ Route::get('/spiderw', function(){
     return view('/TEST/spider');
 })->name('spider');
 
+Route::get('/calendar', function(){
+    return view('/TEST/calendar');
+})->name('calendar');
+
 Route::controller(App\Http\Controllers\Auth\RegisterController::class)->group(function(){
     Route::post('/registro', 'register')->name('registrar');
 });

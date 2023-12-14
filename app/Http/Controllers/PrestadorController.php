@@ -37,6 +37,7 @@ class PrestadorController extends Controller
     }
 
     public function home(){
+        
         $id = Auth::user()->id;
         $experiencia = Auth::user()->experiencia;
         $horasAutorizadas = DB::table('registros_checkin')->where('idusuario', $id)->where('estado', 'autorizado')->sum('horas');
@@ -119,9 +120,40 @@ class PrestadorController extends Controller
 
     }
 
+    
+    public function horario()
+    {
+        $id = Auth::user()->id;
+        
+        $turno = Auth::user()->horario;
+
+        $asistencias = DB::table('registros_checkin')
+            ->select('fecha')
+            ->where('idusuario', $id)
+            ->orderBy('fecha_actual', 'desc')
+            ->get();
+
+        $diasAsistenciaMesActual = [];
+
+        $mesActual = date('m'); 
+
+        foreach ($asistencias as $asistencia) {
+
+            $mesAsistencia = (int)substr($asistencia->fecha, 0, 1); 
+            $diaAsistencia = (int)substr($asistencia->fecha, 3, 4); 
+
+            if ($mesAsistencia == $mesActual) {
+                $diasAsistenciaMesActual[] = $diaAsistencia;
+            }
+        }
+        return view('/prestador/horario_prestador', [
+                'asistencias' => $diasAsistenciaMesActual,
+                'turn' => $turno
+        ]);
+    }
+
     public function horas()
     {
-        $columns = array(["data" => "id", "visible" => false], ["data" => "fecha"], ["data" => "hora_entrada", "sortable" => false], ["data" => "hora_salida", "sortable" => false], ["data" => "tiempo"], ["data" => "horas"], ["data" => "estado", "sortable" => false], ["data" => "nota", "sortable" => false]);
         $id = Auth::user()->id;
         $horas = DB::table('registros_checkin')
             ->where('idusuario', $id)
@@ -129,21 +161,18 @@ class PrestadorController extends Controller
             ->sum('horas');
         $horasT = DB::table('users')->where('id', $id)->select('horas')->get();
 
+        $asistencias = DB::table('registros_checkin')
+        ->where('idusuario', $id)
+        ->orderBy('fecha_actual', 'desc')
+        ->get();
+
         return view(
             'prestador/homeP',
             [
-                'datos' => ['id', 'fecha', 'hora_entrada', 'hora_salida', 'tiempo', 'horas', 'estado', 'nota'],
-                'titulo' => 'Registro de horas',
-                'button' => false,
-                'accion' => false,
-                'fecha' => date("d/m/Y"),
-                'ajaxroute' => 'ss.sstablaprestadores',
-                "columnas" => json_encode($columns),
-                'cursos' => false,
+                'datos' => $asistencias,
                 'horas' => $horas,
                 'horasT' => $horasT[0]->horas - $horas,
-                'modal' => true,
-                'descarga' => false
+  
             ]
         );
     }
@@ -379,11 +408,6 @@ class PrestadorController extends Controller
                 "columnas" => json_encode($columns),
             ]
         );
-    }
-
-    public function horario()
-    {
-        return view('/prestador/horario_prestador');
     }
 
     public function registro_reporte()
