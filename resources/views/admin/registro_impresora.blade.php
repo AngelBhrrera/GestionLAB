@@ -19,7 +19,7 @@
                 </div>
                 <div class="card-body">
 
-                    <form class="from-prevent-multiple-submits" method="POST" action="{{ route('admin.make_print') }}"  enctype="multipart/form-data">
+                    <form class="from-prevent-multiple-submits" method="POST" action="{{ route('admin.make_print') }}">
 
                     @csrf
                         <div class="form-group" data-toggle="tooltip" data-placement="top" title="Ingresar el nombre identificador de la impresora">

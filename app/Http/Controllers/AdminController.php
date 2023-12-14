@@ -839,7 +839,7 @@ class AdminController extends Controller
             'descripcion' => $desc,
         ]);
 
-        return view( 'admin/asignar_actividades',);
+        return view( 'admin/asignar_actividades');
     }
 
     public function asign_act()
@@ -860,14 +860,40 @@ class AdminController extends Controller
         ]);
     }
 
-    public function regis_impresion()
+    public function watch_prints()
     {
-        return view( 'admin/registro_impresion');
+        $data = DB::table('ver_impresiones')
+        ->get();
+
+        return view( 'admin/mostrar_impresiones', [ 'impresiones' => $data]);
 
     }
 
     public function control_print()
     {
+
+        $print = DB::table('impresoras')
+        ->get();
+
+        return view('admin/registro_impresora', [
+            'impresoras' => $print
+        ]);
+    }
+
+    public function make_print(Request $request)
+    {
+
+        $name = $request->input('nombre');
+        $mark = $request->input('mark');
+        $type = $request->input('tipo');
+
+        DB::table('impresoras')->insert([
+
+            'nombre' => $name,
+            'marca' => $mark,
+            'tipo' => $type,
+
+        ]);
 
         $print = DB::table('impresoras')
         ->get();

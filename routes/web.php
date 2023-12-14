@@ -118,18 +118,15 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/A_actividades', 'asign_act')->name('asign_act');
 
             Route::get('/admin/ver_impresoras', 'control_print')->name('control_print');
-            Route::post('/admin/ver_impresoras', 'make_print')->name('make_print');
-
-
-            Route::get('/admin/registrar_impresiones', 'regis_impresion')->name('regis_impresion');
+            Route::post('/admin/registrar_impresoras', 'make_print')->name('make_print');
+            Route::get('/admin/ver_impresiones', 'watch_prints')->name('watch_prints');
 
             Route::get('admin/gestionSedes', 'gestionSedes')->name('sedes');
             Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
             Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
 
             Route::get('/admin/cambiorol', 'cambiarRol')->name('cambiorol');
-
-
+            Route::get('/admin/check-in', 'checkin')->name('checkin');
 
 
             Route::get('/admin/faltas', 'faltas')->name('faltas');
@@ -151,7 +148,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
             Route::get('/admin/newCategoriaYActividad', 'newCategoriaYActividad')->name('newCategoriaYActividad');
             Route::get('/admin/actividades', 'actividades')->name('actividades');
-            Route::get('/admin/check-in', 'checkin')->name('checkin');
+
             Route::get('/admin/visitas', 'visits')->name('visitas');
             Route::get('/admin/premios', 'premios')->name('premios');
             Route::post('/admin/update',  'App\Http\Controllers\AdminController@adminUpdate')->name('update');

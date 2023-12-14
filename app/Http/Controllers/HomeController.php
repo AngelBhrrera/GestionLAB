@@ -68,11 +68,6 @@ class HomeController extends Controller
 
     }
 
-    public function registroImpresion()
-    {
-        $carreras = DB::table('carreras')->get();
-        return view('/homeV',['opcion'=>'registroImpresion','carreras' => $carreras]);
-    }
 
     public function crearImpresion(Request $request){
         $validator = Validator::make($request->all(),[

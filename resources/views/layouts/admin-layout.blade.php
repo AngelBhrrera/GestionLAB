@@ -317,6 +317,18 @@
                                         <div class="side-menu__title">Gestión sedes</div>
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="{{route('admin.control_print')}}" class="side-menu">
+                                        <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                                        <div class="side-menu__title">Gestión Impresoras</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{route('admin.watch_prints')}}" class="side-menu">
+                                        <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                                        <div class="side-menu__title">Gestión Impresiones</div>
+                                    </a>
+                                </li>
 
                             </ul>
                         </li>
