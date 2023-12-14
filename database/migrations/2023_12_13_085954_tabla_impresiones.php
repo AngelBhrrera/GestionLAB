@@ -12,7 +12,9 @@ class tablaImpresiones extends Migration
         CREATE VIEW ver_impresiones AS
         SELECT 
             i.nombre AS 'impresora', 
+            s.id_Proyecto,
             COALESCE(p.titulo, 'Interno') AS 'proyecto', 
+            s.id_Prestador,
             CONCAT(u.name, ' ', u.apellido) AS Prestador, 
             `fecha`,
             `nombre_modelo_stl`,

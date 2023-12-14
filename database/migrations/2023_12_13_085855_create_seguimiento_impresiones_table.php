@@ -25,7 +25,7 @@ class CreateSeguimientoImpresionesTable extends Migration
             $table->string("color", 50);
             $table->integer("piezas");
             $table->boolean("prioridad")->default(0);
-            $table->string("estado", 50);
+            $table->string("estado", 50)->default("En Proceso");
             $table->float("peso");
             $table->string("observaciones", 500)->nullable();
             

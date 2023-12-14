@@ -69,11 +69,64 @@ class PrestadorController extends Controller
         );
     }
 
+    public function create_imps()
+    {
+        $impresoras = DB::table('impresoras')
+            ->select('*')
+            ->where('estado', 'Activo')
+            ->get();
+        $proy = DB::table('proyectos')->select('*')->get();
+
+        return view('prestador/registro_impresion',
+            ['imps' => $impresoras,
+            'proys' => $proy
+        ]);
+    }
+
+    public function register_imps(Request $request)
+    {
+        $origin = Auth::user()->id;
+        $name = $request->input('name');
+        $proy = $request->input('proyect');
+        $model = $request->input('model');
+        $color = $request->input('color');
+        $pieces = $request->input('pieces');
+        $w = $request->input('weight');
+        $horas = $request->input('horas');
+        $horasFormateadas = str_pad($horas, 2, '0', STR_PAD_LEFT);
+
+        $minutos = $request->input('minutos');
+        $minsFormateados = str_pad($minutos, 2, '0', STR_PAD_LEFT);
+        $tiempo = $horasFormateadas . 'h' . $minsFormateados . 'm';
+        
+        $make_imp = DB::table('seguimiento_impresiones')
+        ->insert([['id_Prestador' => $origin, 'id_Impresora' => $name, 
+        'id_Proyecto' => $proy, 'nombre_modelo_stl' => $model, 
+         'color' => $color, 'piezas' => $pieces,
+         'peso' => $w, 'tiempo_impresion' => $tiempo]]);
+
+        return redirect()->route('show_imps');
+    }
+
+    public function show_imps()
+    {
+        $data = DB::table('ver_impresiones')
+        ->select('impresora', 'proyecto',  'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
+        ->where('id_Prestador', Auth::user()->id)
+        ->get();
+
+        return view( 'prestador/mostrar_mis_impresiones', [ 'impresiones' => $data]);
+
+    }
+
     public function horas()
     {
         $columns = array(["data" => "id", "visible" => false], ["data" => "fecha"], ["data" => "hora_entrada", "sortable" => false], ["data" => "hora_salida", "sortable" => false], ["data" => "tiempo"], ["data" => "horas"], ["data" => "estado", "sortable" => false], ["data" => "nota", "sortable" => false]);
         $id = Auth::user()->id;
-        $horas = DB::table('registros_checkin')->where('idusuario', $id)->where('estado', 'autorizado')->sum('horas');
+        $horas = DB::table('registros_checkin')
+            ->where('idusuario', $id)
+            ->where('estado', 'autorizado')
+            ->sum('horas');
         $horasT = DB::table('users')->where('id', $id)->select('horas')->get();
 
         return view(

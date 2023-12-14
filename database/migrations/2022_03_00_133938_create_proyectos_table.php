@@ -17,9 +17,9 @@ class CreateProyectosTable extends Migration
         Schema::create('proyectos', function (Blueprint $table) {
             $table->id();
             $table->string('titulo', 250);
-            $table->string('status', 150);
+            $table->string('status', 150)->default("Creado");
             $table->unsignedBigInteger('id_encargado');
-            $table->foreign('id_encargado')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_encargado')->references('id')->on('users')->onUpdate('cascade');
             $table->timestamp('fecha_inicio')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('fecha_final')->nullable()->default(null);
             $table->string('recursos')->nullable()->default(null);

@@ -77,9 +77,9 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin.faltas') }}" class="side-menu">
+                                    <a href="{{ route('admin.create_proy') }}" class="side-menu">
                                         <div class="side-menu__icon"> <i data-lucide="package-plus"></i> </div>
-                                        <div class="side-menu__title">Nueva categoria</div>
+                                        <div class="side-menu__title">Proyectos</div>
                                     </a>
                                 </li>
                             </ul>
