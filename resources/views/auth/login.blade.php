@@ -26,7 +26,7 @@
                     <form method="POST" id="login-form">
                         @csrf
                         <input id="opc" name="opc" type="hidden" value="0">
-                        <input id="correo" type="email" class="form-control py-3 px-4 block" placeholder="Correo"  name="correo" autocomplete="off">    
+                        <input id="correo" type="email" class="form-control py-3 px-4 block" placeholder="Correo"  name="correo">    
                         <div id="error-email" class="login__input-error text-danger mt-2"></div>                    
                         <input id="password" type="password" class="form-control py-3 px-4 block mt-4 " placeholder="Contraseña" name="password"  autocomplete="current-password">
                         <div id="error-password" class="login__input-error text-danger mt-2"></div>
