@@ -810,6 +810,25 @@ class AdminController extends Controller
         );
     }
 
+    public function create_proy()
+    {
+  
+        $prestadores = DB::table('solo_prestadores')
+            ->where('sede', auth()->user()->sede)
+            ->where('horario', auth()->user()->horario)
+            ->get();
+
+        $actividades = DB::table('actividades')->get();
+
+        return view(
+            '/admin/registro_proyectos',
+            [
+                'prestadores' => $prestadores,
+                'actividades' => $actividades,
+            ]
+        );
+    }
+
     public function make_act(Request $request)
     {
 
@@ -839,7 +858,11 @@ class AdminController extends Controller
             'descripcion' => $desc,
         ]);
 
-        return view( 'admin/asignar_actividades');
+        return view( 'admin/asignar_actividades', [
+            'prestadores' => $prestadores,
+            'categorias' => $categorias,
+            'actividades' => $actividades,
+        ]);
     }
 
     public function asign_act()

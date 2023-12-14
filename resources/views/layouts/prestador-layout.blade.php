@@ -173,15 +173,15 @@
                         </a>
                         <ul class="">
                             <li>
-                                <a href="side-menu-light-crud-data-list.html" class="side-menu">
+                                <a href="{{route('create_imps')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="plus-circle"></i> </div>
                                     <div class="side-menu__title"> Crear impresión </div>
                                 </a>
                             </li>
                             <li>
-                                <a href="{{route('prestadoresProyectosCompletados')}}" class="side-menu">
+                                <a href="{{route('show_imps')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="sidebar"></i> </div>
-                                    <div class="side-menu__title">  Mostrar impresiones </div>
+                                    <div class="side-menu__title">  Mostrar mis impresiones </div>
                                 </a>
                             </li>
                         </ul>

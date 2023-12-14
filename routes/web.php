@@ -117,6 +117,8 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::post('/admin/M_actividades', 'make_act')->name('make_act');
             Route::get('/admin/A_actividades', 'asign_act')->name('asign_act');
 
+            Route::get('/admin/C_proyectos', 'create_proy')->name('create_proy');
+
             Route::get('/admin/ver_impresoras', 'control_print')->name('control_print');
             Route::post('/admin/registrar_impresoras', 'make_print')->name('make_print');
             Route::get('/admin/ver_impresiones', 'watch_prints')->name('watch_prints');
@@ -203,6 +205,12 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
     Route::middleware('role:prestador,voluntario,practicante,encargado')->group(function() {
 
         Route::get('prestador/home', 'home')->name('homeP');
+
+        Route::get('prestador/registro_impresion', 'create_imps')->name('create_imps');
+        Route::post('prestador/registrar_impresion', 'register_imps')->name('register_imps');
+
+        Route::get('prestador/mostrar_mis_impresiones', 'show_imps')->name('show_imps');
+
         Route::get('prestador/horas', 'horas')->name('horas');
         Route::post('prestador/completar_impresion','completar_impresion')->name('completar_impresion');
         Route::post('prestador/completar_actividad', 'completar_actividad')->name('completar_actividad');
