@@ -47,7 +47,7 @@
                                         <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                                 </div>
                             </a>
-                            <ul class="">
+                            <ul class="submenu">
                                 <li>
                                     <a href="{{'/'}}" class="side-menu">
                                         <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
@@ -78,7 +78,7 @@
                                 <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                             </div>
                         </a>
-                        <ul class="">
+                        <ul class="submenu">
                             <li>
                                 <a href="{{route('horario')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="clock"></i> </div>
@@ -117,7 +117,7 @@
                                 <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                             </div>
                         </a>
-                        <ul class="">
+                        <ul class="submenu">
                             <li>
                                 <a href="{{route('registro_reporte')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="plus-circle"></i> </div>
@@ -171,7 +171,8 @@
                                 <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                             </div>
                         </a>
-                        <ul class="">
+        
+                        <ul class="submenu">
                             <li>
                                 <a href="{{route('create_imps')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="plus-circle"></i> </div>
@@ -272,6 +273,21 @@
 
 @section('script')
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
 
+<script>
+
+    $('.side-menu').click(function(e) {
+
+        var submenuS = $(this).next('.submenu');
+        // Cierra todos los submenús, excepto el que se está abriendo
+        $('.submenu').not(submenuS).slideUp();
+
+        // Alterna la visibilidad del submenú clicado
+        submenuS.slideToggle();
+    });
+
+</script>
 @endsection
 
