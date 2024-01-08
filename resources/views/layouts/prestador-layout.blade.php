@@ -221,7 +221,9 @@
                     <!-- END: Intermede -->
                        
                     <!-- Comienza menu cuenta-->
-                    <div class="intro-x relative ml-auto flex sm:mx-auto"><h2 class="text-1xl font-medium">Nivel: {{$nivel_str}} <br> Xp: {{Auth::user()->experiencia}}</h2> <img class="ml-5"width="70" heigth="50" src="{{asset('build/assets/'.$nivel->ruta)}}" alt="medalla"></div>
+                    <div class="intro-x relative ml-auto flex sm:mx-auto"><img src="{{asset('build/assets/images/lvl1.ico')}}" width="30" height="30" alt="">
+                    <img src="{{asset('build/assets/images/XP.ico')}}" width="30" height="30" alt="">{{Auth::user()->experiencia}}</img></div>
+                    <div class="intro-x relative ml-auto flex sm:mx-auto"><img class="ml-5"width="70" heigth="50" src="{{asset('build/assets/'.$nivel->ruta)}}" alt="medalla"></div>
                     <div class="intro-x dropdown h-10">
                         
                         <div class="h-full dropdown-toggle flex items-center" role="button" aria-expanded="false" data-tw-toggle="dropdown">
