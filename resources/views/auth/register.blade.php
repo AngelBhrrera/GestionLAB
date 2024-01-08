@@ -120,7 +120,7 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divTelefono" style="display:none"> 
                                         <label for="input-wizard-2" class="form-label" >Telefono *</label>
-                                        <input id="telefono" type="text" class="form-control @if(old('opc')=='1') @error('telefono') is-invalid @enderror @endif" name="telefono" placeholder="Telefono" >
+                                        <input id="telefono" type="text" class="form-control @if(old('opc')=='1') @error('telefono') is-invalid @enderror @endif" name="telefono" placeholder="Telefono" maxlength="10">
                                                 @error('telefono') 
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -222,7 +222,7 @@
                                             @if (isset($encargado))
                                                 <option id="prede" value="prede" {{isset($dV[0]->id_encargado) ? $dV[0]->id_encargado == null ? 'selected="selected"' : '' : ''}}>Seleccione un encargado</option>
                                                 @foreach ($encargado as $dato )
-                                                    <option id= "{{$dato->id}}" value="{{$dato->horario}}" {{old('id_encargado') == $dato->id ? 'selected="selected"' : '' }}> {{$dato->name }} {{$dato->apellido}}</option>
+                                                    <option id= "{{$dato->id}}" value="{{$dato->id}}" {{old('id_encargado') == $dato->id ? 'selected="selected"' : '' }}> {{$dato->name }} {{$dato->apellido}}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -361,16 +361,16 @@
            }); 
         }
 
-        function deshabilitarEncargado(select, opcion){
-            for (var k = 0; k < select.options.length; k++){
-                if(select.options[k].value !== opcion){
-                    select.options[k].disabled = true;
-                }
-                if(select.options[k].value === "prede"){
-                    select.options[k].disabled = false;
-                }
-            }
-        }
+        // function deshabilitarEncargado(select, opcion){
+        //     for (var k = 0; k < select.options.length; k++){
+        //         if(select.options[k].value !== opcion){
+        //             select.options[k].disabled = true;
+        //         }
+        //         if(select.options[k].value === "prede"){
+        //             select.options[k].disabled = false;
+        //         }
+        //     }
+        // }
 
         function reiniciarEncargado(select){
             select.selectedIndex = 0;

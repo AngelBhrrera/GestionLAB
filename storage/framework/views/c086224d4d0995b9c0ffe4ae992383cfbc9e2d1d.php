@@ -15,7 +15,6 @@
     <?php echo $__env->yieldContent('head'); ?>
 
     <!-- BEGIN: CSS Assets-->
-    <link rel="stylesheet" href="public/css/app.css" />
     <link href="<?php echo e(asset('build/assets/app.c07cb30e.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('build/assets/app.c469cfb8.css')); ?>" rel="stylesheet">
     <!-- END: CSS Assets-->
