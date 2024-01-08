@@ -194,96 +194,89 @@
                 <p>Puedes solicitar cualquiera de nuestros servicios, con gusto te atenderemos.</p>
             </div>
             <div class="container">
-                <div class="container">
-                    <div class="grid-container">
-                        <div class="grid-item">
-                            <a href="https://docs.google.com/forms/d/e/1FAIpQLScPiGL-g7Os1pJoHGtLqpiA2vJAKslYmVKqW9Mp6mZuTUr2mQ/viewform">
-                                <img src="build/assets/images/creacion-de-piezas-3D.png" alt="image">
-                                <p class="pdescripcion">Creación de modelos digitales 3D</p>
-                            </a>
-                            
-                        </div>
-                        <div class="grid-item">
-                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdtHIY-jHHlseVQNvtwobPxLEdkk0JXSpYXmodqwCdMGMJIHg/viewform">
-                                <img src="build/assets/images/capacitacion-de-uso-de-impresoras-3D.png" alt="image">
-                                <p class="pdescripcion">Capacitación de uso de impresoras 3D</p>
-                            </a>
-                            
-                        </div>
-                        <div class="grid-item">
-                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSd2KBuqIvoCTGOX8rx8hihQNkO17cbSaC9V01Iix9I3pW1-Ew/viewform">
-                               <img src="build/assets/images/creacion-de-aplicaciones-de-realidad-virtual.png" alt="image">
-                               <p class="pdescripcion">Creación de aplicaciones de realidad virtual</p>
-                            </a>
-                            
-                        </div>
-                        <div class="grid-item">
-                            <a href="https://docs.google.com/forms/d/e/1FAIpQLScijczjpr9Klw9XVV4ynSR-mNrRwzwEVESFOQLYI_LKCz1clg/viewform">
-                                <img src="build/assets/images/creacion-de-prototipos.png" alt="image">
-                                <p class="pdescripcion">Creación de prototipos</p>
-                            </a>
-                            
-                        </div>
-                        <div class="grid-item">
-                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdoTy4RdctUfzyZGzHQYkDXqA1A_OY80-9ex9CwcpB0jE-MGQ/viewform">
-                                <img src="build/assets/images/creacion-de-sistemas-web.png" alt="image">
-                                <p class="pdescripcion">Creación de sistemas web</p>
-                            </a>
-                            
-                        </div>
-                        <div class="grid-item">
-                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSerKEtn2s3XaeNaXEw_PQhelRVc2TlPdeVrlTIQmVetotby0g/closedform">
-                                <img src="build/assets/images/creacion-de-videojuegos.png" alt="image">
-                                <p class="pdescripcion">Creación de videojuegos</p>
-                            </a>
-                            
-                        </div>
-                        <div class="grid-item">
-                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfkOt8vekS_ix9Y8ePYk-SQARCiVuz9rjPzWFOBYTrGJ6WpvA/viewform">
-                                <img src="build/assets/images/nivel.png" alt="image">
-                                <p class="pdescripcion">Capacitación de desarrollo de videojuegos</p>
-                            </a>
-                            
-                        </div>
-                        <div class="grid-item">
-                            
-                            <a href="https://docs.google.com/forms/d/e/1FAIpQLScN0dNRm0MbuRs9uT6d-WoUmuizEa7Z5JwI4Bt4BHvuraHATQ/viewform">
-                                <img src="build/assets/images/uso-de-impresoras-3D.png" alt="image">   
-                                <p class="pdescripcion">Solicitud de impresión de modelos 3D</p>
-                            </a>
-                            
-                        </div>
-                        <div class="grid-item">
-                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdQUseThOoCQ3gz287sDFoXRRV7BHA6Vti74_8tWXxKcqaOFA/viewform">
-                              <img src="build/assets/images/capacitacion-de-app-de-realidad-virtual.png" alt="image">
-                              <p class="pdescripcion">Capacitación de app de realidad virtual</p>
-                            </a>
-                            
-                        </div>
-                    </div>
-                    <div class="grid-containerSec">
-                        <div class="grid-item">
-                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSe4_sPzMttqcztP821RoMMNY5K9GMxij7xDD86cE05px57u2Q/viewform">
-                               <img src="build/assets/images/capacitacion-de-desarrollo-de-aplicacion-interactiva.png" alt="image">
-                               <p class="pdescripcion">Capacitación de desarrollo de aplicación interactiva</p>
-                            </a>
-                            
-                        </div>
-                        <div class="grid-item">
-                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeOcS6S_OwXiBvDWrflv5AQ44H1DUYQWN8aPMymLa3d-XvSWw/viewform">
-                                <img src="build/assets/images/capacitacion-de-modelado-3D.png" alt="image">
-                                <p class="pdescripcion">Capacitación de modelado 3D</p>
-                            </a>
-                           
+                        <div class="img-gallery owl-carousel owl-theme">
+                    
+                            <div class="grid-item" style="width:200px; text-align: center; display: inline-block;" alt="lab" class="img-fluid">
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLScPiGL-g7Os1pJoHGtLqpiA2vJAKslYmVKqW9Mp6mZuTUr2mQ/viewform">
+                                    <img src="build/assets/images/creacion-de-piezas-3D.png" alt="image">
+                                    <p class="pdescripcion">Creación de modelos digitales 3D</p>
+                                </a>
+                                
+                            </div>
+                            <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdtHIY-jHHlseVQNvtwobPxLEdkk0JXSpYXmodqwCdMGMJIHg/viewform">
+                                    <img src="build/assets/images/capacitacion-de-uso-de-impresoras-3D.png" alt="image">
+                                    <p class="pdescripcion">Capacitación de uso de impresoras 3D</p>
+                                </a>
+                                
+                            </div>
+                            <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSd2KBuqIvoCTGOX8rx8hihQNkO17cbSaC9V01Iix9I3pW1-Ew/viewform">
+                                <img src="build/assets/images/creacion-de-aplicaciones-de-realidad-virtual.png" alt="image">
+                                <p class="pdescripcion">Creación de aplicaciones de realidad virtual</p>
+                                </a>
+                                
+                            </div>
+                            <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLScijczjpr9Klw9XVV4ynSR-mNrRwzwEVESFOQLYI_LKCz1clg/viewform">
+                                    <img src="build/assets/images/creacion-de-prototipos.png" alt="image">
+                                    <p class="pdescripcion">Creación de prototipos</p>
+                                </a>
+                                
+                            </div>
+                            <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdoTy4RdctUfzyZGzHQYkDXqA1A_OY80-9ex9CwcpB0jE-MGQ/viewform">
+                                    <img src="build/assets/images/creacion-de-sistemas-web.png" alt="image">
+                                    <p class="pdescripcion">Creación de sistemas web</p>
+                                </a>
+                                
+                            </div>
+                            <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSerKEtn2s3XaeNaXEw_PQhelRVc2TlPdeVrlTIQmVetotby0g/closedform">
+                                    <img src="build/assets/images/creacion-de-videojuegos.png" alt="image">
+                                    <p class="pdescripcion">Creación de videojuegos</p>
+                                </a>
+                                
+                            </div>
+                            <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSfkOt8vekS_ix9Y8ePYk-SQARCiVuz9rjPzWFOBYTrGJ6WpvA/viewform">
+                                    <img src="build/assets/images/nivel.png" alt="image">
+                                    <p class="pdescripcion">Capacitación de desarrollo de videojuegos</p>
+                                </a>
+                                
+                            </div>
+                            <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
+                                
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLScN0dNRm0MbuRs9uT6d-WoUmuizEa7Z5JwI4Bt4BHvuraHATQ/viewform">
+                                    <img src="build/assets/images/uso-de-impresoras-3D.png" alt="image">   
+                                    <p class="pdescripcion">Solicitud de impresión de modelos 3D</p>
+                                </a>
+                                
+                            </div>
+                            <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdQUseThOoCQ3gz287sDFoXRRV7BHA6Vti74_8tWXxKcqaOFA/viewform">
+                                <img src="build/assets/images/capacitacion-de-app-de-realidad-virtual.png" alt="image">
+                                <p class="pdescripcion">Capacitación de app de realidad virtual</p>
+                                </a>
+                                
+                            </div>
+    
+                                <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
+                                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSe4_sPzMttqcztP821RoMMNY5K9GMxij7xDD86cE05px57u2Q/viewform">
+                                    <img src="build/assets/images/capacitacion-de-desarrollo-de-aplicacion-interactiva.png" alt="image">
+                                    <p class="pdescripcion">Capacitación de desarrollo de aplicación interactiva</p>
+                                    </a>
+                                </div>
+
+                            <div class="grid-item"style="width:200px" alt="lab" class="img-fluid" >
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSeOcS6S_OwXiBvDWrflv5AQ44H1DUYQWN8aPMymLa3d-XvSWw/viewform">
+                                    <img src="build/assets/images/capacitacion-de-modelado-3D.png" alt="image">
+                                    <p class="pdescripcion">Capacitación de modelado 3D</p>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
-                
-
-            </div>
-        </div>
-    </div>
     <!-- // end .section -->
 
 
