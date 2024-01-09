@@ -40,7 +40,7 @@
                                 <li class="nav-item"> <a class="nav-link" href="#leaderboard">Torneo</a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="#faq">FAQ</a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="#contact">Contacto</a> </li>
-                                <li class="nav-item"><a href="/login" class="btn btn-outline-light my-3 my-sm-0 ml-lg-3">Regístrate / Iniciar sesión</a></li>
+                                <li class="nav-item"><a href="login" class="btn btn-outline-light my-3 my-sm-0 ml-lg-3">Regístrate / Iniciar sesión</a></li>
                             </ul>
                         </div>
                     </nav>

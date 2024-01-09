@@ -606,7 +606,7 @@ class AdminController extends Controller
     ->where('u.sede', $idSede)
     ->get();
 
-            return view("admin.homeA", ['tabla'=>$sql]);
+            return view("admin.asistencias_admin", ['tabla'=>$sql]);
 
     }
 
