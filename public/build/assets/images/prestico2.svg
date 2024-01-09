@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users-round" xmlns="http://www.w3.org/2000/svg">
+  <path d="M 22 13 C 22 19.158 15.333 23.007 10 19.928 C 7.525 18.499 6 15.858 6 13" style="transform-box: fill-box; transform-origin: 50% 50%; stroke: rgb(37, 0, 166);" transform="matrix(-1, 0, 0, -1, -0.000001, 0)"/>
+  <circle cx="-14" cy="8" r="5" style="stroke: rgb(37, 0, 166);" transform="matrix(-1, 0, 0, 1, 0, 0)"/>
+  <path d="M 6.45 3.7 C 6.45 7.07 4.45 10.2 2.45 11.7 C 5.299 13.837 5.063 18.183 2 20" style="transform-box: fill-box; transform-origin: 50% 50%; stroke: rgb(255, 126, 0);" transform="matrix(-1, 0, 0, -1, 0, 0.000001)"/>
+</svg>
