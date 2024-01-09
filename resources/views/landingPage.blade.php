@@ -40,7 +40,7 @@
                                 <li class="nav-item"> <a class="nav-link" href="#leaderboard">Torneo</a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="#faq">FAQ</a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="#contact">Contacto</a> </li>
-                                <li class="nav-item"><a href="login" class="btn btn-outline-light my-3 my-sm-0 ml-lg-3">Regístrate / Iniciar sesión</a></li>
+                                <li class="nav-item"><a href="/login" class="btn btn-outline-light my-3 my-sm-0 ml-lg-3">Regístrate / Iniciar sesión</a></li>
                             </ul>
                         </div>
                     </nav>
@@ -159,7 +159,6 @@
                                         de la red UDG el cual vincule a los estudiantes con tecnologías  de 
                                         vanguardia en proyectos enfocados a impresión   3D, sistemas interactivos, 
                                         realidad virtual, videojuegos, entre otros.</p>
-</p>
                                 </div>
                             </div>
                         </div>
@@ -186,7 +185,7 @@
         </div>
     </div>
     <!-- // end .section -->
-    <div class = "section light-bg" id="servicios"></div>
+    <div class = "section" style="height: 1px; width: 100%; background-color: aliceblue;" id="servicios"></div>
     <div class="section">
         <div class="container">
             <div class="section-title">

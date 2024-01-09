@@ -13,7 +13,11 @@
         <div class="col-md-9">
             <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Mis Impresiones</h3>
+                    <h1 class="card-title">Mis Impresiones</h1>
+                </div>
+
+                <div class= "containter">
+
                 </div>
                 <div class="card-body">
 

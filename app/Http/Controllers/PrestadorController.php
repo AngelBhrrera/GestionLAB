@@ -426,7 +426,7 @@ class PrestadorController extends Controller
         $categoriaId = $request->input('categoriaId');
 
         $actividades = DB::table('actividades')
-            ->where('categoria_id', $categoriaId)
+            ->where('id_categoria', $categoriaId)
             ->get();
 
         return response()->json($actividades);

@@ -11,8 +11,7 @@
 
 @section('subcontent')
 
-    <div class="container" style="padding: 20px 350px 0px 350px">
-
+    <div class="container">
 
         <h1 class="text-center"><strong> Registro de actividad </strong></h1>
 

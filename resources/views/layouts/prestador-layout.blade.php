@@ -203,15 +203,6 @@
                         </ol>
                     </nav>
                     <!-- END: Breadcrumb -->
-                    <div class="intro-x relative ml-auto flex sm:mx-auto">
-                            @if (Auth::user()->can_admin == 1)
-                            <a href="{{ route('cambiarRol') }}">
-                                <button class="btn btn-primary ml-5"><i data-lucide="refresh-cw"></i>
-                                    {{ __('Cambiar a admin') }}</button>
-                            </a>    
-                            @endif
-                            
-                    </div>
                     
                     <!-- BEGIN: Intermede -->
                         <div class="-intro-x xl:hidden mr-3 sm:mr-6">
@@ -220,20 +211,32 @@
                         <div class="intro-x relative ml-auto sm:mx-auto"> </div>
                     <!-- END: Intermede -->
                        
-                    <!-- Comienza menu cuenta-->
-                    <div class="intro-x relative ml-auto flex sm:mx-auto"><img src="{{asset('build/assets/images/lvl1.ico')}}" width="30" height="30" alt="">
-                    <img src="{{asset('build/assets/images/XP.ico')}}" width="30" height="30" alt="">{{Auth::user()->experiencia}}</img></div>
-                    <div class="intro-x relative ml-auto flex sm:mx-auto"><img class="ml-5"width="70" heigth="50" src="{{asset('build/assets/'.$nivel->ruta)}}" alt="medalla"></div>
+
+                    <div class="intro-x relative ml-auto flex sm:mx-auto">
+                        @if (Auth::user()->can_admin == 1)
+                            <a href="{{ route('cambiarRol') }}">
+                               <i width="30" height="30" data-lucide="refresh-cw"></i>
+                            </a>    
+                        @endif 
+                        <img src="{{asset('build/assets/images/lvl1.ico')}}"width="30" height="30" alt="">
+                        <img src="{{asset('build/assets/images/XP.ico')}}"width="30" height="30" alt="">{{Auth::user()->experiencia}}</img>
+                    </div>
+
+                    <div class="intro-x relative ml-auto flex sm:mx-auto">
+                            <img class="ml-5"width="50" heigth="30" src="{{asset('build/assets/'.$nivel->ruta)}}" alt="medalla">
+                    </div>
+
                     <div class="intro-x dropdown h-10">
                         
                         <div class="h-full dropdown-toggle flex items-center" role="button" aria-expanded="false" data-tw-toggle="dropdown">
                             <div class="w-10 h-10 image-fit">
-                            @if(!isset(Auth::user()->imagen_perfil))
-                                <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/default-profile-image.png')}}">
-                            @else
-                                <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/'.Auth::user()->imagen_perfil)}}">
-                            @endif
+                                @if(!isset(Auth::user()->imagen_perfil))
+                                    <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/default-profile-image.png')}}">
+                                @else
+                                    <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/'.Auth::user()->imagen_perfil)}}">
+                                @endif
                             </div>
+                            
                             <div class="hidden md:block ml-3">
                                 <div class="max-w-[7rem] truncate font-medium">{{$username=Auth::user()->name}}</div>
                                 <div class="text-xs text-slate-400">{{$userRol=ucfirst(Auth::user()->tipo)}}</div>
