@@ -433,6 +433,8 @@
                     <!-- Comienza menu cuenta-->
                     <div class="intro-x dropdown h-10">
                         <div class="h-full dropdown-toggle flex items-center" role="button" aria-expanded="false" data-tw-toggle="dropdown">
+                            <img src="{{asset('build/assets/images/adminLogo.svg')}}" width="30" height="30" alt="">
+
                             <div class="w-10 h-10 image-fit">
                             @if(!isset(Auth::user()->imagen_perfil))
                                 <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/default-profile-image.png')}}">
