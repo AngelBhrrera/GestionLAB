@@ -35,7 +35,6 @@ Route::get('/calendar', function(){
     return view('/TEST/calendar');
 })->name('calendar');
 
-
 Route::controller(App\Http\Controllers\LandingController::class)->group(function(){
     Route::get('/inventores', 'index')->name('landing');
     Route::get('/devTeam', 'devTeam')->name('devTeam');
