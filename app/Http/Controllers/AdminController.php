@@ -2433,7 +2433,7 @@ class AdminController extends Controller
 
     public function show(){
         $sede = DB::select("SELECT * FROM sede;");
-        $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin';");
+        $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin' OR tipo = 'encargado';");
         $var = 1;
         return view('auth/registerAdmin', ['encargado'=>$encargado,'sede'=>$sede]);
     }
