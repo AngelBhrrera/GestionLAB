@@ -215,7 +215,7 @@
                     <div class="intro-x relative ml-auto flex sm:mx-auto">
                         @if (Auth::user()->can_admin == 1)
                             <a href="{{ route('cambiarRol') }}">
-                               <i width="30" height="30" data-lucide="refresh-cw"></i>
+                                <img title="cambiar a Admin"src="{{asset('build/assets/images/prestico2.svg')}}" width="30" height="30" alt="">
                             </a>    
                         @endif 
                         <img src="{{asset('build/assets/images/lvl1.ico')}}"width="30" height="30" alt="">
@@ -229,7 +229,7 @@
                     <div class="intro-x dropdown h-10">
                         
                         <div class="h-full dropdown-toggle flex items-center" role="button" aria-expanded="false" data-tw-toggle="dropdown">
-                            <img src="{{asset('build/assets/images/prestico2.svg')}}" width="30" height="30" alt="">
+                            
                             <div class="w-10 h-10 image-fit">
                                 @if(!isset(Auth::user()->imagen_perfil))
                                     <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/default-profile-image.png')}}">
