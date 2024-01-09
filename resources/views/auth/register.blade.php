@@ -120,7 +120,7 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divTelefono" style="display:none"> 
                                         <label for="input-wizard-2" class="form-label" >Telefono *</label>
-                                        <input id="telefono" type="text" class="form-control @if(old('opc')=='1') @error('telefono') is-invalid @enderror @endif" name="telefono" placeholder="Telefono" >
+                                        <input maxlength="10" id="telefono" type="text" class="form-control @if(old('opc')=='1') @error('telefono') is-invalid @enderror @endif" name="telefono" placeholder="Telefono" >
                                                 @error('telefono') 
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>

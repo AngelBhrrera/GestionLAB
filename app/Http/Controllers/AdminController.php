@@ -486,7 +486,19 @@ class AdminController extends Controller
         );
     }
 
-    public function firmas()
+    public function firmas(){
+
+        $sede = Auth::user()->sede;
+
+        $resultados = DB::table('registros_checkin as r')
+            ->select('r.responsable', 'r.origen', 'r.fecha_actual', 'r.hora_entrada', 'r.hora_salida', 'r.tiempo', 'r.horas', 'r.tipo', 'r.nota')
+            ->join('users as u', 'r.encargado_id', '=', 'u.id')
+            ->where('u.sede', $sede)
+            ->get();
+
+        return view('/admin/asistencias_admin',['tabla'=>$resultados]);
+    }
+    /*public function firmas()
     {
 
         $tUser = Auth::user()->tipo;
@@ -596,7 +608,7 @@ class AdminController extends Controller
                 ]
             );
         }
-    }
+    }*/
 
     public function firmasPendientes()
     {
@@ -2434,7 +2446,7 @@ class AdminController extends Controller
     public function show(){
         $sede = DB::select("SELECT * FROM sede;");
         $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin' OR tipo = 'encargado';");
-        $var = 1;
+   
         return view('auth/registerAdmin', ['encargado'=>$encargado,'sede'=>$sede]);
     }
 
