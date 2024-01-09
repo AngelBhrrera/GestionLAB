@@ -40,7 +40,7 @@
                                 <li class="nav-item"> <a class="nav-link" href="#leaderboard">Torneo</a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="#faq">FAQ</a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="#contact">Contacto</a> </li>
-                                <li class="nav-item"><a href="/login" class="btn btn-outline-light my-3 my-sm-0 ml-lg-3">Regístrate / Iniciar sesión</a></li>
+                                <li class="nav-item"><a href="login" class="btn btn-outline-light my-3 my-sm-0 ml-lg-3">Regístrate / Iniciar sesión</a></li>
                             </ul>
                         </div>
                     </nav>
@@ -50,13 +50,7 @@
     </div>
 
     <header class="" id="home">
-        <script>
-			var server = 'global'
-			var nombre = 'Invitado'
-			if(server==''){
-				server="global"
-			}
-		</script>
+
         <h3 class="pt-3">¡Bienvenido al Laboratorio de Inventores!</h3>
         <div class="main-gallery owl-carousel owl-theme">
             <div class="img-holder mt-3"><img src="{{asset('build/assets/images/imagenLat.jpg')}}" alt="lab" class="img-fluid"></div>
