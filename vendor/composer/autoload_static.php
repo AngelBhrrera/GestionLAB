@@ -620,6 +620,7 @@ class ComposerStaticInit92d7cdde6240119fe1f91d32f2e9cf55
         'App\\Http\\View\\Composers\\LoggedInUserComposer' => __DIR__ . '/../..' . '/app/Http/View/Composers/LoggedInUserComposer.php',
         'App\\Http\\View\\Composers\\MenuComposer' => __DIR__ . '/../..' . '/app/Http/View/Composers/MenuComposer.php',
         'App\\Mail\\Email' => __DIR__ . '/../..' . '/app/Mail/Email.php',
+        'App\\Models\\Event' => __DIR__ . '/../..' . '/app/Models/Event.php',
         'App\\Models\\MedallaUser' => __DIR__ . '/../..' . '/app/Models/MedallaUser.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Models\\Visitas' => __DIR__ . '/../..' . '/app/Models/Visitas.php',

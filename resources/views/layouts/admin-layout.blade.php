@@ -401,20 +401,34 @@
                             @yield('breadcrumb')
                         </ol>
                     </nav>
-                    <div class="intro-x relative ml-auto flex sm:mx-auto">
-                            <a href="{{ route('admin.checkin')  }}"><button class="btn btn-primary ml-5"><i data-lucide="check-circle-2"></i>Check-In</button></a>
-                            @if (Auth::user()->can_admin == 1 && Auth::user()->tipo != "Superadmin")
-                                <a href="{{ route('admin.cambiorol') }}"><button class="btn btn-primary ml-5"><i data-lucide="refresh-cw"></i>
-                                {{ __('Cambiar a prestador') }}</button></a>
-                            @endif
-                    </div>
-                    
-                    
                     <!-- END: Breadcrumb -->
-
+                    
                     <!-- BEGIN: Intermede -->
-                        <!-- Navbar -->
+                        <div class="-intro-x xl:hidden mr-3 sm:mr-6">
+                            <div class="mobile-menu-toggler cursor-pointer"> <i data-lucide="bar-chart-2" class="mobile-menu-toggler__icon transform rotate-90 dark:text-slate-500"></i> </div>
+                        </div>
+                        <div class="intro-x relative ml-auto sm:mx-auto"> </div>
                     <!-- END: Intermede -->
+                       
+
+                    <div class="intro-x relative ml-auto flex sm:mx-auto">
+                    <a href="{{ route('admin.checkin')  }}"><i width="30" height="30" data-lucide="check-circle-2"></i></a>
+                           
+                    </div>
+
+                    <div class="intro-x relative ml-auto flex sm:mx-auto">
+                            
+                    </div>
+
+                    <div class="intro-x relative ml-auto flex sm:mx-auto">
+                    @if (Auth::user()->can_admin == 1 && Auth::user()->tipo != "Superadmin")
+                            <a href="{{ route('admin.cambiorol') }}"><i width="30" height="30" data-lucide="refresh-cw"></i></a>
+                            @endif 
+                    </div>
+
+                    <div class="intro-x relative ml-auto flex sm:mx-auto">
+                            
+                    </div>
                        
                     <!-- Comienza menu cuenta-->
                     <div class="intro-x dropdown h-10">

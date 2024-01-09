@@ -45,6 +45,7 @@ return array(
     'App\\Http\\View\\Composers\\LoggedInUserComposer' => $baseDir . '/app/Http/View/Composers/LoggedInUserComposer.php',
     'App\\Http\\View\\Composers\\MenuComposer' => $baseDir . '/app/Http/View/Composers/MenuComposer.php',
     'App\\Mail\\Email' => $baseDir . '/app/Mail/Email.php',
+    'App\\Models\\Event' => $baseDir . '/app/Models/Event.php',
     'App\\Models\\MedallaUser' => $baseDir . '/app/Models/MedallaUser.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
     'App\\Models\\Visitas' => $baseDir . '/app/Models/Visitas.php',
