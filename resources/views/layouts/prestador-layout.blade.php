@@ -8,7 +8,7 @@
 <?php   
         $nivel = DB::table('niveles')
             ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
-            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion')
+            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n')
             ->where('niveles.experiencia_acumulada', '<=', Auth::user()->experiencia ?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
             ->orderByDesc('niveles.experiencia_acumulada')
             ->first();
@@ -218,7 +218,7 @@
                                <i width="30" height="30" data-lucide="refresh-cw"></i>
                             </a>    
                         @endif 
-                        <img src="{{asset('build/assets/images/lvl1.ico')}}"width="30" height="30" alt="">
+                        <img src="{{ asset('build/assets/' . $nivel->ruta_n) }}" width="30" height="30" alt="ruta">
                         <img src="{{asset('build/assets/images/XP.ico')}}"width="30" height="30" alt="">{{Auth::user()->experiencia}}</img>
                     </div>
 

@@ -672,10 +672,10 @@ class PrestadorController extends Controller
         ->select('sede.nombre_Sede', 'sede.id_Sede')
         ->where('sede.id_Sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
         ->first();
-        
+
         $nivel = DB::table('niveles')
             ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
-            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion')
+            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n')
             ->where('niveles.experiencia_acumulada', '<=', $user->experiencia ?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
             ->orderByDesc('niveles.experiencia_acumulada')
             ->first();
@@ -690,10 +690,9 @@ class PrestadorController extends Controller
         $nivel_str = strval($nivel->nivel);
 
         $medalla = asset($nivel->ruta);
-
+        //dd($nivel); // Verificar si la propiedad ruta_n está presente en $nivel
         // Descripcion de la medalla
         $descripcion_medalla = $nivel->descripcion;
-
 
         return view('prestador.newProfile', compact('user', 'sede', 'nivel_str', 'medalla', 'nivel', 'descripcion_medalla', 'todasMedallasUsuario'));
     }
