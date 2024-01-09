@@ -18,6 +18,14 @@ Auth::routes([
     'verify' => false,
 ]);
 
+Route::get('/foo', function () {
+    Artisan::call('storage:link');
+    });
+
+//PRUEBAS
+Route::get('/adminLayout', function(){
+    return view('admin.PruebaAdminLayout');
+});
 
 Route::get('/spiderw', function(){
     return view('/TEST/spider');
