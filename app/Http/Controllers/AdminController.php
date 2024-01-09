@@ -91,7 +91,7 @@ class AdminController extends Controller
         $id = $request->input('id');
         $nombre = $request->input('nombre');
         $horario = $request->input('horario');
-        return view('//admin/homeA', ['opcion' => 'horarioadmin', 'id_prestador' => $id, 'horario' => $horario, 'nombre' => $nombre,  'horario2' => $query2]);
+        return view('/admin/homeA', ['opcion' => 'horarioadmin', 'id_prestador' => $id, 'horario' => $horario, 'nombre' => $nombre,  'horario2' => $query2]);
     }
 
 
@@ -485,9 +485,8 @@ class AdminController extends Controller
         );
     }
 
-    public function firmas()
+   /* public function firmas()
     {
-
         $tUser = Auth::user()->tipo;
         if (($tUser == "admin")) {
             // $columns = array(["data"=>"id","visible"=>false],
@@ -542,7 +541,7 @@ class AdminController extends Controller
             );
 
             return view(
-                '//admin/homeA',
+                '/admin/homeA',
                 [
                     'datos' => ['id', 'codigo', 'Nombre(s)', 'Apellido(s)', 'Fecha', 'Entrada', 'Salida', 'Tiempo', 'Estado', 'Horas', 'Actividades terminadas', 'Autorización Horas', 'origen', 'Tipo', 'Reporte', 'Actividades', 'Eliminar'],
                     'opcion' => 'table',
@@ -595,6 +594,20 @@ class AdminController extends Controller
                 ]
             );
         }
+    }*/
+
+    public function firmas(Request $request){
+        
+        $idSede = Auth::user()->sede;
+
+        $sql = DB::table('registros_checkin as r')
+    ->select('r.responsable', 'r.origen', 'r.fecha_actual', 'r.hora_entrada', 'r.hora_salida', 'r.tiempo', 'r.horas', 'r.tipo', 'r.nota')
+    ->join('users as u', 'r.encargado_id', '=', 'u.id')
+    ->where('u.sede', $idSede)
+    ->get();
+
+            return view("admin.homeA", ['tabla'=>$sql]);
+
     }
 
     public function firmasPendientes()
@@ -707,18 +720,14 @@ class AdminController extends Controller
 
         $id_usuario = $request->input('id_usuario');
         $fecha = $request->input('fecha');
-
-        // var_dump( $id_usuario,  $fecha);
-
-        // return('hola mundo');
-
         $id = Auth::user()->id;
         $actividad_prestador = DB::table('actividad_tabla')->where('id_prestador', $id_usuario)->where('fecha_realizada', $fecha)->where('status', 'terminado')->get();
 
+        // var_dump( $id_usuario,  $fecha);
+        // return('hola mundo');
 
         return view(
             '/admin/homeA',
-
             [
                 'opcion' => 'proyectostabla2',
                 'actividades' => $actividad_prestador,
@@ -732,7 +741,7 @@ class AdminController extends Controller
     public function recompensas()
     {
         return view(
-            '//admin/homeA',
+            '/admin/homeA',
             [
                 'opcion' => 'registro_recompensas'
             ]
@@ -742,7 +751,6 @@ class AdminController extends Controller
     public function show(){
         $sede = DB::select("SELECT * FROM sede;");
         $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin' OR 'encargado';");
-        $var = 1;
         return view('auth/registerAdmin', ['encargado'=>$encargado,'sede'=>$sede]);
     }
 

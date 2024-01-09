@@ -50,13 +50,7 @@
     </div>
 
     <header class="" id="home">
-        <script>
-			var server = 'global'
-			var nombre = 'Invitado'
-			if(server==''){
-				server="global"
-			}
-		</script>
+
         <h3 class="pt-3">¡Bienvenido al Laboratorio de Inventores!</h3>
         <div class="main-gallery owl-carousel owl-theme">
             <div class="img-holder mt-3"><img src="{{asset('build/assets/images/imagenLat.jpg')}}" alt="lab" class="img-fluid"></div>

@@ -1,9 +1,9 @@
 @extends('layouts/prestador-layout')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Registro</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Impresion</li>
+    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Prestador</a></li>
+    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Mostrar</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Impresiones</li>
 @endsection
 
 @section('subcontent')

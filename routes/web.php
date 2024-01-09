@@ -18,10 +18,6 @@ Auth::routes([
     'verify' => false,
 ]);
 
-//PRUEBAS
-Route::get('/adminLayout', function(){
-    return view('admin.PruebaAdminLayout');
-});
 
 Route::get('/articulos', function(){
     return view('landingArticulos');
