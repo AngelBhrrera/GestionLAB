@@ -233,7 +233,7 @@
         };
 
         // xhr.open('GET', '/obtenerActividades?categoriaId=' + categoriaId);
-        xhr.open('GET', '{{ route('admin.obtenerActividades') }}?categoriaId=' + categoriaId);
+        xhr.open('GET', '{{ route('obtenerActividades') }}?categoriaId=' + categoriaId);
 
         xhr.send();
     }

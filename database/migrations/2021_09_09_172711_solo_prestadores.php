@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class Soloprestadores extends Migration
 {
@@ -13,7 +12,7 @@ class Soloprestadores extends Migration
      */
     public function up()
     {
-        \DB::statement("
+        DB::statement("
         CREATE VIEW solo_prestadores AS
         SELECT
         `users`.`id` AS `id`,
@@ -22,12 +21,10 @@ class Soloprestadores extends Migration
         `users`.`correo` AS `correo`,
         `users`.`codigo` AS `codigo`,
         `users`.`tipo` AS `tipo`,
-        `users`.`email_verified_at` AS `email_verified_at`,
         `users`.`password` AS `password`,
-        `users`.`remember_token` AS `remember_token`,
-        `users`.`created_at` AS `created_at`,
+        `users`.`sede` AS `sede`,
+        `users`.`horario` AS `horario`,
         `users`.`carrera` AS `carrera`,
-        `users`.`updated_at` AS `updated_at`,
         `users`.`horas` AS `horas`,
         `cuenta_horas`.`horas_servicio` AS `horas_cumplidas`,
         `cuenta_horas`.`horas_restantes` AS `horas_restantes`,

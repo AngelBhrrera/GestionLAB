@@ -12,19 +12,11 @@ class CreateActividadesTable extends Migration
         Schema::create('actividades', function (Blueprint $table) {
 
             $table->id();
-            $table->foreign('categoria_id')->references('id')->on('categorias')->onUpdate('cascade')->onDelete('cascade');
             $table->string('nombre', 255)->collation('utf8mb4_unicode_ci');
+            $table->unsignedBigInteger('id_categoria');
+            $table->foreign('id_categoria')->references('id')->on('categorias')->onUpdate('cascade')->onDelete('cascade');
+            $table->integer('TEC');
             $table->string('descripcion', 500)->collation('utf8mb4_unicode_ci');
-           
-
-            /*
-            $table->string('status', 50)->collation('utf8mb4_unicode_ci');
-            $table->foreign('proyecto_id')->references('id')->on('proyectos');
-            $table->foreign('prestador_id')->references('id')->on('user');
-            $table->string('fecha_inicio', 100)->nullable();
-            $table->string('fecha_termino', 100)->nullable();
-            $table->time('tiempo_acumulado');*/
-
             
         });
 

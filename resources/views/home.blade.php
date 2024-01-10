@@ -43,7 +43,7 @@
               <a class="dropdown-item" type="button" href="{{ route('admin.registro')  }}">Registrar Usuario</a>
               {{-- <a class="dropdown-item" type="button" href="{{ route('admin.registrovisitas')  }}">Registrar visita</a> --}}
               {{-- <a class="nav-link" type="button" href="{{ route('admin.recompensas') }}">Registrar Recompensas</a> --}}
-              <a class="dropdown-item" type="button" href="{{ route('admin.C_Actividades') }}"> Registrar Actividades a prestadores</a>
+              <a class="dropdown-item" type="button" href="{{ route('admin.create_act') }}"> Registrar Actividades a prestadores</a>
               <a class="dropdown-item" type="button" href="{{ route('admin.newCategoriaYActividad') }}"> Registrar Nueva categoria y actividad</a>
             </div>
           </li>

@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Hash;
 
 class CreateUsersTable extends Migration
 {
@@ -15,14 +14,15 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
+
             $table->bigIncrements('id');
 
-            $table->string('name', 191);
-            $table->string('apellido', 191);
+            $table->string('name', 150);
+            $table->string('apellido', 150);
             $table->string('correo', 50)->unique();
             $table->string('codigo', 191)->unique()->nullable();
             $table->string('tipo', 50);
-            $table->string('telefono', 10)->nullable();
+            $table->string('telefono', 10)->unique()->nullable();
 
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password', 191);
@@ -43,28 +43,6 @@ class CreateUsersTable extends Migration
             $table->string('imagen_perfil', 255)->nullable();
             $table->unsignedInteger('experiencia')->default(1)->nullable();
         });
-        
-        DB::table('users')->insert([
-            "name" =>"admin",
-            "apellido" => "admin",
-            "correo" => "admin@admin.com",
-            "codigo" => null,
-            "tipo" => "Superadmin",
-            "email_verified_at" => null,
-            "password" => Hash::make('123'),
-            "remember_token"=> null,
-            "horas"=>null,
-            "centro"=> null,
-            "carrera"=> "INCO",
-            "fecha_salida" => null,
-            "horario" => null,
-            "can_admin" => null,
-            "encargado_id" => null,
-            "telefono" => null,
-            "imagen_perfil" => null,
-            "experiencia" => null
-        ]);
-
         
     }
 

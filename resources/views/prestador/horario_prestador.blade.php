@@ -1,5 +1,21 @@
 @extends('layouts/prestador-layout')
 
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth'
+        });
+        calendar.render();
+      });
+
+    </script>
+@section('subhead')
+
+@endsection
+
 @section('breadcrumb')
     <nav aria-label="breadcrumb" class="-intro-x hidden xl:flex">
         <ol class="breadcrumb">
@@ -9,29 +25,13 @@
     </nav>
 @endsection
 
+
 @section('subcontent')
 
-    <div class="container">
 
-        @if (isset(Auth::user()->horario))
-            <h1 class="text-center">Horario: {{Auth::user()->horario}}</h1>
-        @else
-            <h1 class="text-center">No tienes horario asignado</h1>
-        @endif
-
-
-
-      
+    <div id='container'>
+        <div id='calendar'  style='width: 800px; height: 1150px;'></div>
     </div>
-      <!-- BEGIN: Calendar Content -->
-      <div class="container" style="padding: 20px 20px 20px 20px" >
-            <div class="col-span-12 xl:col-span-8 2xl:col-span-9">
-                <div class="box p-5">
-                    <div class="full-calendar" id="calendar"></div>
-                </div>
-            </div>
-        </div>
-        <!-- END: Calendar Content -->
 
 
 @endsection

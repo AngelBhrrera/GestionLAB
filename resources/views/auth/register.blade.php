@@ -13,7 +13,7 @@
         <div class="intro-y box py-30  mt-">
 
             <div style="display: flex;">
-                <img class="mx-auto my-auto" alt="Inventores" width="80px" height="80px" src="{{ asset('build/assets/logosinventores/InventoresLogoHDWhiteborder.png') }}">
+                <img class="mx-auto my-auto" alt="Inventores" width="80px" height="80px" src="{{ asset('build/assets//images/logosinventores/InventoresLogoHDWhiteborder.png') }}">
             </div>
 
             <div id="divBase" style="display: flex;"> 
@@ -120,7 +120,7 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divTelefono" style="display:none"> 
                                         <label for="input-wizard-2" class="form-label" >Telefono *</label>
-                                        <input id="telefono" type="text" class="form-control @if(old('opc')=='1') @error('telefono') is-invalid @enderror @endif" name="telefono" placeholder="Telefono" >
+                                        <input id="telefono" type="text" class="form-control @if(old('opc')=='1') @error('telefono') is-invalid @enderror @endif" name="telefono" placeholder="Telefono" maxlength="10">
                                                 @error('telefono') 
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>

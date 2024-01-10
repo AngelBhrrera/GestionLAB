@@ -774,3 +774,14 @@ header {
       background-position: 0% 50%;
     }
   }
+  @media (max-width: 600px){
+    #vistaWeb{
+        display: none;
+    }
+  }
+
+  @media (min-width: 700px){
+    #vistaMovil{
+        display:none;
+    }
+  }

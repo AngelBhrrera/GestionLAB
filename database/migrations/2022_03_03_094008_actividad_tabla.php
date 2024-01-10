@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class ActividadTabla extends Migration
 {
@@ -13,7 +12,7 @@ class ActividadTabla extends Migration
      */
     public function up() 
     {
-        \DB::statement("
+        DB::statement("
         CREATE VIEW `actividad_tabla`
          AS SELECT
         `users`.`name` AS `nombre_prestador`,

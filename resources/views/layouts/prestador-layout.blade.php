@@ -47,7 +47,7 @@
                                         <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                                 </div>
                             </a>
-                            <ul class="">
+                            <ul class="submenu">
                                 <li>
                                     <a href="{{'/'}}" class="side-menu">
                                         <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
@@ -78,7 +78,7 @@
                                 <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                             </div>
                         </a>
-                        <ul class="">
+                        <ul class="submenu">
                             <li>
                                 <a href="{{route('horario')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="clock"></i> </div>
@@ -117,7 +117,7 @@
                                 <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                             </div>
                         </a>
-                        <ul class="">
+                        <ul class="submenu">
                             <li>
                                 <a href="{{route('registro_reporte')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="plus-circle"></i> </div>
@@ -171,17 +171,18 @@
                                 <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                             </div>
                         </a>
-                        <ul class="">
+        
+                        <ul class="submenu">
                             <li>
-                                <a href="side-menu-light-crud-data-list.html" class="side-menu">
+                                <a href="{{route('create_imps')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="plus-circle"></i> </div>
                                     <div class="side-menu__title"> Crear impresión </div>
                                 </a>
                             </li>
                             <li>
-                                <a href="{{route('prestadoresProyectosCompletados')}}" class="side-menu">
+                                <a href="{{route('show_imps')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="sidebar"></i> </div>
-                                    <div class="side-menu__title">  Mostrar impresiones </div>
+                                    <div class="side-menu__title">  Mostrar mis impresiones </div>
                                 </a>
                             </li>
                         </ul>
@@ -202,15 +203,6 @@
                         </ol>
                     </nav>
                     <!-- END: Breadcrumb -->
-                    <div class="intro-x relative ml-auto flex sm:mx-auto">
-                            @if (Auth::user()->can_admin == 1)
-                            <a href="{{ route('cambiarRol') }}">
-                                <button class="btn btn-primary ml-5"><i data-lucide="refresh-cw"></i>
-                                    {{ __('Cambiar a admin') }}</button>
-                            </a>    
-                            @endif
-                            
-                    </div>
                     
                     <!-- BEGIN: Intermede -->
                         <div class="-intro-x xl:hidden mr-3 sm:mr-6">
@@ -219,18 +211,33 @@
                         <div class="intro-x relative ml-auto sm:mx-auto"> </div>
                     <!-- END: Intermede -->
                        
-                    <!-- Comienza menu cuenta-->
-                    <div class="intro-x relative ml-auto flex sm:mx-auto"><h2 class="text-1xl font-medium">Nivel: {{$nivel_str}} <br> Xp: {{Auth::user()->experiencia}}</h2> <img class="ml-5"width="70" heigth="50" src="{{asset('build/assets/'.$nivel->ruta)}}" alt="medalla"></div>
+
+                    <div class="intro-x relative ml-auto flex sm:mx-auto">
+                        @if (Auth::user()->can_admin == 1)
+                            <a href="{{ route('cambiarRol') }}">
+                                <img title="cambiar a Admin"src="{{asset('build/assets/images/prestico2.svg')}}" width="30" height="30" alt="">
+                            </a>    
+                        @endif 
+                        <img src="{{asset('build/assets/images/lvl1.ico')}}"width="30" height="30" alt="">
+                        <img src="{{asset('build/assets/images/XP.ico')}}"width="30" height="30" alt="">{{Auth::user()->experiencia}}</img>
+                    </div>
+
+                    <div class="intro-x relative ml-auto flex sm:mx-auto">
+                            <img class="ml-5"width="50" heigth="30" src="{{asset('build/assets/'.$nivel->ruta)}}" alt="medalla">
+                    </div>
+
                     <div class="intro-x dropdown h-10">
                         
                         <div class="h-full dropdown-toggle flex items-center" role="button" aria-expanded="false" data-tw-toggle="dropdown">
+                            
                             <div class="w-10 h-10 image-fit">
-                            @if(!isset(Auth::user()->imagen_perfil))
-                                <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/default-profile-image.png')}}">
-                            @else
-                                <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/'.Auth::user()->imagen_perfil)}}">
-                            @endif
+                                @if(!isset(Auth::user()->imagen_perfil))
+                                    <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/default-profile-image.png')}}">
+                                @else
+                                    <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/'.Auth::user()->imagen_perfil)}}">
+                                @endif
                             </div>
+                            
                             <div class="hidden md:block ml-3">
                                 <div class="max-w-[7rem] truncate font-medium">{{$username=Auth::user()->name}}</div>
                                 <div class="text-xs text-slate-400">{{$userRol=ucfirst(Auth::user()->tipo)}}</div>
@@ -272,6 +279,21 @@
 
 @section('script')
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
 
+<script>
+
+    $('.side-menu').click(function(e) {
+
+        var submenuS = $(this).next('.submenu');
+        // Cierra todos los submenús, excepto el que se está abriendo
+        $('.submenu').not(submenuS).slideUp();
+
+        // Alterna la visibilidad del submenú clicado
+        submenuS.slideToggle();
+    });
+
+</script>
 @endsection
 

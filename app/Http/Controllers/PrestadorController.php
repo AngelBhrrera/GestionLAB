@@ -23,8 +23,8 @@ class PrestadorController extends Controller
 
         $code = Auth::user()->codigo;
         if(request()->ajax()) {
-            $data = DB::table('horasprestadores')
-            ->select('SELECT `fecha`, `hora_entrada`, `hora_salida`, `tiempo`, `horas`, `estado` FROM `horasprestadores` WHERE `codigo` =' + $code )
+            $data = DB::table('registros_checkin')
+            ->select('SELECT `fecha`, `hora_entrada`, `hora_salida`, `tiempo`, `horas`, `estado` FROM `registros_checkin` WHERE `codigo` =' + $code )
             ->get();
 
             return datatables()->of($data)
@@ -37,10 +37,11 @@ class PrestadorController extends Controller
     }
 
     public function home(){
+        
         $id = Auth::user()->id;
         $experiencia = Auth::user()->experiencia;
-        $horasAutorizadas = DB::table('horasprestadores')->where('idusuario', $id)->where('estado', 'autorizado')->sum('horas');
-        $horasPendientes = DB::table('horasprestadores')->where('idusuario', $id)->where('estado', 'pendiente')->sum('horas');
+        $horasAutorizadas = DB::table('registros_checkin')->where('idusuario', $id)->where('estado', 'autorizado')->sum('horas');
+        $horasPendientes = DB::table('registros_checkin')->where('idusuario', $id)->where('estado', 'pendiente')->sum('horas');
         $horasTotales = DB::table('users')->where('id', $id)->select('horas')->get();
         $horasRestantes = $horasTotales[0]->horas - $horasAutorizadas;
         $leaderBoard= DB::select("SELECT * from full_leaderboard limit 10");
@@ -69,28 +70,109 @@ class PrestadorController extends Controller
         );
     }
 
+    public function create_imps()
+    {
+        $impresoras = DB::table('impresoras')
+            ->select('*')
+            ->where('estado', 'Activo')
+            ->get();
+        $proy = DB::table('proyectos')->select('*')->get();
+
+        return view('prestador/registro_impresion',
+            ['imps' => $impresoras,
+            'proys' => $proy
+        ]);
+    }
+
+    public function register_imps(Request $request)
+    {
+        $origin = Auth::user()->id;
+        $name = $request->input('name');
+        $proy = $request->input('proyect');
+        $model = $request->input('model');
+        $color = $request->input('color');
+        $pieces = $request->input('pieces');
+        $w = $request->input('weight');
+        $horas = $request->input('horas');
+        $horasFormateadas = str_pad($horas, 2, '0', STR_PAD_LEFT);
+
+        $minutos = $request->input('minutos');
+        $minsFormateados = str_pad($minutos, 2, '0', STR_PAD_LEFT);
+        $tiempo = $horasFormateadas . 'h' . $minsFormateados . 'm';
+        
+        $make_imp = DB::table('seguimiento_impresiones')
+        ->insert([['id_Prestador' => $origin, 'id_Impresora' => $name, 
+        'id_Proyecto' => $proy, 'nombre_modelo_stl' => $model, 
+         'color' => $color, 'piezas' => $pieces,
+         'peso' => $w, 'tiempo_impresion' => $tiempo]]);
+
+        return redirect()->route('show_imps');
+    }
+
+    public function show_imps()
+    {
+        $data = DB::table('ver_impresiones')
+        ->select('impresora', 'proyecto',  'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
+        ->where('id_Prestador', Auth::user()->id)
+        ->get();
+
+        return view( 'prestador/mostrar_mis_impresiones', [ 'impresiones' => $data]);
+
+    }
+
+    
+    public function horario()
+    {
+        $id = Auth::user()->id;
+        
+        $turno = Auth::user()->horario;
+
+        $asistencias = DB::table('registros_checkin')
+            ->select('fecha')
+            ->where('idusuario', $id)
+            ->orderBy('fecha_actual', 'desc')
+            ->get();
+
+        $diasAsistenciaMesActual = [];
+
+        $mesActual = date('m'); 
+
+        foreach ($asistencias as $asistencia) {
+
+            $mesAsistencia = (int)substr($asistencia->fecha, 0, 1); 
+            $diaAsistencia = (int)substr($asistencia->fecha, 3, 4); 
+
+            if ($mesAsistencia == $mesActual) {
+                $diasAsistenciaMesActual[] = $diaAsistencia;
+            }
+        }
+        return view('/prestador/horario_prestador', [
+                'asistencias' => $diasAsistenciaMesActual,
+                'turn' => $turno
+        ]);
+    }
+
     public function horas()
     {
-        $columns = array(["data" => "id", "visible" => false], ["data" => "fecha"], ["data" => "hora_entrada", "sortable" => false], ["data" => "hora_salida", "sortable" => false], ["data" => "tiempo"], ["data" => "horas"], ["data" => "estado", "sortable" => false], ["data" => "nota", "sortable" => false]);
         $id = Auth::user()->id;
-        $horas = DB::table('horasprestadores')->where('idusuario', $id)->where('estado', 'autorizado')->sum('horas');
+        $horas = DB::table('registros_checkin')
+            ->where('idusuario', $id)
+            ->where('estado', 'autorizado')
+            ->sum('horas');
         $horasT = DB::table('users')->where('id', $id)->select('horas')->get();
+
+        $asistencias = DB::table('registros_checkin')
+        ->where('idusuario', $id)
+        ->orderBy('fecha_actual', 'desc')
+        ->get();
 
         return view(
             'prestador/homeP',
             [
-                'datos' => ['id', 'fecha', 'hora_entrada', 'hora_salida', 'tiempo', 'horas', 'estado', 'nota'],
-                'titulo' => 'Registro de horas',
-                'button' => false,
-                'accion' => false,
-                'fecha' => date("d/m/Y"),
-                'ajaxroute' => 'ss.sstablaprestadores',
-                "columnas" => json_encode($columns),
-                'cursos' => false,
+                'datos' => $asistencias,
                 'horas' => $horas,
                 'horasT' => $horasT[0]->horas - $horas,
-                'modal' => true,
-                'descarga' => false
+  
             ]
         );
     }
@@ -102,6 +184,7 @@ class PrestadorController extends Controller
             switch (Auth::user()->tipo) {
                 case 'admin':
                 case 'Superadmin':
+                case 'encargado':
                     $dir = 'admin.checkin';
                     $origen = Auth::user()->name . ' ' . Auth::user()->apellido;
                     break;
@@ -119,7 +202,7 @@ class PrestadorController extends Controller
                     ->orWhere('tipo', '=', "practicante");
             })
                 ->select('name', 'id', 'apellido', 'tipo', 'encargado_id')->get();
-            $verificar = DB::table('horasprestadores')
+            $verificar = DB::table('registros_checkin')
             ->where('idusuario', $usuario[0]->id)
             ->where('fecha', date("d/m/Y"))
             ->where('hora_salida', null)->exists();
@@ -127,7 +210,7 @@ class PrestadorController extends Controller
 
                 $hor = date('H:i:s');
 
-                $tiempo = DB::table('horasprestadores')
+                $tiempo = DB::table('registros_checkin')
                 ->select('hora_entrada')
                 ->where('idusuario', $usuario[0]->id)
                 ->where('fecha', date("d/m/Y"))
@@ -135,7 +218,7 @@ class PrestadorController extends Controller
 
                 $tiempoCompleto = $this->diferencia($tiempo[0]->hora_entrada, $hor);
 
-                $salida = DB::table('horasprestadores')
+                $salida = DB::table('registros_checkin')
                 ->where('idusuario', $usuario[0]->id)
                 ->where('fecha', date("d/m/Y"))
                 ->where('hora_salida', null)
@@ -144,7 +227,7 @@ class PrestadorController extends Controller
                 return redirect()->route($dir)->with('success', 'Adios ' . $usuario[0]->name);
             } else {
 
-                $inicio = DB::table('horasprestadores')
+                $inicio = DB::table('registros_checkin')
                 ->insert([['origen' => $origen, 'idusuario' => $usuario[0]->id, 'codigo' => $codigo, 'nombre' => $usuario[0]->name, 
                 'apellido' => $usuario[0]->apellido, 'fecha' => date("d/m/Y"), 'hora_entrada' => date('H:i:s'), 'horas' => 0, 'tipo' => $usuario[0]->tipo, 
                 'encargado_id' => $usuario[0]->encargado_id]]);
@@ -165,7 +248,7 @@ class PrestadorController extends Controller
         $nota = $request->input('nota');
         $pdf = $request->input('pdf');
         $usuario = DB::table('users')->where('id', $id)->where('tipo', 'prestador')->select('name', 'id', 'apellido', 'codigo')->get();
-        $inicio = DB::table('horasprestadores')->insert([['origen' => 'Superadmin', 'idusuario' => $usuario[0]->id, 'codigo' => $usuario[0]->codigo, 'nombre' => $usuario[0]->name, 'apellido' => $usuario[0]->apellido, 'fecha' => date("d/m/Y"), 'hora_entrada' => 'no aplica', 'hora_salida' => 'no aplica', 'horas' => $horas, 'nota' => $nota, 'pdf' => $pdf, 'tiempo' => 'no aplica', 'estado' => 'autorizado', 'responsable' => $request->input('responsable')]]);
+        $inicio = DB::table('registros_checkin')->insert([['origen' => 'Superadmin', 'idusuario' => $usuario[0]->id, 'codigo' => $usuario[0]->codigo, 'nombre' => $usuario[0]->name, 'apellido' => $usuario[0]->apellido, 'fecha' => date("d/m/Y"), 'hora_entrada' => 'no aplica', 'hora_salida' => 'no aplica', 'horas' => $horas, 'nota' => $nota, 'pdf' => $pdf, 'tiempo' => 'no aplica', 'estado' => 'autorizado', 'responsable' => $request->input('responsable')]]);
         return redirect()->route('admin.prestadores');
     }
 
@@ -189,7 +272,7 @@ class PrestadorController extends Controller
 
         // FIN GUARDAR IMAGEN
 
-        $modificar = DB::table('horasprestadores')->where('id', $id)->update(['nota' => $nota, 'srcimagen' => $srcimage]);
+        $modificar = DB::table('registros_checkin')->where('id', $id)->update(['nota' => $nota, 'srcimagen' => $srcimage]);
         return redirect('/admin/firmas');
     }
 
@@ -327,11 +410,6 @@ class PrestadorController extends Controller
         );
     }
 
-    public function horario()
-    {
-        return view('/prestador/horario_prestador');
-    }
-
     public function registro_reporte()
     {
         $encargado_id = auth()->user()->encargado_id;
@@ -348,7 +426,7 @@ class PrestadorController extends Controller
         $categoriaId = $request->input('categoriaId');
 
         $actividades = DB::table('actividades')
-            ->where('categoria_id', $categoriaId)
+            ->where('id_categoria', $categoriaId)
             ->get();
 
         return response()->json($actividades);
