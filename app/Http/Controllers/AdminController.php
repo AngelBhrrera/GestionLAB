@@ -41,9 +41,7 @@ class AdminController extends Controller
 
     // public function index()
     // {
-    //     $users =DB::table('horasprestadores')->orderBy('id','DESC')->get();;
-
-    //     return view('//admin/homeA',
+    //      $users =DB::table('registros_checkin')->orderBy('id','DESC')->get();    //     return view('//admin/homeA',
     //         ['users'=>$users,
     //         'datos'=>['codigo','nombre','fecha','hora_entrada','hora_salida','tiempo'],
     //         'opcion'=> 'table',
@@ -58,10 +56,7 @@ class AdminController extends Controller
     {
 
         //Despliega la tabla de los encargados cuando su tipo == admin
-        $encargado = DB::table('users')->where('tipo', 'admin')->get();
-
-        // return view('//admin/homeA',['opcion'=> 'auth.registerAdmin', 'nombre' => 'Registro', 'ruta' => 'registrar']);
-        return view('/auth/registerAdmin');
+        $encargado = DB::table('users')->where('tipo', 'admin ')->get(); //falta agregar encargado        return view('/auth/registerAdmin');
         //return view('/auth/registerAdmin', ['encargado' => $encargado, 'nombre' => 'Registro', 'ruta' => 'registrar']);
     }
 
@@ -91,7 +86,7 @@ class AdminController extends Controller
         $id = $request->input('id');
         $nombre = $request->input('nombre');
         $horario = $request->input('horario');
-        return view('//admin/homeA', ['opcion' => 'horarioadmin', 'id_prestador' => $id, 'horario' => $horario, 'nombre' => $nombre,  'horario2' => $query2]);
+        return view('/admin/homeA', ['opcion' => 'horarioadmin', 'id_prestador' => $id, 'horario' => $horario, 'nombre' => $nombre,  'horario2' => $query2]);
     }
 
 
@@ -127,11 +122,10 @@ class AdminController extends Controller
         $id = $request->input('id');
         $estado = $request->input('estado');
         $responsable = $request->input('responsable');
-        $modificar = DB::table('horasprestadores')->where('id', $id)->update(['estado' => $estado, 'responsable' => $responsable]);
+        $modificar = DB::table('registros_checkin')->where('id', $id)->update(['estado' => $estado, 'responsable' => $responsable]);   
+    
     }
-
     //guardar horas
-
     public function guardar2(Request $request)
     {
 
@@ -139,7 +133,7 @@ class AdminController extends Controller
         $id = $request->input('id');
         $horas = $request->input('horas');
         $responsable = $request->input('responsable');
-        $modificar = DB::table('horasprestadores')->where('id', $id)->update(['horas' => $horas, 'responsable' => $responsable]);
+        $modificar = DB::table('registros_checkin')->where('id', $id)->update(['horas' => $horas, 'responsable' => $responsable]);
     }
 
 
@@ -207,9 +201,7 @@ class AdminController extends Controller
     public function citas()
     {
         $columns = array(["data" => "id", "visible" => false], ["data" => "fecha"], ["data" => "correo"], ["data" => "nombre"], ["data" => "proyecto"], ["data" => "status", "sortable" => false], ["data" => "btn", "sortable" => false], ["data" => "eliminar", "sortable" => false], ["data" => "link", "sortable" => false]);
-
-        $prestadores = DB::table('soloprestadores')->where('tipo', 'prestador')->get();
-
+        $prestadores = DB::table('solo_prestadores')->where('tipo', 'prestador')->get();
 
         return view(
             '/admin/homeA',
@@ -234,9 +226,7 @@ class AdminController extends Controller
     {
         $columns = array(["data" => "id", "visible" => false], ["data" => "fecha"], ["data" => "correo"], ["data" => "nombre"], ["data" => "proyecto"], ["data" => "status", "sortable" => false], ["data" => "btn", "sortable" => false], ["data" => "link", "sortable" => false]);
 
-        $prestadores = DB::table('soloprestadores')->where('tipo', 'prestador')->get();
-
-
+  $prestadores = DB::table('solo_prestadores')->where('tipo', 'prestador')->get();
         return view(
             '/admin/homeA',
             [
@@ -486,7 +476,19 @@ class AdminController extends Controller
         );
     }
 
-    public function firmas()
+    /*public function firmas(){
+
+        $sede = Auth::user()->sede;
+
+        $resultados = DB::table('registros_checkin as r')
+            ->select('r.responsable', 'r.origen', 'r.fecha_actual', 'r.hora_entrada', 'r.hora_salida', 'r.tiempo', 'r.horas', 'r.tipo', 'r.nota')
+            ->join('users as u', 'r.encargado_id', '=', 'u.id')
+            ->where('u.sede', $sede)
+            ->get();
+
+        return view('/admin/asistencias_admin',['tabla'=>$resultados]);
+    }
+    /*public function firmas()
     {
 
         $tUser = Auth::user()->tipo;
@@ -596,6 +598,18 @@ class AdminController extends Controller
                 ]
             );
         }
+    }*/
+
+    public function firmas(Request $request){
+        
+        $idSede = Auth::user()->sede;
+
+        $sql = DB::table('registros_checkin as r')
+            ->select('r.responsable', 'r.origen', 'r.fecha_actual', 'r.hora_entrada', 'r.hora_salida', 'r.tiempo', 'r.horas', 'r.tipo', 'r.nota')
+            ->join('users as u', 'r.encargado_id', '=', 'u.id')
+            ->where('u.sede', $idSede)
+            ->get();
+        return view("admin.asistencias_admin", ['tabla'=>$sql]);
     }
 
     public function firmasPendientes()
@@ -709,6 +723,9 @@ class AdminController extends Controller
         $id_usuario = $request->input('id_usuario');
         $fecha = $request->input('fecha');
 
+        $id = Auth::user()->id;
+        $actividad_prestador = DB::table('actividad_tabla')->where('id_prestador', $id_usuario)->where('fecha_realizada', $fecha)->where('status', 'terminado')->get();
+
         // var_dump( $id_usuario,  $fecha);
 
         // return('hola mundo');
@@ -733,38 +750,155 @@ class AdminController extends Controller
     public function recompensas()
     {
         return view(
-            '//admin/homeA',
+            '/admin/homeA',
             [
                 'opcion' => 'registro_recompensas'
             ]
         );
     }
-
-    public function C_Actividades()
+    
+    public function create_act()
     {
-        //$actividad = DB::table('actividad_tabla')->where('id_actcreada',$id)->get();
-        $prestadores = DB::table('soloprestadores')
-            ->where('tipo', 'prestador')
-            ->where('encargado_id', auth()->user()->id)
+  
+        $prestadores = DB::table('solo_prestadores')
+            ->where('sede', auth()->user()->sede)
+            ->where('horario', auth()->user()->horario)
             ->get();
 
-        $actividades = DB::table('actividades')->get();
+
         $categorias = DB::table('categorias')->get();
 
-        // echo "<script> alert(JSON.stringify( $prestadores )); </script>";
-
         return view(
-            '//admin/homeA',
+            '/admin/registro_actividades',
             [
                 'prestadores' => $prestadores,
-                'tipo' => 'agregar',
-                //'actm' => $actividad,
                 'categorias' => $categorias,
-                'actividades' => $actividades,
-                'opcion' => 'C_Actividades_agregar'
             ]
         );
     }
+
+    public function create_proy()
+    {
+  
+        $prestadores = DB::table('solo_prestadores')
+            ->where('sede', auth()->user()->sede)
+            ->where('horario', auth()->user()->horario)
+            ->get();
+
+        $actividades = DB::table('actividades')->get();
+
+        return view(
+            '/admin/registro_proyectos',
+            [
+                'prestadores' => $prestadores,
+
+
+
+                'actividades' => $actividades,
+
+            ]
+        );
+    }
+
+    public function make_act(Request $request)
+    {
+
+        $prestadores = DB::table('solo_prestadores')
+        ->where('sede', auth()->user()->sede)
+        ->where('horario', auth()->user()->horario)
+        ->get();
+
+        $categorias = DB::table('categorias')->get();
+        $actividades = DB::table('actividades')->get();
+
+        $id_actividad = $request->input('id_actividad');
+        $nomact = $request->input('nombre');
+        $categoria = $request->input('tipo_categoria');
+        $desc = $request->input('descripcion');
+
+        $horas = $request->input('horas')*60;
+        $minutos = $request->input('minutos');
+        $tec = $horas + $minutos;
+
+        DB::table('actividades')->insert([
+
+            'id_categoria' => $id_actividad,
+            'nombre' => $nomact,
+            'id_categoria' => $categoria,
+            'TEC' => $tec,
+            'descripcion' => $desc,
+        ]);
+
+        return view( 'admin/asignar_actividades', [
+            'prestadores' => $prestadores,
+            'categorias' => $categorias,
+            'actividades' => $actividades,
+        ]);
+    }
+
+    public function asign_act()
+    {
+
+        $prestadores = DB::table('solo_prestadores')
+        ->where('sede', auth()->user()->sede)
+        ->where('horario', auth()->user()->horario)
+        ->get();
+
+        $categorias = DB::table('categorias')->get();
+        $actividades = DB::table('actividades')->get();
+
+        return view( 'admin/asignar_actividades', [
+            'prestadores' => $prestadores,
+            'categorias' => $categorias,
+            'actividades' => $actividades,
+        ]);
+    }
+
+    public function watch_prints()
+    {
+        $data = DB::table('ver_impresiones')
+        ->get();
+
+        return view( 'admin/mostrar_impresiones', [ 'impresiones' => $data]);
+
+    }
+
+    public function control_print()
+    {
+
+        $print = DB::table('impresoras')
+        ->get();
+
+        return view('admin/registro_impresora', [
+            'impresoras' => $print
+        ]);
+    }
+
+    public function make_print(Request $request)
+    {
+
+        $name = $request->input('nombre');
+        $mark = $request->input('mark');
+        $type = $request->input('tipo');
+
+        DB::table('impresoras')->insert([
+
+            'nombre' => $name,
+            'marca' => $mark,
+            'tipo' => $type,
+
+        ]);
+
+        $print = DB::table('impresoras')
+        ->get();
+
+        return view('admin/registro_impresora', [
+            'impresoras' => $print
+        ]);
+    }
+
+
+
     public function newCategoriaYActividad()
     {
         $actividades = DB::table('actividades')->get();
@@ -2426,7 +2560,7 @@ class AdminController extends Controller
     public function show(){
         $sede = DB::select("SELECT * FROM sede;");
         $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin' OR tipo = 'encargado';");
-        $var = 1;
+   
         return view('auth/registerAdmin', ['encargado'=>$encargado,'sede'=>$sede]);
     }
 
