@@ -11,6 +11,9 @@
 
 
 @section('content')
+<style>
+    .container:hover .imagen-rol {-webkit-transform:scale(1.5);transform:scale(1.5); transition:all .3s}
+</style>
 
 <body class="main">
     <div class="xl:pl-5 xl:py-5 flex h-screen">
@@ -434,7 +437,7 @@
                     <div class="intro-x relative ml-auto flex sm:mx-auto">
                         @if (Auth::user()->can_admin == 1 && Auth::user()->tipo != "Superadmin")
                             <a href="{{ route('admin.cambiorol') }}">
-                                <img title="Cambiar a Prestador" src="{{asset('build/assets/images/prestico3.svg')}}" width="30" height="30" alt="">
+                                <div class="container"><img class="imagen-rol" title="Cambiar a Prestador" src="{{asset('build/assets/images/prestico3.svg')}}" width="30" height="30" alt=""></div>
                             </a>
                         @endif
                     </div>
