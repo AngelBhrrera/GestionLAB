@@ -1,4 +1,4 @@
-@extends('layouts/admin-layout')
+@extends('layouts/visitante-layout')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>

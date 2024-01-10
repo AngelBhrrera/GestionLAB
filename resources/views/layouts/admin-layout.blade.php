@@ -1,26 +1,16 @@
 @extends('../layouts/main')
 
 @section('head')
-<html class='dark'>
-<meta charset="UTF-8">
-<title>Laravel 10 Ajax DataTables CRUD (Create Read Update and Delete) - Cairocoders</title>
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<style>
-    .submenu {
-        display: none;
-    }
+    <html class='dark'>
+    <meta charset="UTF-8">
+    <title>Laravel 10 Ajax DataTables CRUD (Create Read Update and Delete) - Cairocoders</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    .submenu.active {
-        display: block;
-    }
-</style>
-
-
-@yield('subhead')
+    @yield('subhead')
 @endsection
 
 
-@section('content')
+@section('subcontent')
 
 <body class="main">
     <div class="xl:pl-5 xl:py-5 flex h-screen">
@@ -496,32 +486,3 @@
 </body>
 
 @endsection
-
-<?php
-// <!-- JQuery -->
-// <script src={{asset('plugins/jquery/jquery.min.js')}}></script>
-// <!-- Bootstrap 4 -->
-// <script src={{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}></script>
-// <!-- AdminLTE App -->
-// <script src={{asset('dist/js/adminlte.min.js')}}></script>
-// <!-- DataTables  & Plugins -->
-// <script src={{asset('plugins/datatables/jquery.dataTables.min.js')}}></script>
-// <script src={{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}></script>
-// <script src={{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}></script>
-// <script src={{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}></script>
-// <script src={{asset('plugins/datatables-buttons/js/dataTables.buttons.min.js')}}></script>
-// <script src={{asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}></script>
-// <script src={{asset('plugins/jszip/jszip.min.js')}}></script>
-// <script src={{asset('plugins/pdfmake/pdfmake.min.js')}}></script>
-// <script src={{asset('plugins/pdfmake/vfs_fonts.js')}}></script>
-// <script src={{asset('plugins/datatables-buttons/js/buttons.html5.min.js')}}></script>
-// <script src={{asset('plugins/datatables-buttons/js/buttons.print.min.js')}}></script>
-// <script src={{asset('plugins/datatables-buttons/js/buttons.colVis.min.js')}}></script>
-// <script src="{{asset('plugins/daterangepicker/daterangepicker.js')}}"></script>
-// <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
-// <script src="{{asset('plugins/inputmask/jquery.inputmask.min.js')}}"></script>
-
-// {{-- <script src="{{asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script> --}}
-// {{-- <script src={{asset('plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}></script> --}}
-// {{-- <script src="{{asset('plugins/moment/moment.min.js')}}"></script> --}}
-?>

@@ -26,6 +26,9 @@ Route::get('/foo', function () {
 Route::get('/adminLayout', function(){
     return view('admin.PruebaAdminLayout');
 });
+Route::get('/reg', function(){
+    return view('visitante.registro_impresion_form');
+});
 
 Route::get('/spiderw', function(){
     return view('/TEST/spider');
