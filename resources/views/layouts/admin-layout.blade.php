@@ -10,7 +10,7 @@
 @endsection
 
 
-@section('subcontent')
+@section('content')
 
 <body class="main">
     <div class="xl:pl-5 xl:py-5 flex h-screen">
