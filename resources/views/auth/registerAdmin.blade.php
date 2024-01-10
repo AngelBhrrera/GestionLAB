@@ -328,13 +328,9 @@
         }
 
         function deshabilitarEncargado(select, opcion, id, sede){
-            alert(opcion);
-            alert(sede);
             for (var k = 1; k < select.options.length; k++){
                 if(select.options[k].value === opcion){
-                    alert(select.options[k].value);
                     if (select.options[k].id == id ){
-                        alert(select.options[k].id);
                         select.options[k].disabled = false;
                     }
                 }
