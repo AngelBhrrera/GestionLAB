@@ -5,6 +5,10 @@
 @endsection
 
 @section('content')
+<style>
+    .container:hover .imagen-rol {-webkit-transform:scale(1.5);transform:scale(1.5); transition:all 0.5s ease-out;}
+
+</style>
 <?php   
         $nivel = DB::table('niveles')
             ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
@@ -215,7 +219,8 @@
                     <div class="intro-x relative ml-auto flex sm:mx-auto">
                         @if (Auth::user()->can_admin == 1)
                             <a href="{{ route('cambiarRol') }}">
-                                <img title="cambiar a Admin"src="{{asset('build/assets/images/prestico2.svg')}}" width="30" height="30" alt="">
+                                <div class="container"><img class="imagen-rol" title="cambiar a Admin"
+                                src="{{asset('build/assets/images/prestico2.svg')}}" width="30" height="30" alt=""></div>
                             </a>    
                         @endif 
                         <img src="{{asset('build/assets/images/lvl1.ico')}}"width="30" height="30" alt="">

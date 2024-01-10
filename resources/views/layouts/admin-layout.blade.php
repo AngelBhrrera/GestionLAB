@@ -3,19 +3,7 @@
 @section('head')
 <html class='dark'>
 <meta charset="UTF-8">
-<title>Laravel 10 Ajax DataTables CRUD (Create Read Update and Delete) - Cairocoders</title>
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<style>
-    .submenu {
-        display: none;
-    }
-
-    .submenu.active {
-        display: block;
-    }
-</style>
-
-
 @yield('subhead')
 @endsection
 
