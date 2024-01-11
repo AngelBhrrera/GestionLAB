@@ -21,9 +21,8 @@
        
     </div>
 
-    <br>
-
     <div id="players"></div>
+
 @endsection
 
 @section('script')
@@ -86,19 +85,6 @@
                 //rowClick: function(e, row) {
                 //    alert("Row " + row.getData().playerid + " Clicked!!!!");
                 //},
-            });
-
-
-            $.ajax({
-                url: 'users.php', 
-                type: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    table.setData(data);
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                }
             });
             
     </script>
