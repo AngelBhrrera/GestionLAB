@@ -93,9 +93,9 @@ class PrestadorController extends Controller
         $color = $request->input('color');
         $pieces = $request->input('pieces');
         $w = $request->input('weight');
+
         $horas = $request->input('horas');
         $horasFormateadas = str_pad($horas, 2, '0', STR_PAD_LEFT);
-
         $minutos = $request->input('minutos');
         $minsFormateados = str_pad($minutos, 2, '0', STR_PAD_LEFT);
         $tiempo = $horasFormateadas . 'h' . $minsFormateados . 'm';
@@ -106,6 +106,16 @@ class PrestadorController extends Controller
          'color' => $color, 'piezas' => $pieces,
          'peso' => $w, 'tiempo_impresion' => $tiempo]]);
 
+        $actual = DB::table('seguimiento_impresiones')
+            ->where('id_Impresora', $name)
+            ->orderByDesc('fecha')
+            ->limit(1)
+            ->value('fecha');
+
+        DB::table('impresoras')
+            ->where('id', $name)
+            ->update(['ultimo_uso' => $actual]);
+
         return redirect()->route('show_imps');
     }
 
@@ -114,9 +124,10 @@ class PrestadorController extends Controller
         $data = DB::table('ver_impresiones')
         ->select('impresora', 'proyecto',  'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
         ->where('id_Prestador', Auth::user()->id)
+        ->orderByDesc('fecha')
         ->get();
 
-        return view( 'prestador/mostrar_mis_impresiones', [ 'impresiones' => $data]);
+        return view('prestador/mostrar_mis_impresiones', ['impresiones' => json_encode($data)]);
 
     }
 
@@ -155,26 +166,14 @@ class PrestadorController extends Controller
     public function horas()
     {
         $id = Auth::user()->id;
-        $horas = DB::table('registros_checkin')
-            ->where('idusuario', $id)
-            ->where('estado', 'autorizado')
-            ->sum('horas');
-        $horasT = DB::table('users')->where('id', $id)->select('horas')->get();
 
         $asistencias = DB::table('registros_checkin')
         ->where('idusuario', $id)
         ->orderBy('fecha_actual', 'desc')
         ->get();
 
-        return view(
-            'prestador/homeP',
-            [
-                'datos' => $asistencias,
-                'horas' => $horas,
-                'horasT' => $horasT[0]->horas - $horas,
-  
-            ]
-        );
+        return view('prestador/homeP', ['datos' => json_encode($asistencias)]);
+
     }
 
     public function marcar(Request $request)

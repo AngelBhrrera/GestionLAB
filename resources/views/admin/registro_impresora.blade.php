@@ -1,5 +1,10 @@
 @extends('layouts/admin-layout')
 
+@section('subhead')
+    <link href="https://unpkg.com/tabulator-tables@4.8.1/dist/css/tabulator.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.8.1/dist/js/tabulator.min.js"></script>
+@endsection
+
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">Registro</a></li>
@@ -63,45 +68,8 @@
                     </form>
 
                 </div>
-
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="impresoras">
-                        <ul class="nav nav-tabs nav-justified" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active">No. de Impresora</a>
-                                @foreach ($impresoras as $impresora)
-                                    <p id="leaderBoard" class="nav-link">{{$impresora->nombre}}</p>
-                                @endforeach
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active">Marca</a>
-                                @foreach ($impresoras as $impresora)
-                                    <p id="leaderBoard" class="nav-link">{{$impresora->marca}}</p>
-                                @endforeach
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active">Tipo</a>
-                                @foreach ($impresoras as $impresora)
-                                    <p id="leaderBoard" class="nav-link">{{$impresora->tipo}}</p>
-                                @endforeach
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active">Ultimo uso</a>
-                                @foreach ($impresoras as $impresora)
-                                    <p id="leaderBoard" class="nav-link">{{$impresora->ultimo_uso}}</p>
-                                @endforeach
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active">Estado</a>
-                                @foreach ($impresoras as $impresora)
-                                    <p id="leaderBoard" class="nav-link">{{$impresora->estado}}</p>
-                                @endforeach
-                            </li>
-
-                        </ul>
-                    </div>
-
-            </div>
+                
+                <div id="players"></div>
 
         </div>
 
@@ -109,5 +77,72 @@
 
 </div>
 
+@endsection
+
+@section('script')
+    <script type="text/javascript">
+
+            var printers = {!! $impresiones !!};
+
+            var table = new Tabulator("#players", {
+                height: 500,
+                data: printers,
+                layout: "fitColumns",
+                pagination: "local",
+                paginationSize: 24,
+                tooltips: true,
+                columns: [{
+                        title: "Nombre",
+                        field: "nombre",
+                        sorter: "string",
+                        headerFilter: "input",
+                        hozAlign: "center",
+                    }, {
+                        title: "Marca",
+                        field: "marca",
+                        sorter: "string",
+                        hozAlign: "center",
+                    }, {
+                        title: "Ultimo Uso",
+                        field: "ultimo_uso",
+                        sorter: "string",
+                        hozAlign: "center",
+                    }, {
+                        title: "Tipo",
+                        field: "tipo",
+                        sorter: "string",
+                        hozAlign: "center",
+                        editor: "select",
+                        headerFilter: true,
+                        headerFilterParams: {
+                            "Filamento": "Filamento",
+                            "Resina": "Resina",
+                        }
+                    },  {
+                        title: "Estado",
+                        field: "activo",
+                        formatter: "tickCross",  // Esto renderizará un checkbox
+                        hozAlign: "center",
+                        headerFilter: true,
+                        headerFilterParams: {
+                            "Activo": "1",
+                            "Inactivo": "0",
+                        },
+                    },  {
+                            title: "Acción",
+                            field: "accion",
+                            formatter: function(cell, formatterParams, onRendered) {
+                                return '<button onclick="tuFuncionPersonalizada()">Haz algo</button>';
+                            },
+                            hozAlign: "center",
+                            width: 100,
+                        },
+                ],  
+                //rowClick: function(e, row) {
+                //    alert("Row " + row.getData().playerid + " Clicked!!!!");
+                //},
+            });
+            
+    </script>
 @endsection
 

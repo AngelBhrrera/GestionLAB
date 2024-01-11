@@ -52,7 +52,7 @@
                             </a>
                             <ul class="submenu">
                                 <li>
-                                    <a href="{{'/'}}" class="side-menu">
+                                    <a href="{{route('homeP')}}" class="side-menu">
                                         <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
                                         <div class="side-menu__title">Inicio</div>
                                     </a>

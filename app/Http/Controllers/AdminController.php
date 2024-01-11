@@ -55,7 +55,6 @@ class AdminController extends Controller
     public function registro()
     {
 
-        //Despliega la tabla de los encargados cuando su tipo == admin
         $encargado = DB::table('users')->where('tipo', 'admin ')->get(); //falta agregar encargado        return view('/auth/registerAdmin');
         //return view('/auth/registerAdmin', ['encargado' => $encargado, 'nombre' => 'Registro', 'ruta' => 'registrar']);
     }
@@ -311,41 +310,24 @@ class AdminController extends Controller
 
     public function prestadores()
     {
+        $n_sede = Auth::user()->sede;
 
-        $columns = array(
-            ["data" => "id", "visible" => false],
-            ["data" => "name"],
-            ["data" => "apellido"],
-            ["data" => "codigo"],
-            ["data" => "correo"],
-            ["data" => "horario"],
-            ["data" => "telefono"],
-            ["data" => "centro"],
-            ["data" => "carrera"],
-            ["data" => "horas"],
-            ["data" => "horas_restantes"],
-            ["data" => "horas_cumplidas"],
-            ["data" => "faltas"],
-            ["data" => "acciones", "sortable" => false],
-            ["data" => "eliminar", "sortable" => false]
-        );
+        $sede = DB::table('sede')
+        ->where('id_Sede', $n_sede)
+        ->value('nombre_Sede');
 
+        $data = DB::table('solo_prestadores')
+        ->where('sede', $sede)
+        ->get();
+        return view('admin/activos', ['datos' => json_encode($data)]);
+    }
 
+    public function administradores()
+    {
+        $data = DB::table('solo_admins')
+        ->get();
 
-        return view(
-            '/admin/homeA',
-            [
-                'datos' => ['id', 'Nombre(s)', 'Apellido(s)', 'Codigo', 'Correo', 'Horario', 'Telefono', 'Centro', 'Carrera', 'Horas a cumplir', 'Horas restantes', 'Horas cumplidas', 'Faltas', 'Modificar', 'Eliminar'],
-                'opcion' => 'table',
-                'titulo' => 'Tabla Prestadores',
-                'ajaxroute' => 'ss.ssPrestadoresA',
-                "columnas" => json_encode($columns),
-                'button' => false,
-                'accion' => true,
-                'cursos' => false,
-                'descarga' => false,
-            ]
-        );
+        return view('admin/admins', ['datos' => json_encode($data)]);
     }
 
     public function visitas()
@@ -380,59 +362,14 @@ class AdminController extends Controller
         );
     }
 
-    public function administradores()
-    {
-        $columns = array(
-            ["data" => "id", "visible" => false],
-            ["data" => "name"],
-            ["data" => "apellido"],
-            ["data" => "correo"],
-            ["data" => "acciones", "sortable" => false],
-            ["data" => "eliminar", "sortable" => false],
-        );
-
-        return view(
-            '/admin/homeA',
-            [
-                'datos' => [
-                    'Id',
-                    'Nombre',
-                    'Apellido(s)',
-                    'Correo',
-                    'Modificar',
-                    'Eliminar'
-                ],
-                'tipo' => 'admin',
-                'opcion' => 'table',
-                'titulo' => 'Tabla Administradores',
-                'ajaxroute' => 'ss.ssAdministradores',
-                "columnas" => json_encode($columns),
-                'button' => false,
-                'accion' => true,
-                'cursos' => false,
-                'descarga' => false,
-            ]
-        );
-    }
     public function general()
     {
-        $columns = array(["data" => "id"], ["data" => "name"], ["data" => "apellido"], ["data" => "correo"], ["data" => "tipo"], ["data" => "acciones", "sortable" => false], ["data" => "eliminar", "sortable" => false]);
+        $data = DB::table('users')
+        ->select('name', 'apellido', 'correo', 'codigo', 'tipo', 'telefono')
+        ->whereNotIn('tipo', ['Admin', 'Superadmin'])
+        ->get();
 
-        return view(
-            '/admin/homeA',
-            [
-                'datos' => ['Id', 'Nombre', 'Apellido', 'Correo', 'Tipo de usuario',  'Modificar', 'Eliminar'],
-                'tipo' => 'general',
-                'opcion' => 'table',
-                'titulo' => 'Tabla General',
-                'ajaxroute' => 'ss.sstablausuarios',
-                "columnas" => json_encode($columns),
-                'button' => false,
-                'accion' => true,
-                'cursos' => false,
-                'descarga' => false,
-            ]
-        );
+        return view('admin/general_users', ['datos' => json_encode($data)]);
     }
 
     public function premios()
@@ -791,9 +728,6 @@ class AdminController extends Controller
             '/admin/registro_proyectos',
             [
                 'prestadores' => $prestadores,
-
-
-
                 'actividades' => $actividades,
 
             ]
@@ -857,20 +791,20 @@ class AdminController extends Controller
     public function watch_prints()
     {
         $data = DB::table('ver_impresiones')
+        ->select('impresora', 'proyecto',  'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
         ->get();
 
-        return view( 'admin/mostrar_impresiones', [ 'impresiones' => $data]);
-
+        return view( 'admin/mostrar_impresiones', [ 'impresiones' =>json_encode($data)]);
     }
 
     public function control_print()
     {
 
-        $print = DB::table('impresoras')
+        $data = DB::table('impresoras')
         ->get();
 
-        return view('admin/registro_impresora', [
-            'impresoras' => $print
+        return view('admin/registro_impresora',
+            [ 'impresiones' =>json_encode($data)
         ]);
     }
 

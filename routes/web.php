@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
 
 //Estimado prestador de servicio que tiene que dar mantenimiento a esta fregadera
 
@@ -25,9 +24,6 @@ Route::get('/foo', function () {
 //PRUEBAS
 Route::get('/adminLayout', function(){
     return view('admin.PruebaAdminLayout');
-});
-Route::get('/reg', function(){
-    return view('visitante.registro_impresion_form');
 });
 
 Route::get('/spiderw', function(){
@@ -122,7 +118,6 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
             Route::get('/admin/cambiorol', 'cambiarRol')->name('cambiorol');
             Route::get('/admin/check-in', 'checkin')->name('checkin');
-
 
             Route::get('/admin/faltas', 'faltas')->name('faltas');
             Route::get('/admin/home', 'firmas')->name('home');
