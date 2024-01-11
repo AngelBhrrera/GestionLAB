@@ -57,7 +57,7 @@
                                                 <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
                                                 <path d="m9 9.5 2 2 4-4" />
                                             </svg></i> </div>
-                                    <div class="side-menu__title">Visitas</div>
+                                    <div class="side-menu__title">Check-in Visitas</div>
                                 </a>
                             </li>
                             <li>
@@ -433,11 +433,11 @@
                     </div>
 
                     <div class="intro-x relative ml-auto flex sm:mx-auto">
-                        @if (Auth::user()->can_admin == 1 && Auth::user()->tipo != "Superadmin")
+                    @if (Auth::user()->can_admin == 1 && Auth::user()->tipo != "Superadmin")
                             <a href="{{ route('admin.cambiorol') }}">
                                 <div class="container"><img class="imagen-rol" title="Cambiar a Prestador" src="{{asset('build/assets/images/prestico3.svg')}}" width="30" height="30" alt=""></div>
                             </a>
-                        @endif
+                            @endif 
                     </div>
 
                     <div class="intro-x relative ml-auto flex sm:mx-auto">
@@ -447,7 +447,6 @@
                     <!-- Comienza menu cuenta-->
                     <div class="intro-x dropdown h-10">
                         <div class="h-full dropdown-toggle flex items-center" role="button" aria-expanded="false" data-tw-toggle="dropdown">
-
                             <div class="w-10 h-10 image-fit">
                                 @if(!isset(Auth::user()->imagen_perfil))
                                 <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/default-profile-image.png')}}">
@@ -487,3 +486,32 @@
 </body>
 
 @endsection
+
+<?php
+// <!-- JQuery -->
+// <script src={{asset('plugins/jquery/jquery.min.js')}}></script>
+// <!-- Bootstrap 4 -->
+// <script src={{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}></script>
+// <!-- AdminLTE App -->
+// <script src={{asset('dist/js/adminlte.min.js')}}></script>
+// <!-- DataTables  & Plugins -->
+// <script src={{asset('plugins/datatables/jquery.dataTables.min.js')}}></script>
+// <script src={{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}></script>
+// <script src={{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}></script>
+// <script src={{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}></script>
+// <script src={{asset('plugins/datatables-buttons/js/dataTables.buttons.min.js')}}></script>
+// <script src={{asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}></script>
+// <script src={{asset('plugins/jszip/jszip.min.js')}}></script>
+// <script src={{asset('plugins/pdfmake/pdfmake.min.js')}}></script>
+// <script src={{asset('plugins/pdfmake/vfs_fonts.js')}}></script>
+// <script src={{asset('plugins/datatables-buttons/js/buttons.html5.min.js')}}></script>
+// <script src={{asset('plugins/datatables-buttons/js/buttons.print.min.js')}}></script>
+// <script src={{asset('plugins/datatables-buttons/js/buttons.colVis.min.js')}}></script>
+// <script src="{{asset('plugins/daterangepicker/daterangepicker.js')}}"></script>
+// <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
+// <script src="{{asset('plugins/inputmask/jquery.inputmask.min.js')}}"></script>
+
+// {{-- <script src="{{asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script> --}}
+// {{-- <script src={{asset('plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}></script> --}}
+// {{-- <script src="{{asset('plugins/moment/moment.min.js')}}"></script> --}}
+?>

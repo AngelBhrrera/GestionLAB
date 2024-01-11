@@ -1,5 +1,9 @@
 @extends('layouts/admin-layout')
 
+@section('subhead')
+    <link href="https://unpkg.com/tabulator-tables@4.8.1/dist/css/tabulator.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.8.1/dist/js/tabulator.min.js"></script>
+@endsection
 
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
@@ -13,81 +17,84 @@
         <div class="col-md-9">
             <div class="card card-primary">
                 <div class="card-header">
-                    <h1 class="card-title">Registros de Check - in</h1>
+                    <h3  class="text-2xl font-medium leading-none mt-3"> Registros de Check - in </h3>
                 </div>
-
-                <div class="containter"> </div>
-                <div class="card-body">
-
-                    <div class="tab-content">
-                        <div class="tab-pane fade show active" id="checkin">
-
-                            <ul class="nav nav-tabs nav-justified" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active">Prestador</a>
-                                    @foreach ($tabla as $dato)
-                                    <p id="leaderBoard" class="nav-link">{{$dato->responsable}}</p>
-                                    @endforeach
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active">Origen</a>
-                                    @foreach ($tabla as $dato)
-                                    <p id="leaderBoard" class="nav-link">{{$dato->origen}}</p>
-                                    @endforeach
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active">Fecha</a>
-                                    @foreach ($tabla as $dato)
-                                    <p id="leaderBoard" class="nav-link">{{$dato->fecha_actual}}</p>
-                                    @endforeach
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active">Entrada</a>
-                                    @foreach ($tabla as $dato)
-                                    <p id="leaderBoard" class="nav-link">{{$dato->hora_entrada}}</p>
-                                    @endforeach
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active">Salida</a>
-                                    @foreach ($tabla as $dato)
-                                    <p id="leaderBoard" class="nav-link">{{$dato->hora_salida}}</p>
-                                    @endforeach
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active">Tiempo</a>
-                                    @foreach ($tabla as $dato)
-                                    <p id="leaderBoard" class="nav-link">{{$dato->tiempo}}</p>
-                                    @endforeach
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active">Horas</a>
-                                    @foreach ($tabla as $dato)
-                                    <p id="leaderBoard" class="nav-link">{{$dato->horas}}</p>
-                                    @endforeach
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active">Tipo</a>
-                                    @foreach ($tabla as $dato)
-                                    <p id="leaderBoard" class="nav-link">{{$dato->tipo}}</p>
-                                    @endforeach
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active">Nota</a>
-                                    @foreach ($tabla as $dato)
-                                    <p id="leaderBoard" class="nav-link">{{$dato->nota}}</p>
-                                    @endforeach
-                                </li>
-
-                            </ul>
-                        </div>
-
-                    </div>
-
-                </div>
-
+                <div id="players"></div>
             </div>
-
         </div>
-
     </div>
     @endsection
+
+    @section('script')
+
+    <script type="text/javascript">
+
+            var assist = {!! $datos !!};
+
+            var table = new Tabulator("#players", {
+                height: 525,
+                data: assist,
+                layout: "fitColumns",
+                pagination: "local",
+                paginationSize: 10,
+                tooltips: true,
+                columns: [{
+                        title: "Encargado",
+                        field: "origen",
+                        sorter: "string",
+                        hozAlign: "center",
+                        editor: "select",
+
+                    },  {
+                        title: "Prestador",
+                        field: "responsable",
+                        sorter: "string",
+                        hozAlign: "center",
+                        editor: "select",
+
+                    },{
+                        title: "Fecha",
+                        field: "fecha_actual",
+                        sorter: "joiningdate",
+                        headerFilter: "input",
+                        hozAlign: "center",
+                    }, {
+                        title: "Entrada",
+                        field: "hora_entrada",
+                        sorter: "joiningdate",
+                        hozAlign: "center",
+                    },
+                    {
+                        title: "Salida",
+                        field: "hora_salida",
+                        sorter: "joiningdate",
+                        hozAlign: "center",
+                        editor: "select",
+                    }, {
+                        title: "Tiempo",
+                        field: "tiempo",
+                        sorter: "number",
+                        hozAlign: "center"
+                    },  {
+                        title: "Horas",
+                        field: "horas",
+                        sorter: "number",
+                        hozAlign: "center",
+                    }, {
+                            title: "Estado",
+                            field: "accion",
+                            formatter: function(cell, formatterParams, onRendered) {
+                                return '<button onclick="tuFuncionPersonalizada()">Autorizado/Pendiente/Denegado</button>';
+                            },
+                            hozAlign: "center",
+                            width: 100,
+                    },
+                    
+                ],
+                //rowClick: function(e, row) {
+                //    alert("Row " + row.getData().playerid + " Clicked!!!!");
+                //},
+            });
+            
+    </script>
+@endsection

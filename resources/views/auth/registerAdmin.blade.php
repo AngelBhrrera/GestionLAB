@@ -17,8 +17,7 @@
 
 @section('subcontent')
 
-    <div class="w-full min-h-screen md:p-10 flex items-center justify-center">
-
+    <div>
             <div id="divBase" style="display: flex;"> 
                 <form method="POST" action="{{ route('registrar') }}"> 
                     <input id="id" name="id" type="hidden" value="{{!isset($dV[0]->id) ? '' : $dV[0]->id }}">
@@ -26,7 +25,7 @@
                     <input  name="TipoOriginal" type="hidden" value="{{isset($dV[0]->tipo) ? $dV[0]->tipo : '' }}">
                     @csrf
 
-                    <div class="px-5 sm:px-20 mt-10 pt-10 border-t border-slate-200/60 dark:border-darkmode-400">
+                    <div class="px-5 sm:px-20 pt-10 border-t border-slate-200/60 dark:border-darkmode-400">
                         <div id="formOne"> 
 
                             <div class="font-medium text-base" >Ajustes de Perfil</div> 

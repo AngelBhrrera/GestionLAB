@@ -18,115 +18,73 @@
 
     <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
         <h2 class="text-lg font-medium mr-auto">REGISTRO DE HORAS</h2>
+       
     </div>
 
     <div id="players"></div>
 
-
-        <div class="tab-content">
-            <div class="tab-pane fade show active" id="impresoras">
-                        <ul class="nav nav-tabs nav-justified" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active">Fecha</a>
-                                @foreach ($datos as $dato)
-                                    <p id="leaderBoard" class="nav-link">{{$dato->fecha}}</p>
-                                @endforeach
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active">Hora Entrada</a>
-                                @foreach ($datos as $dato)
-                                    <p id="leaderBoard" class="nav-link">{{$dato->hora_entrada}}</p>
-                                @endforeach
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link active">Hora Salida</a>
-                                @foreach ($datos as $dato)
-                                    <p id="leaderBoard" class="nav-link">{{$dato->hora_salida}}</p>
-                                @endforeach
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active">Tiempo</a>
-                                @foreach ($datos as $dato)
-                                    <p id="leaderBoard" class="nav-link">{{$dato->tiempo}}</p>
-                                @endforeach
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active">Horas</a>
-                                @foreach ($datos as $dato)
-                                    <p id="leaderBoard" class="nav-link">{{$dato->horas}}</p>
-                                @endforeach
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active">Estado</a>
-                                @foreach ($datos as $dato)
-                                    <p id="leaderBoard" class="nav-link">{{$dato->estado}}</p>
-                                @endforeach
-                            </li>
-                        </ul>
-            </div>
-        </div>
 @endsection
 
 @section('script')
 
     <script type="text/javascript">
 
-            var table = new Tabulator("#players", {
-                height: 225,
+            var assist = {!! $datos !!};
 
+            var table = new Tabulator("#players", {
+                height: 525,
+                data: assist,
                 layout: "fitColumns",
                 pagination: "local",
                 paginationSize: 8,
                 tooltips: true,
                 columns: [{
-                        title: "Nombre",
-                        field: "playername",
-                        sorter: "string",
+                        title: "Fecha",
+                        field: "fecha",
+                        sorter: "joiningdate",
                         width: 150,
-                        headerFilter: "input"
+                        headerFilter: "input",
+                        hozAlign: "center",
                     }, {
-                        title: "Codigo",
-                        field: "price",
-                        sorter: "number",
-                        hozAlign: "left",
-                        formatter: "progress",
+                        title: "Entrada",
+                        field: "hora_entrada",
+                        sorter: "joiningdate",
+                        hozAlign: "center",
                     },
                     {
-                        title: "Sede",
-                        field: "team",
+                        title: "Salida",
+                        field: "hora_salida",
+                        sorter: "joiningdate",
+                        hozAlign: "center",
+                        editor: "select",
+                    }, {
+                        title: "Tiempo",
+                        field: "tiempo",
+                        sorter: "number",
+                        hozAlign: "center"
+                    },  {
+                        title: "Horas",
+                        field: "horas",
+                        sorter: "number",
+                        hozAlign: "center",
+                    }, {
+                        title: "Estado",
+                        field: "estado",
                         sorter: "string",
                         hozAlign: "center",
                         editor: "select",
                         headerFilter: true,
                         headerFilterParams: {
-                            "RCB": "RCB",
-                            "MI": "MI",
-                            "KKR": "KKR",
+                            "autorizado": "autorizado",
+                            "pendiente": "pendiente",
+                            "denegado": "denegado",
                         }
-                    }, {
-                        title: "Fecha",
-                        field: "joiningdate",
-                        sorter: "date",
-                        hozAlign: "center"
                     },
+                    
                 ],
                 //rowClick: function(e, row) {
                 //    alert("Row " + row.getData().playerid + " Clicked!!!!");
                 //},
-            });
-
-
-            $.ajax({
-                url: 'users.php', 
-                type: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    table.setData(data);
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                }
             });
             
     </script>
