@@ -307,6 +307,16 @@ class AdminController extends Controller
         $pathtoFile = public_path() . '/img/archivo/' . $descargasNombre;
         return response()->download($pathtoFile);
     }
+    
+    public function general()
+    {
+        $data = DB::table('users')
+        ->select('name', 'apellido', 'correo', 'codigo', 'tipo', 'telefono')
+        ->whereNotIn('tipo', ['Admin', 'Superadmin'])
+        ->get();
+
+        return view('admin/general_users', ['datos' => json_encode($data)]);
+    }
 
     public function prestadores()
     {
@@ -360,16 +370,6 @@ class AdminController extends Controller
                 'descarga' => false,
             ]
         );
-    }
-
-    public function general()
-    {
-        $data = DB::table('users')
-        ->select('name', 'apellido', 'correo', 'codigo', 'tipo', 'telefono')
-        ->whereNotIn('tipo', ['Admin', 'Superadmin'])
-        ->get();
-
-        return view('admin/general_users', ['datos' => json_encode($data)]);
     }
 
     public function premios()
