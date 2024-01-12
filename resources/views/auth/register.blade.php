@@ -172,7 +172,7 @@
                                             @if (isset($sede))
                                                 <option id="sede" value="{{null}}" {{isset($dV[0]->sede) ? $dV[0]->sede == null ? 'selected="selected"' : '' : ''}}>Selecciona una sede</option>
                                                 @foreach ($sede as $dato )
-                                                    <option id="{{$dato->id_Sede}}" value="{{$dato->id_Sede}}"   {{old('sede') == $dato->id_Sede ? 'selected="selected"' : '' }}>{{$dato->nombre_Sede }} </option>
+                                                    <option id="{{$dato->id_Sede}}" value="{{$dato->id_Sede}}" data-nombre="{{$dato->nombre_Sede}}"  {{old('sede') == $dato->id_Sede ? 'selected="selected"' : '' }}>{{$dato->nombre_Sede }} </option>
                                                 @endforeach
                                             @endif
                                         
@@ -310,7 +310,7 @@
             window.sedeDinamico = @json($sede);
             var optionSelect = document.getElementById("horarios"); 
             var optionSelect2 = document.getElementById("id_encargado");
-            var sedeSelect = document.getElementById("sede").value;
+            var sedeSelect = document.getElementById("sede").dataset.nombre;
             reiniciarEncargado(optionSelect);
             reiniciarTurno(optionSelect2); // reinicia los select y coloca la opcion determinada
             sedeDinamico.forEach(function(campo){                      
