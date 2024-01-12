@@ -254,7 +254,7 @@
                         </div>     
                         <div class="text-center" style="margin: 10px 30% 10px 30%;">
                             <button id="btn-prev1" class="btn btn-secondary w-24" disabled>Anterior</button>
-                            <button id="btn-next1" class="btn btn-primary w-24 ml-2" onclick="travel(1)" type="button">Siguiente</button>
+                            <button id="btn-next1" class="btn btn-primary w-24 ml-2" onclick="travelValid(1)" type="button">Siguiente</button>
                             <button id="btn-prev2" class="btn btn-secondary w-24" style= "display:none" onclick="travel(2)" type="button">Anterior</button>
                             <a id="btn-reg" class="navbar-brand" style= "display:none">
                                 <button  type="submit" class="btn btn-primary w-24 ml-2" >{{ __('Registrar') }}</button>
@@ -306,7 +306,7 @@
             }
         }
 
-        function sedeNavs(){
+        function sedeNavs(){  // Filtros de los select (sedes)
             window.sedeDinamico = @json($sede);
             var optionSelect = document.getElementById("horarios"); 
             var optionSelect2 = document.getElementById("id_encargado");
@@ -331,7 +331,7 @@
 
         function deshabilitarOpcion(select, opcion, condicion) {
             for (var k = 0; k < select.options.length; k++) {
-                if (select.options[k].value === opcion && condicion){
+                if (select.options[k].value === opcion && condicion){ // filtros
                     select.options[k].disabled = true;
                 }
             }
@@ -339,13 +339,13 @@
 
         function habilitarOpcion(select, opcion, condicion) {
             for (var k = 0; k < select.options.length; k++) {
-                if (select.options[k].value === opcion && condicion) {
+                if (select.options[k].value === opcion && condicion) { // filtros
                     select.options[k].disabled = false;
                 }
             }
         }
 
-        function filtroEncargados(){
+        function filtroEncargados(){ // Filtros de encargados en relacion al horario y sede
            window.encargadosql = @json($encargado);
            var optionSelect = document.getElementById("id_encargado"); // valor de las opciones de encargados
            var turnoSelect = document.getElementById("horarios").value; // valor de las opciones de turnos
@@ -355,23 +355,15 @@
            var valorId = opcionSeleccionada.id;    
            optionSelect.disabled = false;
            encargadosql.forEach(function(campo){
-                if(turnoSelect === campo.horario){
-                    if(campo.sede == valorId){
-                        deshabilitartodo(optionSelect);
-                        deshabilitarEncargado(optionSelect, turnoSelect, valorId, campo.sede);
-                    }
-                }
+                deshabilitartodo(optionSelect);
+                deshabilitarEncargado(optionSelect, turnoSelect, valorId, campo.sede);
            }); 
         }
 
-        function deshabilitarEncargado(select, opcion, id, sede){
-            alert(opcion);
-            alert(sede);
+        function deshabilitarEncargado(select, opcion, id, sede){ // filtros
             for (var k = 1; k < select.options.length; k++){
                 if(select.options[k].value === opcion){
-                    alert(select.options[k].value);
                     if (select.options[k].id == id ){
-                        alert(select.options[k].id);
                         select.options[k].disabled = false;
                     }
                 }
@@ -381,26 +373,42 @@
             }
         }
 
-        function reiniciarEncargado(select){
+        function reiniciarEncargado(select){ // filtros
             select.selectedIndex = 0;
         }
 
-        function reiniciarTurno(select){
+        function reiniciarTurno(select){ // filtros
             select.selectedIndex = 0;
         }
 
         function deshabilitartodo(select) {
             for (var k = 0; k < select.options.length; k++) {
                 select.options[k].disabled = true;
-                if(select.options[k].value === "prede"){
+                if(select.options[k].value === "prede"){ // filtros
                     select.options[k].disabled = false;
                 }
             }
         }
 
         function habilitarTodasLasOpciones(select) {
-            for (var k = 0; k < select.options.length; k++) {
+            for (var k = 0; k < select.options.length; k++) { // filtros
                 select.options[k].disabled = false;
+            }
+        }
+
+        function ValidarCorreo(){
+            var correo = document.getElementById("correo").value;
+            var regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // exprecion regular de validacion
+            if(!regexCorreo.test(correo)){
+                alert("ingresa un correo valido");
+                return false;
+            }
+            return true;
+        }
+
+        function travelValid($var){ // validacion antes de continuar con el registro
+            if(ValidarCorreo()){
+                travel($var);
             }
         }
 
