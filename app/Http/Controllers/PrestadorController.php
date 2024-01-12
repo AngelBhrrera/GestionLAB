@@ -901,4 +901,28 @@ class PrestadorController extends Controller
                 return redirect('/admin/home');
         }
     }
+
+    public function show_reportes(){
+        return view('prestador.reportes_parciales');
+    }
+
+    public function subir_reportes_parciales(Request $request){
+        $request->validate([
+            'reporte_parcial' => 'required|mimes:jpg,jpeg,png,pdf|max:4096', //El archivo debe ser de tipo imagen y tener un tamaño máximo de MB
+        ], [
+            'reporte_parcial.max' => 'El archivo debe pesar menos de 4MB',
+        ]);
+
+        // Obtener el usuario autenticado
+        $user_id = Auth::user()->id;
+
+
+        // Almacenar el archivo
+        $reporte_path = $request->file('reporte_parcial')->store('public/reportes_parciales/');
+
+        $nombre_archivo = basename($reporte_path);
+        $insertar= DB::table('reportes_s_s')->insert(['id_prestador' => $user_id, 'nombre_reporte' => $user_id, 'ruta_reporte'=>$reporte_path, 'fecha_subida' => date("Y/m/d")]);
+        
+        return redirect()->route('parciales')->with('success', 'Archivo subido con éxito');
+    }
 }

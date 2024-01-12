@@ -183,6 +183,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 //Rutas Prestador
 Route::controller(App\Http\Controllers\PrestadorController::class)->group(function(){
 
+    
     Route::post('prestador/nota', 'guardarNota')->middleware('role:Superadmin')->name('nota');
     Route::post('prestador/horario_guardar', 'horario_guardar')->middleware('role:prestador,admin,Superadmin')->name('horario_guardar');
     // Route::post('/marcar', 'marcar')->middleware('role:admin,checkin,Superadmin')->name('marcar');
@@ -192,8 +193,11 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
     });
     Route::middleware('role:prestador,voluntario,practicante,encargado')->group(function() {
 
-        Route::get('prestador/home', 'home')->name('homeP');
+        Route::get('prestador/reportes_parciales', 'show_reportes')->name('parciales');
+        Route::post('prestador/subir_reporte_parcial', 'subir_reportes_parciales')->name('subirReporte');
 
+        Route::get('prestador/home', 'home')->name('homeP');
+        
         Route::get('prestador/registro_impresion', 'create_imps')->name('create_imps');
         Route::post('prestador/registrar_impresion', 'register_imps')->name('register_imps');
 
