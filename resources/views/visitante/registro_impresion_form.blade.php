@@ -1,4 +1,4 @@
-@extends('layouts/admin-layout')
+@extends('layouts/visitante-layout')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
@@ -17,7 +17,7 @@
                 </div>
                 <div class="card-body">
 
-                    <form class="from-prevent-multiple-submits" method="POST" action="{{ route('crearImpresion') }}"  enctype="multipart/form-data">
+                    <form class="from-prevent-multiple-submits" method="POST" action="{{ route('formulariof') }}"  enctype="multipart/form-data">
 
                     @csrf
                         <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de ingresar el correo institucional">
@@ -52,6 +52,30 @@
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
+                        </div>
+
+                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de poner tus comclusiones y opniones de la impresion">
+                            <label for="">Carrera</label>
+                            <textarea class="form-control @error('conclusion') is-invalid @enderror"
+                            name="carrera" id="carrera" rows="3" >{{ old('conclusion') }}</textarea>
+                            <small id="Help" class="form-text text-muted">Ingresa tu carrera</small>
+                            @error('conclusion')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                        </div>
+
+                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de poner tus comclusiones y opniones de la impresion">
+                            <label for="">Semestre</label>
+                            <textarea class="form-control @error('conclusion') is-invalid @enderror"
+                            name="semestre" id="semestre" rows="3" >{{ old('conclusion') }}</textarea>
+                            <small id="Help" class="form-text text-muted">Ingresa tu Semestre</small>
+                            @error('conclusion')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                         </div>
 
                         <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de propocionar acceso de visualizacion y descarga a la carpeta de drive">
@@ -91,9 +115,6 @@
                                 @enderror
                         </div>
 
-
-
-
                         <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de poner como palabras calve el tipo de impresion que se va a ahacer y el nombre de los archivos STL">
                             <label for="">Palabras Clave</label>
                             <textarea class="form-control @error('palabrasClave') is-invalid @enderror"
@@ -131,7 +152,7 @@
                         </div>
 
                         <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de poner un resumen  de lo que quieres imprimir">
-                            <label for="">Resumen del Proyecto (De 150 a 300 palabras)</label>
+                            <label for="">Observaciones (De 150 a 300 palabras)</label>
                             <textarea class="form-control @error('observaciones') is-invalid @enderror"
                             name="observaciones" id="observaciones" rows="10" >{{ old('observaciones') }}</textarea>
                             <small id="Help" class="form-text text-muted">favor de poner un resumen  de lo que quieres imprimir</small>
@@ -227,6 +248,8 @@ $('.from-prevent-multiple-submits').on('submit', function(){
             var correo = document.getElementById("correo").value;
             var nombre = document.getElementById("nombre").value;
             var telefono = document.getElementById("telefono").value;
+            var carrera = document.getElementById("carrera").value;
+            var semestre = document.getElementById("semestre").value;
             var enlaceDrive = document.getElementById("enlaceDrive").value;
             var N_piezas = document.getElementById("N_piezas").value;
             var proyecto = document.getElementById("proyecto").value;
@@ -240,6 +263,8 @@ $('.from-prevent-multiple-submits').on('submit', function(){
             localStorage.setItem("correo", correo);
             localStorage.setItem("nombre", nombre);
             localStorage.setItem("telefono", telefono);
+            localStorage.setItem("carrera", carrera);
+            localStorage.setItem("semestre", semestre);
             localStorage.setItem("enlaceDrive", enlaceDrive);
             localStorage.setItem("N_piezas", N_piezas);
             localStorage.setItem("proyecto", proyecto);
