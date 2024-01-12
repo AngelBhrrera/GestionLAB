@@ -340,6 +340,247 @@ class AdminController extends Controller
         return view('admin/admins', ['datos' => json_encode($data)]);
     }
 
+    public function prestadoresPendientes()
+    {
+        $data = DB::table('prestadores_pendientes')
+        ->get();
+
+        return view('admin/prestadoresPendientes', ['datos' => json_encode($data)]);
+    }
+
+    
+    /*public function prestadoresPendientes()
+    {
+        $columns = array(["data" => "id"], ["data" => "name"], ["data" => "apellido"], ["data" => "correo"], ["data" => "codigo"], ["data" => "tipo"], ["data" => "created_at"], ["data" => "activacion", "sortable" => false], ["data" => "eliminar", "sortable" => false]);
+
+        return view(
+            '/admin/homeA',
+            [
+                'datos' => ['Id', 'Nombre', 'Apellido', 'Correo', 'Codigo', 'Tipo', 'Fecha de creación', 'Modificar', 'Eliminar'],
+                'tipo' => 'prestador',
+                'opcion' => 'table',
+                'titulo' => 'Tabla Prestadores pendientes',
+                'ajaxroute' => 'ss.ssPrestadoresP',
+                "columnas" => json_encode($columns),
+                'button' => false,
+                'accion' => false,
+                'cursos' => false,
+                'descarga' => false,
+                'activacion' => true,
+            ]
+        );
+    }*/
+
+
+    public function prestadores_terminados()
+    {
+        $data = DB::table('prestadores_servicio_concluido')
+        ->get();
+
+        return view('admin/servicioConcluido', ['datos' => json_encode($data)]);
+    }
+
+    /*public function prestadores_terminados()
+    {
+
+        $columns = array(
+            ["data" => "id", "visible" => false],
+            ["data" => "name"],
+            ["data" => "apellido"],
+            ["data" => "codigo"],
+            ["data" => "carrera"],
+            ["data" => "horas"],
+            ["data" => "horas_cumplidas"],
+            ["data" => "horas_restantes", "visible" => false],
+            ["data" => "acciones", "sortable" => false],
+        );
+
+        return view(
+            '/admin/homeA',
+            [
+                'datos' => ['id', 'name', 'apellido', 'codigo', 'carrera', 'horas', 'horas_cumplidas', 'horas_restantes', 'acciones'],
+                'opcion' => 'table',
+                'titulo' => 'Tabla Prestadores con horas terminadas',
+                'ajaxroute' => 'ss.ssPrestadoresT',
+                "columnas" => json_encode($columns),
+            ]
+        );
+    }*/
+
+    public function prestadores_liberados()
+    {
+        $data = DB::table('prestadores_servicio_liberado')
+        ->get();
+
+        return view('admin/servicioLiberado', ['datos' => json_encode($data)]);
+    }
+
+    
+    /*public function prestadores_liberados()
+    {
+
+        $columns = array(
+            ["data" => "id", "visible" => false],
+            ["data" => "name"],
+            ["data" => "apellido"],
+            ["data" => "codigo"],
+            ["data" => "carrera"],
+            ["data" => "created_at"],
+            ["data" => "fecha_salida"],
+
+            ["data" => "acciones", "sortable" => false],
+        );
+
+        return view(
+            '/admin/homeA',
+            [
+                'datos' => ['Id', 'Nombre', 'Apellido(s)', 'Codigo', 'Carrera', 'Fecha de inicio', 'Fecha de liberación de servicio', 'acciones'],
+                'opcion' => 'table',
+                'titulo' => 'Tabla Prestadores Liberados',
+                'ajaxroute' => 'ss.ssPrestadoresL',
+                "columnas" => json_encode($columns),
+            ]
+        );
+    }*/
+
+    public function create_act()
+    {
+  
+        $prestadores = DB::table('solo_prestadores')
+            ->where('sede', auth()->user()->sede)
+            ->where('horario', auth()->user()->horario)
+            ->get();
+
+
+        $categorias = DB::table('categorias')->get();
+
+        return view(
+            '/admin/registro_actividades',
+            [
+                'prestadores' => $prestadores,
+                'categorias' => $categorias,
+            ]
+        );
+    }
+
+    public function create_proy()
+    {
+  
+        $prestadores = DB::table('solo_prestadores')
+            ->where('sede', auth()->user()->sede)
+            ->where('horario', auth()->user()->horario)
+            ->get();
+
+        $actividades = DB::table('actividades')->get();
+
+        return view(
+            '/admin/registro_proyectos',
+            [
+                'prestadores' => $prestadores,
+                'actividades' => $actividades,
+
+            ]
+        );
+    }
+
+    public function make_act(Request $request)
+    {
+
+        $prestadores = DB::table('solo_prestadores')
+        ->where('sede', auth()->user()->sede)
+        ->where('horario', auth()->user()->horario)
+        ->get();
+
+        $categorias = DB::table('categorias')->get();
+        $actividades = DB::table('actividades')->get();
+
+        $id_actividad = $request->input('id_actividad');
+        $nomact = $request->input('nombre');
+        $categoria = $request->input('tipo_categoria');
+        $desc = $request->input('descripcion');
+
+        $horas = $request->input('horas')*60;
+        $minutos = $request->input('minutos');
+        $tec = $horas + $minutos;
+
+        DB::table('actividades')->insert([
+
+            'id_categoria' => $id_actividad,
+            'nombre' => $nomact,
+            'id_categoria' => $categoria,
+            'TEC' => $tec,
+            'descripcion' => $desc,
+        ]);
+
+        return view( 'admin/asignar_actividades', [
+            'prestadores' => $prestadores,
+            'categorias' => $categorias,
+            'actividades' => $actividades,
+        ]);
+    }
+
+    public function asign_act()
+    {
+
+        $prestadores = DB::table('solo_prestadores')
+        ->where('sede', auth()->user()->sede)
+        ->where('horario', auth()->user()->horario)
+        ->get();
+
+        $categorias = DB::table('categorias')->get();
+        $actividades = DB::table('actividades')->get();
+
+        return view( 'admin/asignar_actividades', [
+            'prestadores' => $prestadores,
+            'categorias' => $categorias,
+            'actividades' => $actividades,
+        ]);
+    }
+
+    public function watch_prints()
+    {
+        $data = DB::table('ver_impresiones')
+        ->select('impresora', 'proyecto',  'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
+        ->get();
+
+        return view( 'admin/mostrar_impresiones', [ 'impresiones' =>json_encode($data)]);
+    }
+
+    public function control_print()
+    {
+
+        $data = DB::table('impresoras')
+        ->get();
+
+        return view('admin/registro_impresora',
+            [ 'impresiones' =>json_encode($data)
+        ]);
+    }
+
+    public function make_print(Request $request)
+    {
+
+        $name = $request->input('nombre');
+        $mark = $request->input('mark');
+        $type = $request->input('tipo');
+
+        DB::table('impresoras')->insert([
+
+            'nombre' => $name,
+            'marca' => $mark,
+            'tipo' => $type,
+
+        ]);
+
+        $print = DB::table('impresoras')
+        ->get();
+
+        return view('admin/registro_impresora', [
+            'impresoras' => $print
+        ]);
+    }
+
+
     public function visitas()
     {
 
@@ -387,28 +628,6 @@ class AdminController extends Controller
                 'accion' => true,
                 'cursos' => false,
                 'descarga' => false,
-            ]
-        );
-    }
-
-    public function prestadoresPendientes()
-    {
-        $columns = array(["data" => "id"], ["data" => "name"], ["data" => "apellido"], ["data" => "correo"], ["data" => "codigo"], ["data" => "tipo"], ["data" => "created_at"], ["data" => "activacion", "sortable" => false], ["data" => "eliminar", "sortable" => false]);
-
-        return view(
-            '/admin/homeA',
-            [
-                'datos' => ['Id', 'Nombre', 'Apellido', 'Correo', 'Codigo', 'Tipo', 'Fecha de creación', 'Modificar', 'Eliminar'],
-                'tipo' => 'prestador',
-                'opcion' => 'table',
-                'titulo' => 'Tabla Prestadores pendientes',
-                'ajaxroute' => 'ss.ssPrestadoresP',
-                "columnas" => json_encode($columns),
-                'button' => false,
-                'accion' => false,
-                'cursos' => false,
-                'descarga' => false,
-                'activacion' => true,
             ]
         );
     }
@@ -560,7 +779,6 @@ class AdminController extends Controller
         );
     }
 
-
     public function recompensas()
     {
         return view(
@@ -570,145 +788,6 @@ class AdminController extends Controller
             ]
         );
     }
-    
-    public function create_act()
-    {
-  
-        $prestadores = DB::table('solo_prestadores')
-            ->where('sede', auth()->user()->sede)
-            ->where('horario', auth()->user()->horario)
-            ->get();
-
-
-        $categorias = DB::table('categorias')->get();
-
-        return view(
-            '/admin/registro_actividades',
-            [
-                'prestadores' => $prestadores,
-                'categorias' => $categorias,
-            ]
-        );
-    }
-
-    public function create_proy()
-    {
-  
-        $prestadores = DB::table('solo_prestadores')
-            ->where('sede', auth()->user()->sede)
-            ->where('horario', auth()->user()->horario)
-            ->get();
-
-        $actividades = DB::table('actividades')->get();
-
-        return view(
-            '/admin/registro_proyectos',
-            [
-                'prestadores' => $prestadores,
-                'actividades' => $actividades,
-
-            ]
-        );
-    }
-
-    public function make_act(Request $request)
-    {
-
-        $prestadores = DB::table('solo_prestadores')
-        ->where('sede', auth()->user()->sede)
-        ->where('horario', auth()->user()->horario)
-        ->get();
-
-        $categorias = DB::table('categorias')->get();
-        $actividades = DB::table('actividades')->get();
-
-        $id_actividad = $request->input('id_actividad');
-        $nomact = $request->input('nombre');
-        $categoria = $request->input('tipo_categoria');
-        $desc = $request->input('descripcion');
-
-        $horas = $request->input('horas')*60;
-        $minutos = $request->input('minutos');
-        $tec = $horas + $minutos;
-
-        DB::table('actividades')->insert([
-
-            'id_categoria' => $id_actividad,
-            'nombre' => $nomact,
-            'id_categoria' => $categoria,
-            'TEC' => $tec,
-            'descripcion' => $desc,
-        ]);
-
-        return view( 'admin/asignar_actividades', [
-            'prestadores' => $prestadores,
-            'categorias' => $categorias,
-            'actividades' => $actividades,
-        ]);
-    }
-
-    public function asign_act()
-    {
-
-        $prestadores = DB::table('solo_prestadores')
-        ->where('sede', auth()->user()->sede)
-        ->where('horario', auth()->user()->horario)
-        ->get();
-
-        $categorias = DB::table('categorias')->get();
-        $actividades = DB::table('actividades')->get();
-
-        return view( 'admin/asignar_actividades', [
-            'prestadores' => $prestadores,
-            'categorias' => $categorias,
-            'actividades' => $actividades,
-        ]);
-    }
-
-    public function watch_prints()
-    {
-        $data = DB::table('ver_impresiones')
-        ->select('impresora', 'proyecto',  'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
-        ->get();
-
-        return view( 'admin/mostrar_impresiones', [ 'impresiones' =>json_encode($data)]);
-    }
-
-    public function control_print()
-    {
-
-        $data = DB::table('impresoras')
-        ->get();
-
-        return view('admin/registro_impresora',
-            [ 'impresiones' =>json_encode($data)
-        ]);
-    }
-
-    public function make_print(Request $request)
-    {
-
-        $name = $request->input('nombre');
-        $mark = $request->input('mark');
-        $type = $request->input('tipo');
-
-        DB::table('impresoras')->insert([
-
-            'nombre' => $name,
-            'marca' => $mark,
-            'tipo' => $type,
-
-        ]);
-
-        $print = DB::table('impresoras')
-        ->get();
-
-        return view('admin/registro_impresora', [
-            'impresoras' => $print
-        ]);
-    }
-
-
 
     public function newCategoriaYActividad()
     {
@@ -1799,33 +1878,6 @@ class AdminController extends Controller
         );
     }
 
-    public function prestadores_liberados()
-    {
-
-        $columns = array(
-            ["data" => "id", "visible" => false],
-            ["data" => "name"],
-            ["data" => "apellido"],
-            ["data" => "codigo"],
-            ["data" => "carrera"],
-            ["data" => "created_at"],
-            ["data" => "fecha_salida"],
-
-            ["data" => "acciones", "sortable" => false],
-        );
-
-        return view(
-            '/admin/homeA',
-            [
-                'datos' => ['Id', 'Nombre', 'Apellido(s)', 'Codigo', 'Carrera', 'Fecha de inicio', 'Fecha de liberación de servicio', 'acciones'],
-                'opcion' => 'table',
-                'titulo' => 'Tabla Prestadores Liberados',
-                'ajaxroute' => 'ss.ssPrestadoresL',
-                "columnas" => json_encode($columns),
-            ]
-        );
-    }
-
     public function terminar_prestadores(Request $request)
     {
         $id = $request->input('id_usuario');
@@ -1868,33 +1920,6 @@ class AdminController extends Controller
         $modificar = DB::table('users')->where('id', $id)->update(['tipo' => "prestador_inactivo"]);
 
         return redirect()->route("admin./admin/homeA");
-    }
-
-    public function prestadores_terminados()
-    {
-
-        $columns = array(
-            ["data" => "id", "visible" => false],
-            ["data" => "name"],
-            ["data" => "apellido"],
-            ["data" => "codigo"],
-            ["data" => "carrera"],
-            ["data" => "horas"],
-            ["data" => "horas_cumplidas"],
-            ["data" => "horas_restantes", "visible" => false],
-            ["data" => "acciones", "sortable" => false],
-        );
-
-        return view(
-            '/admin/homeA',
-            [
-                'datos' => ['id', 'name', 'apellido', 'codigo', 'carrera', 'horas', 'horas_cumplidas', 'horas_restantes', 'acciones'],
-                'opcion' => 'table',
-                'titulo' => 'Tabla Prestadores con horas terminadas',
-                'ajaxroute' => 'ss.ssPrestadoresT',
-                "columnas" => json_encode($columns),
-            ]
-        );
     }
 
     public function faltas()

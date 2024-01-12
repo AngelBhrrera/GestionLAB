@@ -13,7 +13,7 @@
         <div class="intro-y box py-30  mt-">
 
             <div style="display: flex;">
-                <img class="mx-auto my-auto" alt="Inventores" width="80px" height="80px" src="{{ asset('build/assets/logosinventores/InventoresLogoHDWhiteborder.png') }}">
+                <img class="mx-auto my-auto" alt="Inventores" width="80px" height="80px" src="{{ asset('build/assets/images/logosinventores/InventoresLogoHDWhiteborder.png') }}">
             </div>
 
             <div id="divBase" style="display: flex;"> 
@@ -167,12 +167,12 @@
                                     </div>
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divSede" style="display:none">
-                                        <label for="input-wizard-3" class="form-label">Sede *</label>
+                                        <label for="input-wizard-3" class="form-label">SedHJFJFFJe *</label>
                                         <select class="form-control @if(old('opc')=='1') @error('sede') is-invalid @enderror @endif" name="sede" id="sede"  onchange="sedeNavs()">
                                             @if (isset($sede))
                                                 <option id="sede" value="{{null}}" {{isset($dV[0]->sede) ? $dV[0]->sede == null ? 'selected="selected"' : '' : ''}}>Selecciona una sede</option>
                                                 @foreach ($sede as $dato )
-                                                    <option id="{{$dato->id_Sede}}" value="{{$dato->nombre_Sede}}"   {{old('sede') == $dato->id_Sede ? 'selected="selected"' : '' }}>{{$dato->nombre_Sede }} </option>
+                                                    <option id="{{$dato->id_Sede}}" value="{{$dato->id_Sede}}"   {{old('sede') == $dato->id_Sede ? 'selected="selected"' : '' }}>{{$dato->nombre_Sede }} </option>
                                                 @endforeach
                                             @endif
                                         
