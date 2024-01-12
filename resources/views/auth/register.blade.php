@@ -13,7 +13,7 @@
         <div class="intro-y box py-30  mt-">
 
             <div style="display: flex;">
-                <img class="mx-auto my-auto" alt="Inventores" width="80px" height="80px" src="{{ asset('build/assets/images/logosinventores/InventoresLogoHDWhiteborder.png') }}">
+                <img class="mx-auto my-auto" alt="Inventores" width="80px" height="80px" src="{{ asset('build/assets//images/logosinventores/InventoresLogoHDWhiteborder.png') }}">
             </div>
 
             <div id="divBase" style="display: flex;"> 
@@ -120,7 +120,7 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divTelefono" style="display:none"> 
                                         <label for="input-wizard-2" class="form-label" >Telefono *</label>
-                                        <input maxlength="10" id="telefono" type="text" class="form-control @if(old('opc')=='1') @error('telefono') is-invalid @enderror @endif" name="telefono" placeholder="Telefono" >
+                                        <input id="telefono" type="text" class="form-control @if(old('opc')=='1') @error('telefono') is-invalid @enderror @endif" name="telefono" placeholder="Telefono" maxlength="10">
                                                 @error('telefono') 
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -172,7 +172,7 @@
                                             @if (isset($sede))
                                                 <option id="sede" value="{{null}}" {{isset($dV[0]->sede) ? $dV[0]->sede == null ? 'selected="selected"' : '' : ''}}>Selecciona una sede</option>
                                                 @foreach ($sede as $dato )
-                                                    <option id="{{$dato->id_Sede}}" value="{{$dato->id_Sede}}"   {{old('sede') == $dato->id_Sede ? 'selected="selected"' : '' }}>{{$dato->nombre_Sede }} </option>
+                                                    <option id="{{$dato->id_Sede}}" value="{{$dato->nombre_Sede}}"   {{old('sede') == $dato->id_Sede ? 'selected="selected"' : '' }}>{{$dato->nombre_Sede }} </option>
                                                 @endforeach
                                             @endif
                                         
@@ -222,7 +222,7 @@
                                             @if (isset($encargado))
                                                 <option id="prede" value="prede" {{isset($dV[0]->id_encargado) ? $dV[0]->id_encargado == null ? 'selected="selected"' : '' : ''}}>Seleccione un encargado</option>
                                                 @foreach ($encargado as $dato )
-                                                    <option id= "{{$dato->id}}" value="{{$dato->id}}" {{old('id_encargado') == $dato->id ? 'selected="selected"' : '' }}> {{$dato->name }} {{$dato->apellido}}</option>
+                                                    <option id= "{{$dato->sede}}" value="{{$dato->id}}" data-horario="{{$dato->horario}}" {{old('id_encargado') == $dato->id ? 'selected="selected"' : '' }}> {{$dato->name }} {{$dato->apellido}}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -254,7 +254,7 @@
                         </div>     
                         <div class="text-center" style="margin: 10px 30% 10px 30%;">
                             <button id="btn-prev1" class="btn btn-secondary w-24" disabled>Anterior</button>
-                            <button id="btn-next1" class="btn btn-primary w-24 ml-2" onclick="travel(1)" type="button">Siguiente</button>
+                            <button id="btn-next1" class="btn btn-primary w-24 ml-2" onclick="travelValid(1)" type="button">Siguiente</button>
                             <button id="btn-prev2" class="btn btn-secondary w-24" style= "display:none" onclick="travel(2)" type="button">Anterior</button>
                             <a id="btn-reg" class="navbar-brand" style= "display:none">
                                 <button  type="submit" class="btn btn-primary w-24 ml-2" >{{ __('Registrar') }}</button>
@@ -306,7 +306,7 @@
             }
         }
 
-        function sedeNavs(){
+        function sedeNavs(){  // Filtros de los select (sedes)
             window.sedeDinamico = @json($sede);
             var optionSelect = document.getElementById("horarios"); 
             var optionSelect2 = document.getElementById("id_encargado");
@@ -331,7 +331,7 @@
 
         function deshabilitarOpcion(select, opcion, condicion) {
             for (var k = 0; k < select.options.length; k++) {
-                if (select.options[k].value === opcion && condicion){
+                if (select.options[k].value === opcion && condicion){ // filtros
                     select.options[k].disabled = true;
                 }
             }
@@ -339,13 +339,13 @@
 
         function habilitarOpcion(select, opcion, condicion) {
             for (var k = 0; k < select.options.length; k++) {
-                if (select.options[k].value === opcion && condicion) {
+                if (select.options[k].value === opcion && condicion) { // filtros
                     select.options[k].disabled = false;
                 }
             }
         }
 
-        function filtroEncargados(){
+        function filtroEncargados(){ // Filtros de encargados en relacion al horario y sede
            window.encargadosql = @json($encargado);
            var optionSelect = document.getElementById("id_encargado"); // valor de las opciones de encargados
            var turnoSelect = document.getElementById("horarios").value; // valor de las opciones de turnos
@@ -355,23 +355,15 @@
            var valorId = opcionSeleccionada.id;    
            optionSelect.disabled = false;
            encargadosql.forEach(function(campo){
-                if(turnoSelect === campo.horario){
-                    if(campo.sede == valorId){
-                        deshabilitartodo(optionSelect);
-                        deshabilitarEncargado(optionSelect, turnoSelect, valorId, campo.sede);
-                    }
-                }
+                deshabilitartodo(optionSelect);
+                deshabilitarEncargado(optionSelect, turnoSelect, valorId, campo.sede);
            }); 
         }
 
-        function deshabilitarEncargado(select, opcion, id, sede){
-            alert(opcion);
-            alert(sede);
+        function deshabilitarEncargado(select, opcion, id, sede){ // filtros
             for (var k = 1; k < select.options.length; k++){
-                if(select.options[k].value === opcion){
-                    alert(select.options[k].value);
+                if(select.options[k].dataset.horario === opcion){
                     if (select.options[k].id == id ){
-                        alert(select.options[k].id);
                         select.options[k].disabled = false;
                     }
                 }
@@ -381,26 +373,42 @@
             }
         }
 
-        function reiniciarEncargado(select){
+        function reiniciarEncargado(select){ // filtros
             select.selectedIndex = 0;
         }
 
-        function reiniciarTurno(select){
+        function reiniciarTurno(select){ // filtros
             select.selectedIndex = 0;
         }
 
         function deshabilitartodo(select) {
             for (var k = 0; k < select.options.length; k++) {
                 select.options[k].disabled = true;
-                if(select.options[k].value === "prede"){
+                if(select.options[k].value === "prede"){ // filtros
                     select.options[k].disabled = false;
                 }
             }
         }
 
         function habilitarTodasLasOpciones(select) {
-            for (var k = 0; k < select.options.length; k++) {
+            for (var k = 0; k < select.options.length; k++) { // filtros
                 select.options[k].disabled = false;
+            }
+        }
+
+        function ValidarCorreo(){
+            var correo = document.getElementById("correo").value;
+            var regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // exprecion regular de validacion
+            if(!regexCorreo.test(correo)){
+                alert("ingresa un correo valido");
+                return false;
+            }
+            return true;
+        }
+
+        function travelValid($var){ // validacion antes de continuar con el registro
+            if(ValidarCorreo()){
+                travel($var);
             }
         }
 
