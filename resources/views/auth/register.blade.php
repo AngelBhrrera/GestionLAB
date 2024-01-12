@@ -355,12 +355,8 @@
            var valorId = opcionSeleccionada.id;    
            optionSelect.disabled = false;
            encargadosql.forEach(function(campo){
-                if(turnoSelect === campo.horario){
-                    if(campo.sede == valorId){
-                        deshabilitartodo(optionSelect);
-                        deshabilitarEncargado(optionSelect, turnoSelect, valorId, campo.sede);
-                    }
-                }
+                deshabilitartodo(optionSelect);
+                deshabilitarEncargado(optionSelect, turnoSelect, valorId, campo.sede);
            }); 
         }
 
