@@ -222,7 +222,7 @@
                                             @if (isset($encargado))
                                                 <option id="prede" value="prede" {{isset($dV[0]->id_encargado) ? $dV[0]->id_encargado == null ? 'selected="selected"' : '' : ''}}>Seleccione un encargado</option>
                                                 @foreach ($encargado as $dato )
-                                                    <option id= "{{$dato->sede}}" value="{{$dato->horario}}" {{old('id_encargado') == $dato->id ? 'selected="selected"' : '' }}> {{$dato->name }} {{$dato->apellido}}</option>
+                                                    <option id= "{{$dato->sede}}" value="{{$dato->id}}" data-horario="{{$dato->horario}}" {{old('id_encargado') == $dato->id ? 'selected="selected"' : '' }}> {{$dato->name }} {{$dato->apellido}}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -362,7 +362,7 @@
 
         function deshabilitarEncargado(select, opcion, id, sede){ // filtros
             for (var k = 1; k < select.options.length; k++){
-                if(select.options[k].value === opcion){
+                if(select.options[k].dataset.horario === opcion){
                     if (select.options[k].id == id ){
                         select.options[k].disabled = false;
                     }
