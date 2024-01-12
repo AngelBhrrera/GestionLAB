@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\VisitanteController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -51,9 +52,10 @@ Route::controller(App\Http\Controllers\Auth\logsysController::class)->group(func
     Route::get('/logout', 'logoutF')->name('logout');
 });
 Route::controller(App\Http\Controllers\HomeController::class)->group(function(){
-    Route::post('/crearImpresion', 'crearImpresion')->middleware('guest')->name('crearImpresion');
+    //Route::post('/crearImpresion', 'crearImpresion')->middleware('guest')->name('crearImpresion'); <--- registro de las solicitudes de impresion 3D
     Route::post('update', 'update')->name('update');
     Route::get('modificaradmin', 'modificaradmin')->name('modificaradmin');
+    Route::post('/cliente/reg', 'registro_impresion_form')->middleware('guest')->name('formulariof');
 });
 
 //Rutas de Admin gestionadas desde el AdminController
@@ -251,11 +253,10 @@ Route::controller(App\Http\Controllers\VisitanteController::class)->group(functi
             Route::post('/cliente/cita','guardarCita')->name('cita');
             Route::post('/cliente/visitaguardar','guardarVisita')->name('guardarVisita');
             Route::get('/cliente/visitas', 'principal')->name('visitas');
-
             // Route::get('/visita','visita')->name('visitas');
         });
     });
-
+    Route::get('/cliente/reg', [VisitanteController::class, 'formulario'])->name("formulario");  // ruta para el formulario
     Route::name('api.')->group(function () {
         Route::post('visitator', 'registrarVisita')->middleware('role:admin,checkin,Superadmin')->name('registrarVisita');
     });
@@ -312,6 +313,7 @@ Route::controller(App\Http\Controllers\MailController::class)->group(function(){
 Route::get('/bot', function () {
     return view('boot');
 });
+
 
 Route::match(['get', 'post'], '/botman', [App\Http\Controllers\BotManController::class, 'handle']);
 

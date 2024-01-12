@@ -1,4 +1,4 @@
-@extends('layouts/visitante-layout')
+@extends('layouts/admin-layout')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
@@ -17,14 +17,14 @@
                 </div>
                 <div class="card-body">
 
-                    <form class="from-prevent-multiple-submits" method="POST" action="{{ route('formulariof') }}"  enctype="multipart/form-data">
+                    <form class="from-prevent-multiple-submits" method="POST" action="{{ route('crearImpresion') }}"  enctype="multipart/form-data">
 
                     @csrf
                         <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de ingresar el correo institucional">
                             <label for="">Correo</label>
                             <input type="email" class="form-control @error('correo') is-invalid @enderror"
                                 name="correo" id="correo" aria-describedby="emailHelpId"  value="{{old('correo')}}">
-                            <small id="Help" class="form-text text-muted">Favor de ingresar el correo institucional</small>
+                            <small id="Help" class="form-text text-muted">favor de ingresar el correo institucional</small>
                             @error('correo')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -35,7 +35,7 @@
                             <label for="">Nombre Completo</label>
                             <input type="text"  class="form-control @error('nombre') is-invalid @enderror"
                                 name="nombre" id="nombre" aria-describedby="helpId" value="{{old('nombre')}}">
-                                <small id="Help" class="form-text text-muted">Favor de ingresar tu nombre completo iniciando por los apellidos</small>
+                                <small id="Help" class="form-text text-muted">favor de ingresar tu nombre completo iniciando por los apellidos</small>
                             @error('nombre')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -46,36 +46,12 @@
                             <label for="">Teléfono</label>
                             <input type="tel"class="form-control @error('telefono') is-invalid @enderror"
                             name="telefono" id="telefono" aria-describedby="helpId" value="{{ old('telefono') }}">
-                            <small id="Help" class="form-text text-muted">Favor de ingresar un numero de telefono valido</small>
+                            <small id="Help" class="form-text text-muted">favor de ingresar un numero de telefono valido</small>
                             @error('telefono')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
-                        </div>
-
-                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de poner tus comclusiones y opniones de la impresion">
-                            <label for="">Carrera</label>
-                            <textarea class="form-control @error('conclusion') is-invalid @enderror"
-                            name="carrera" id="carrera" rows="3" >{{ old('conclusion') }}</textarea>
-                            <small id="Help" class="form-text text-muted">Ingresa tu carrera</small>
-                            @error('conclusion')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                        </div>
-
-                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de poner tus comclusiones y opniones de la impresion">
-                            <label for="">Semestre</label>
-                            <textarea class="form-control @error('conclusion') is-invalid @enderror"
-                            name="semestre" id="semestre" rows="3" >{{ old('conclusion') }}</textarea>
-                            <small id="Help" class="form-text text-muted">Ingresa tu Semestre</small>
-                            @error('conclusion')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
                         </div>
 
                         <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de propocionar acceso de visualizacion y descarga a la carpeta de drive">
@@ -115,6 +91,9 @@
                                 @enderror
                         </div>
 
+
+
+
                         <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de poner como palabras calve el tipo de impresion que se va a ahacer y el nombre de los archivos STL">
                             <label for="">Palabras Clave</label>
                             <textarea class="form-control @error('palabrasClave') is-invalid @enderror"
@@ -152,7 +131,7 @@
                         </div>
 
                         <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de poner un resumen  de lo que quieres imprimir">
-                            <label for="">Observaciones (De 150 a 300 palabras)</label>
+                            <label for="">Resumen del Proyecto (De 150 a 300 palabras)</label>
                             <textarea class="form-control @error('observaciones') is-invalid @enderror"
                             name="observaciones" id="observaciones" rows="10" >{{ old('observaciones') }}</textarea>
                             <small id="Help" class="form-text text-muted">favor de poner un resumen  de lo que quieres imprimir</small>
