@@ -88,7 +88,6 @@ class AdminController extends Controller
         return view('/admin/homeA', ['opcion' => 'horarioadmin', 'id_prestador' => $id, 'horario' => $horario, 'nombre' => $nombre,  'horario2' => $query2]);
     }
 
-
     public function modificar(Request $request)
     {
         $id = $request->input('id');

@@ -181,8 +181,9 @@ class PrestadorController extends Controller
         try {
             $dir = '';
             switch (Auth::user()->tipo) {
-                case 'admin':
+                
                 case 'Superadmin':
+                case 'admin':
                 case 'encargado':
                     $dir = 'admin.checkin';
                     $origen = Auth::user()->name . ' ' . Auth::user()->apellido;

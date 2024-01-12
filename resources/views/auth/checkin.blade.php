@@ -1,9 +1,9 @@
 @extends('layouts/admin-layout')
 
+@section('subhead')
 <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
-  <!-- Theme style -->
-
 <link rel="stylesheet" href="{{asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
+@endsection
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
@@ -44,9 +44,6 @@
             </div>
         </div>
     </main>
-@endsection
-@section('script')
-
 @endsection
 
 

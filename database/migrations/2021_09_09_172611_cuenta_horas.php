@@ -15,7 +15,7 @@ class Cuentahoras extends Migration
         DB::statement("
         CREATE VIEW cuenta_horas AS 
         SELECT
-        `registros_checkin`.`codigo` AS `codigo`,
+        `registros_checkin`.`idusuario` AS `codigo`,
         SUM(`registros_checkin`.`horas`) AS `horas_servicio`,
         (
             `users`.`horas` - SUM(`registros_checkin`.`horas`)
@@ -35,7 +35,7 @@ class Cuentahoras extends Migration
                 `registros_checkin`.`estado` = 'autorizado'
             )
         GROUP BY
-            `registros_checkin`.`codigo`,
+            `registros_checkin`.`idusuario`,
             `users`.`horas`
         ");
     }
