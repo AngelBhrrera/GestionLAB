@@ -167,7 +167,7 @@
                                     </div>
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divSede" style="display:none">
-                                        <label for="input-wizard-3" class="form-label">SedHJFJFFJe *</label>
+                                        <label for="input-wizard-3" class="form-label">Sede *</label>
                                         <select class="form-control @if(old('opc')=='1') @error('sede') is-invalid @enderror @endif" name="sede" id="sede"  onchange="sedeNavs()">
                                             @if (isset($sede))
                                                 <option id="sede" value="{{null}}" {{isset($dV[0]->sede) ? $dV[0]->sede == null ? 'selected="selected"' : '' : ''}}>Selecciona una sede</option>
@@ -222,7 +222,7 @@
                                             @if (isset($encargado))
                                                 <option id="prede" value="prede" {{isset($dV[0]->id_encargado) ? $dV[0]->id_encargado == null ? 'selected="selected"' : '' : ''}}>Seleccione un encargado</option>
                                                 @foreach ($encargado as $dato )
-                                                    <option id= "{{$dato->sede}}" value="{{$dato->horario}}" {{old('id_encargado') == $dato->id ? 'selected="selected"' : '' }}> {{$dato->name }} {{$dato->apellido}}</option>
+                                                    <option id= "{{$dato->id}}" value="{{$dato->id}}" {{old('id_encargado') == $dato->id ? 'selected="selected"' : '' }}> {{$dato->name }} {{$dato->apellido}}</option>
                                                 @endforeach
                                             @endif
                                         </select>
