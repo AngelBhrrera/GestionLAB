@@ -27,7 +27,7 @@
             Reportes parciales guardados
             </div>
             <div class="px-5 pb-4 grid grid-cols-12 gap-3 sm:gap-6 border-b border-slate-200/60">
-            @for ($i = 1; $i <= 5; $i++)
+            @foreach ($reportes as $reporte)
                 <div class="intro-y col-span-6 sm:col-span-4 md:col-span-3 2xl:col-span-2">
                         <div class="file box border-slate-200/60 dark:border-darkmode-400 shadow-none rounded-md px-5 pt-8 pb-5 px-3 sm:px-5 relative zoom-in">
                             <div class="absolute left-0 top-0 mt-3 ml-3">
@@ -36,7 +36,7 @@
                             <a href="" class="w-3/5 file__icon file__icon--file mx-auto">
                                 <div class="file__icon__file-name">PDF</div>
                             </a>
-                            <a href="" class="block font-medium mt-4 text-center truncate">Prueba.pdf</a>
+                            <a href="" class="block font-medium mt-4 text-center">{{"Reporte ".$reporte->fecha_subida}}</a>
                             <div class="text-slate-500 text-xs text-center mt-0.5"></div>
                             <div class="absolute top-0 right-0 mr-2 mt-3 dropdown ml-auto">
                                 <a class="dropdown-toggle w-5 h-5 block" href="javascript:;" aria-expanded="false" data-tw-toggle="dropdown">
@@ -54,7 +54,7 @@
                             </div>
                         </div>
                     </div>
-                @endfor
+                @endforeach
             </div>
         </div>
         <!-- END: Inbox Content -->
@@ -90,7 +90,8 @@
                                             " >
                                             <div style="display:flex;">
                                                 <i data-lucide="image" height="20" width="20"></i>
-                                                <input type="file"  id="imagen_perfil" name="reporte_parcial" class="form-control-file" style="display: none;"  accept="image/jpg, image/jpeg, image/png, application/pdf"/>
+                                                <input type="file"  id="reporte_parcial" name="reporte_parcial" 
+                                                class="form-control-file" style="display: none;"  accept="image/jpg, image/jpeg, image/png, application/pdf"/>
                                                 <span class="form-file-span pl-5">Selecciona un archivo</span>
                                             </div>
                                         </label>

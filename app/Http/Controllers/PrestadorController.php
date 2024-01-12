@@ -903,7 +903,9 @@ class PrestadorController extends Controller
     }
 
     public function show_reportes(){
-        return view('prestador.reportes_parciales');
+        $user_id = Auth::user()->id;
+        $reportes = DB::select("Select * from reportes_s_s where id_prestador = $user_id");
+        return view('prestador.reportes_parciales',['reportes' =>$reportes]);
     }
 
     public function subir_reportes_parciales(Request $request){
