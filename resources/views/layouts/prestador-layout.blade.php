@@ -63,11 +63,17 @@
                                     </a>
                                 </li>
                                 <li>
-                            <a href="{{route('perfil')}}" class="side-menu">
+                                    <a href="{{route('perfil')}}" class="side-menu">
                                         <div class="side-menu__icon"> <i data-lucide="crown"></i> </div>
                                         <div class="side-menu__title">Insignias obtenidas</div>
                                     </a>
-                                </li>                            
+                                </li>
+                                <li>
+                                    <a href="{{route('parciales')}}" class="side-menu">
+                                        <div class="side-menu__icon"> <i data-lucide="file"></i> </div>
+                                        <div class="side-menu__title">Reportes parciales</div>
+                                    </a>
+                                </li>                             
                             </ul>
                         </li>
                     </li>
