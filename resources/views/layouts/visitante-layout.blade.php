@@ -217,11 +217,6 @@
         </div>  
     </div>      
 </body>
-
 @endsection
 
-@section('script')
-
-    
-@endsection
 

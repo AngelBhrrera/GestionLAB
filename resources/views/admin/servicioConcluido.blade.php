@@ -8,11 +8,13 @@
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">Usuarios</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Administradores</li>
+    <li class="breadcrumb-item active" aria-current="page">Servicio Concluido</li>
 @endsection
 
 @section('subcontent')
-
+<h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
+    Prestadores Servicio Concluido (Total de Horas Autorizadas)
+</h2>
 <div id="players"></div>
 @endsection
 

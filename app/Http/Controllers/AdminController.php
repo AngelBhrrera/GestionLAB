@@ -14,11 +14,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 use ProyectosPrestadores;
-use PhpParser\Node\Stmt\Switch_;
+/*use PhpParser\Node\Stmt\Switch_;
 use PhpParser\Node\Stmt\TryCatch;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
-use App\Http\Controllers\MailController;
+use App\Http\Controllers\MailController;*/
 
 class AdminController extends Controller
 {
@@ -54,9 +54,9 @@ class AdminController extends Controller
 
     public function registro()
     {
-
-        $encargado = DB::table('users')->where('tipo', 'admin ')->get(); //falta agregar encargado        return view('/auth/registerAdmin');
-        //return view('/auth/registerAdmin', ['encargado' => $encargado, 'nombre' => 'Registro', 'ruta' => 'registrar']);
+        $sede = DB::select("SELECT * FROM sede;");
+        $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin' OR tipo = 'encargado';");
+        return view('auth/registerAdmin', ['encargado'=>$encargado,'sede'=>$sede]);
     }
 
     // public function registro($centros = null, $encargado = null)
@@ -319,14 +319,13 @@ class AdminController extends Controller
 
     public function prestadores()
     {
-        $n_sede = Auth::user()->sede;
 
-        $sede = DB::table('sede')
-        ->where('id_Sede', $n_sede)
-        ->value('nombre_Sede');
+        $n_sede = DB::table('sede')
+            ->where('id_Sede', Auth::user()->sede)
+            ->value('nombre_Sede');
 
         $data = DB::table('solo_prestadores')
-        ->where('sede', $sede)
+        ->where('sede', $n_sede)
         ->get();
         return view('admin/activos', ['datos' => json_encode($data)]);
     }
@@ -346,30 +345,6 @@ class AdminController extends Controller
 
         return view('admin/prestadoresPendientes', ['datos' => json_encode($data)]);
     }
-
-    
-    /*public function prestadoresPendientes()
-    {
-        $columns = array(["data" => "id"], ["data" => "name"], ["data" => "apellido"], ["data" => "correo"], ["data" => "codigo"], ["data" => "tipo"], ["data" => "created_at"], ["data" => "activacion", "sortable" => false], ["data" => "eliminar", "sortable" => false]);
-
-        return view(
-            '/admin/homeA',
-            [
-                'datos' => ['Id', 'Nombre', 'Apellido', 'Correo', 'Codigo', 'Tipo', 'Fecha de creación', 'Modificar', 'Eliminar'],
-                'tipo' => 'prestador',
-                'opcion' => 'table',
-                'titulo' => 'Tabla Prestadores pendientes',
-                'ajaxroute' => 'ss.ssPrestadoresP',
-                "columnas" => json_encode($columns),
-                'button' => false,
-                'accion' => false,
-                'cursos' => false,
-                'descarga' => false,
-                'activacion' => true,
-            ]
-        );
-    }*/
-
 
     public function prestadores_terminados()
     {
@@ -442,11 +417,54 @@ class AdminController extends Controller
         );
     }*/
 
+    
+    public function prestadores_inactivos()
+    {
+        $data = DB::table('prestadores_inactivos')
+        ->get();
+
+        return view('admin/prestadoresInactivos', ['datos' => json_encode($data)]);
+    }
+
+    
+
+    /*public function prestadores_inactivos()
+    {
+
+        $columns = array(
+            ["data" => "id", "visible" => false],
+            ["data" => "name"],
+            ["data" => "apellido"],
+            ["data" => "codigo"],
+            ["data" => "carrera"],
+            ["data" => "horas"],
+            ["data" => "horas_cumplidas"],
+            ["data" => "horas_restantes", "visible" => false],
+            ["data" => "acciones", "sortable" => false],
+        );
+
+        return view(
+            '/admin/homeA',
+            [
+                'datos' => ['id', 'name', 'apellido', 'codigo', 'carrera', 'horas', 'horas_cumplidas', 'horas_restantes', 'acciones'],
+                'opcion' => 'table',
+                'titulo' => 'Tabla Prestadores Inactivos',
+                'ajaxroute' => 'ss.ssPrestadoresI',
+                "columnas" => json_encode($columns),
+            ]
+        );
+    }*/
+
     public function create_act()
     {
+
+        $n_Sede = DB::table('sede')
+            ->select('nombre_Sede')
+            ->where('id_Sede', auth()->user()->sede)
+            ->get();
   
         $prestadores = DB::table('solo_prestadores')
-            ->where('sede', auth()->user()->sede)
+            ->where('sede', $n_Sede->first()->nombre_Sede)
             ->where('horario', auth()->user()->horario)
             ->get();
 
@@ -464,12 +482,17 @@ class AdminController extends Controller
 
     public function create_proy()
     {
-  
-        $prestadores = DB::table('solo_prestadores')
-            ->where('sede', auth()->user()->sede)
-            ->where('horario', auth()->user()->horario)
+
+        $indexSede = auth()->user()->sede;
+        $n_Sede = DB::table('sede')
+            ->select('nombre_Sede')
+            ->where('id_Sede', $indexSede)
             ->get();
 
+        $prestadores = DB::table('solo_prestadores')
+            ->where('sede', $n_Sede->first()->nombre_Sede)
+            ->where('horario', auth()->user()->horario)
+            ->get();
         $actividades = DB::table('actividades')->get();
 
         return view(
@@ -484,11 +507,17 @@ class AdminController extends Controller
 
     public function make_act(Request $request)
     {
+        
+        $indexSede = auth()->user()->sede;
+        $n_Sede = DB::table('sede')
+            ->select('nombre_Sede')
+            ->where('id_Sede', $indexSede)
+            ->get();
 
         $prestadores = DB::table('solo_prestadores')
-        ->where('sede', auth()->user()->sede)
-        ->where('horario', auth()->user()->horario)
-        ->get();
+            ->where('sede', $n_Sede->first()->nombre_Sede)
+            ->where('horario', auth()->user()->horario)
+            ->get();
 
         $categorias = DB::table('categorias')->get();
         $actividades = DB::table('actividades')->get();
@@ -520,11 +549,16 @@ class AdminController extends Controller
 
     public function asign_act()
     {
+        $indexSede = auth()->user()->sede;
+        $n_Sede = DB::table('sede')
+            ->select('nombre_Sede')
+            ->where('id_Sede', $indexSede)
+            ->get();
 
         $prestadores = DB::table('solo_prestadores')
-        ->where('sede', auth()->user()->sede)
-        ->where('horario', auth()->user()->horario)
-        ->get();
+            ->where('sede', $n_Sede->first()->nombre_Sede) 
+            ->where('horario', auth()->user()->horario)
+            ->get();
 
         $categorias = DB::table('categorias')->get();
         $actividades = DB::table('actividades')->get();
@@ -564,11 +598,9 @@ class AdminController extends Controller
         $type = $request->input('tipo');
 
         DB::table('impresoras')->insert([
-
             'nombre' => $name,
             'marca' => $mark,
             'tipo' => $type,
-
         ]);
 
         $print = DB::table('impresoras')
@@ -636,7 +668,7 @@ class AdminController extends Controller
         $idSede = Auth::user()->sede;
 
         $sql = DB::table('registros_checkin as r')
-            ->select('r.responsable', 'r.origen', 'r.fecha_actual', 'r.hora_entrada', 'r.hora_salida', 'r.tiempo', 'r.horas', 'r.tipo', 'r.nota')
+            ->select('r.id', 'r.responsable', 'r.origen', 'r.fecha', 'r.hora_entrada', 'r.hora_salida', 'r.tiempo', 'r.horas', 'r.tipo', 'r.estado')
             ->join('users as u', 'r.encargado_id', '=', 'u.id')
             ->where('u.sede', $idSede)
             ->orderBy('fecha_actual', 'desc')
@@ -1850,33 +1882,6 @@ class AdminController extends Controller
         }
     }
 
-    public function prestadores_inactivos()
-    {
-
-        $columns = array(
-            ["data" => "id", "visible" => false],
-            ["data" => "name"],
-            ["data" => "apellido"],
-            ["data" => "codigo"],
-            ["data" => "carrera"],
-            ["data" => "horas"],
-            ["data" => "horas_cumplidas"],
-            ["data" => "horas_restantes", "visible" => false],
-            ["data" => "acciones", "sortable" => false],
-        );
-
-        return view(
-            '/admin/homeA',
-            [
-                'datos' => ['id', 'name', 'apellido', 'codigo', 'carrera', 'horas', 'horas_cumplidas', 'horas_restantes', 'acciones'],
-                'opcion' => 'table',
-                'titulo' => 'Tabla Prestadores Inactivos',
-                'ajaxroute' => 'ss.ssPrestadoresI',
-                "columnas" => json_encode($columns),
-            ]
-        );
-    }
-
     public function terminar_prestadores(Request $request)
     {
         $id = $request->input('id_usuario');
@@ -2398,13 +2403,6 @@ class AdminController extends Controller
         $nombre=$request->input("nombreSede");
         DB::insert("INSERT INTO sede (nombre_Sede) Values('$nombre')");
         return redirect(route('admin.sedes'))->with('success', 'Creada correctamente');
-    }
-
-    public function show(){
-        $sede = DB::select("SELECT * FROM sede;");
-        $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin' OR tipo = 'encargado';");
-   
-        return view('auth/registerAdmin', ['encargado'=>$encargado,'sede'=>$sede]);
     }
 
     public function  modificarSede(Request $request){

@@ -12,7 +12,9 @@
 @endsection
 
 @section('subcontent')
-
+<h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
+    Prestadores Activos
+</h2>
 <div id="players"></div>
 @endsection
 

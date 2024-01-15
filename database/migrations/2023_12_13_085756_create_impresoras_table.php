@@ -18,7 +18,7 @@ class CreateImpresorasTable extends Migration
             $table->string("nombre", 100);
             $table->string("marca", 100);
             $table->string("tipo", 100);
-            $table->string("estado", 50)->default("activo");
+            $table->boolean("estado")->default(1);
             $table->dateTime("ultimo_uso")->nullable();
         });
     }

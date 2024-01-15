@@ -30,7 +30,7 @@ class Soloprestadores extends Migration
                 `users`.`encargado_id` AS `encargado_id`
             FROM
                 `users`
-            LEFT JOIN `cuenta_horas` ON `users`.`codigo` = `cuenta_horas`.`codigo`
+            LEFT JOIN `cuenta_horas` ON `users`.`id` = `cuenta_horas`.`id`
             LEFT JOIN `sede` ON `users`.`sede` = `sede`.`id_Sede`
             WHERE
                 `users`.`tipo` IN ('prestador', 'practicante', 'voluntario');
