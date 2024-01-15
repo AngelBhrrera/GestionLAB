@@ -2367,17 +2367,31 @@ class AdminController extends Controller
         return view("admin.sedes", ['sede'=>$sede]);
     }
 
+    public function nuevaSede(Request $request){
+        $request->validate([
+            'nombreSede' => 'required|max:255',
+        ]);
 
-    public function show(){
-        $sede = DB::select("SELECT * FROM sede;");
-        $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin' OR tipo = 'encargado';");
-   
-        return view('auth/registerAdmin', ['encargado'=>$encargado,'sede'=>$sede]);
+        $buscarSede = DB::Select("Select nombre_Sede from sede where nombre_Sede = '$request->nombreSede'");
+        if (count($buscarSede)==0){
+            $nombre=$request->input("nombreSede");
+            DB::insert("INSERT INTO sede (nombre_Sede, turnoMatutino, turnoMediodia, turnoVespertino, turnoSabatino, 
+            turnoTiempoCompleto, no_Aplica) Values('$nombre', 1,1,1,1,1,1)");
+            return redirect(route('admin.sedes'))->with('success', 'Creada correctamente');
+        }else{
+            return redirect(route('admin.sedes'))->with('warning', "Ya existe una sede con ese nombre");
+        }
+         
     }
 
     public function  modificarSede(Request $request){
         
         $nombre=$request->input("nuevoNombre");
+        $buscarSede = DB::Select("Select nombre_Sede from sede where nombre_Sede = '$nombre'");
+        if (count($buscarSede)>0){
+            return redirect(route('admin.sedes'))->with('warning', "Ya existe una sede con ese nombre");
+        }
+
         $id=$request->input("idSede");
         $matutino=($request->has("matutino")) ? 1 : 0;
         $mediodia=($request->has("mediodia")) ? 1 : 0;
@@ -2394,7 +2408,7 @@ class AdminController extends Controller
                 'nuevoNombre' => 'required|min:3|max:255|unique:sede,nombre_Sede',
             ]);
         }
-
+        $buscarSede = DB::Select("Select nombre_Sede from sede where nombre_Sede = '$request->nombreSede'");
         DB::update("Update sede 
         set nombre_Sede='$nombre',
         turnoMatutino=$matutino,
@@ -2403,6 +2417,13 @@ class AdminController extends Controller
         turnoSabatino=$sabatino,
         turnoTiempoCompleto=$completo 
         where id_Sede=$id");
-        return redirect(route('admin.sedes'))->with('success', 'Modificada correctamente');
+        return redirect(route('admin.sedes'))->with('success', 'Modificada correctamente');}
+
+
+    public function show(){
+        $sede = DB::select("SELECT * FROM sede;");
+        $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin' OR tipo = 'encargado';");
+   
+        return view('auth/registerAdmin', ['encargado'=>$encargado,'sede'=>$sede]);
     }
 }
