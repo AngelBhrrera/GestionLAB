@@ -195,6 +195,7 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
 
         Route::get('prestador/reportes_parciales', 'show_reportes')->name('parciales');
         Route::post('prestador/subir_reporte_parcial', 'subir_reportes_parciales')->name('subirReporte');
+        Route::get('prestador/eliminar_reporte_parcial/{id}', 'eliminar_reportes_parciales')->name('eliminarReporte');
 
         Route::get('prestador/home', 'home')->name('homeP');
         

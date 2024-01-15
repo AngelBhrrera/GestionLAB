@@ -1,17 +1,30 @@
 @extends('layouts/prestador-layout')
 
-@section('subcontent')
-    @if (session('success'))
-        <div class="intro-y col-span-12 lg:col-span-6">
-            @if (session('success'))
-                <h6 class="alert alert-success">{{session('success')}}</h6>           
-            @endif
+@section('breadcrumb')
+    <nav aria-label="breadcrumb" class="-intro-x hidden xl:flex">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{route('homeP')}}">Prestador</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Reportes parciales</li>
+        </ol>
+    </nav>
+@endsection
 
-            @error('reporte_parcial')
-                <h6 class="alert alert-danger">{{$message}}</h6>
-            @enderror
-        </div>
-    @endif
+@section('subcontent')
+    <div class="intro-y col-span-12 lg:col-span-6" id="alerta">
+        @if (session('success'))
+            <h6 class="alert alert-success" id="success">{{session('success')}}</h6>      
+        @endif
+
+        @if (session('warning'))
+            
+            <h6 class="alert alert-warning" id="warning">{{session('warning')}}</h6>  
+        @endif
+
+        @error('reporte_parcial')
+            <h6 class="alert alert-danger" id="error">{{$message}}</h6>
+        @enderror
+    </div>
+
     <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
         <h2 class="text-lg font-medium mr-auto">Reportes parciales</h2>
         <div class="text-center">
@@ -24,36 +37,49 @@
         <!-- BEGIN: Inbox Content -->
         <div class="inbox col-span-12 xl:col-span-8 2xl:col-span-10">
             <div class="flex flex-wrap gap-y-3 items-center px-5 pt-5 border-b border-slate-200/60 dark:border-darkmode-400 mb-4 pb-5">
-            Reportes parciales guardados
+            Reportes parciales guardados: {{ count($reportes) }}
             </div>
+            @if (count($reportes)==0)
+                <div class="flex flex-wrap gap-y-3 items-center px-5 pt-5 ">
+                    No hay reportes parciales para mostrar</div>
+            @endif
             <div class="px-5 pb-4 grid grid-cols-12 gap-3 sm:gap-6 border-b border-slate-200/60">
-            @foreach ($reportes as $reporte)
-                <div class="intro-y col-span-6 sm:col-span-4 md:col-span-3 2xl:col-span-2">
-                        <div class="file box border-slate-200/60 dark:border-darkmode-400 shadow-none rounded-md px-5 pt-8 pb-5 px-3 sm:px-5 relative zoom-in">
-                            <div class="absolute left-0 top-0 mt-3 ml-3">
-                                
-                            </div>
-                            <a href="" class="w-3/5 file__icon file__icon--file mx-auto">
-                                <div class="file__icon__file-name">PDF</div>
-                            </a>
-                            <a href="" class="block font-medium mt-4 text-center">{{"Reporte ".$reporte->fecha_subida}}</a>
-                            <div class="text-slate-500 text-xs text-center mt-0.5"></div>
-                            <div class="absolute top-0 right-0 mr-2 mt-3 dropdown ml-auto">
-                                <a class="dropdown-toggle w-5 h-5 block" href="javascript:;" aria-expanded="false" data-tw-toggle="dropdown">
-                                    <i data-lucide="more-vertical" class="w-5 h-5 text-slate-500"></i>
+                <?php $num_reporte = 0?>
+                @foreach ($reportes as $reporte)
+                        <div class="intro-y col-span-6 sm:col-span-4 md:col-span-3 2xl:col-span-2">
+                            <div class="file box border-slate-200/60 dark:border-darkmode-400 shadow-none rounded-md px-5 pt-8 pb-5 px-3 sm:px-5 relative zoom-in">
+                                <div class="absolute left-0 top-0 mt-3 ml-3"></div>
+                                <a href="{{asset('storage/reportes_parciales/'. $reporte->nombre_reporte)}}" target="_blank"class="w-3/5 file__icon file__icon--file mx-auto">
+                                    <div class="file__icon__file-name">PDF</div>
                                 </a>
-                                <div class="dropdown-menu w-40">
-                                    <ul class="dropdown-content">
-                                        <li>
-                                            <a href="" class="dropdown-item">
-                                                <i data-lucide="trash" class="w-4 h-4 mr-2"></i> Delete
-                                            </a>
-                                        </li>
-                                    </ul>
+                                <a href="{{asset('storage/reportes_parciales/'. $reporte->nombre_reporte)}}" target="_blank">
+                                    <div class="block font-medium mt-4 text-center">{{"Reporte ".++$num_reporte." ".$reporte->fecha_subida}}</div>
+                                </a>
+                                
+                                <div class="text-slate-500 text-xs text-center mt-0.5"></div>
+                                <div class="absolute top-0 right-0 mr-2 mt-3 dropdown ml-auto">
+                                    <a class="dropdown-toggle w-5 h-5 block" href="javascript:;" aria-expanded="false" data-tw-toggle="dropdown">
+                                        <i data-lucide="more-vertical" class="w-5 h-5 text-slate-500"></i>
+                                    </a>
+                                    <div class="dropdown-menu w-40">
+                                        <ul class="dropdown-content">
+                                            <li>
+                                                <a href="{{asset('storage/reportes_parciales/'. $reporte->nombre_reporte)}}" class="dropdown-item" download>
+                                                    <i data-lucide="download" class="w-4 h-4 mr-2"></i> Descagar
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{route('eliminarReporte', [$reporte->id])}}" onclick="return confirmarEliminar()" class="dropdown-item">
+                                                    <i data-lucide="trash" class="w-4 h-4 mr-2"></i> Eliminar
+                                                </a>
+                                            </li>
+                                            
+                                            
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                 @endforeach
             </div>
         </div>
@@ -91,7 +117,7 @@
                                             <div style="display:flex;">
                                                 <i data-lucide="image" height="20" width="20"></i>
                                                 <input type="file"  id="reporte_parcial" name="reporte_parcial" 
-                                                class="form-control-file" style="display: none;"  accept="image/jpg, image/jpeg, image/png, application/pdf"/>
+                                                class="form-control-file" style="display: none;"  accept="application/pdf"/>
                                                 <span class="form-file-span pl-5">Selecciona un archivo</span>
                                             </div>
                                         </label>
@@ -113,7 +139,12 @@
 @endsection
 
 <script>
-    
+    setTimeout(function(){
+
+        document.getElementById("alerta").style.display="none";
+
+    }, 4000);
+
     document.addEventListener('DOMContentLoaded', () => {
         // Obtener inputs tipo file
         // Asignar eventos a inputs
@@ -123,7 +154,6 @@
         // Agrega el evento de clic al botón de cancelar
         
     });
-
     // Cambios en inputs
     function fileChange(e) {
         let input = e.target;
@@ -141,6 +171,18 @@
         let input = e.target.closest('label').querySelector('input');
         input.click();
     }
+
     
-    
+
+    function confirmarEliminar() {
+        // Muestra un cuadro de confirmación
+        var confirmacion = confirm("¿Estás seguro de que deseas eliminar este reporte parcial?");
+
+        // Si el usuario hace clic en "Aceptar", continúa con la eliminación
+        return confirmacion;
+    }
+
+</script>
+
+       
 </script>
