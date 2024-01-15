@@ -181,16 +181,17 @@ class PrestadorController extends Controller
         try {
             $dir = '';
             switch (Auth::user()->tipo) {
-                case 'admin':
+                
                 case 'Superadmin':
+                case 'admin':
                 case 'encargado':
                     $dir = 'admin.checkin';
-                    $origen = Auth::user()->name . ' ' . Auth::user()->apellido;
+                    $responsable = Auth::user()->name . ' ' . Auth::user()->apellido;
                     break;
-                case 'checkin':
+                /*case 'checkin':
                     $dir = 'api.checkin';
                     $origen = 'checkin';
-                    break;
+                    break;*/
             };
 
             $codigo = $request->input('codigo');
@@ -199,8 +200,8 @@ class PrestadorController extends Controller
                     ->orWhere('tipo', '=', "encargado")
                     ->orWhere('tipo', '=', "voluntario")
                     ->orWhere('tipo', '=', "practicante");
-            })
-                ->select('name', 'id', 'apellido', 'tipo', 'encargado_id')->get();
+                })->select('id', 'tipo', 'name', 'apellido')->get();
+            $origen = $usuario[0]->name . ' ' . $usuario[0]->apellido;
             $verificar = DB::table('registros_checkin')
             ->where('idusuario', $usuario[0]->id)
             ->where('fecha', date("d/m/Y"))
@@ -227,9 +228,8 @@ class PrestadorController extends Controller
             } else {
 
                 $inicio = DB::table('registros_checkin')
-                ->insert([['origen' => $origen, 'idusuario' => $usuario[0]->id, 'codigo' => $codigo, 'nombre' => $usuario[0]->name, 
-                'apellido' => $usuario[0]->apellido, 'fecha' => date("d/m/Y"), 'hora_entrada' => date('H:i:s'), 'horas' => 0, 'tipo' => $usuario[0]->tipo, 
-                'encargado_id' => $usuario[0]->encargado_id]]);
+                ->insert([[ 'origen' => $origen, 'idusuario' => $usuario[0]->id, 'fecha' => date("d/m/Y"), 'hora_entrada' => date('H:i:s'), 
+                'horas' => 0, 'tipo' => $usuario[0]->tipo, 'responsable' => $responsable, 'encargado_id' => Auth::user()->id]]);
 
                 return redirect()->route($dir)
                 ->with('success', 'Bienvenido ' . $usuario[0]->name . '!');

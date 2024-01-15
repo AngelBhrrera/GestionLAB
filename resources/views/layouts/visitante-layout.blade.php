@@ -134,7 +134,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{'/'}}" class="side-menu">
+                                <a href="{{route('formulario')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="codesandbox"></i> </div>
                                     <div class="side-menu__title">Impresion de Modelos 3D</div>
                                 </a>
@@ -217,11 +217,6 @@
         </div>  
     </div>      
 </body>
-
 @endsection
 
-@section('script')
-
-    
-@endsection
 

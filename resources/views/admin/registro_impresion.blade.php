@@ -227,6 +227,8 @@ $('.from-prevent-multiple-submits').on('submit', function(){
             var correo = document.getElementById("correo").value;
             var nombre = document.getElementById("nombre").value;
             var telefono = document.getElementById("telefono").value;
+            var carrera = document.getElementById("carrera").value;
+            var semestre = document.getElementById("semestre").value;
             var enlaceDrive = document.getElementById("enlaceDrive").value;
             var N_piezas = document.getElementById("N_piezas").value;
             var proyecto = document.getElementById("proyecto").value;
@@ -240,6 +242,8 @@ $('.from-prevent-multiple-submits').on('submit', function(){
             localStorage.setItem("correo", correo);
             localStorage.setItem("nombre", nombre);
             localStorage.setItem("telefono", telefono);
+            localStorage.setItem("carrera", carrera);
+            localStorage.setItem("semestre", semestre);
             localStorage.setItem("enlaceDrive", enlaceDrive);
             localStorage.setItem("N_piezas", N_piezas);
             localStorage.setItem("proyecto", proyecto);

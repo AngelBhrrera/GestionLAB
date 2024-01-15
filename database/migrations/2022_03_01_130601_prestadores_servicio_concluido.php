@@ -21,12 +21,8 @@ class PrestadoresServicioConcluido extends Migration
         `users`.`correo` AS `correo`,
         `users`.`codigo` AS `codigo`,
         `users`.`tipo` AS `tipo`,
-        `users`.`email_verified_at` AS `email_verified_at`,
-        `users`.`password` AS `password`,
         `users`.`remember_token` AS `remember_token`,
-        `users`.`created_at` AS `created_at`,
         `users`.`carrera` AS `carrera`,
-        `users`.`updated_at` AS `updated_at`,
         `users`.`horas` AS `horas`,
         `cuenta_horas`.`horas_servicio` AS `horas_cumplidas`,
         `cuenta_horas`.`horas_restantes` AS `horas_restantes`
@@ -36,12 +32,12 @@ class PrestadoresServicioConcluido extends Migration
                 `cuenta_horas` ON
                     (
                         (
-                            `users`.`codigo` = `cuenta_horas`.`codigo`
+                            `users`.`id` = `cuenta_horas`.`id`
                         )
                     )
             )
         WHERE
-            (`users`.`tipo` = 'prestador' and `cuenta_horas`.`horas_restantes` <= '0')
+            (`cuenta_horas`.`horas_restantes` <= '0')
         ");
 
     }

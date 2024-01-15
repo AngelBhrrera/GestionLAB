@@ -13,7 +13,13 @@
 
 @section('subcontent')
 
-<div id="players"></div>
+<div class="col-md-9">
+            <div class="card card-primary">
+                <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> General Usuarios</h3>
+            </div>
+    <div id="players"></div>
+</div>
+<div style="height: 45px;"></div>
 @endsection
 
 @section('script')
@@ -22,11 +28,11 @@
             var users = {!! $datos !!};
 
             var table = new Tabulator("#players", {
-                height: 500,
+                height: "100%",
                 data: users,
                 layout: "fitColumns",
                 pagination: "local",
-                paginationSize: 24,
+                paginationSize: 11,
                 tooltips: true,
                 columns: [{
                         title: "Nombre",

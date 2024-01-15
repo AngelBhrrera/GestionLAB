@@ -69,29 +69,30 @@ class HomeController extends Controller
     }
 
 
-    public function crearImpresion(Request $request){
+    public function registro_impresion_form(Request $request){
         $validator = Validator::make($request->all(),[
             'enlaceDrive'=>'required',
             'correo'=>'required',
             'nombre'=> 'required',
             'telefono'=> 'required|max:10',
+            'carrera' =>'required',
+            'semestre' =>'required',
             'N_piezas'=> 'required',
             'proyecto'=> 'required',
-            'observaciones' =>[new MaxWordsRule('hola', $request->input('Observaciones'))],
+            'observaciones' =>'required', //[new MaxWordsRule('hola', $request->input('Observaciones'))],
             'palabrasClave' =>'required',
             'introduccion' =>'required',
             'trabajosRelacionados' =>'required',
             'propuesta' =>'required',
             'conclusion' =>'required',
         ]);
+
         if($validator ->fails()){
-            return redirect()->route('registroImpresion')->withInput()->withErrors($validator->errors());
+            return redirect()->route("formulario")->withInput()->withErrors($validator->errors());
         }else{
            $datos = $request->all();
            $insert = cita_cliente::create($datos);
-           $usuarios = DB::table('users')->get();
            return redirect()->route('formulario')->with('success', 'Mensaje de éxito');
-           
 
 
 
@@ -106,10 +107,7 @@ class HomeController extends Controller
                     return redirect()->route("login")->with('success', 'se creo la impresion correctamente favor de logearte para continuar el tramite');
                 }
             }
-            return redirect()->route("login")->with('error', 'favor de registrarte para poder realizar la solicitud');;
+            return redirect()->route("login")->with('error', 'favor de registrarte para poder realizar la solicitud');; */
         }
     }
-
-
-
 }

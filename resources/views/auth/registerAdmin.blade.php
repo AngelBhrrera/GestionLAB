@@ -1,7 +1,6 @@
-@extends('../layouts/admin-layout')
+@extends('layouts/admin-layout')
 
-
-@section('head')
+@section('subhead')
 <html class='dark'>
     <title>Admin Register</title>
 @endsection
@@ -17,20 +16,14 @@
 
 @section('subcontent')
 
-    <div>
-            <div id="divBase" style="display: flex;"> 
-                <form method="POST" action="{{ route('registrar') }}"> 
-                    <input id="id" name="id" type="hidden" value="{{!isset($dV[0]->id) ? '' : $dV[0]->id }}">
-                    <input id="opc" name="opc" type="hidden" value="1">
-                    <input  name="TipoOriginal" type="hidden" value="{{isset($dV[0]->tipo) ? $dV[0]->tipo : '' }}">
-                    @csrf
-
-                    <div class="px-5 sm:px-20 pt-10 border-t border-slate-200/60 dark:border-darkmode-400">
-                        <div id="formOne"> 
-
-                            <div class="font-medium text-base" >Ajustes de Perfil</div> 
-                                <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5">
-
+    <div style="display: flex;">
+        <form method="POST" action="{{ route('registrar') }}">
+            <div class="px-5 sm:px-20 pt-10 border-t border-slate-200/60 dark:border-darkmode-400">
+                <div id="formOne">
+                    <div class="font-medium text-base">Ajustes de Perfil</div>
+                    <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5">
+                        <!-- Sección 1 -->
+                        <div class="col-span-12 sm:col-span-4">
                                     <div class="intro-y col-span-12 sm:col-span-6">
                                         <label for="input-wizard-1" class="form-label">Nombre *</label>
                                         <input id="name" type="text" class="form-control @if(old('opc')=='1') @error('name') is-invalid @enderror @endif" name="name" required autocomplete="name" placeholder="Nombre">
@@ -68,6 +61,9 @@
                                                 <option id="clientM" value='maestro'>Visitante Maestro</option>             
                                             </select>
                                     </div>
+                        </div>
+                        <!-- Sección 2 -->
+                        <div class="col-span-12 sm:col-span-4">
                                     <div class="intro-y col-span-12 sm:col-span-6"  id="divCode" >
                                         <label for="input-wizard-1" class="form-label"  >Codigo</label>
                                         <input id="codigo" type="text" class="form-control @if(old('opc')=='1') @error('código') is-invalid @enderror @endif"  name="codigo"  value="{{ old('opc')=='1' ? old('codigo') : '' }}" placeholder="Código">    
@@ -79,7 +75,6 @@
                                                 @enderror
                                             @endif
                                     </div>
-
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divTelefono" > 
                                         <label for="input-wizard-2" class="form-label" >Telefono *</label>
                                         <input id="telefono" type="text" class="form-control @if(old('opc')=='1') @error('telefono') is-invalid @enderror @endif" name="telefono" placeholder="Telefono" >
@@ -117,7 +112,6 @@
                                                 @enderror
                                             @endif
                                     </div>
-
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divCarrera">
                                         <label for="input-wizard-4" class="form-label">Carrera</label>
                                             <input id="carrera" type="text" class="form-control @if(old('opc')=='1') @error('carrera') is-invalid @enderror @endif" name="carrera" placeholder="Carrera" >
@@ -127,7 +121,9 @@
                                                 </span>
                                             @enderror
                                     </div>
-
+                        </div>
+                        <!-- Sección 3 -->
+                        <div class="col-span-12 sm:col-span-4">
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divSede">
                                         <label for="input-wizard-3" class="form-label">Sede *</label>
                                         <select class="form-control @if(old('opc')=='1') @error('sede') is-invalid @enderror @endif" name="sede" id="sede" onchange="sedeNavs()" >
@@ -146,7 +142,6 @@
                                             @enderror
                                         @endif      
                                     </div>
-
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divTurno">
                                         <label for="input-wizard-4" class="form-label">Turno</label>
                                         <select class="form-control" name="horario" id="horarios" onchange="filtroEncargados()">
@@ -175,7 +170,6 @@
                                                                 @enderror
                                                             @endif
                                     </div>
-                                    
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divEncargado">
                                         <label for="input-wizard-4" class="form-label">Encargado *</label>
                                         <select class="form-control @if(old('opc')=='1') @error('id_encargado') is-invalid @enderror @endif" name="id_encargado" id="id_encargado" disabled>
@@ -194,7 +188,6 @@
                                             @enderror
                                         @endif                
                                     </div>
-
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divPW">
                                         <label for="input-wizard-4" class="form-label">Contraseña *</label>
                                             <input id="password" type="password" class="form-control @if(old('opc')=='1') @error('password') is-invalid @enderror @endif" name="password" autocomplete="new-password" required autocomplete="password" placeholder="Contraseña">
@@ -208,20 +201,21 @@
                                         <label for="input-wizard-6" class="form-label">Confirmar Contraseña *</label>
                                         <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password" required autocomplete="new-password" placeholder="Confirmar contraseña">
                                     </div>
-
-                            </div>
+                                    
                         </div>
-
-                        <div class="text-center xl:text-left" style="margin: 0 30% 10px 30%;">
-                                <button id="btn-log" class="btn btn-outline-secondary w-full mt-3" type="submit">
-                                   Registrar
-                                </button>
-                        </div>
-                        
                     </div>
-                </form>
+                </div>
+                <div class="text-center xl:text-left">
+                    <button id="btn-log" class="btn btn-outline-secondary w-full mt-3" type="submit">
+                        Registrar
+                    </button>
+        </form>
+                </div>
+                <!-- End FormOne -->
             </div>
-        </div>
+
+    </div>
+    <div style="height: 65px;"></div>
     <!-- END: Wizard Layout -->
 @endsection
 

@@ -46,15 +46,47 @@
                         headerFilter: "input",
                         hozAlign: "center",
                     }, {
+                        title: "Horas",
+                        field: "horas",
+                        sorter: "number",
+                        hozAlign: "center",
+                        width: 100,
+                    }, {
+                        title: "Estado",
+                        field: "estado",
+                        hozAlign: "center",
+                        width: 100,
+                        headerFilter: true,
+                        headerFilterParams: {
+                            "autorizado": "autorizado",
+                            "pendiente": "pendiente",
+                            "denegado": "denegado",
+                        },
+                        formatter: function(cell, formatterParams, onRendered) {
+                            // Mostrar un ícono o texto según el estado
+                            var estado = cell.getValue();
+                            var icono = "";
+
+                            if (estado === "autorizado") {
+                                icono = "✔️";
+                            } else if (estado === "pendiente") {
+                                icono = "⏳";
+                            } else if (estado === "denegado") {
+                                icono = "❌";
+                            }
+                            return icono;
+                        },
+                        
+                    },{
                         title: "Entrada",
                         field: "hora_entrada",
-                        sorter: "joiningdate",
+                        sorter: "string",
                         hozAlign: "center",
                     },
                     {
                         title: "Salida",
                         field: "hora_salida",
-                        sorter: "joiningdate",
+                        sorter: "string",
                         hozAlign: "center",
                         editor: "select",
                     }, {
@@ -62,30 +94,15 @@
                         field: "tiempo",
                         sorter: "number",
                         hozAlign: "center"
-                    },  {
-                        title: "Horas",
-                        field: "horas",
-                        sorter: "number",
-                        hozAlign: "center",
-                    }, {
-                        title: "Estado",
-                        field: "estado",
-                        sorter: "string",
-                        hozAlign: "center",
-                        editor: "select",
-                        headerFilter: true,
-                        headerFilterParams: {
-                            "autorizado": "autorizado",
-                            "pendiente": "pendiente",
-                            "denegado": "denegado",
-                        }
-                    },
+                    },  
                     
                 ],
                 //rowClick: function(e, row) {
                 //    alert("Row " + row.getData().playerid + " Clicked!!!!");
                 //},
             });
+
+           
             
     </script>
 @endsection

@@ -1,4 +1,4 @@
-@extends('../layouts/main-layout')
+@extends('../layouts/main')
 
 @section('subhead')
     <title>Calendar - Rocketman - Tailwind HTML Admin Template</title>

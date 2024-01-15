@@ -16,12 +16,10 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-9">
-            <div class="card card-primary">
+        <div class="card card-primary">
                 <div class="card-header">
-                    <h1 class="card-title">Historial de Impresiones</h1>
-                </div>
-                <div class= "container"></div>
-               
+                    <h3  class="text-2xl font-medium leading-none mt-3" style="padding-top: 20px; padding-bottom: 20px;"> Registro de Impresiones 3D </h3>
+                </div>             
                 <div id="players"></div>
             </div>
         </div>
@@ -35,9 +33,11 @@
             var printers = {!! $impresiones !!};
 
             var table = new Tabulator("#players", {
-                height: 500,
+                height: "100%",
                 data: printers,
                 layout: "fitColumns",
+                resizableColumns: "false",
+                fitColumns: "true",
                 pagination: "local",
                 paginationSize: 24,
                 tooltips: true,

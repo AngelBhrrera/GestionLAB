@@ -5,10 +5,10 @@
 @endsection
 
 @section('content')
-<style>
-    .container:hover .imagen-rol {-webkit-transform:scale(1.5);transform:scale(1.5); transition:all .3s}
-</style>
-<?php   
+    <style>
+        .container:hover .imagen-rol {-webkit-transform:scale(1.5);transform:scale(1.5); transition:all .3s}
+    </style>
+    <?php   
         $nivel = DB::table('niveles')
             ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
             ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n')
@@ -16,9 +16,8 @@
             ->orderByDesc('niveles.experiencia_acumulada')
             ->first();
         $nivel_str = strval($nivel->nivel);
-        ?>
+    ?>
 
-            
 <body class="main">
     <div class="xl:pl-5 xl:py-5 flex h-screen">
         <nav class="side-nav">
@@ -287,22 +286,6 @@
 @endsection
 
 @section('script')
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  
-
-<script>
-
-    $('.side-menu').click(function(e) {
-
-        var submenuS = $(this).next('.submenu');
-        // Cierra todos los submenús, excepto el que se está abriendo
-        $('.submenu').not(submenuS).slideUp();
-
-        // Alterna la visibilidad del submenú clicado
-        submenuS.slideToggle();
-    });
-
-</script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection
 
