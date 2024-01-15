@@ -8,14 +8,13 @@
 
 @section('subcontent')
 
-    <body>
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card-header">
-                            Registro de Actividades 
-                        </div>
+                    <div class="card card-primary">
+                        <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Asignar Actividades </h3>
+                    </div>
 
                         <div class="card-body">
 
@@ -82,7 +81,7 @@
                 </div>
             </div>
         </div>
-    </body>
+    <div style="height: 45px;"></div>
 
 @endsection
 

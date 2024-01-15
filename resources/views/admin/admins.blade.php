@@ -12,8 +12,12 @@
 @endsection
 
 @section('subcontent')
-
-<div id="players"></div>
+<div class="col-md-9">
+            <div class="card card-primary">
+                <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Administradores</h3>
+            </div>
+    <div id="players"></div>
+</div>
 @endsection
 
 @section('script')
@@ -43,6 +47,28 @@
                     }, {
                         title: "Correo",
                         field: "correo",
+                        sorter: "string",
+                        hozAlign: "center",
+                    }, {
+                        title: "Telefono",
+                        field: "contacto",
+                        sorter: "number",
+                        hozAlign: "center",
+                    }, {
+                        title: "Sede",
+                        field: "sede",
+                        sorter: "string",
+                        headerFilter: "input",
+                        hozAlign: "center",
+                    }, {
+                        title: "Tipo",
+                        field: "tipo",
+                        sorter: "string",
+                        headerFilter: "input",
+                        hozAlign: "center",
+                    }, {
+                        title: "Horario",
+                        field: "horario",
                         sorter: "string",
                         headerFilter: "input",
                         hozAlign: "center",

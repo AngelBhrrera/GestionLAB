@@ -50,7 +50,6 @@
                         title: "Correo",
                         field: "correo",
                         sorter: "string",
-                        headerFilter: "input",
                         hozAlign: "center",
                     }, {
                         title: "Codigo",
