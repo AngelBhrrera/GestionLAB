@@ -181,17 +181,16 @@ class PrestadorController extends Controller
         try {
             $dir = '';
             switch (Auth::user()->tipo) {
-                
-                case 'Superadmin':
                 case 'admin':
+                case 'Superadmin':
                 case 'encargado':
                     $dir = 'admin.checkin';
-                    $responsable = Auth::user()->name . ' ' . Auth::user()->apellido;
+                    $origen = Auth::user()->name . ' ' . Auth::user()->apellido;
                     break;
-                /*case 'checkin':
+                case 'checkin':
                     $dir = 'api.checkin';
                     $origen = 'checkin';
-                    break;*/
+                    break;
             };
 
             $codigo = $request->input('codigo');
@@ -200,8 +199,8 @@ class PrestadorController extends Controller
                     ->orWhere('tipo', '=', "encargado")
                     ->orWhere('tipo', '=', "voluntario")
                     ->orWhere('tipo', '=', "practicante");
-                })->select('id', 'tipo', 'name', 'apellido')->get();
-            $origen = $usuario[0]->name . ' ' . $usuario[0]->apellido;
+            })
+                ->select('name', 'id', 'apellido', 'tipo', 'encargado_id')->get();
             $verificar = DB::table('registros_checkin')
             ->where('idusuario', $usuario[0]->id)
             ->where('fecha', date("d/m/Y"))
@@ -228,8 +227,9 @@ class PrestadorController extends Controller
             } else {
 
                 $inicio = DB::table('registros_checkin')
-                ->insert([[ 'origen' => $origen, 'idusuario' => $usuario[0]->id, 'fecha' => date("d/m/Y"), 'hora_entrada' => date('H:i:s'), 
-                'horas' => 0, 'tipo' => $usuario[0]->tipo, 'responsable' => $responsable, 'encargado_id' => Auth::user()->id]]);
+                ->insert([['origen' => $origen, 'idusuario' => $usuario[0]->id, 'codigo' => $codigo, 'nombre' => $usuario[0]->name, 
+                'apellido' => $usuario[0]->apellido, 'fecha' => date("d/m/Y"), 'hora_entrada' => date('H:i:s'), 'horas' => 0, 'tipo' => $usuario[0]->tipo, 
+                'encargado_id' => $usuario[0]->encargado_id]]);
 
                 return redirect()->route($dir)
                 ->with('success', 'Bienvenido ' . $usuario[0]->name . '!');
@@ -900,5 +900,36 @@ class PrestadorController extends Controller
                 }
                 return redirect('/admin/home');
         }
+    }
+
+    public function show_reportes(){
+        $user_id = Auth::user()->id;
+        $reportes = DB::select("Select * from reportes_s_s where id_prestador = $user_id");
+        return view('prestador.reportes_parciales',['reportes' =>$reportes]);
+    }
+
+    public function subir_reportes_parciales(Request $request){
+        $request->validate([
+            'reporte_parcial' => 'required|mimes:pdf|max:4096', //El archivo debe ser de tipo imagen y tener un tamaño máximo de MB
+        ], [
+            'reporte_parcial.max' => 'El archivo debe pesar menos de 4MB',
+        ]);
+
+        // Obtener el usuario autenticado
+        $user_id = Auth::user()->id;
+
+
+        // Almacenar el archivo
+        $reporte_path = $request->file('reporte_parcial')->store('public/reportes_parciales/');
+
+        $nombre_archivo = basename($reporte_path);
+        $insertar= DB::table('reportes_s_s')->insert(['id_prestador' => $user_id, 'nombre_reporte' => $nombre_archivo, 'ruta_reporte'=>$reporte_path, 'fecha_subida' => date("Y/m/d")]);
+        
+        return redirect()->route('parciales')->with('success', 'Archivo subido con éxito');
+    }
+
+    public function eliminar_reportes_parciales($id){
+        DB::table('reportes_s_s')->where('id', $id)->delete();       
+        return redirect()->route('parciales')->with('warning', 'Archivo eliminado con éxito');
     }
 }
