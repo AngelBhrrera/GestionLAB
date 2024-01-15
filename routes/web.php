@@ -100,7 +100,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
     Route::middleware('role:admin,Superadmin,encargado')->group(function() {
         Route::name('admin.')->group(function () {
 
-            Route::get('/admin/registro', 'show')->name('registro'); //NUEVA RUTA
+            Route::get('/admin/registro', 'registro')->name('registro'); //NUEVA RUTA
 
             Route::get('/admin/C_actividades', 'create_act')->name('create_act');
             Route::post('/admin/M_actividades', 'make_act')->name('make_act');

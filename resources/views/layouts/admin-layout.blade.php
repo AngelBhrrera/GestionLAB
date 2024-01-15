@@ -260,6 +260,12 @@
                         </a>
                         <ul class="">
                             <li>
+                                <a href="{{ route('admin.asign_act') }}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
+                                    <div class="side-menu__title"> Asignar </div>
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{{ route('admin.actividades') }}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
                                     <div class="side-menu__title"> Creadas </div>
