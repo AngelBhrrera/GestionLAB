@@ -75,8 +75,6 @@ class HomeController extends Controller
             'correo'=>'required',
             'nombre'=> 'required',
             'telefono'=> 'required|max:10',
-            'carrera' =>'required',
-            'semestre' =>'required',
             'N_piezas'=> 'required',
             'proyecto'=> 'required',
             'observaciones' =>'required', //[new MaxWordsRule('hola', $request->input('Observaciones'))],
@@ -92,7 +90,9 @@ class HomeController extends Controller
         }else{
            $datos = $request->all();
            $insert = cita_cliente::create($datos);
+           $usuarios = DB::table('users')->get();
            return redirect()->route('formulario')->with('success', 'Mensaje de éxito');
+           
 
 
 
