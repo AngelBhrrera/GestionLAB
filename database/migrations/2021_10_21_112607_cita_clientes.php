@@ -19,8 +19,8 @@ class CitaClientes extends Migration
             $table->string('correo',100);
             $table->string('nombre',100);
             $table->string('telefono',20);
-            $table->string('carrera',100);
-            $table->integer('semestre',0,0);
+            $table->string('carrera',100)->nullable();
+            $table->integer('semestre',0,0)->nullable();
             // $table->text('credencial')->nullable();
             $table->text('enlaceDrive')->nullable();
             $table->string('proyecto',100);

@@ -23,7 +23,7 @@
                         <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de ingresar el correo institucional">
                             <label for="">Correo</label>
                             <input type="email" class="form-control @error('correo') is-invalid @enderror"
-                                name="correo" id="correo" aria-describedby="emailHelpId"  value="{{old('correo')}}">
+                                name="correo" id="correo" aria-describedby="emailHelpId" value="{{ auth()->check() ? auth()->user()->correo : 'Texto predeterminado' }}">
                             <small id="Help" class="form-text text-muted">Favor de ingresar el correo institucional</small>
                             @error('correo')
                             <span class="invalid-feedback" role="alert">
@@ -34,7 +34,7 @@
                         <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de ingresar tu nombre completo iniciando por los apellidos">
                             <label for="">Nombre Completo</label>
                             <input type="text"  class="form-control @error('nombre') is-invalid @enderror"
-                                name="nombre" id="nombre" aria-describedby="helpId" value="{{old('nombre')}}">
+                                name="nombre" id="nombre" aria-describedby="helpId" value="{{ auth()->check() ? auth()->user()->name . ' ' . auth()->user()->apellido : 'Texto predeterminado' }}">
                                 <small id="Help" class="form-text text-muted">Favor de ingresar tu nombre completo iniciando por los apellidos</small>
                             @error('nombre')
                             <span class="invalid-feedback" role="alert">
@@ -45,13 +45,50 @@
                         <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de ingresar un numero de telefono valido">
                             <label for="">Teléfono</label>
                             <input type="tel"class="form-control @error('telefono') is-invalid @enderror"
-                            name="telefono" id="telefono" aria-describedby="helpId" value="{{ old('telefono') }}">
+                            name="telefono" id="telefono" aria-describedby="helpId" value="{{ auth()->check() ? auth()->user()->telefono : 'Texto predeterminado' }}">
                             <small id="Help" class="form-text text-muted">Favor de ingresar un numero de telefono valido</small>
                             @error('telefono')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
+                        </div>
+
+                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="Favor de ingresar la carrera">
+                            <label for="">Carrera</label>
+                                    @if(auth()->check())
+                                        @if(auth()->user()->tipo === 'maestro')
+                                        <textarea class="form-control @error('carrera') is-invalid @enderror"
+                                        name="carrera" id="carrera" rows="3" disabled>{{ old('carrera') }}</textarea>
+                                        @elseif(auth()->user()->tipo === 'alumno')
+                                        <textarea class="form-control @error('carrera') is-invalid @enderror"
+                                        name="carrera" id="carrera" rows="3">{{ old('carrera') }}</textarea> 
+                                        @endif
+                                    @endif
+                            <small id="Help" class="form-text text-muted">Ingresa tu carrera</small>
+                            @error('carrera')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de poner tus comclusiones y opniones de la impresion">
+                            <label for="">Semestre</label>
+                            @if(auth()->check())
+                                        @if(auth()->user()->tipo === 'maestro')
+                                        <textarea class="form-control @error('carrera') is-invalid @enderror"
+                                        name="carrera" id="carrera" rows="3" disabled>{{ old('carrera') }}</textarea>
+                                        @elseif(auth()->user()->tipo === 'alumno')
+                                        <textarea class="form-control @error('carrera') is-invalid @enderror"
+                                        name="carrera" id="carrera" rows="3">{{ old('carrera') }}</textarea> 
+                                        @endif
+                                    @endif
+                            @error('semestre')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                         </div>
 
                         <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de propocionar acceso de visualizacion y descarga a la carpeta de drive">
@@ -265,6 +302,8 @@ $('.from-prevent-multiple-submits').on('submit', function(){
 
         });
     });
+
+    
 </script>
 
     <!-- Bootstrap 4 -->

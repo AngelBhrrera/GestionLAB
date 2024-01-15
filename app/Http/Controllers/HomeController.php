@@ -87,6 +87,15 @@ class HomeController extends Controller
         if($validator ->fails()){
             return redirect()->route('registroImpresion')->withInput()->withErrors($validator->errors());
         }else{
+           $datos = $request->all();
+           $insert = cita_cliente::create($datos);
+           $usuarios = DB::table('users')->get();
+           return redirect()->route('formulario')->with('success', 'Mensaje de éxito');
+           
+
+
+
+            /*
             $datos = $request->all();
             $Correo = $datos["correo"];
             $usuarios = DB::table('users')->get();
