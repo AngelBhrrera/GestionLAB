@@ -5,17 +5,19 @@
 @endsection
 
 @section('content')
-<?php   
+    <style>
+        .container:hover .imagen-rol {-webkit-transform:scale(1.5);transform:scale(1.5); transition:all .3s}
+    </style>
+    <?php   
         $nivel = DB::table('niveles')
             ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
-            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion')
+            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n')
             ->where('niveles.experiencia_acumulada', '<=', Auth::user()->experiencia ?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
             ->orderByDesc('niveles.experiencia_acumulada')
             ->first();
         $nivel_str = strval($nivel->nivel);
-        ?>
+    ?>
 
-            
 <body class="main">
     <div class="xl:pl-5 xl:py-5 flex h-screen">
         <nav class="side-nav">
@@ -49,7 +51,7 @@
                             </a>
                             <ul class="submenu">
                                 <li>
-                                    <a href="{{'/'}}" class="side-menu">
+                                    <a href="{{route('homeP')}}" class="side-menu">
                                         <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
                                         <div class="side-menu__title">Inicio</div>
                                     </a>
@@ -61,11 +63,17 @@
                                     </a>
                                 </li>
                                 <li>
-                            <a href="{{route('perfil')}}" class="side-menu">
+                                    <a href="{{route('perfil')}}" class="side-menu">
                                         <div class="side-menu__icon"> <i data-lucide="crown"></i> </div>
                                         <div class="side-menu__title">Insignias obtenidas</div>
                                     </a>
-                                </li>                            
+                                </li>
+                                <li>
+                                    <a href="{{route('parciales')}}" class="side-menu">
+                                        <div class="side-menu__icon"> <i data-lucide="file"></i> </div>
+                                        <div class="side-menu__title">Reportes parciales</div>
+                                    </a>
+                                </li>                             
                             </ul>
                         </li>
                     </li>
@@ -215,10 +223,11 @@
                     <div class="intro-x relative ml-auto flex sm:mx-auto">
                         @if (Auth::user()->can_admin == 1)
                             <a href="{{ route('cambiarRol') }}">
-                                <img title="cambiar a Admin"src="{{asset('build/assets/images/prestico2.svg')}}" width="30" height="30" alt="">
-                            </a>    
+                                <div class="container"><img class="imagen-rol" title="cambiar a Admin"
+                                src="{{asset('build/assets/images/prestico2.svg')}}" width="30" height="30" alt=""></div>
+                            </a> 
                         @endif 
-                        <img src="{{asset('build/assets/images/lvl1.ico')}}"width="30" height="30" alt="">
+                        <img src="{{ asset('build/assets/' . $nivel->ruta_n) }}" width="30" height="30" alt="ruta">
                         <img src="{{asset('build/assets/images/XP.ico')}}"width="30" height="30" alt="">{{Auth::user()->experiencia}}</img>
                     </div>
 
@@ -229,7 +238,6 @@
                     <div class="intro-x dropdown h-10">
                         
                         <div class="h-full dropdown-toggle flex items-center" role="button" aria-expanded="false" data-tw-toggle="dropdown">
-                            
                             <div class="w-10 h-10 image-fit">
                                 @if(!isset(Auth::user()->imagen_perfil))
                                     <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/default-profile-image.png')}}">
@@ -278,22 +286,6 @@
 @endsection
 
 @section('script')
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  
-
-<script>
-
-    $('.side-menu').click(function(e) {
-
-        var submenuS = $(this).next('.submenu');
-        // Cierra todos los submenús, excepto el que se está abriendo
-        $('.submenu').not(submenuS).slideUp();
-
-        // Alterna la visibilidad del submenú clicado
-        submenuS.slideToggle();
-    });
-
-</script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection
 

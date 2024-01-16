@@ -22,27 +22,25 @@ class PrestadoresServicioLiberado extends Migration
         `users`.`correo` AS `correo`,
         `users`.`codigo` AS `codigo`,
         `users`.`tipo` AS `tipo`,
-        `users`.`email_verified_at` AS `email_verified_at`,
-        `users`.`password` AS `password`,
-        `users`.`remember_token` AS `remember_token`,
-        `users`.`created_at` AS `created_at`,
-        `users`.`carrera` AS `carrera`,
-        `users`.`updated_at` AS `updated_at`,
-        `users`.`horas` AS `horas`,
+        `users`.`fecha_salida` AS `fecha_salida`,
         `cuenta_horas`.`horas_servicio` AS `horas_cumplidas`,
-        `cuenta_horas`.`horas_restantes` AS `horas_restantes`
+        `cuenta_horas`.`horas_restantes` AS `horas_restantes`,
+        `users`.`remember_token` AS `remember_token`,
+        `users`.`carrera` AS `carrera`,
+        `users`.`horas` AS `horas`
         FROM
             (
                 `users` LEFT JOIN 
                 `cuenta_horas` ON
                     (
                         (
-                            `users`.`codigo` = `cuenta_horas`.`codigo`
+                            `users`.`id` = `cuenta_horas`.`id`
                         )
                     )
             )
         WHERE
-            (`users`.`tipo` = 'prestador_terminado')
+            (`users`.`fecha_salida` IS NOT NULL)
+            AND (`cuenta_horas`.`horas_restantes` <= 0)
         ");
     }
 

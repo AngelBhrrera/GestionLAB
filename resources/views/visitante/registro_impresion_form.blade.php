@@ -53,7 +53,6 @@
                             </span>
                             @enderror
                         </div>
-
                         <div class="form-group" data-toggle="tooltip" data-placement="top" title="Favor de ingresar la carrera">
                             <label for="">Carrera</label>
                                     @if(auth()->check())

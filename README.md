@@ -1,4 +1,4 @@
-# PROYECTO CFE - SERVICIO SOCIAL
+# SISTEMA DE GESTIÓN DEL SS PARA EL LABORATORIO DE INVENTORES
 
 ### Arquitecto del Sistema:
 
@@ -10,6 +10,12 @@
 Mtro. Jose Luis David Bonilla Carranza
 
 ### Desarrolladores:
+
+Barragan Pulido Bryan Shaloat
+Barrera Herrera Angel Brian
+Chavoya Orozco Carlos Alberto
+
+### Desarrolladores Anteriores:
 
 Martínez Sepulveda Alan Jahir
 
@@ -23,4 +29,3 @@ MySQL version 5.7.33
 
 #### Descripcion:
 
-Sistema de gestión de prestadores de servicios social para la empresa CFE

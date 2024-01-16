@@ -15,13 +15,22 @@ class Soloadmins extends Migration
     {
         DB::statement("
         CREATE VIEW solo_admins AS
-        SELECT
-        `users`.`id` AS `id`, `users`.`name` AS `name`,
-        `users`.`apellido` AS `apellido`,
-        `users`.`correo` AS `correo`,
-        `users`.`tipo` AS `tipo`
-        FROM (`users`) 
-        WHERE (`users`.`tipo` = 'admin')");
+            SELECT
+            `users`.`id` AS `id`,
+            `users`.`name` AS `name`,
+            `users`.`apellido` AS `apellido`,
+            `users`.`correo` AS `correo`,
+            `users`.`horario` AS `horario`,
+            `users`.`telefono` AS `contacto`,
+            `users`.`tipo` AS `tipo`,
+            `sede`.`nombre_Sede` AS `sede`
+        FROM
+            `users`
+        INNER JOIN
+            `sede` ON `users`.`sede` = `sede`.`id_Sede`
+        WHERE
+            `users`.`tipo` IN ('encargado', 'admin');
+        ");
     }
 
     /**

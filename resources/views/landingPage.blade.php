@@ -64,8 +64,6 @@
             <div class="img-holder mt-3"><img src="{{asset('build/assets/images/labMedia8.jpg')}}" alt="image" class="img-fluid"></div>
             <div class="img-holder mt-3"><img src="{{asset('build/assets/images/labMedia9.jpg')}}" alt="image" class="img-fluid"></div>
         </div>
-        
-
     </header>   
 
     <div class="section light-bg" id="features"></div>

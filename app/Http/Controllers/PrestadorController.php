@@ -93,9 +93,9 @@ class PrestadorController extends Controller
         $color = $request->input('color');
         $pieces = $request->input('pieces');
         $w = $request->input('weight');
+
         $horas = $request->input('horas');
         $horasFormateadas = str_pad($horas, 2, '0', STR_PAD_LEFT);
-
         $minutos = $request->input('minutos');
         $minsFormateados = str_pad($minutos, 2, '0', STR_PAD_LEFT);
         $tiempo = $horasFormateadas . 'h' . $minsFormateados . 'm';
@@ -106,6 +106,16 @@ class PrestadorController extends Controller
          'color' => $color, 'piezas' => $pieces,
          'peso' => $w, 'tiempo_impresion' => $tiempo]]);
 
+        $actual = DB::table('seguimiento_impresiones')
+            ->where('id_Impresora', $name)
+            ->orderByDesc('fecha')
+            ->limit(1)
+            ->value('fecha');
+
+        DB::table('impresoras')
+            ->where('id', $name)
+            ->update(['ultimo_uso' => $actual]);
+
         return redirect()->route('show_imps');
     }
 
@@ -114,9 +124,10 @@ class PrestadorController extends Controller
         $data = DB::table('ver_impresiones')
         ->select('impresora', 'proyecto',  'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
         ->where('id_Prestador', Auth::user()->id)
+        ->orderByDesc('fecha')
         ->get();
 
-        return view( 'prestador/mostrar_mis_impresiones', [ 'impresiones' => $data]);
+        return view('prestador/mostrar_mis_impresiones', ['impresiones' => json_encode($data)]);
 
     }
 
@@ -155,26 +166,14 @@ class PrestadorController extends Controller
     public function horas()
     {
         $id = Auth::user()->id;
-        $horas = DB::table('registros_checkin')
-            ->where('idusuario', $id)
-            ->where('estado', 'autorizado')
-            ->sum('horas');
-        $horasT = DB::table('users')->where('id', $id)->select('horas')->get();
 
         $asistencias = DB::table('registros_checkin')
         ->where('idusuario', $id)
         ->orderBy('fecha_actual', 'desc')
         ->get();
 
-        return view(
-            'prestador/homeP',
-            [
-                'datos' => $asistencias,
-                'horas' => $horas,
-                'horasT' => $horasT[0]->horas - $horas,
-  
-            ]
-        );
+        return view('prestador/homeP', ['datos' => json_encode($asistencias)]);
+
     }
 
     public function marcar(Request $request)
@@ -672,10 +671,10 @@ class PrestadorController extends Controller
         ->select('sede.nombre_Sede', 'sede.id_Sede')
         ->where('sede.id_Sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
         ->first();
-        
+
         $nivel = DB::table('niveles')
             ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
-            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion')
+            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n')
             ->where('niveles.experiencia_acumulada', '<=', $user->experiencia ?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
             ->orderByDesc('niveles.experiencia_acumulada')
             ->first();
@@ -690,10 +689,9 @@ class PrestadorController extends Controller
         $nivel_str = strval($nivel->nivel);
 
         $medalla = asset($nivel->ruta);
-
+        //dd($nivel); // Verificar si la propiedad ruta_n está presente en $nivel
         // Descripcion de la medalla
         $descripcion_medalla = $nivel->descripcion;
-
 
         return view('prestador.newProfile', compact('user', 'sede', 'nivel_str', 'medalla', 'nivel', 'descripcion_medalla', 'todasMedallasUsuario'));
     }
@@ -902,5 +900,36 @@ class PrestadorController extends Controller
                 }
                 return redirect('/admin/home');
         }
+    }
+
+    public function show_reportes(){
+        $user_id = Auth::user()->id;
+        $reportes = DB::select("Select * from reportes_s_s where id_prestador = $user_id");
+        return view('prestador.reportes_parciales',['reportes' =>$reportes]);
+    }
+
+    public function subir_reportes_parciales(Request $request){
+        $request->validate([
+            'reporte_parcial' => 'required|mimes:pdf|max:4096', //El archivo debe ser de tipo imagen y tener un tamaño máximo de MB
+        ], [
+            'reporte_parcial.max' => 'El archivo debe pesar menos de 4MB',
+        ]);
+
+        // Obtener el usuario autenticado
+        $user_id = Auth::user()->id;
+
+
+        // Almacenar el archivo
+        $reporte_path = $request->file('reporte_parcial')->store('public/reportes_parciales/');
+
+        $nombre_archivo = basename($reporte_path);
+        $insertar= DB::table('reportes_s_s')->insert(['id_prestador' => $user_id, 'nombre_reporte' => $nombre_archivo, 'ruta_reporte'=>$reporte_path, 'fecha_subida' => date("Y/m/d")]);
+        
+        return redirect()->route('parciales')->with('success', 'Archivo subido con éxito');
+    }
+
+    public function eliminar_reportes_parciales($id){
+        DB::table('reportes_s_s')->where('id', $id)->delete();       
+        return redirect()->route('parciales')->with('warning', 'Archivo eliminado con éxito');
     }
 }

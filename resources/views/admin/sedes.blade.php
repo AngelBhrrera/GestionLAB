@@ -13,7 +13,11 @@
         <div class="grid grid-cols-12 gap-6 mt-5">
             <div class="intro-y col-span-12 lg:col-span-6">
                 @if (session('success'))
-                    <h6 class="alert alert-success">{{session('success')}}</h6>           
+                    <h6 class="alert alert-success">{{session('success')}}</h6>     
+                @endif
+                
+                @if(session('warning'))
+                    <h6 class="alert alert-warning">{{session('warning')}}</h6>  
                 @endif
 
                 @error('nombre')
@@ -60,7 +64,7 @@
                 <input required id="nombreSede" type="text" class="form-control" name="nombreSede" placeholder="Nombre" style="width: 40%">
             </div>
             <br>
-            <button class="btn btn-primary">Crear</button>
+            <button type="submit"class="btn btn-primary">Crear</button>
         </form>
     </div>
 

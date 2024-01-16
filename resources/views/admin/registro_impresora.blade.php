@@ -1,5 +1,10 @@
 @extends('layouts/admin-layout')
 
+@section('subhead')
+    <link href="https://unpkg.com/tabulator-tables@4.8.1/dist/css/tabulator.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.8.1/dist/js/tabulator.min.js"></script>
+@endsection
+
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">Registro</a></li>
@@ -10,104 +15,138 @@
 
 
 <div class="container">
-
     <div class="row justify-content-center">
         <div class="col-md-9">
             <div class="card card-primary">
-                <div class="card-header">
-                    <h3 class="card-title">Gestion de Impresoras</h3>
-                </div>
-                <div class="card-body">
-
-                    <form class="from-prevent-multiple-submits" method="POST" action="{{ route('admin.make_print') }}">
-
+                <h3  class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Gestión de Impresoras </h3>
+            </div>   
+            <div class="px-5 sm:px-20 pt-5 border-t border-slate-200/60 dark:border-darkmode-400">
+            <form class="from-prevent-multiple-submits" method="POST" action="{{ route('admin.make_print') }}">
                     @csrf
-                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="Ingresar el nombre identificador de la impresora">
-                            <label for="">Nombre</label>
-                            <input type="name" class="form-control @error('nombre') is-invalid @enderror"
-                                name="nombre" id="nombre" value="{{old('nombre')}}">
-                            <small id="Help" class="form-text text-muted">Ingresar el nombre identificador de la impresora</small>
-                            @error('nombre')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
 
-                        <div class="form-group" data-toggle="tooltip" data-placement="top">
-                            <label for="">Marca</label>
-                            <input type="text"  class="form-control @error('nombre') is-invalid @enderror"
-                                name="mark" id="mark" value="{{old('mark')}}">
-                            @error('mark')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
+                    <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5">
+                        <!-- Sección 1 -->
+                        <div class="col-span-12 sm:col-span-4">
+                            <div class="intro-y col-span-12 sm:col-span-6" data-toggle="tooltip" data-placement="top" title="Ingresar el nombre identificador de la impresora">
+                                <label for="input-wizard-3" class="form-label">Nombre</label>
+                                <input type="text" class="form-control @error('nombre') is-invalid @enderror"
+                                    name="nombre" id="nombre" value="{{old('nombre')}}">
+                                <small id="Help" class="form-text text-muted">Ingresar el nombre identificador de la impresora</small>
+                                @error('nombre')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
                         </div>
-
-                        <div class="intro-y col-span-12 sm:col-span-6">
-                            <label for="input-wizard-3" class="form-label">Tipo</label>
-                            <select class="form-control" name="tipo" id="tipo" >
-                                <option selected id= null value= null>Selecciona un tipo de impresora</option>
-                                <option id="1" value='Filamento'>Filamento</option>
-                                <option id="2" value='Resina'>Resina</option>
-                            </select>
+                        <!-- Sección 2 -->
+                        <div class="col-span-12 sm:col-span-4">
+                            <div class="intro-y col-span-12 sm:col-span-6 data-toggle="tooltip" data-placement="top" title="Ingresar el nombre identificador de la impresora"">
+                                <label for="input-wizard-3" class="form-label">Marca</label>
+                                <input type="text" class="form-control @error('nombre') is-invalid @enderror"
+                                    name="mark" id="mark" value="{{old('mark')}}">
+                                @error('mark')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
                         </div>
-
-                        <div class="col-md-12 text-right">
-                            <button style="" type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits">
+                        <!-- Sección 3 -->
+                        <div class="col-span-12 sm:col-span-4">
+                            <div class="intro-y col-span-12 sm:col-span-6 data-toggle="tooltip" data-placement="top" title="Ingresar el nombre identificador de la impresora"">
+                                <label for="input-wizard-3" class="form-label">Tipo</label>
+                                <select class="form-control" name="tipo" id="tipo" >
+                                    <option selected id=null value=null>Selecciona un tipo de impresora</option>
+                                    <option id=1 value='Filamento'>Filamento</option>
+                                    <option id=2 value='Resina'>Resina</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-right">
+                            <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits">
                                 Enviar
                             </button>
-                        </div>
-
-                    </form>
-
-                </div>
-
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="impresoras">
-                        <ul class="nav nav-tabs nav-justified" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active">No. de Impresora</a>
-                                @foreach ($impresoras as $impresora)
-                                    <p id="leaderBoard" class="nav-link">{{$impresora->nombre}}</p>
-                                @endforeach
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active">Marca</a>
-                                @foreach ($impresoras as $impresora)
-                                    <p id="leaderBoard" class="nav-link">{{$impresora->marca}}</p>
-                                @endforeach
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active">Tipo</a>
-                                @foreach ($impresoras as $impresora)
-                                    <p id="leaderBoard" class="nav-link">{{$impresora->tipo}}</p>
-                                @endforeach
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active">Ultimo uso</a>
-                                @foreach ($impresoras as $impresora)
-                                    <p id="leaderBoard" class="nav-link">{{$impresora->ultimo_uso}}</p>
-                                @endforeach
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active">Estado</a>
-                                @foreach ($impresoras as $impresora)
-                                    <p id="leaderBoard" class="nav-link">{{$impresora->estado}}</p>
-                                @endforeach
-                            </li>
-
-                        </ul>
                     </div>
-
+            </form>
+            <div id="players"></div>
             </div>
-
         </div>
-
     </div>
-
 </div>
+<div style="height: 65px;"></div>
 
+@endsection
+
+@section('script')
+    <script type="text/javascript">
+
+            var printers = {!! $impresiones !!};
+
+            var table = new Tabulator("#players", {
+                height: "100%",
+                data: printers,
+                layout: "fitColumns",
+                resizableColumns: "false",
+                fitColumns: "true",
+                pagination: "local",
+                paginationSize: 7,
+                tooltips: true,
+                columns: [{
+                        title: "Nombre",
+                        field: "nombre",
+                        sorter: "string",
+                        headerFilter: "input",
+                        hozAlign: "center",
+                        width: 150,
+                    }, {
+                        title: "Marca",
+                        field: "marca",
+                        sorter: "string",
+                        hozAlign: "center",
+                        width: 150,
+                    }, {
+                        title: "Ultimo Uso",
+                        field: "ultimo_uso",
+                        sorter: "string",
+                        hozAlign: "center",
+                        width: 200,
+                    }, {
+                        title: "Tipo",
+                        field: "tipo",
+                        sorter: "string",
+                        hozAlign: "center",
+                        editor: "select",
+                        headerFilter: true,
+                        headerFilterParams: {
+                            "Filamento": "Filamento",
+                            "Resina": "Resina",
+                        },
+                        width: 150,
+                    },  {
+                        title: "Estado",
+                        field: "estado",
+                        hozAlign: "right",
+                        formatter: function(cell, formatterParams, onRendered) {
+                            var estado = cell.getValue();
+                            var icono = "";
+                            if (estado === "1") {
+                                icono = "✔️";
+                            } else if (estado === "0") {
+                                icono = "❌";
+                            }
+                            return icono;
+                        },
+                        hozAlign: "center",
+                        width: 100,
+                    }, 
+                ],  
+                //rowClick: function(e, row) {
+                //    alert("Row " + row.getData().playerid + " Clicked!!!!");
+                //},
+            });
+            
+    </script>
 @endsection
 

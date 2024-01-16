@@ -3,7 +3,6 @@
 use App\Http\Controllers\VisitanteController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
 
 //Estimado prestador de servicio que tiene que dar mantenimiento a esta fregadera
 
@@ -35,7 +34,6 @@ Route::get('/spiderw', function(){
 Route::get('/calendar', function(){
     return view('/TEST/calendar');
 })->name('calendar');
-
 
 Route::controller(App\Http\Controllers\LandingController::class)->group(function(){
     Route::get('/inventores', 'index')->name('landing');
@@ -104,7 +102,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
     Route::middleware('role:admin,Superadmin,encargado')->group(function() {
         Route::name('admin.')->group(function () {
 
-            Route::get('/admin/registro', 'show')->name('registro'); //NUEVA RUTA
+            Route::get('/admin/registro', 'registro')->name('registro'); //NUEVA RUTA
 
             Route::get('/admin/C_actividades', 'create_act')->name('create_act');
             Route::post('/admin/M_actividades', 'make_act')->name('make_act');
@@ -122,7 +120,6 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
             Route::get('/admin/cambiorol', 'cambiarRol')->name('cambiorol');
             Route::get('/admin/check-in', 'checkin')->name('checkin');
-
 
             Route::get('/admin/faltas', 'faltas')->name('faltas');
             Route::get('/admin/home', 'firmas')->name('home');
@@ -188,6 +185,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 //Rutas Prestador
 Route::controller(App\Http\Controllers\PrestadorController::class)->group(function(){
 
+    
     Route::post('prestador/nota', 'guardarNota')->middleware('role:Superadmin')->name('nota');
     Route::post('prestador/horario_guardar', 'horario_guardar')->middleware('role:prestador,admin,Superadmin')->name('horario_guardar');
     // Route::post('/marcar', 'marcar')->middleware('role:admin,checkin,Superadmin')->name('marcar');
@@ -197,8 +195,12 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
     });
     Route::middleware('role:prestador,voluntario,practicante,encargado')->group(function() {
 
-        Route::get('prestador/home', 'home')->name('homeP');
+        Route::get('prestador/reportes_parciales', 'show_reportes')->name('parciales');
+        Route::post('prestador/subir_reporte_parcial', 'subir_reportes_parciales')->name('subirReporte');
+        Route::get('prestador/eliminar_reporte_parcial/{id}', 'eliminar_reportes_parciales')->name('eliminarReporte');
 
+        Route::get('prestador/home', 'home')->name('homeP');
+        
         Route::get('prestador/registro_impresion', 'create_imps')->name('create_imps');
         Route::post('prestador/registrar_impresion', 'register_imps')->name('register_imps');
 

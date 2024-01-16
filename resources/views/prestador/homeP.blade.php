@@ -1,5 +1,10 @@
 @extends('layouts/prestador-layout')
 
+@section('subhead')
+    <link href="https://unpkg.com/tabulator-tables@4.8.1/dist/css/tabulator.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.8.1/dist/js/tabulator.min.js"></script>
+@endsection
+
 @section('breadcrumb')
     <nav aria-label="breadcrumb" class="-intro-x hidden xl:flex">
         <ol class="breadcrumb">
@@ -13,53 +18,91 @@
 
     <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
         <h2 class="text-lg font-medium mr-auto">REGISTRO DE HORAS</h2>
+       
     </div>
 
-        <div class="tab-content">
-            <div class="tab-pane fade show active" id="impresoras">
-                        <ul class="nav nav-tabs nav-justified" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active">Fecha</a>
-                                @foreach ($datos as $dato)
-                                    <p id="leaderBoard" class="nav-link">{{$dato->fecha}}</p>
-                                @endforeach
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active">Hora Entrada</a>
-                                @foreach ($datos as $dato)
-                                    <p id="leaderBoard" class="nav-link">{{$dato->hora_entrada}}</p>
-                                @endforeach
-                            </li>
+    <div id="players"></div>
 
-                            <li class="nav-item">
-                                <a class="nav-link active">Hora Salida</a>
-                                @foreach ($datos as $dato)
-                                    <p id="leaderBoard" class="nav-link">{{$dato->hora_salida}}</p>
-                                @endforeach
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active">Tiempo</a>
-                                @foreach ($datos as $dato)
-                                    <p id="leaderBoard" class="nav-link">{{$dato->tiempo}}</p>
-                                @endforeach
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active">Horas</a>
-                                @foreach ($datos as $dato)
-                                    <p id="leaderBoard" class="nav-link">{{$dato->horas}}</p>
-                                @endforeach
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active">Estado</a>
-                                @foreach ($datos as $dato)
-                                    <p id="leaderBoard" class="nav-link">{{$dato->estado}}</p>
-                                @endforeach
-                            </li>
+@endsection
 
+@section('script')
 
-                        </ul>
-            </div>
+    <script type="text/javascript">
 
-        </div>
+            var assist = {!! $datos !!};
 
+            var table = new Tabulator("#players", {
+                height: 525,
+                data: assist,
+                layout: "fitColumns",
+                pagination: "local",
+                paginationSize: 8,
+                tooltips: true,
+                columns: [{
+                        title: "Fecha",
+                        field: "fecha",
+                        sorter: "joiningdate",
+                        width: 150,
+                        headerFilter: "input",
+                        hozAlign: "center",
+                    }, {
+                        title: "Horas",
+                        field: "horas",
+                        sorter: "number",
+                        hozAlign: "center",
+                        width: 100,
+                    }, {
+                        title: "Estado",
+                        field: "estado",
+                        hozAlign: "center",
+                        width: 100,
+                        headerFilter: true,
+                        headerFilterParams: {
+                            "autorizado": "autorizado",
+                            "pendiente": "pendiente",
+                            "denegado": "denegado",
+                        },
+                        formatter: function(cell, formatterParams, onRendered) {
+                            // Mostrar un ícono o texto según el estado
+                            var estado = cell.getValue();
+                            var icono = "";
+
+                            if (estado === "autorizado") {
+                                icono = "✔️";
+                            } else if (estado === "pendiente") {
+                                icono = "⏳";
+                            } else if (estado === "denegado") {
+                                icono = "❌";
+                            }
+                            return icono;
+                        },
+                        
+                    },{
+                        title: "Entrada",
+                        field: "hora_entrada",
+                        sorter: "string",
+                        hozAlign: "center",
+                    },
+                    {
+                        title: "Salida",
+                        field: "hora_salida",
+                        sorter: "string",
+                        hozAlign: "center",
+                        editor: "select",
+                    }, {
+                        title: "Tiempo",
+                        field: "tiempo",
+                        sorter: "number",
+                        hozAlign: "center"
+                    },  
+                    
+                ],
+                //rowClick: function(e, row) {
+                //    alert("Row " + row.getData().playerid + " Clicked!!!!");
+                //},
+            });
+
+           
+            
+    </script>
 @endsection

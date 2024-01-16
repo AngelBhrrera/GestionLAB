@@ -1,27 +1,38 @@
 @extends('../layouts/main')
 
 @section('head')
-<html class='dark'>
-<meta charset="UTF-8">
-<title>Laravel 10 Ajax DataTables CRUD (Create Read Update and Delete) - Cairocoders</title>
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<style>
-    .submenu {
-        display: none;
-    }
+    @section('headertype')
+        <html class='dark'>
+    @endsection
+    <style>
+        container {
+            height: 100%;
+            display: flex;
+        }
+        .container:hover .imagen-rol {
+            -webkit-transform: scale(1.5);
+            transform: scale(1.5);
+            transition: all .3s;
+        }
 
-    .submenu.active {
-        display: block;
-    }
-</style>
-
-
-@yield('subhead')
+        footer {
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            padding: 1rem 4%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            background-color: #BDC9EB; 
+            z-index: 1000; 
+        }
+    </style>
+    @yield('subhead')
 @endsection
 
-
 @section('content')
-
 <body class="main">
     <div class="xl:pl-5 xl:py-5 flex h-screen">
         <nav class="side-nav">
@@ -66,7 +77,7 @@
                                                 <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
                                                 <path d="m9 9.5 2 2 4-4" />
                                             </svg></i> </div>
-                                    <div class="side-menu__title">Visitas</div>
+                                    <div class="side-menu__title">Check-in Visitas</div>
                                 </a>
                             </li>
                             <li>
@@ -249,6 +260,12 @@
                         </a>
                         <ul class="">
                             <li>
+                                <a href="{{ route('admin.asign_act') }}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
+                                    <div class="side-menu__title"> Asignar </div>
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{{ route('admin.actividades') }}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
                                     <div class="side-menu__title"> Creadas </div>
@@ -409,6 +426,7 @@
                     </li>
                 </ul>
             </div>
+            
             <!-- END: Side Menu -->
         </nav>
 
@@ -423,36 +441,24 @@
                         </ol>
                     </nav>
                     <!-- END: Breadcrumb -->
-
                     <!-- BEGIN: Intermede -->
                     <div class="-intro-x xl:hidden mr-3 sm:mr-6">
                         <div class="mobile-menu-toggler cursor-pointer"> <i data-lucide="bar-chart-2" class="mobile-menu-toggler__icon transform rotate-90 dark:text-slate-500"></i> </div>
                     </div>
                     <div class="intro-x relative ml-auto sm:mx-auto"> </div>
                     <!-- END: Intermede -->
-
-
                     <div class="intro-x relative ml-auto flex sm:mx-auto">
                         <a href="{{ route('admin.checkin')  }}"><i width="30" height="30" data-lucide="check-circle-2"></i></a>
-
                     </div>
-
-                    <div class="intro-x relative ml-auto flex sm:mx-auto">
-
-                    </div>
-
+                    <div class="intro-x relative ml-auto flex sm:mx-auto"></div>
                     <div class="intro-x relative ml-auto flex sm:mx-auto">
                     @if (Auth::user()->can_admin == 1 && Auth::user()->tipo != "Superadmin")
                             <a href="{{ route('admin.cambiorol') }}">
-                                <img title="Cambiar a Prestador" src="{{asset('build/assets/images/prestico3.svg')}}" width="30" height="30" alt="">
+                                <div class="container"><img class="imagen-rol" title="Cambiar a Prestador" src="{{asset('build/assets/images/prestico3.svg')}}" width="30" height="30" alt=""></div>
                             </a>
                             @endif 
                     </div>
-
-                    <div class="intro-x relative ml-auto flex sm:mx-auto">
-
-                    </div>
-
+                    <div class="intro-x relative ml-auto flex sm:mx-auto"></div>
                     <!-- Comienza menu cuenta-->
                     <div class="intro-x dropdown h-10">
                         <div class="h-full dropdown-toggle flex items-center" role="button" aria-expanded="false" data-tw-toggle="dropdown">
@@ -468,7 +474,6 @@
                                 <div class="text-xs text-slate-400">{{$userRol=ucfirst(Auth::user()->tipo)}}</div>
                             </div>
                         </div>
-
                         <div class="dropdown-menu w-56">
                             <ul class="dropdown-content">
                                 <li>
@@ -481,46 +486,21 @@
                         </div>
                     </div>
                 </div>
-                <div class="container" style="padding: 20px 15px 0px 15px">
+                <div class="container">
                     @yield('subcontent')
                 </div>
+                
             </div>
-            <footer class="main-footer">
-                <div class="float-right d-none d-sm-block">
-                    <b>Version</b> 3.1.1
-                </div>
-                <strong>Copyright &copy; 2023 <a href="https://www.inventores.mx/">Laboratorio de Inventores</a>.</strong> All rights reserved.
-            </footer>
         </div>
+    </div>
+    <div class="footer-container">
+        <footer class="main-footer" id="mobileFooter">
+            <div class="float-right">
+                <b>Version</b> 3.1.1
+            </div>
+            <strong>Copyright &copy; 2024 <a href="https://www.inventores.mx/">Laboratorio de Inventores</a>.</strong> All rights reserved.
+        </footer>
+    </div>
+
 </body>
-
 @endsection
-
-<?php
-// <!-- JQuery -->
-// <script src={{asset('plugins/jquery/jquery.min.js')}}></script>
-// <!-- Bootstrap 4 -->
-// <script src={{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}></script>
-// <!-- AdminLTE App -->
-// <script src={{asset('dist/js/adminlte.min.js')}}></script>
-// <!-- DataTables  & Plugins -->
-// <script src={{asset('plugins/datatables/jquery.dataTables.min.js')}}></script>
-// <script src={{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}></script>
-// <script src={{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}></script>
-// <script src={{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}></script>
-// <script src={{asset('plugins/datatables-buttons/js/dataTables.buttons.min.js')}}></script>
-// <script src={{asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}></script>
-// <script src={{asset('plugins/jszip/jszip.min.js')}}></script>
-// <script src={{asset('plugins/pdfmake/pdfmake.min.js')}}></script>
-// <script src={{asset('plugins/pdfmake/vfs_fonts.js')}}></script>
-// <script src={{asset('plugins/datatables-buttons/js/buttons.html5.min.js')}}></script>
-// <script src={{asset('plugins/datatables-buttons/js/buttons.print.min.js')}}></script>
-// <script src={{asset('plugins/datatables-buttons/js/buttons.colVis.min.js')}}></script>
-// <script src="{{asset('plugins/daterangepicker/daterangepicker.js')}}"></script>
-// <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
-// <script src="{{asset('plugins/inputmask/jquery.inputmask.min.js')}}"></script>
-
-// {{-- <script src="{{asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script> --}}
-// {{-- <script src={{asset('plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}></script> --}}
-// {{-- <script src="{{asset('plugins/moment/moment.min.js')}}"></script> --}}
-?>

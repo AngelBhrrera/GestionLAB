@@ -81,7 +81,6 @@ class VisitanteController extends Controller
             $datos = $request->all();
             $insert = cita_cliente::create($datos);
             return redirect()->route('formulario')->with('success', 'Mensaje de éxito');
-            
 
             // $credencial= $request -> file("credencial");
             // $render= $request -> file("render");

@@ -21,12 +21,7 @@ class PrestadoresInactivos extends Migration
         `users`.`correo` AS `correo`,
         `users`.`codigo` AS `codigo`,
         `users`.`tipo` AS `tipo`,
-        `users`.`email_verified_at` AS `email_verified_at`,
-        `users`.`password` AS `password`,
-        `users`.`remember_token` AS `remember_token`,
-        `users`.`created_at` AS `created_at`,
         `users`.`carrera` AS `carrera`,
-        `users`.`updated_at` AS `updated_at`,
         `users`.`horas` AS `horas`,
         `cuenta_horas`.`horas_servicio` AS `horas_cumplidas`,
         `cuenta_horas`.`horas_restantes` AS `horas_restantes`
@@ -36,7 +31,7 @@ class PrestadoresInactivos extends Migration
             LEFT JOIN `cuenta_horas` ON
                 (
                     (
-                        `users`.`codigo` = `cuenta_horas`.`codigo`
+                        `users`.`id` = `cuenta_horas`.`id`
                     )
                 )
             )

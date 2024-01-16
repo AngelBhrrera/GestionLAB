@@ -1,13 +1,15 @@
 @extends('layouts/admin-layout')
 
-<link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
-  <!-- Theme style -->
-
-<link rel="stylesheet" href="{{asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
+@section('subhead')
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
+@endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Registro</a></li>
+    <li class="breadcrumb-item"><a href="{{'home'}}">Admin</a></li>
+    <li class="breadcrumb-item"><a href="{{'home'}}">Registro</a></li>
     <li class="breadcrumb-item active" aria-current="page">Check-In</li>
 @endsection
 
@@ -45,8 +47,8 @@
         </div>
     </main>
 @endsection
+
 @section('script')
 
-@endsection
-
+ @endsection
 

@@ -18,7 +18,8 @@ class Impresionesasignados extends Migration
         `proyectos_prestadores`.`id_proyecto` AS `id_proyecto`,
         `proyectos_prestadores`.`id` AS `id_impresion_prestador`,
         `proyectos_prestadores`.`status` AS `status_impresion`,
-        `cita_clientes`.`id` AS `id_cliente`,
+
+        `cita_clientes`.`id_citas` AS `id_cliente`,
         `cita_clientes`.`correo` AS `correo_cliente`,
         `cita_clientes`.`nombre` AS `nombre_cliente`,
         `cita_clientes`.`telefono` AS `telefono_cliente`,
