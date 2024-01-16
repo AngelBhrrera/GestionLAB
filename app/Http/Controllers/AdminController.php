@@ -274,11 +274,7 @@ class AdminController extends Controller
     public function  modificarSede(Request $request){
         
         $nombre=$request->input("nuevoNombre");
-        $buscarSede = DB::Select("Select nombre_Sede from sede where nombre_Sede = '$nombre'");
-        if (count($buscarSede)>0){
-            return redirect(route('admin.sedes'))->with('warning', "Ya existe una sede con ese nombre");
-        }
-
+        
         $id=$request->input("idSede");
         $matutino=($request->has("matutino")) ? 1 : 0;
         $mediodia=($request->has("mediodia")) ? 1 : 0;
@@ -294,7 +290,12 @@ class AdminController extends Controller
             $request->validate([
                 'nuevoNombre' => 'required|min:3|max:255|unique:sede,nombre_Sede',
             ]);
+            $buscarSede = DB::Select("Select nombre_Sede from sede where nombre_Sede = '$nombre'");
+            if (count($buscarSede)>0){
+                return redirect(route('admin.sedes'))->with('warning', "Ya existe una sede con ese nombre");
+            }
         }
+        
         $buscarSede = DB::Select("Select nombre_Sede from sede where nombre_Sede = '$request->nombreSede'");
         DB::update("Update sede 
         set nombre_Sede='$nombre',
@@ -2083,6 +2084,30 @@ class AdminController extends Controller
             ->get();
 
         return response()->json($actividades);
+    }
+
+    public function ver_reportes_parciales(){
+        return view('admin.ver_reportes_parciales',['reportes'=>[]]);
+    }
+
+    public function busqueda_reportes_parciales(Request $request){
+        $id_prestador = DB::select("Select id from users where codigo = '$request->busqueda'");
+        
+        if(count($id_prestador) == 0){
+            return redirect()->back()->with('warning', 'no hay registros');
+        }
+        $id = $id_prestador[0];
+        $reportes = DB::select("Select * from reportes_s_s where id_prestador = $id");
+        if(count($id_prestador)==0){
+            return redirect()->route('admin.busqueda_reportes_parciales')->with(['reportes'=>[], 'warning'=>"No se encontraron registros"]);
+
+        }
+        if(count($reportes) != 0){
+            return redirect()->route('admin.busqueda_reportes_parciales')->with(['reportes'=>$reportes, 'codigo'=> $request->busqueda]);
+        }else{
+            return redirect()->route('admin.busqueda_reportes_parciales')->with(['reportes'=>[], 'warning'=>"No se encontraron registros"]);
+        }
+
     }
 
         /*public function index()
