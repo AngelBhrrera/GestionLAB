@@ -16,13 +16,11 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-9">
-            <div class="card card-primary">
+        <div class="card card-primary">
                 <div class="card-header">
-                    <h1 class="card-title">Mis Impresiones</h1>
+                    <h3  class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;"> Mis impresiones </h3>
                 </div>
-                <div class= "container"></div>
-               
-                <div id="players"></div>
+                <div class="text-center mx-auto" style="padding-left: 1.5px;" id="players"></div>
             </div>
         </div>
     </div>
