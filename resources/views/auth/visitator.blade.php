@@ -1,9 +1,5 @@
 @extends('layouts/admin-layout')
 
-<link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
-  <!-- Theme style -->
-
-<link rel="stylesheet" href="{{asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
@@ -48,4 +44,18 @@
 
 @endsection
 
+
+
+    <script src={{asset('plugins/jquery/jquery.min.js')}}></script>
+    <!-- Bootstrap 4 -->
+    <script src={{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}></script>
+
+    <script type="text/javascript">
+    $('#alert').fadeIn();
+    setTimeout(function() {
+        $("#alert").fadeOut();
+    },5000);
+    </script>
+
+@endsection
 

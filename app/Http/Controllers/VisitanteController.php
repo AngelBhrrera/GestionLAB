@@ -56,16 +56,15 @@ class VisitanteController extends Controller
             'correo'=>'required',
             'nombre'=> 'required',
             'telefono'=> 'required|max:10',
-            'carrera' =>'required',
-            'semestre' =>'required',
             'N_piezas'=> 'required',
             'proyecto'=> 'required',
-            'observaciones' =>'required', //[new MaxWordsRule('hola', $request->input('Observaciones'))],
+            'observaciones' =>[new MaxWordsRule('hola', $request->input('Observaciones'))],
             'palabrasClave' =>'required',
             'introduccion' =>'required',
             'trabajosRelacionados' =>'required',
             'propuesta' =>'required',
             'conclusion' =>'required',
+
         ]);
        /* $messages = $validator->messages();
 
@@ -76,11 +75,12 @@ class VisitanteController extends Controller
         */
 
         if($validator ->fails()){
-            return redirect()->route("formulario")->withInput()->withErrors($validator->errors());
+            return redirect()->route('cliente.registro')->withInput()->withErrors($validator->errors());
         }else{
             $datos = $request->all();
             $insert = cita_cliente::create($datos);
             return redirect()->route('formulario')->with('success', 'Mensaje de éxito');
+            
 
             // $credencial= $request -> file("credencial");
             // $render= $request -> file("render");
@@ -287,10 +287,6 @@ class VisitanteController extends Controller
 
             return redirect()->route($dir)->with('error', $th->getMessage());
         }
-    }
-
-    public function formulario(){
-        return view("/visitante/registro_impresion_form");
     }
 
 }
