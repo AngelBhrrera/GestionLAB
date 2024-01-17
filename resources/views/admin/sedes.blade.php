@@ -10,7 +10,7 @@
     <div class="intro-y box p-5">
         <h2 class="text-2xl mt-5 font-medium">Horario</h2>
 
-        <div class="grid grid-cols-12 gap-6 mt-5">
+        <div class="grid grid-cols-12 gap-6 mt-5" id="alerta">
             <div class="intro-y col-span-12 lg:col-span-6">
                 @if (session('success'))
                     <h6 class="alert alert-success">{{session('success')}}</h6>     
@@ -39,7 +39,8 @@
             </select>
             <br><br>
             <input required type="text" name="nuevoNombre" id="nuevoNombre" style="width: 40%" placeholder="Nuevo nombre" class="form-control">
-            
+            <div class="form-check mr-2 pt-5"><label class="pl-5 pr-5" for="activa">Activa</label><input type="checkbox" class=" w-10 h-10 form-check-input" name="activa" id="activa"></div>
+
             <h1 class="text-2xl mt-5 font-medium">Turnos disponibles</h1>
             <div class="flex flex-col sm:flex-row mt-2">
                 <div class="form-check mr-2 pt-5"> <label class="pl-5 pr-5" for="matutino">Matutino</label><input type="checkbox" class="w-10 h-10 form-check-input" name="matutino"id="matutino"></div>
@@ -92,41 +93,54 @@
             datoSede = JSON.parse(selectSede.value);
             campoNombre.value=datoSede.nombre_Sede;
             idSede.value = datoSede.id_Sede;
-            //Check turno matituno
-            if(datoSede.turnoMatutino == 1){
+
+
+            //Cheack activo/inactivo
+            if(datoSede.activa == 1){
                 checks[0].checked = true;
             }else{
                 checks[0].checked = false;
             }
-            //Check turno medio día
-            if(datoSede.turnoMediodia == 1){
+            //Check turno matituno
+            if(datoSede.turnoMatutino == 1){
                 checks[1].checked = true;
             }else{
                 checks[1].checked = false;
             }
-
-            //Check turno vespertino
-            if(datoSede.turnoVespertino== 1){
+            //Check turno medio día
+            if(datoSede.turnoMediodia == 1){
                 checks[2].checked = true;
             }else{
                 checks[2].checked = false;
             }
 
-            //Check turno sabatino
-            if(datoSede.turnoSabatino== 1){
+            //Check turno vespertino
+            if(datoSede.turnoVespertino== 1){
                 checks[3].checked = true;
             }else{
                 checks[3].checked = false;
             }
 
-            //Check turno completo
-            if(datoSede.turnoTiempoCompleto == 1){
+            //Check turno sabatino
+            if(datoSede.turnoSabatino== 1){
                 checks[4].checked = true;
             }else{
                 checks[4].checked = false;
             }
+
+            //Check turno completo
+            if(datoSede.turnoTiempoCompleto == 1){
+                checks[5].checked = true;
+            }else{
+                checks[5].checked = false;
+            }
             
         }
+        setTimeout(function(){
+
+            document.getElementById("alerta").style.display="none";
+
+        }, 4000);
     </script>
     
   

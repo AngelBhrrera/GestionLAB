@@ -362,6 +362,7 @@ class AdminController extends Controller
         $vespertino=($request->has("vespertino")) ? 1 : 0;
         $sabatino=($request->has("sabatino")) ? 1 : 0;
         $completo=($request->has("completo")) ? 1 : 0;
+        $activa=($request->has("activa")) ? 1 : 0;
 
         $nombreAnterior = DB::select("Select nombre_Sede from sede where id_Sede=$id");
 
@@ -379,7 +380,8 @@ class AdminController extends Controller
         turnoMediodia=$mediodia,
         turnoVespertino=$vespertino,
         turnoSabatino=$sabatino,
-        turnoTiempoCompleto=$completo 
+        turnoTiempoCompleto=$completo,
+        activa=$activa
         where id_Sede=$id");
 
         return redirect(route('admin.sedes'))->with('success', 'Modificada correctamente');
