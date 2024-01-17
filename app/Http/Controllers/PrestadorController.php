@@ -74,7 +74,7 @@ class PrestadorController extends Controller
     {
         $impresoras = DB::table('impresoras')
             ->select('*')
-            ->where('estado', 'Activo')
+            ->where('estado', 1)
             ->get();
         $proy = DB::table('proyectos')->select('*')->get();
 
@@ -227,8 +227,8 @@ class PrestadorController extends Controller
             } else {
 
                 $inicio = DB::table('registros_checkin')
-                ->insert([['origen' => $origen, 'idusuario' => $usuario[0]->id, 'codigo' => $codigo, 'nombre' => $usuario[0]->name, 
-                'apellido' => $usuario[0]->apellido, 'fecha' => date("d/m/Y"), 'hora_entrada' => date('H:i:s'), 'horas' => 0, 'tipo' => $usuario[0]->tipo, 
+                ->insert([['origen' => $origen, 'idusuario' => $usuario[0]->id, 'fecha' => date("d/m/Y"), 
+                'hora_entrada' => date('H:i:s'), 'horas' => 0, 'tipo' => $usuario[0]->tipo, 
                 'encargado_id' => $usuario[0]->encargado_id]]);
 
                 return redirect()->route($dir)

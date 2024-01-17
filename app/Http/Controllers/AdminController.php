@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 /*
 use ProyectosPrestadores;
 use PhpParser\Node\Stmt\Switch_;
@@ -103,6 +104,64 @@ class AdminController extends Controller
         ->get();
 
         return view('admin/prestadoresInactivos', ['datos' => json_encode($data)]);
+    }
+
+    public function activar($id) {
+
+        $type = DB::table('users')
+        ->select('tipo')
+        ->where('id', $id)
+        ->get();
+
+        if($type == ('prestadorp' || 'prestador_inactivo')){
+            DB::table('users')
+            ->where('id', $id)
+            ->update(['tipo' => 'prestador']);
+        }else if($type == ('voluntariop' || 'voluntario_inactivo')){
+            DB::table('users')
+            ->where('id', $id)
+            ->update(['tipo' => 'voluntario']);
+        }else if($type == ('practicantep' || 'practicante_inactivo')){
+            DB::table('users')
+            ->where('id', $id)
+            ->update(['tipo' => 'practicante']);
+        }
+    
+        return response()->json(['message' => 'Activado exitosamente']);
+    }
+
+    public function desactivar($id) {
+
+        $type = DB::table('users')
+        ->select('tipo')
+        ->where('id', $id)
+        ->get();
+
+        if($type == ('prestador')){
+            DB::table('users')
+            ->where('id', $id)
+            ->update(['tipo' => 'prestador_inactivo']);
+        }else if($type == ('voluntario')){
+            DB::table('users')
+            ->where('id', $id)
+            ->update(['tipo' => 'voluntario_inactivo']);
+        }else if($type == ('practicante')){
+            DB::table('users')
+            ->where('id', $id)
+            ->update(['tipo' => 'practicante_inactivo']);
+        }
+    
+        return response()->json(['message' => 'Desactivado exitosamente']);
+    }
+
+    public function liberar($id) {
+
+            DB::table('users')
+            ->where('id', $id)
+            ->update(['fecha_salida' => Carbon::now()]);
+        
+
+        return response()->json(['message' => 'Liberado exitosamente']);
     }
 
     public function administradores()
@@ -225,6 +284,26 @@ class AdminController extends Controller
         ]);
     }
 
+    public function activate_print($id) {
+
+        $act = DB::table('impresoras')
+        ->select('estado')
+        ->where('id', $id)
+        ->get();
+
+        if($act->first()->estado === 1){
+            DB::table('impresoras')
+            ->where('id', $id)
+            ->update(['estado' => '0']);
+        }else{
+            DB::table('impresoras')
+            ->where('id', $id)
+            ->update(['estado' => '1']);
+        }
+
+        return response()->json(['message' => 'Impresora activada']);
+    }
+
     public function make_print(Request $request)
     {
 
@@ -240,12 +319,10 @@ class AdminController extends Controller
 
         ]);
 
-        $print = DB::table('impresoras')
+        $data = DB::table('impresoras')
         ->get();
 
-        return view('admin/registro_impresora', [
-            'impresoras' => $print
-        ]);
+        return redirect()->back();
     }
 
     
@@ -309,9 +386,10 @@ class AdminController extends Controller
         return redirect(route('admin.sedes'))->with('success', 'Modificada correctamente');
     }
 
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    public function activar(Request $request)
+    /*public function activar(Request $request)
     {
         try {
             $id = $request->input('id');
@@ -345,9 +423,9 @@ class AdminController extends Controller
         $modificar = DB::table('users')->where('id', $id)->update(['tipo' => "prestador_terminado", 'fecha_salida' => date('Y-m-d')]);
 
         return redirect()->route("admin./admin/homeA");
-    }
+    }*/
 
-    public function activar_prestadores(Request $request)
+    /*public function activar_prestadores(Request $request)
     {
         $id = $request->input('idusuarioactivar');
         $modificar = DB::table('users')->where('id', $id)->update(['tipo' => "prestador"]);
@@ -373,7 +451,7 @@ class AdminController extends Controller
                 "columnas" => json_encode($columns),
             ]
         );
-    }
+    }*/
 
     public function desactivar_prestadores(Request $request)
     {

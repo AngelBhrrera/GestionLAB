@@ -87,9 +87,6 @@
             var table = new Tabulator("#players", {
                 height: "100%",
                 data: printers,
-                layout: "fitColumns",
-                resizableColumns: "false",
-                fitColumns: "true",
                 pagination: "local",
                 paginationSize: 7,
                 tooltips: true,
@@ -127,26 +124,57 @@
                     },  {
                         title: "Estado",
                         field: "estado",
-                        hozAlign: "right",
                         formatter: function(cell, formatterParams, onRendered) {
                             var estado = cell.getValue();
                             var icono = "";
-                            if (estado === "1") {
+                            if (estado == "1") {
                                 icono = "✔️";
-                            } else if (estado === "0") {
+                            } else if (estado == "0") {
                                 icono = "❌";
                             }
                             return icono;
                         },
                         hozAlign: "center",
                         width: 100,
-                    }, 
+                    }, {
+                        title: "Activar",
+                        field: "id",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            var value = cell.getValue();
+                            var button = document.createElement("button");
+                            button.style = "background-color: #4CAF50; color: white; border: 1px solid #4CAF50; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
+                            button.textContent = "Activar";
+                            button.addEventListener("click", function() {
+                                activarImpresora(value);
+                            });
+                            return button;
+                        }, 
+                        hozAlign: "center",
+                    },
                 ],  
-                //rowClick: function(e, row) {
-                //    alert("Row " + row.getData().playerid + " Clicked!!!!");
-                //},
             });
-            
+
+            function activarImpresora(value) {
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`activar_impresora/${value}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+
+                    console.log('Impresora activado:', data);
+
+                    window.location.reload(); 
+                })
+                .catch(error => {
+                    console.error('Error al activar impresora:', error);
+                });
+            } 
+
     </script>
 @endsection
 
