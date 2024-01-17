@@ -57,9 +57,11 @@ class RegisterController extends Controller
 
             case 'maestro':
             case 'alumno':
-                $rCentro = ['required','string'];
+                $rCodigo = ['required','string','unique:users'];
                 $rTelefono = ['required', 'string', 'max:10'];
+                $rCentro = ['required','string'];
                 $rCarrera = ['required', 'string', 'max:255'];
+                $rSede = ['nullable'];
                 $rhorario = ['nullable'];
                 $rHoras =  ['nullable'];
                 $rEncargado = ['nullable'];

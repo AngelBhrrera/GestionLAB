@@ -134,9 +134,9 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{route('formulario')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="codesandbox"></i> </div>
-                                    <div class="side-menu__title">Impresion de Modelos 3D</div>
+                                <a href="{{route('cliente.form')}}" class="side-menu">
+                                        <div class="side-menu__icon"> <i data-lucide="codesandbox"></i> </div>
+                                        <div class="side-menu__title">Impresion de Modelos 3D</div>
                                 </a>
                             </li>
                             <li>

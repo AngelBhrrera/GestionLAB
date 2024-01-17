@@ -3,6 +3,15 @@
 @section('subhead')
     <link href="https://unpkg.com/tabulator-tables@4.8.1/dist/css/tabulator.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.8.1/dist/js/tabulator.min.js"></script>
+    <style>
+        .download-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            margin-right: 10px; /* O ajusta el margen según tus necesidades */
+        }
+    </style>
 @endsection
 
 @section('breadcrumb')
@@ -18,7 +27,11 @@
 
     <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
         <h2 class="text-lg font-medium mr-auto">REGISTRO DE HORAS</h2>
-       
+    </div>
+    <div class="table-controls pl-10">
+                    <button class="download-button" id="download-json">Download JSON</button>
+                    <button class="download-button" id="download-csv">Download CSV</button>
+                    <button class="download-button" id="download-xlsx">Download XLSX</button>
     </div>
 
     <div id="players"></div>
@@ -102,7 +115,15 @@
                 //},
             });
 
-           
+            document.getElementById("download-csv").addEventListener("click", function(){
+                table.download("csv", "data.csv");
+            });
+            document.getElementById("download-json").addEventListener("click", function(){
+                table.download("json", "data.json");
+            });
+            document.getElementById("download-xlsx").addEventListener("click", function(){
+                table.download("xlsx", "data.xlsx", {sheetName:"My Data"});
+            });
             
     </script>
 @endsection

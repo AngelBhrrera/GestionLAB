@@ -28,8 +28,7 @@ class Prestadorespendientes extends Migration
         `users`.`updated_at` AS `updated_at`
         FROM
             `users`
-        WHERE
-            (`users`.`tipo` = 'prestadorP')
+            WHERE `users`.`tipo` IN ('prestadorp', 'voluntariop', 'practicantep')
         ");
     }
 

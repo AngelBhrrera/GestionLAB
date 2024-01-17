@@ -74,7 +74,7 @@ class PrestadorController extends Controller
     {
         $impresoras = DB::table('impresoras')
             ->select('*')
-            ->where('estado', 'Activo')
+            ->where('estado', 1)
             ->get();
         $proy = DB::table('proyectos')->select('*')->get();
 

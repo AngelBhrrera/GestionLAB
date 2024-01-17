@@ -55,11 +55,47 @@
                         headerFilter: "input",
                         hozAlign: "center",
                     }, 
+                    {
+                        title: "Activar",
+                        field: "id",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            var value = cell.getValue();
+                            var button = document.createElement("button");
+                            button.style = "background-color: #4CAF50; color: white; border: 1px solid #4CAF50; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
+                            button.textContent = "Activar";
+                            button.addEventListener("click", function() {
+                                activarPrestador(value);
+                            });
+                            return button;
+                        }, 
+                        hozAlign: "center",
+                    },
                 ],
                 //rowClick: function(e, row) {
                 //    alert("Row " + row.getData().playerid + " Clicked!!!!");
                 //},
             });
+
+            function activarPrestador(value) {
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`activar_prestador/${value}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+
+                    console.log('Usuario activado:', data);
+
+                    window.location.reload(); 
+                })
+                .catch(error => {
+                    console.error('Error al activar usuario:', error);
+                });
+            } 
             
     </script>
 @endsection

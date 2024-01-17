@@ -15,6 +15,7 @@
 <h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
     Prestadores Activos
 </h2>
+
 <div id="players"></div>
 @endsection
 
@@ -34,12 +35,14 @@
                         title: "Nombre",
                         field: "name",
                         sorter: "string",
+                        editor: "input",
                         headerFilter: "input",
                         hozAlign: "center",
                     }, {
                         title: "Apellido",
                         field: "apellido",
                         sorter: "string",
+                        editor: "input",
                         headerFilter: "input",
                         hozAlign: "center",
                     }, {
@@ -73,11 +76,18 @@
                         sorter: "string",
                         hozAlign: "center",
                     },{
-                        title: "MODIFICAR",
-                        hozAlign: "center",
-                    },
-                    {
-                        title: "ELIMINAR",
+                        title: "Modificar",
+                        field: "id",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            var value = cell.getValue();
+                            var button = document.createElement("button");
+                            button.style = "background-color: blue; color: white; border: 1px solid #4CAF50; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
+                            button.textContent = "Modificar";
+                            button.addEventListener("click", function() {
+                                modificarPrestador(value);
+                            });
+                            return button;
+                        }, 
                         hozAlign: "center",
                     },
                     
@@ -86,6 +96,25 @@
                 //    alert("Row " + row.getData().playerid + " Clicked!!!!");
                 //},
             });
+
+            function modificarPrestador(value) {
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`modificar_prestador/${value}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    window.location.reload(); 
+                })
+                .catch(error => {
+                    console.error('Error al activar usuario:', error);
+                });
+            } 
+
             
     </script>
 @endsection

@@ -5,6 +5,7 @@
         @yield('content')
         <link href="{{asset('plugins/fontawesome-free/css/all.min.css')}}"  rel="stylesheet" >
         <link href="{{asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}" rel="stylesheet" >
+
         <!-- BEGIN: JS Assets-->
         <link rel="preload" as="style" href="{{ asset('/build/assets/app.c07cb30e.css') }}" />
         <link rel="modulepreload" href="{{ asset('/build/assets/app.6c589841.js') }}" />

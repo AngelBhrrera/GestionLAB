@@ -15,6 +15,7 @@ class CitaClientes extends Migration
     {
         Schema::create('cita_clientes', function (Blueprint $table) {
             $table->id('id_citas');
+            $table->integer('id',0,0)->nullable();
             $table->string('correo',100);
             $table->string('nombre',100);
             $table->string('telefono',20);
@@ -23,13 +24,12 @@ class CitaClientes extends Migration
             // $table->text('credencial')->nullable();
             $table->text('enlaceDrive')->nullable();
             $table->string('proyecto',100);
-            // $table->text('credencial')->nullable();
             // $table->text('render')->nullable();
             // $table->text('ArchivoSTL')->nullable();
             $table->integer('N_piezas',0,0)->default((1));
             $table->text('observaciones');
             $table->timestamp('fecha')->useCurrent();
-            $table->string('status',25)->default('Solicitud_de_impresion');
+            $table->string('status',25)->default('solicitud_de_impresion');
             $table->text('palabrasClave');
             $table->text('introduccion');
             $table->text('trabajosRelacionados');
