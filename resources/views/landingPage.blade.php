@@ -661,7 +661,7 @@
                                     <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:support@mobileapp.com">jose.bcarranza@academicos.udg.mx</a>                            
                                 </p>
                                 <p class="mb-2 ml-2">                            
-                                    Titular del Laboratorio | Coordinador de ICOM
+                                    Jefe de laboratorio | Coordinador de ICOM
                                 </p>
 
                             </td>
@@ -673,7 +673,7 @@
                                     <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:support@mobileapp.com">luis.munoz.m@academicos.udg.mx</a>                            
                                 </p>
                                 <p class="mb-2 ml-2">                            
-                                    Profesor del laboratorio
+                                    Jefe de laboratorio
                                 </p>
                             </td>
                         </tr>
