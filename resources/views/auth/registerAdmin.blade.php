@@ -130,7 +130,7 @@
                                             @if (isset($sede))
                                                 <option id="sede" value="{{null}}" {{isset($dV[0]->sede) ? $dV[0]->sede == null ? 'selected="selected"' : '' : ''}}>Selecciona una sede</option>
                                                 @foreach ($sede as $dato )
-                                                    <option id="{{$dato->id_Sede}}" value="{{$dato->nombre_Sede}}" {{old('sede') == $dato->id_Sede ? 'selected="selected"' : '' }}>{{$dato->nombre_Sede }} </option>
+                                                    <option id="{{$dato->id_Sede}}" value="{{$dato->id_Sede}}" data-nombre="{{$dato->nombre_Sede}}" {{old('sede') == $dato->id_Sede ? 'selected="selected"' : '' }}>{{$dato->nombre_Sede }} </option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -176,7 +176,7 @@
                                             @if (isset($encargado))
                                                 <option id="prede" value="prede" {{isset($dV[0]->id_encargado) ? $dV[0]->id_encargado == null ? 'selected="selected"' : '' : ''}}>Seleccione un encargado</option>
                                                 @foreach ($encargado as $dato )
-                                                    <option id= "{{$dato->sede}}" value="{{$dato->horario}}" {{old('id_encargado') == $dato->id ? 'selected="selected"' : '' }}> {{$dato->name }} {{$dato->apellido}}</option>
+                                                    <option id= "{{$dato->sede}}" value="{{$dato->id}}" data-horario="{{$dato->horario}}" {{old('id_encargado') == $dato->id ? 'selected="selected"' : '' }}> {{$dato->name }} {{$dato->apellido}}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -301,7 +301,7 @@
             }
         }
 
-        function filtroEncargados(){
+        function filtroEncargados(){ // Filtros de encargados en relacion al horario y sede
            window.encargadosql = @json($encargado);
            var optionSelect = document.getElementById("id_encargado"); // valor de las opciones de encargados
            var turnoSelect = document.getElementById("horarios").value; // valor de las opciones de turnos
@@ -311,23 +311,15 @@
            var valorId = opcionSeleccionada.id;    
            optionSelect.disabled = false;
            encargadosql.forEach(function(campo){
-                if(turnoSelect === campo.horario){
-                    if(campo.sede == valorId){
-                        deshabilitartodo(optionSelect);
-                        deshabilitarEncargado(optionSelect, turnoSelect, valorId, campo.sede);
-                    }
-                }
+                deshabilitartodo(optionSelect);
+                deshabilitarEncargado(optionSelect, turnoSelect, valorId, campo.sede);
            }); 
         }
 
-        function deshabilitarEncargado(select, opcion, id, sede){
-            alert(opcion);
-            alert(sede);
+        function deshabilitarEncargado(select, opcion, id, sede){ // filtros
             for (var k = 1; k < select.options.length; k++){
-                if(select.options[k].value === opcion){
-                    alert(select.options[k].value);
+                if(select.options[k].dataset.horario === opcion){
                     if (select.options[k].id == id ){
-                        alert(select.options[k].id);
                         select.options[k].disabled = false;
                     }
                 }

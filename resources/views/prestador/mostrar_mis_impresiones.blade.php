@@ -100,7 +100,7 @@
                         field: "observaciones",
                         sorter: "number",
                         hozAlign: "center",
-                        formatter: "progress",
+                        editor:"input",
                     },
                 ],
                 //rowClick: function(e, row) {
