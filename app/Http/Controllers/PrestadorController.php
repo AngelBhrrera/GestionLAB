@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use DateTime;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 
 class PrestadorController extends Controller
@@ -929,7 +931,20 @@ class PrestadorController extends Controller
     }
 
     public function eliminar_reportes_parciales($id){
-        DB::table('reportes_s_s')->where('id', $id)->delete();       
-        return redirect()->route('parciales')->with('warning', 'Archivo eliminado con éxito');
+        // Obtén el nombre del archivo de la base de datos
+        $archivo = DB::select("Select nombre_reporte from reportes_s_s where id=$id");
+    
+        
+    
+        // Verifica si el archivo existe antes de intentar eliminarlo
+        $file_path = public_path('storage/reportes_parciales/'.$archivo[0]->nombre_reporte);
+        if (file_exists($file_path)) {
+            DB::table('reportes_s_s')->where('id', $id)->delete();
+            unlink($file_path);
+        }
+        
+        return redirect()->route('parciales')->with('warning', 'Archivo y registro eliminados con éxito');
     }
 }
+
+
