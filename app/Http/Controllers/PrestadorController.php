@@ -185,54 +185,67 @@ class PrestadorController extends Controller
                 case 'Superadmin':
                 case 'encargado':
                     $dir = 'admin.checkin';
-                    $origen = Auth::user()->name . ' ' . Auth::user()->apellido;
+                    $responsable = Auth::user()->name . ' ' . Auth::user()->apellido;
                     break;
                 case 'checkin':
                     $dir = 'api.checkin';
                     $origen = 'checkin';
                     break;
             };
-
             $codigo = $request->input('codigo');
-            $usuario = DB::table('users')->where('codigo', $codigo)->where(function ($query) {
-                $query->where('tipo', '=', "prestador")
-                    ->orWhere('tipo', '=', "encargado")
-                    ->orWhere('tipo', '=', "voluntario")
-                    ->orWhere('tipo', '=', "practicante");
-            })
-                ->select('name', 'id', 'apellido', 'tipo', 'encargado_id')->get();
-            $verificar = DB::table('registros_checkin')
-            ->where('idusuario', $usuario[0]->id)
-            ->where('fecha', date("d/m/Y"))
-            ->where('hora_salida', null)->exists();
-            if ($verificar) {
 
-                $hor = date('H:i:s');
+            $sedeVerif =  DB::table('users')
+            ->select('sede')
+            ->where('codigo', $codigo)
+            ->get();
 
-                $tiempo = DB::table('registros_checkin')
-                ->select('hora_entrada')
+            if($sedeVerif->first()->sede == Auth::user()->sede){
+
+                $usuario = DB::table('users')->where('codigo', $codigo)->where(function ($query) {
+                    $query->where('tipo', '=', "prestador")
+                        ->orWhere('tipo', '=', "encargado")
+                        ->orWhere('tipo', '=', "voluntario")
+                        ->orWhere('tipo', '=', "practicante");
+                })->select('name', 'id', 'apellido', 'tipo', 'encargado_id')->get();
+
+                $origen = $usuario[0]->name . " " . $usuario[0]->apellido;
+
+                $verificar = DB::table('registros_checkin')
                 ->where('idusuario', $usuario[0]->id)
                 ->where('fecha', date("d/m/Y"))
-                ->where('hora_salida', null)->get();
+                ->where('hora_salida', null)->exists();
+                if ($verificar) {
 
-                $tiempoCompleto = $this->diferencia($tiempo[0]->hora_entrada, $hor);
+                    $hor = date('H:i:s');
 
-                $salida = DB::table('registros_checkin')
-                ->where('idusuario', $usuario[0]->id)
-                ->where('fecha', date("d/m/Y"))
-                ->where('hora_salida', null)
-                ->update(['hora_salida' => $hor, 'tiempo' => $tiempoCompleto, 'horas' => $this->horasC($tiempoCompleto)]);
+                    $tiempo = DB::table('registros_checkin')
+                    ->select('hora_entrada')
+                    ->where('idusuario', $usuario[0]->id)
+                    ->where('fecha', date("d/m/Y"))
+                    ->where('hora_salida', null)->get();
 
-                return redirect()->route($dir)->with('success', 'Adios ' . $usuario[0]->name);
-            } else {
+                    $tiempoCompleto = $this->diferencia($tiempo[0]->hora_entrada, $hor);
 
-                $inicio = DB::table('registros_checkin')
-                ->insert([['origen' => $origen, 'idusuario' => $usuario[0]->id, 'fecha' => date("d/m/Y"), 
-                'hora_entrada' => date('H:i:s'), 'horas' => 0, 'tipo' => $usuario[0]->tipo, 
-                'encargado_id' => $usuario[0]->encargado_id]]);
+                    $salida = DB::table('registros_checkin')
+                    ->where('idusuario', $usuario[0]->id)
+                    ->where('fecha', date("d/m/Y"))
+                    ->where('hora_salida', null)
+                    ->update(['hora_salida' => $hor, 'tiempo' => $tiempoCompleto, 'horas' => $this->horasC($tiempoCompleto)]);
 
-                return redirect()->route($dir)
-                ->with('success', 'Bienvenido ' . $usuario[0]->name . '!');
+                    return redirect()->route($dir)->with('success', 'Adios ' . $usuario[0]->name);
+                } else {
+
+                    $inicio = DB::table('registros_checkin')
+                    ->insert([['origen' => $origen, 'idusuario' => $usuario[0]->id, 'fecha' => date("d/m/Y"), 
+                    'hora_entrada' => date('H:i:s'), 'horas' => 0, 'responsable'=> $responsable, 'tipo' => $usuario[0]->tipo, 
+                    'encargado_id' => Auth::user()->id]]);
+
+                    return redirect()->route($dir)
+                    ->with('success', 'Bienvenido/a ' . $usuario[0]->name . '!');
+                }
+            }else{
+                $msg = "El codigo ingresado no corresponde a la sede.";
+                return redirect()->route($dir)->with('error', $msg());
             }
         } catch (\Throwable $th) {
 

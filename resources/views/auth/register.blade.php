@@ -108,7 +108,7 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6"  id="divCode" style="display:none">
                                         <label for="input-wizard-1" class="form-label"  >Codigo</label>
-                                        <input id="codigo" type="text" class="form-control @if(old('opc')=='1') @error('código') is-invalid @enderror @endif"  name="codigo"  value="{{ old('opc')=='1' ? old('codigo') : '' }}" placeholder="Código">    
+                                        <input id="codigo" type="text" class="form-control @if(old('opc')=='1') @error('código') is-invalid @enderror @endif"  name="codigo"  value="{{ old('opc')=='1' ? old('codigo') : '' }}" placeholder="Código"  maxlength="9">    
                                             @if(old('opc')=='1')
                                                 @error('codigo')
                                                 <span class="invalid-feedback" role="alert">

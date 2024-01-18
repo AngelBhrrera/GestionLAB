@@ -23,9 +23,13 @@ class CreateCategoriasTable extends Migration
             ["nombre" => "Programacion"],
             ["nombre" => "Administracion"],
             ["nombre" => "Mantenimiento"],
-            ["nombre" => "Diseño Gráfico"],
+            ["nombre" => "Diseño"],
             ["nombre" => "Electronica"],
             ["nombre" => "Impresion"],
+            ["nombre" => "Investigación"],
+            ["nombre" => "Ludica"],
+            ["nombre" => "IA"],
+            ["nombre" => "Eventos"],
         ]);
     }
 

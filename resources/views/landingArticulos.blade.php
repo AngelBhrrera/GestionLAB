@@ -58,7 +58,7 @@
                                 <div class="media-body">
                                     <p class="card-text"><a href="https://www.researchgate.net/publication/368779614_Introduccion_al_desarrollo_de_videojuegos_con_GODOT">
                                             Introducción al desarrollo de videojuegos con GODOT</a></p>
-                                    
+                                            <img class="text-center"src="{{asset('build/assets/images/imgArticulos/godot.png')}}" style="margin-left: 20%;"alt="" width="100" height="100">
                                 </div>
                             </div>
                         </div>
@@ -74,6 +74,7 @@
                                     <p class="card-text">
                                         <a href="https://www.researchgate.net/publication/371636352_Diseno_de_videojuegos_para_el_analisis_de_habilidades_personales">
                                             Diseño de videojuegos para el análisis de habilidades personales</a></p>
+                                            <img class="text-center"src="{{asset('build/assets/images/imgArticulos/mandoMano.jpg')}}" style="margin-left: 10%;"alt="" width="200" height="100">
                                 </div>
                             </div>
                         </div>
@@ -88,6 +89,8 @@
                                     <p class="card-text">
                                         <a href="https://www.researchgate.net/publication/368433014_Introduction_to_scientific_video_game_design">
                                             Introduction to scientific video game design</a></p>
+                                            <img class="text-center"src="{{asset('build/assets/images/imgArticulos/gamedev.jpg')}}" style="margin-left: 10% ;"alt="" width="200" height="100">
+
                                 </div>
                             </div>
                         </div>

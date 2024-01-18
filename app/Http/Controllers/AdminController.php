@@ -35,7 +35,15 @@ class AdminController extends Controller
             ->orderBy('fecha_actual', 'desc')
             ->get();
             return view("admin.asistencias_admin", ['datos' => json_encode($sql)]);
-        }
+    }
+
+    public function checkinstate($id, $state) {
+            DB::table('registros_checkin')
+            ->where('id', $id)
+            ->update(['estado' => $state]);
+    
+        return response()->json(['message' => 'Activado exitosamente' . $id]);
+    }
 
     public function registro()
     {
@@ -267,15 +275,18 @@ class AdminController extends Controller
 
     public function watch_prints()
     {
+        $sede = auth()->user()->sede;
+      
         $data = DB::table('ver_impresiones')
-        ->select('impresora', 'proyecto',  'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
-        ->get();
+            ->select('impresora', 'proyecto', 'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
+            ->join('users', 'ver_impresiones.id_Prestador', '=', 'users.id')
+            ->where('sede', $sede)
+            ->get();
         return view( 'admin/mostrar_impresiones', [ 'impresiones' =>json_encode($data)]);
     }
 
     public function control_print()
     {
-
         $data = DB::table('impresoras')
         ->get();
 
@@ -362,6 +373,7 @@ class AdminController extends Controller
         $vespertino=($request->has("vespertino")) ? 1 : 0;
         $sabatino=($request->has("sabatino")) ? 1 : 0;
         $completo=($request->has("completo")) ? 1 : 0;
+        $activa=($request->has("activa")) ? 1 : 0;
 
         $nombreAnterior = DB::select("Select nombre_Sede from sede where id_Sede=$id");
 
@@ -379,7 +391,8 @@ class AdminController extends Controller
         turnoMediodia=$mediodia,
         turnoVespertino=$vespertino,
         turnoSabatino=$sabatino,
-        turnoTiempoCompleto=$completo 
+        turnoTiempoCompleto=$completo,
+        activa=$activa
         where id_Sede=$id");
 
         return redirect(route('admin.sedes'))->with('success', 'Modificada correctamente');

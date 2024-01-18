@@ -60,6 +60,11 @@
                 paginationSize: 8,
                 tooltips: true,
                 columns: [{
+                        title: "ID",
+                        field: "id",
+                        visible: false,
+                        width: 2,
+                    }, {
                         title: "Prestador",
                         field: "responsable",
                         headerFilter: "input",
@@ -84,6 +89,13 @@
                         title: "Estado",
                         field: "estado",
                         editor: "select",
+                        editorParams: {
+                            values: {
+                                "autorizado": "autorizado",
+                                "pendiente": "pendiente",
+                                "denegado": "denegado",
+                            }
+                        },
                         headerFilter: true,
                         headerFilterParams: {
                             "autorizado": "autorizado",
@@ -91,7 +103,6 @@
                             "denegado": "denegado",
                         },
                         formatter: function(cell, formatterParams, onRendered) {
-                            // Mostrar un ícono o texto según el estado
                             var estado = cell.getValue();
                             var icono = "";
 
@@ -102,12 +113,17 @@
                             } else if (estado === "denegado") {
                                 icono = "❌";
                             }
-
                             return icono;
                         },
                         hozAlign: "center",
                         width: 100,
-                    },{
+                        cellEdited: function (cell) {
+                            var row = cell.getRow();
+                            var id = row.getData().id;
+                            var value = cell.getValue();
+                            cambiarEstado(id, value);
+                        }
+                    }, {
                         title: "Fecha",
                         field: "fecha",
                         sorter: "date",
@@ -149,6 +165,27 @@
                     },  
                 ],
             });
+
+            function cambiarEstado(id, value) {
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`changestate/${id}/${value}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+
+                    console.log('Estado de horas cambiado', data);
+
+                    //window.location.reload(); 
+                })
+                .catch(error => {
+                    console.error('Error al cambiar de estado:', error);
+                });
+            } 
 
             document.getElementById("download-csv").addEventListener("click", function(){
                 table.download("csv", "data.csv");
