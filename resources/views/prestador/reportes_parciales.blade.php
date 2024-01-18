@@ -23,6 +23,10 @@
         @error('reporte_parcial')
             <h6 class="alert alert-danger" id="error">{{$message}}</h6>
         @enderror
+
+        @error('tipo_reporte')
+            <h6 class="alert alert-danger" id="error">{{$message}}</h6>
+        @enderror
     </div>
 
     <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
@@ -53,7 +57,8 @@
                                     <div class="file__icon__file-name">PDF</div>
                                 </a>
                                 <a href="{{asset('storage/reportes_parciales/'. $reporte->nombre_reporte)}}" target="_blank">
-                                    <div class="block font-medium mt-4 text-center">{{"Reporte ".++$num_reporte." ".$reporte->fecha_subida}}</div>
+                                    <div class="block font-medium mt-4 text-center">{{$reporte->tipo}}<br>{{$reporte->fecha_subida}}</div>
+                                    
                                 </a>
                                 
                                 <div class="text-slate-500 text-xs text-center mt-0.5"></div>
@@ -85,7 +90,7 @@
         </div>
         <!-- END: Inbox Content -->
     </div>
-    <!-- Modal para cambiar la imagen -->
+    <!-- Modal para subir archivo -->
     <div id="blank-modal" class="p-5">
         <div class="preview">
             <!-- END: Modal Toggle -->
@@ -100,9 +105,10 @@
                             <form action="{{ route('subirReporte') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                     <div class="modal-body">
-                                            <div class="form-group">
+                                        <div class="form-group">
                                             <div class="text-center pt-5">
-                                        <label class="form-block-input btn-primary" style="
+                                                
+                                            <label class="form-block-input btn-primary" style="
                                             border-radius: 15px;
                                             font-size: 14px;
                                             font-weight: 600;
@@ -114,14 +120,20 @@
                                             width: fit-content;
                                             text-align: center;
                                             " >
-                                            <div style="display:flex;">
-                                                <i data-lucide="image" height="20" width="20"></i>
-                                                <input type="file"  id="reporte_parcial" name="reporte_parcial" 
-                                                class="form-control-file" style="display: none;"  accept="application/pdf"/>
-                                                <span class="form-file-span pl-5">Selecciona un archivo</span>
-                                            </div>
-                                        </label>
-                                    </div>
+                                                <div style="display:flex;">
+                                                    <i data-lucide="image" height="20" width="20"></i>
+                                                    <input type="file"  id="reporte_parcial" name="reporte_parcial" 
+                                                    class="form-control-file" style="display: none;"  accept="application/pdf"/>
+                                                    <span class="form-file-span pl-5">Selecciona un archivo</span>
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <select class="form-select mt-2 sm:mr-2" aria-label="Default select example" name="tipo_reporte" id="tipo_reporte">
+                                            <option value="{{null}}">Seleccione un tipo reporte</option>
+                                            <option value="Reporte parcial">Reporte parcial</option>
+                                            <option value="Oficio de comision">Oficio de comisión</option>
+                                            <option value="Reporte final">Reporte final</option>
+                                        </select>
                                         
                                     </div>
                                 </div>
@@ -182,7 +194,4 @@
         return confirmacion;
     }
 
-</script>
-
-       
 </script>

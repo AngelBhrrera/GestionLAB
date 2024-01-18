@@ -16,9 +16,7 @@ class CitaClientes extends Migration
         Schema::create('cita_clientes', function (Blueprint $table) {
             $table->id('id_citas');
             $table->integer('id',0,0)->nullable();
-            $table->string('correo',100);
-            $table->string('nombre',100);
-            $table->string('telefono',20);
+            $table->integer('id_Cliente');
             $table->string('carrera',100)->nullable();
             $table->integer('semestre',0,0)->nullable();
             // $table->text('credencial')->nullable();

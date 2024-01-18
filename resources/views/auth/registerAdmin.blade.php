@@ -54,11 +54,13 @@
                                     <div class="intro-y col-span-12 sm:col-span-6">
                                         <label for="input-wizard-3" class="form-label">Tipo</label>
                                             <select class="form-control" name="tipo" id="tipo" onchange="filtroVisitantes()">
-                                                <option selected id="RBprestador" value='prestadorp'>Prestador Servicio Social</option>
-                                                <option id="RBpracticante" value='practicantep'>Practicas Profesionales</option>
-                                                <option id="RBvoluntario" value='voluntariop'>Voluntario</option>
+                                                <option selected id="RBprestador" value='prestador'>Prestador Servicio Social</option>
+                                                <option id="RBpracticante" value='practicante'>Practicas Profesionales</option>
+                                                <option id="RBvoluntario" value='voluntario'>Voluntario</option>
                                                 <option id="clientA" value='alumno' >Visitante Alumno</option>
-                                                <option id="clientM" value='maestro'>Visitante Maestro</option>             
+                                                <option id="clientM" value='maestro'>Visitante Maestro</option>
+                                                <option id="clientA" value='admin' >Administrador</option>
+                                                <option id="clientA" value='encargado' >Encargado</option>             
                                             </select>
                                     </div>
                         </div>

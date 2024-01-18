@@ -28,7 +28,7 @@ class CreateUsersTable extends Migration
             $table->string('password', 191);
             $table->rememberToken();
             $table->timestamps();
-            $table->boolean('can_admin')->nullable()->default(0);
+            //$table->boolean('can_admin')->nullable()->default(0);
 
             $table->unsignedInteger('horas')->nullable();
             $table->string('fecha_salida', 100)->nullable();

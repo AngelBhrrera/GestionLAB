@@ -24,6 +24,7 @@ class CreateProyectosTable extends Migration
             $table->timestamp('fecha_final')->nullable()->default(null);
             $table->string('recursos')->nullable()->default(null);
             $table->integer('duracion')->nullable()->default(null);
+            $table->integer('id_Cliente')->nullable();
            
         });
     }

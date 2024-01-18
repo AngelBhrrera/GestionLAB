@@ -221,7 +221,7 @@
                        
 
                     <div class="intro-x relative ml-auto flex sm:mx-auto">
-                        @if (Auth::user()->can_admin == 1)
+                        @if (Auth::user()->tipo == "encargado")
                             <a href="{{ route('cambiarRol') }}">
                                 <div class="container"><img class="imagen-rol" title="cambiar a Admin"
                                 src="{{asset('build/assets/images/prestico2.svg')}}" width="30" height="30" alt=""></div>

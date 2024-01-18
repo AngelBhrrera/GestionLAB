@@ -17,7 +17,7 @@ class CreateReportesSSTable extends Migration
             $table->id();
             $table->unsignedInteger('id_prestador');
             $table->string('nombre_reporte');
-            $table->string('ruta_reporte');
+            $table->string('tipo');
             $table->date('fecha_subida');
             $table->timestamps();
         });

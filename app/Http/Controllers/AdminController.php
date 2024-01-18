@@ -65,9 +65,10 @@ class AdminController extends Controller
     public function general()
     {
         $data = DB::table('users')
-        ->select('name', 'apellido', 'correo', 'codigo', 'tipo', 'telefono')
-        ->whereNotIn('tipo', ['Admin', 'Superadmin'])
-        ->get();
+            ->select('users.name', 'users.apellido', 'users.correo', 'users.codigo', 'users.tipo', 'users.telefono', 'sede.nombre_Sede')
+            ->whereNotIn('users.tipo', ['Admin', 'Superadmin'])
+            ->join('sede', 'users.sede', '=', 'sede.id_Sede')
+            ->get();
 
         return view('admin/general_users', ['datos' => json_encode($data)]);
     }
@@ -477,7 +478,7 @@ class AdminController extends Controller
 
     public function cambiarRol()
     {
-        if (Auth::user()->can_admin == 1) {
+        if (Auth::user()->tipo == "encargado") {
 
             try {
                 $user = User::find(Auth::user()->id);
@@ -499,6 +500,31 @@ class AdminController extends Controller
             }
         }
     }
+
+    public function ver_reportes_parciales(){
+        $reportes = session('reportes');
+        $codigo = session('codigo');
+        return view('admin.ver_reportes_parciales', ['reportes'=>$reportes, 'codigo'=>$codigo]);
+    }
+
+    public function busqueda_reportes_parciales(Request $request){
+        $id_prestador = DB::select("Select id from users where codigo = $request->busqueda");
+        
+        if(count($id_prestador) == 0){
+            return redirect()->route('admin.reportes_parciales')->with('warning', 'El prestador no existe');
+        }
+        $id = $id_prestador[0]->id;
+        $reportes = DB::select("Select * from reportes_s_s where id_prestador = $id");
+
+       if(count($reportes) != 0){
+            return redirect()->route('admin.reportes_parciales')->with(['success'=>'Registro encontrado', 'reportes'=>$reportes, 'codigo'=> $request->busqueda]);
+            //return view('admin.ver_reportes_parciales',['reportes'=>$reportes]);
+        }else{
+            return redirect()->route('admin.reportes_parciales')->with(['warning'=>"No se encontraron registros del prestador", 'reportes'=>$reportes, 'codigo'=> $request->busqueda]);
+        }
+
+    }
+    
 //VIEJO CONTROLLER. /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //Guardar Estado
