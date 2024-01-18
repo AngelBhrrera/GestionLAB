@@ -2,3 +2,5 @@
 .env
 
 .env.local
+
+storage/app/public/reportes_parciales/
