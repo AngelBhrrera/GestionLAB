@@ -904,7 +904,7 @@ class PrestadorController extends Controller
 
     public function cambiarRol()
     {
-        if (Auth::user()->can_admin == 1) {
+        if (Auth::user()->tipo == "encargado") {
 
                 $user = User::find(Auth::user()->id);
                 if($user->tipo == "prestador"){
@@ -924,25 +924,35 @@ class PrestadorController extends Controller
     public function subir_reportes_parciales(Request $request){
         $request->validate([
             'reporte_parcial' => 'required|mimes:pdf|max:4096', //El archivo debe ser de tipo imagen y tener un tamaño máximo de MB
+            'tipo_reporte'  => 'required',
         ], [
             'reporte_parcial.max' => 'El archivo debe pesar menos de 4MB',
         ]);
 
         // Obtener el usuario autenticado
         $user_id = Auth::user()->id;
+        $tipo_reporte = $request->tipo_reporte;
 
 
         // Almacenar el archivo
         $reporte_path = $request->file('reporte_parcial')->store('public/reportes_parciales/');
 
         $nombre_archivo = basename($reporte_path);
-        $insertar= DB::table('reportes_s_s')->insert(['id_prestador' => $user_id, 'nombre_reporte' => $nombre_archivo, 'ruta_reporte'=>$reporte_path, 'fecha_subida' => date("Y/m/d")]);
+        $insertar= DB::table('reportes_s_s')->insert(['id_prestador' => $user_id, 'nombre_reporte' => $nombre_archivo, 'tipo'=>$tipo_reporte, 'fecha_subida' => date("Y/m/d")]);
         
         return redirect()->route('parciales')->with('success', 'Archivo subido con éxito');
     }
 
     public function eliminar_reportes_parciales($id){
-        DB::table('reportes_s_s')->where('id', $id)->delete();       
-        return redirect()->route('parciales')->with('warning', 'Archivo eliminado con éxito');
+        // Obtén el nombre del archivo de la base de datos
+        $archivo = DB::select("Select nombre_reporte from reportes_s_s where id=$id");
+        // Verifica si el archivo existe antes de intentar eliminarlo
+        $file_path = public_path('storage/reportes_parciales/'.$archivo[0]->nombre_reporte);
+        if (file_exists($file_path)) {
+            DB::table('reportes_s_s')->where('id', $id)->delete();
+            unlink($file_path);
+        }
+        
+        return redirect()->route('parciales')->with('warning', 'Archivo y registro eliminados con éxito');
     }
 }

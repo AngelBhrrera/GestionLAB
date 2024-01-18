@@ -32,8 +32,9 @@
                 data: users,
                 layout: "fitColumns",
                 pagination: "local",
-                paginationSize: 11,
+                paginationSize: 8,
                 tooltips: true,
+                groupBy:"nombre_Sede",
                 columns: [{
                         title: "Nombre",
                         field: "name",
@@ -60,7 +61,6 @@
                         field: "tipo",
                         sorter: "string",
                         hozAlign: "center",
-                        editor: "select",
                         headerFilter: true,
                         headerFilterParams: {
                             "": "",
@@ -77,13 +77,35 @@
                         sorter: "number",
                         hozAlign: "center",
                     },  {
-                        title: "MODIFICAR",
+                        title: "",
+                        field: "id",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            var value = cell.getValue();
+                            var button = document.createElement("button");
+                            button.style = "background-color: blue; color: white; border: 1px solid dark-blue; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
+                            button.textContent = "Modificar";
+                            button.addEventListener("click", function() {
+                                modificarPrestador(value);
+                            });
+                            return button;
+                        }, 
+                        hozAlign: "center",
+                    },  {
+                        title: "",
+                        field: "id",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            var value = cell.getValue();
+                            var button = document.createElement("button");
+                            button.style = "background-color: red; color: white; border: 1px solid dark-red; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
+                            button.textContent = "Eliminar";
+                            button.addEventListener("click", function() {
+                                eliminarPrestador(value);
+                            });
+                            return button;
+                        }, 
                         hozAlign: "center",
                     },
-                    {
-                        title: "ELIMINAR",
-                        hozAlign: "center",
-                    },
+
                     
                 ],
                 //rowClick: function(e, row) {
