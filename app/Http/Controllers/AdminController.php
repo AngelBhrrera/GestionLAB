@@ -35,7 +35,15 @@ class AdminController extends Controller
             ->orderBy('fecha_actual', 'desc')
             ->get();
             return view("admin.asistencias_admin", ['datos' => json_encode($sql)]);
-        }
+    }
+
+    public function checkinstate($id, $state) {
+            DB::table('registros_checkin')
+            ->where('id', $id)
+            ->update(['estado' => $state]);
+    
+        return response()->json(['message' => 'Activado exitosamente' . $id]);
+    }
 
     public function registro()
     {
@@ -267,15 +275,18 @@ class AdminController extends Controller
 
     public function watch_prints()
     {
+        $sede = auth()->user()->sede;
+      
         $data = DB::table('ver_impresiones')
-        ->select('impresora', 'proyecto',  'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
-        ->get();
+            ->select('impresora', 'proyecto', 'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
+            ->join('users', 'ver_impresiones.id_Prestador', '=', 'users.id')
+            ->where('sede', $sede)
+            ->get();
         return view( 'admin/mostrar_impresiones', [ 'impresiones' =>json_encode($data)]);
     }
 
     public function control_print()
     {
-
         $data = DB::table('impresoras')
         ->get();
 
