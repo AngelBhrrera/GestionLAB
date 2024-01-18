@@ -238,7 +238,7 @@
                     </div>
                     <div class="grid-item">
                         
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLScN0dNRm0MbuRs9uT6d-WoUmuizEa7Z5JwI4Bt4BHvuraHATQ/viewform">
+                        <a href="{{ route('inventores.formp') }}">  
                             <img src="build/assets/images/uso-de-impresoras-3D.png" alt="image">   
                             <p class="pdescripcion">Solicitud de impresión de modelos 3D</p>
                         </a>

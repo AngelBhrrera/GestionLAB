@@ -249,9 +249,15 @@ Route::controller(App\Http\Controllers\MedallasController::class)->group(functio
 
 Route::controller(App\Http\Controllers\HomeController::class)->group(function(){
     //Route::post('/crearImpresion', 'crearImpresion')->middleware('guest')->name('crearImpresion'); <--- registro de las solicitudes de impresion 3D
-    Route::post('update', 'update')->name('update');
-    Route::get('modificaradmin', 'modificaradmin')->name('modificaradmin');
-    Route::post('/cliente/reg', 'registro_impresion_form')->name('formulariof');
+    Route::name('inventores.')->group(function (){
+        Route::post('update', 'update')->name('update');
+        Route::get('modificaradmin', 'modificaradmin')->name('modificaradmin');
+        Route::get('/inventores/form', 'formp')->name('formp');
+        
+        Route::post('/inventores/reg', 'registro_impresion_form')->name('formulariof'); // ruta formulario no publica
+        Route::post('/inventores/form', 'public_form')->name('formulariop'); // nueva ruta para el formulario publico
+        
+    });
 });
 
 Route::controller(App\Http\Controllers\VisitanteController::class)->group(function(){

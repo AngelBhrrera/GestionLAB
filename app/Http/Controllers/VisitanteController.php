@@ -31,7 +31,7 @@ class VisitanteController extends Controller
     }
 
     public function form(){
-        return view("/visitante/registro_impresion_form");
+        return view("/visitante/public_form");
     }
 
     public function visita(){
