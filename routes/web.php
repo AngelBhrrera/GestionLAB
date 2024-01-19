@@ -138,7 +138,6 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     Route::get('/admin/Dias_no_laborables', 'diasfestivos')->name('diasfestivos');
                     Route::get('admin/liberar_prestador/{value}', 'liberar')->name('liberar');
                     Route::get('/admin/administradores', 'administradores')->name('administradores');
-
                     Route::get('admin/ver_reportes_parciales', 'ver_reportes_parciales')->name('reportes_parciales');
                     Route::get('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
                 });
@@ -197,22 +196,26 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
     Route::post('prestador/nota', 'guardarNota')->middleware('role:Superadmin')->name('nota');
     Route::post('prestador/horario_guardar', 'horario_guardar')->middleware('role:prestador,admin,Superadmin')->name('horario_guardar');
     // Route::post('/marcar', 'marcar')->middleware('role:admin,checkin,Superadmin')->name('marcar');
+
     Route::name('api.')->group(function () {
         Route::post('/marcar', 'marcar')->middleware('role:admin,checkin,Superadmin,encargado')->name('marcar');
         Route::post('/afirmas', 'asignarfirmas')->name('afirmas');    
     });
     Route::middleware('role:prestador,voluntario,practicante,encargado')->group(function() {
+        Route::get('prestador/home', 'home')->name('homeP');
 
         Route::get('prestador/reportes_parciales', 'show_reportes')->name('parciales');
         Route::post('prestador/subir_reporte_parcial', 'subir_reportes_parciales')->name('subirReporte');
         Route::get('prestador/eliminar_reporte_parcial/{id}', 'eliminar_reportes_parciales')->name('eliminarReporte');
 
-        Route::get('prestador/home', 'home')->name('homeP');
-        
         Route::get('prestador/registro_impresion', 'create_imps')->name('create_imps');
         Route::post('prestador/registrar_impresion', 'register_imps')->name('register_imps');
-
         Route::get('prestador/mostrar_mis_impresiones', 'show_imps')->name('show_imps');
+
+        Route::get('/prestador/home/perfil', 'perfil')->name('perfil');
+        Route::post('/prestador/home/perfil/cambiar-imagen-perfil', 'cambiarImagenPerfil')->name('cambiarImagenPerfil');
+
+        Route::get('/prestador/cambiarRol', 'cambiarRol')->name('cambiarRol');
 
         Route::get('prestador/horas', 'horas')->name('horas');
         Route::post('prestador/completar_impresion','completar_impresion')->name('completar_impresion');
@@ -235,15 +238,11 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::get('prestador/actividades_canceladas', 'actividades_canceladas')->name('actividades_canceladas');
         Route::put('prestador/actividades_creadas/{id_actividad}',  'retomarActividad')->name('retomarActividad');
 
-        Route::get('/prestador/home/perfil', 'perfil')->name('perfil');
-        Route::post('/prestador/home/perfil/cambiar-imagen-perfil', 'cambiarImagenPerfil')->name('cambiarImagenPerfil');
-        Route::post('prestador/cancelacion_prestador', 'cancelacion_prestador')->name('cancelacion_prestador');
         // Route::get('/proyectospendientes', 'proyectos')->name('proyectos');
         // Route::get('/proyectos_prendientes', 'proyectos_prendientes')->name('proyectos_prendientes');
         Route::get('/prestador/asistencias', 'asistencias')->name('asistencias');
         Route::get('/prestador/faltas', 'faltas')->name('faltas');
-        Route::get('/prestador/cambiarRol', 'cambiarRol')->name('cambiarRol');
-
+        Route::post('prestador/cancelacion_prestador', 'cancelacion_prestador')->name('cancelacion_prestador');
     });
 
 });

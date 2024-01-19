@@ -165,7 +165,7 @@
             </li>
         @endsection
     @endif
-    @if (Auth::user()->tipo == "encargado")
+    @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "Superadmin")
         @section('prestadores')
             <li>
                 <a href="#" class="side-menu">
@@ -276,7 +276,7 @@
             </li>
         @endsection
     @endif
-    @if (Auth::user()->tipo == "encargado")
+    @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "Superadmin")
         @section('contacto')
             <li>
                 <a href="#" class="side-menu">
@@ -390,7 +390,7 @@
         @endsection
     @endif
 
-    @if (Auth::user()->tipo == "encargado")
+    @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "Superadmin")
         @section('actividades')
             <li>
                 <a href="javascript:;" class="side-menu">
@@ -464,7 +464,7 @@
         @endsection
     @endif
 
-    @if (Auth::user()->tipo == "encargado")
+    @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "Superadmin")
         @section('impresiones')
             <li>
                 <a href="javascript:;" class="side-menu">
@@ -522,7 +522,7 @@
                         <path d="m16 20 2 2 4-4" />
                     </svg></i> </div>
             <div class="side-menu__title">
-                ASISTENCIAS (TEMPORAL, AUN NO SABEMOS SIS E QUEDARA O NO)
+                ASISTENCIAS (TEMPORAL, AUN NO SABEMOS SI SE QUEDARA O NO)
                 <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
             </div>
         </a>

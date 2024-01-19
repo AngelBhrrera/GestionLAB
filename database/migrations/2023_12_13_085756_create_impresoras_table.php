@@ -20,6 +20,7 @@ class CreateImpresorasTable extends Migration
             $table->string("tipo", 100);
             $table->boolean("estado")->default(1);
             $table->dateTime("ultimo_uso")->nullable();
+            $table->integer("id_Sede");
         });
     }
 

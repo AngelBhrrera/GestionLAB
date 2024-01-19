@@ -26,11 +26,12 @@ class CreateSedeTable extends Migration
             $table->integer('turnoTiempoCompleto')->length(10);
             $table->integer('no_Aplica')->length(10);
             $table->boolean('activa')->default(1);
+            $table->boolean('servicios_impresion')->default(0);
 
         });
 
             DB::table('sede')->insert([
-                "nombre_Sede" => "CUCEI Laboratorio",
+                "nombre_Sede" => "Inventores CUCEI",
                 'turnoMatutino'=> 1,
                 'turnoMediodia'=> 1,
                 'turnoVespertino'=> 1,
@@ -39,7 +40,7 @@ class CreateSedeTable extends Migration
                 'no_Aplica'=> 1,
             ]);
             DB::table('sede')->insert([
-                "nombre_Sede" => "CUCEI Coordinación",
+                "nombre_Sede" => "CORCOM",
                 'turnoMatutino'=> 1,
                 'turnoMediodia'=> 1,
                 'turnoVespertino'=> 1,

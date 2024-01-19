@@ -289,6 +289,7 @@ class AdminController extends Controller
     public function control_print()
     {
         $data = DB::table('impresoras')
+        ->where('id_Sede', auth()->user()->sede)
         ->get();
 
         return view('admin/registro_impresora',
@@ -328,6 +329,7 @@ class AdminController extends Controller
             'nombre' => $name,
             'marca' => $mark,
             'tipo' => $type,
+            'id_Sede' =>auth()->user()->sede
 
         ]);
 
