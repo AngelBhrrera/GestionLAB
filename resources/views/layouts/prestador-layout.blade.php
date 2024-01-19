@@ -77,7 +77,7 @@
                             </ul>
                         </li>
                     </li>
-
+                    {{--
                     <li>
                         <a href="#" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="calendar"></i> </div>
@@ -170,7 +170,7 @@
                             </li>
                         </ul>
                     </li>
-
+                    --}}
                     <li>
                         <a href="javascript:;" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="hard-drive"></i> </div>

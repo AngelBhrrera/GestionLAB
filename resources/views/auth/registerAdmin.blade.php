@@ -15,14 +15,15 @@
 @endsection
 
 @section('subcontent')
-
     <div style="display: flex;">
         <form method="POST" action="{{ route('registrar') }}">
             <div class="px-5 sm:px-20 pt-10 border-t border-slate-200/60 dark:border-darkmode-400">
                 <div id="formOne">
                     <div class="font-medium text-base">Ajustes de Perfil</div>
                     <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5">
+                    @csrf
                         <!-- Sección 1 -->
+                        @csrf
                         <div class="col-span-12 sm:col-span-4">
                                     <div class="intro-y col-span-12 sm:col-span-6">
                                         <label for="input-wizard-1" class="form-label">Nombre *</label>
@@ -54,13 +55,13 @@
                                     <div class="intro-y col-span-12 sm:col-span-6">
                                         <label for="input-wizard-3" class="form-label">Tipo</label>
                                             <select class="form-control" name="tipo" id="tipo" onchange="filtroVisitantes()">
-                                                <option selected id="RBprestador" value='prestador'>Prestador Servicio Social</option>
-                                                <option id="RBpracticante" value='practicante'>Practicas Profesionales</option>
-                                                <option id="RBvoluntario" value='voluntario'>Voluntario</option>
+                                                <option selected id="RBprestador" value='prestadorp'>Prestador Servicio Social</option>
+                                                <option id="RBpracticante" value='practicantep'>Practicas Profesionales</option>
+                                                <option id="RBvoluntario" value='voluntariop'>Voluntario</option>
                                                 <option id="clientA" value='alumno' >Visitante Alumno</option>
                                                 <option id="clientM" value='maestro'>Visitante Maestro</option>
-                                                <option id="clientA" value='admin' >Administrador</option>
-                                                <option id="clientA" value='encargado' >Encargado</option>             
+                                                <option id="encargados" value='encargado'>Encargado</option>  
+                                                <option id="admin" value='admin'>Administrador</option>               
                                             </select>
                                     </div>
                         </div>
@@ -130,7 +131,7 @@
                                         <label for="input-wizard-3" class="form-label">Sede *</label>
                                         <select class="form-control @if(old('opc')=='1') @error('sede') is-invalid @enderror @endif" name="sede" id="sede" onchange="sedeNavs()" >
                                             @if (isset($sede))
-                                                <option id="sede" value="{{null}}" {{isset($dV[0]->sede) ? $dV[0]->sede == null ? 'selected="selected"' : '' : ''}}>Selecciona una sede</option>
+                                                <option id="sede" value="{{0}}" {{isset($dV[0]->sede) ? $dV[0]->sede == null ? 'selected="selected"' : '' : ''}}>Selecciona una sede</option>
                                                 @foreach ($sede as $dato )
                                                     <option id="{{$dato->id_Sede}}" value="{{$dato->id_Sede}}" data-nombre="{{$dato->nombre_Sede}}" {{old('sede') == $dato->id_Sede ? 'selected="selected"' : '' }}>{{$dato->nombre_Sede }} </option>
                                                 @endforeach
@@ -256,6 +257,21 @@
                 
             }
             if (document.getElementById("RBvoluntario").selected){
+                inputSede.disabled = false;
+                inputTurno.disabled = false;
+                inputHoras.disabled = false;
+                inputEncargado.disabled = false;
+                
+            }
+
+            if (document.getElementById("admin").selected){
+                inputSede.disabled = false;
+                inputTurno.disabled = false;
+                inputHoras.disabled = false;
+                inputEncargado.disabled = false;
+                
+            }
+            if (document.getElementById("encargados").selected){
                 inputSede.disabled = false;
                 inputTurno.disabled = false;
                 inputHoras.disabled = false;

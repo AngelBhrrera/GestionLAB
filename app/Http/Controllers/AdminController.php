@@ -73,6 +73,14 @@ class AdminController extends Controller
         return view('admin/general_users', ['datos' => json_encode($data)]);
     }
 
+    public function clientes()
+    {
+        $data = DB::table('solo_clientes')
+        ->get();
+
+        return view('admin/lista_clientes', ['datos' => json_encode($data)]);
+    }
+
     public function prestadores()
     {
         $n_sede = DB::table('sede')
@@ -259,8 +267,13 @@ class AdminController extends Controller
     public function asign_act()
     {
 
+        $n_Sede =  DB::table('sede')
+        ->select('nombre_Sede')
+        ->where('id_Sede', auth()->user()->sede)
+        ->get();
+
         $prestadores = DB::table('solo_prestadores')
-        ->where('sede', auth()->user()->sede)
+        ->where('sede', $n_Sede->first()->nombre_Sede)
         ->where('horario', auth()->user()->horario)
         ->get();
 
@@ -338,11 +351,11 @@ class AdminController extends Controller
 
         return redirect()->back();
     }
-
     
     public function gestionSedes(){
         $sede= DB::select("SELECT * FROM sede;");
-        return view("admin.sedes", ['sede'=>$sede]);
+    
+        return view("admin.sedes", ['sede'=>$sede, 'tabla_sedes' => json_encode($sede)]);
     }
 
     public function nuevaSede(Request $request){
@@ -509,6 +522,9 @@ class AdminController extends Controller
     }
 
     public function busqueda_reportes_parciales(Request $request){
+        if ($request->busqueda==""){
+            return redirect()->route('admin.reportes_parciales')->with(['warning'=>'Debes ingresar un código']);
+        }
         $id_prestador = DB::select("Select id from users where codigo = $request->busqueda");
         
         if(count($id_prestador) == 0){
@@ -519,11 +535,9 @@ class AdminController extends Controller
 
        if(count($reportes) != 0){
             return redirect()->route('admin.reportes_parciales')->with(['success'=>'Registro encontrado', 'reportes'=>$reportes, 'codigo'=> $request->busqueda]);
-            //return view('admin.ver_reportes_parciales',['reportes'=>$reportes]);
         }else{
             return redirect()->route('admin.reportes_parciales')->with(['warning'=>"No se encontraron registros del prestador", 'reportes'=>$reportes, 'codigo'=> $request->busqueda]);
         }
-
     }
     
 //VIEJO CONTROLLER. /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -571,7 +585,7 @@ class AdminController extends Controller
     }
 
 
-    public function clientes()
+    /*public function clientes()
     {
         $columns = array(
             ["data" => "id", "visible" => false],
@@ -607,7 +621,7 @@ class AdminController extends Controller
                 "columnas" => json_encode($columns)
             ]
         );
-    }
+    }*/
 
     public function citas()
     {

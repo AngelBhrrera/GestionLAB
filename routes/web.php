@@ -117,6 +117,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::get('/admin/prestadores', 'prestadores')->name('prestadores');
                 Route::get('admin/activar_prestador/{value}', 'activar')->name('activar');
                 Route::get('admin/desactivar_prestador/{value}', 'desactivar')->name('desactivar');
+                
                 Route::get('/admin/clientes', 'clientes')->name('clientes');
 
                 Route::get('/admin/visitas', 'visits')->name('visitas');
