@@ -24,7 +24,8 @@ class PrestadoresInactivos extends Migration
         `users`.`carrera` AS `carrera`,
         `users`.`horas` AS `horas`,
         `cuenta_horas`.`horas_servicio` AS `horas_cumplidas`,
-        `cuenta_horas`.`horas_restantes` AS `horas_restantes`
+        `cuenta_horas`.`horas_restantes` AS `horas_restantes`,
+        `users`.`sede` AS `sede`
         FROM
             (
                 `users`

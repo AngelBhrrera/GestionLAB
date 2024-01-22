@@ -21,6 +21,7 @@ class Soloprestadores extends Migration
                 `users`.`correo` AS `correo`,
                 `users`.`codigo` AS `codigo`,
                 `users`.`tipo` AS `tipo`,
+                `users`.`sede` AS `id_Sede`,
                 `sede`.`nombre_Sede` AS `sede`,
                 `users`.`horario` AS `horario`,
                 `users`.`carrera` AS `carrera`,

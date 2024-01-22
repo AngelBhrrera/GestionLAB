@@ -24,6 +24,7 @@ class PrestadoresServicioConcluido extends Migration
         `users`.`remember_token` AS `remember_token`,
         `users`.`carrera` AS `carrera`,
         `users`.`horas` AS `horas`,
+        `users`.`sede` AS `sede`,
         `cuenta_horas`.`horas_servicio` AS `horas_cumplidas`,
         `cuenta_horas`.`horas_restantes` AS `horas_restantes`
         FROM
@@ -36,8 +37,8 @@ class PrestadoresServicioConcluido extends Migration
                         )
                     )
             )
-        WHERE
-            (`cuenta_horas`.`horas_restantes` <= '0')
+            WHERE
+            (`cuenta_horas`.`horas_restantes` <= 0 AND `users`.`fecha_salida` IS NULL)
         ");
 
     }
