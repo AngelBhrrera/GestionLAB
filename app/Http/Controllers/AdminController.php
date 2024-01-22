@@ -73,6 +73,14 @@ class AdminController extends Controller
         return view('admin/general_users', ['datos' => json_encode($data)]);
     }
 
+    public function clientes()
+    {
+        $data = DB::table('solo_clientes')
+        ->get();
+
+        return view('admin/lista_clientes', ['datos' => json_encode($data)]);
+    }
+
     public function prestadores()
     {
         $n_sede = DB::table('sede')
@@ -259,8 +267,13 @@ class AdminController extends Controller
     public function asign_act()
     {
 
+        $n_Sede =  DB::table('sede')
+        ->select('nombre_Sede')
+        ->where('id_Sede', auth()->user()->sede)
+        ->get();
+
         $prestadores = DB::table('solo_prestadores')
-        ->where('sede', auth()->user()->sede)
+        ->where('sede', $n_Sede->first()->nombre_Sede)
         ->where('horario', auth()->user()->horario)
         ->get();
 
@@ -289,6 +302,7 @@ class AdminController extends Controller
     public function control_print()
     {
         $data = DB::table('impresoras')
+        ->where('id_Sede', auth()->user()->sede)
         ->get();
 
         return view('admin/registro_impresora',
@@ -328,6 +342,7 @@ class AdminController extends Controller
             'nombre' => $name,
             'marca' => $mark,
             'tipo' => $type,
+            'id_Sede' =>auth()->user()->sede
 
         ]);
 
@@ -336,7 +351,6 @@ class AdminController extends Controller
 
         return redirect()->back();
     }
-
     
     public function gestionSedes(){
         $sede= DB::select("SELECT * FROM sede;");
@@ -525,7 +539,6 @@ class AdminController extends Controller
         }else{
             return redirect()->route('admin.reportes_parciales')->with(['warning'=>"No se encontraron registros del prestador", 'reportes'=>$reportes, 'codigo'=> $request->busqueda]);
         }
-
     }
 
 
@@ -577,7 +590,7 @@ class AdminController extends Controller
     }
 
 
-    public function clientes()
+    /*public function clientes()
     {
         $columns = array(
             ["data" => "id", "visible" => false],
@@ -613,7 +626,7 @@ class AdminController extends Controller
                 "columnas" => json_encode($columns)
             ]
         );
-    }
+    }*/
 
     public function citas()
     {

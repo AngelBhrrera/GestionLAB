@@ -20,12 +20,14 @@ class soloclientes extends Migration
         `users`.`apellido` AS `apellido`,
         `users`.`correo` AS `correo`,
         `users`.`codigo` AS `codigo`
+        `users`.`tipo` AS `tipo`
+        `users`.`telefono` AS `telefono`
         FROM
             (
                 `users`
             )
         WHERE
-            (`users`.`tipo` = 'clientA') || (`users`.`tipo` = 'clientM') || (`users`.`tipo` = 'clientO')
+            (`users`.`tipo` = 'alumno') || (`users`.`tipo` = 'maestro')
         ");
     }
 

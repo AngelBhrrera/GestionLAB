@@ -67,7 +67,7 @@
                             <div class="side-menu__title">Validación de horas</div>
                         </a>
                     </li>
-
+                    {{--
                     <li>
                         <a href="{{ route('admin.firmasPendientes') }}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="award"></i> </div>
@@ -93,6 +93,7 @@
                             <div class="side-menu__title">Horario Prestadores</div>
                         </a>
                     </li>
+                    --}}
                     <li>
                         <a href="{{route('admin.reportes_parciales')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="file"></i> </div>
@@ -165,7 +166,7 @@
             </li>
         @endsection
     @endif
-    @if (Auth::user()->tipo == "encargado")
+    @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "Superadmin")
         @section('prestadores')
             <li>
                 <a href="#" class="side-menu">
@@ -276,7 +277,7 @@
             </li>
         @endsection
     @endif
-    @if (Auth::user()->tipo == "encargado")
+    @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "Superadmin")
         @section('contacto')
             <li>
                 <a href="#" class="side-menu">
@@ -311,6 +312,7 @@
                             <div class="side-menu__title">Check-in Visitas</div>
                         </a>
                     </li>
+                    {{--
                     <li>
                         <a href="{{ route('admin.citas') }}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="plus-circle"></i> </div>
@@ -336,13 +338,14 @@
                             <div class="side-menu__title">Programadas</div>
                         </a>
                     </li>
+                    --}}
                 </ul>
             </li>
         @endsection
     @endif
 
     @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "Superadmin")
-        @section('actividades')
+        @section('actividades') {{--
             <li>
                 <a href="javascript:;" class="side-menu">
                     <div class="side-menu__icon"> <i data-lucide="edit"></i> </div>
@@ -387,11 +390,11 @@
                     </li>
                 </ul>
             </li>
-        @endsection
+        --}} @endsection
     @endif
 
-    @if (Auth::user()->tipo == "encargado")
-        @section('actividades')
+    @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "Superadmin")
+        @section('actividades') {{--
             <li>
                 <a href="javascript:;" class="side-menu">
                     <div class="side-menu__icon"> <i data-lucide="edit"></i> </div>
@@ -461,10 +464,10 @@
                     </li>
                 </ul>
             </li>
-        @endsection
+        --}} @endsection
     @endif
 
-    @if (Auth::user()->tipo == "encargado")
+    @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "Superadmin")
         @section('impresiones')
             <li>
                 <a href="javascript:;" class="side-menu">
@@ -487,6 +490,7 @@
                             <div class="side-menu__title">Gestión Impresiones</div>
                         </a>
                     </li>
+                    {{--
                     <li>
                         <a href="{{ route('admin.prestadoresProyectos') }}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="layout-list"></i> </div>
@@ -505,13 +509,14 @@
                             <div class="side-menu__title">Completadas</div>
                         </a>
                     </li>
+                    --}}
                 </ul>
             </li>
         @endsection
     @endif
 @endsection
 
-@section('asistencias')
+@section('asistencias') {{--
     <li>
         <a href="#" class="side-menu">
             <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-check-2">
@@ -522,7 +527,7 @@
                         <path d="m16 20 2 2 4-4" />
                     </svg></i> </div>
             <div class="side-menu__title">
-                ASISTENCIAS (TEMPORAL, AUN NO SABEMOS SIS E QUEDARA O NO)
+                ASISTENCIAS (TEMPORAL, AUN NO SABEMOS SI SE QUEDARA O NO)
                 <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
             </div>
         </a>
@@ -542,7 +547,7 @@
             </li>
         </ul>
     </li>
-@endsection
+--}} @endsection
 
 
 @section('structure')

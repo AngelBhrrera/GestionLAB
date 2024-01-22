@@ -60,6 +60,17 @@
                         field: "horario",
                         sorter: "string",
                         hozAlign: "center",
+                        editor: "select",
+                        editorParams: {
+                            values: {
+                                "Matutino": "Matutino",
+                                "Mediodia": "Mediodia",
+                                "Vespertino": "Vespertino",
+                                "Tiempo Completo": "Tiempo Completo",
+                                "No Aplica": "No Aplica",
+                                "Sabatino": "Sabatino",
+                            }
+                        },
                     }, {
                         title: "Cumplidas",
                         field: "horas_cumplidas",
