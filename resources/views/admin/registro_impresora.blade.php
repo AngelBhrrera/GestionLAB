@@ -88,7 +88,7 @@
                 height: "100%",
                 data: printers,
                 pagination: "local",
-                paginationSize: 7,
+                paginationSize: 5,
                 tooltips: true,
                 columns: [{
                         title: "Nombre",

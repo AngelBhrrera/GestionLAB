@@ -85,12 +85,25 @@
                         field: "estado",
                         sorter: "string",
                         hozAlign: "center",
-                        editor: "select",
                         headerFilter: true,
                         headerFilterParams: {
                             "Exitoso": "Exitoso",
                             "En Proceso": "En Proceso",
                             "Fallido": "Fallido",
+                        },
+                        editor: "select",
+                        editorParams: {
+                            values: {
+                                "Exitoso": "Exitoso",
+                                "En Proceso": "En Proceso",
+                                "Fallido": "Fallido",
+                            }
+                        },
+                        cellEdited: function (cell) {
+                            var row = cell.getRow();
+                            var id = row.getData().id;
+                            var value = cell.getValue();
+                            cambiarEstadoImpresion(id, value);
                         }
                     },   {
                         title: "Peso",
@@ -100,15 +113,40 @@
                     },  {
                         title: "Observaciones",
                         field: "observaciones",
+                        editor: "input",
                         sorter: "number",
                         hozAlign: "center",
-                        formatter: "progress",
+                        cellEdited: function (cell) {
+                            
+                        },
                     },
+                    
                 ],
                 //rowClick: function(e, row) {
                 //    alert("Row " + row.getData().playerid + " Clicked!!!!");
                 //},
             });
-            
+
+            function cambiarEstadoImpresion(id, value) {
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`changestate/${id}/${value}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+
+                    console.log('Estado de horas cambiado', data);
+
+                    //window.location.reload(); 
+                })
+                .catch(error => {
+                    console.error('Error al cambiar de estado:', error);
+                });
+            } 
+
     </script>
 @endsection

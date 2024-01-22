@@ -69,12 +69,48 @@
                         }, 
                         hozAlign: "center",
                     },
+                    {
+                        title: "Eliminar",
+                        field: "id",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            var value = cell.getValue();
+                            var button = document.createElement("button");
+                            button.style = "background-color: red; color: white; border: 1px solid dark-red; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
+                            button.textContent = "Activar";
+                            button.addEventListener("click", function() {
+                                eliminarPrestador(value);
+                            });
+                            return button;
+                        }, 
+                        hozAlign: "center",
+                    },
                 ],
             });
 
             function activarPrestador(value) {
                 const token = document.head.querySelector('meta[name="csrf-token"]').content;
                 fetch(`activar_prestador/${value}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+
+                    console.log('Usuario activado:', data);
+
+                    window.location.reload(); 
+                })
+                .catch(error => {
+                    console.error('Error al activar usuario:', error);
+                });
+            } 
+
+            function eliminarPrestador(value) {
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`eliminar_prestador/${value}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
