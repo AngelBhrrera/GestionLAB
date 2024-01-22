@@ -34,8 +34,14 @@ class AdminController extends Controller
             ->where('u.sede', $idSede)
             ->orderBy('fecha_actual', 'desc')
             ->get();
+
+        if(Auth::user()->tipo == "encargado"){
+            return view("admin.asistencias_encargado", ['datos' => json_encode($sql)]);
+        }else{
             return view("admin.asistencias_admin", ['datos' => json_encode($sql)]);
-    }
+        }
+          
+    }    
 
     public function checkinstate($id, $state) {
             DB::table('registros_checkin')
@@ -62,6 +68,18 @@ class AdminController extends Controller
         return view('/auth/visitator', ['ruta' => 'registrar']);
     }
 
+    public function watch_visits()
+    {
+        $n_sede = DB::table('sede')
+            ->where('id_Sede', Auth::user()->sede)
+            ->value('nombre_Sede');
+        $data = DB::table('visitas')
+        ->orderBy('id', 'DESC')
+        ->get();
+    
+        return view('/admin/ver_visitas', ['datos' => json_encode($data), 'sede' => $n_sede]);
+    }
+
     public function general()
     {
         $data = DB::table('users')
@@ -86,41 +104,102 @@ class AdminController extends Controller
         $n_sede = DB::table('sede')
             ->where('id_Sede', Auth::user()->sede)
             ->value('nombre_Sede');
-        $data = DB::table('solo_prestadores')
-        ->where('sede', $n_sede)
-        ->get();
+        if(Auth::user()->tipo == 'Superadmin')
+        {
+            $data = DB::table('solo_prestadores')
+            ->get();
+        }else{
+            $data = DB::table('solo_prestadores')
+                ->where('sede', $n_sede)
+                ->get();
+        }   
         return view('admin/activos', ['datos' => json_encode($data)]);
+    }
+
+    public function cambiar_horario($id, $horario){
+
+        if($horario == "Matutino"){
+            $n_Turno = "turnoMatutino";
+        }else if($horario == "Mediodia"){
+            $n_Turno = "turnoMediodia";   
+        }else if($horario == "Vespertino"){
+            $n_Turno = "turnoVespertino";
+        }else if($horario == "Tiempo Completo"){
+            $n_Turno = "turnoTiempoCompleto";
+        }else if($horario == "Sabatino"){
+            $n_Turno = "turnoSabatino";
+        }
+
+        $sede = DB::table('users')
+        ->where('id', $id)
+        ->value('sede');
+       
+        DB::table('users')
+        ->where('id', $id)
+        ->update([
+            'horario' => DB::table('sede')->where('id_Sede', $sede)->value($n_Turno) == 1 ? $horario : DB::raw('horario')]);
+
+            return response()->json(['message' => 'Activado exitosamente']);
     }
 
     public function prestadoresPendientes()
     {
-        $data = DB::table('prestadores_pendientes')
-        ->get();
+        if(Auth::user()->tipo == 'Superadmin')
+        {
+            $data = DB::table('prestadores_pendientes')
+            ->get();
+        }else{
+            $data = DB::table('prestadores_pendientes')
+            ->where('sede', Auth::user()->sede)
+            ->get();
+        }
         return view('admin/prestadoresPendientes', ['datos' => json_encode($data)]);
     }
 
     public function prestadores_terminados()
     {
-        $data = DB::table('prestadores_servicio_concluido')
-        ->get();
+        if(Auth::user()->tipo == 'Superadmin')
+        {
+            $data = DB::table('prestadores_servicio_concluido')
+            ->get();
+            return view('admin/administrar_servicioConcluido', ['datos' => json_encode($data)]);
+        }else{
+            $data = DB::table('prestadores_servicio_concluido')
+            ->where('sede', Auth::user()->sede)
+            ->get();
+            return view('admin/servicioConcluido', ['datos' => json_encode($data)]);
+        }
 
-        return view('admin/servicioConcluido', ['datos' => json_encode($data)]);
+       
     }
 
     public function prestadores_liberados()
     {
-        $data = DB::table('prestadores_servicio_liberado')
-        ->get();
+
+            $data = DB::table('prestadores_servicio_liberado')
+            ->get();
 
         return view('admin/servicioLiberado', ['datos' => json_encode($data)]);
     }
 
     public function prestadores_inactivos()
     {
-        $data = DB::table('prestadores_inactivos')
-        ->get();
 
-        return view('admin/prestadoresInactivos', ['datos' => json_encode($data)]);
+        if(Auth::user()->tipo == 'Superadmin')
+        {
+            $data = DB::table('prestadores_inactivos')
+            ->get();
+
+            return view('admin/administrar_prestadoresInactivos', ['datos' => json_encode($data)]);
+
+        }else{
+            $data = DB::table('prestadores_inactivos')
+            ->where('sede', Auth::user()->sede)
+            ->get();
+
+            return view('admin/prestadoresInactivos', ['datos' => json_encode($data)]);
+        }   
+
     }
 
     public function activar($id) {
@@ -150,9 +229,8 @@ class AdminController extends Controller
     public function desactivar($id) {
 
         $type = DB::table('users')
-        ->select('tipo')
         ->where('id', $id)
-        ->get();
+        ->value('tipo');
 
         if($type == ('prestador')){
             DB::table('users')
@@ -170,6 +248,14 @@ class AdminController extends Controller
     
         return response()->json(['message' => 'Desactivado exitosamente']);
     }
+
+    public function eliminar($id) {
+
+        User::where('id', $id)
+        ->delete();
+    
+    return response()->json(['message' => 'Prestador eliminado']);
+}
 
     public function liberar($id) {
 
@@ -353,9 +439,9 @@ class AdminController extends Controller
     }
     
     public function gestionSedes(){
-        $sede= DB::select("SELECT * FROM sede;");
-    
-        return view("admin.sedes", ['sede'=>$sede, 'tabla_sedes' => json_encode($sede)]);
+        $sedes= DB::select("SELECT * FROM sede WHERE id_Sede != 0;");
+        
+        return view("admin.sedes", ['sede'=>$sedes, 'tabla_sedes' => json_encode($sedes)]);
     }
 
     public function nuevaSede(Request $request){
@@ -521,7 +607,7 @@ class AdminController extends Controller
         $codigo = session('codigo');
         return view('admin.ver_reportes_parciales', ['reportes'=>$reportes, 'codigo'=>$codigo]);
     }
-    
+
     public function busqueda_reportes_parciales(Request $request){
         if ($request->busqueda==""){
             return redirect()->route('admin.reportes_parciales')->with(['warning'=>'Debes ingresar un código']);
@@ -540,10 +626,6 @@ class AdminController extends Controller
             return redirect()->route('admin.reportes_parciales')->with(['warning'=>"No se encontraron registros del prestador", 'reportes'=>$reportes, 'codigo'=> $request->busqueda]);
         }
     }
-
-
-
-    
     
 //VIEJO CONTROLLER. /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

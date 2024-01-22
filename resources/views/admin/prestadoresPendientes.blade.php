@@ -63,6 +63,7 @@
                             var button = document.createElement("button");
                             button.style = "background-color: #4CAF50; color: white; border: 1px solid #4CAF50; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
                             button.textContent = "Activar";
+                            button.title = "";
                             button.addEventListener("click", function() {
                                 activarPrestador(value);
                             });

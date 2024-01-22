@@ -22,7 +22,7 @@
                                 <div class="form-group row justify-content-center"> 
                                     <label  class="col-md-3 col-form-label text-md-right text-lg">{{ __('Check-In Visitante') }}</label> 
                                     <div class="col-md-6">
-                                        <input id="codigo" class="form-control form-control-lg" name="codigo"> 
+                                        <input id="codigo" class="form-control form-control-lg" name="codigo" placeholder="Ingresar numero de telefono registrado"> 
                                     </div>
                                 </div>
                                 <div class="form-group row mb-0">
@@ -45,17 +45,4 @@
 @endsection
 
 
-
-    <script src={{asset('plugins/jquery/jquery.min.js')}}></script>
-    <!-- Bootstrap 4 -->
-    <script src={{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}></script>
-
-    <script type="text/javascript">
-    $('#alert').fadeIn();
-    setTimeout(function() {
-        $("#alert").fadeOut();
-    },5000);
-    </script>
-
-@endsection
 

@@ -8,14 +8,13 @@
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">Usuarios</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Prestadores Activos</li>
+    <li class="breadcrumb-item active" aria-current="page">Inactivos</li>
 @endsection
 
 @section('subcontent')
 <h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
-    Prestadores Activos
+    Prestadores Inactivos
 </h2>
-
 <div id="players"></div>
 @endsection
 
@@ -25,24 +24,22 @@
             var users = {!! $datos !!};
 
             var table = new Tabulator("#players", {
-                height: 500,
+                height: "100%",
                 data: users,
                 layout: "fitColumns",
                 pagination: "local",
-                paginationSize: 24,
+                paginationSize: 10,
                 tooltips: true,
                 columns: [{
                         title: "Nombre",
                         field: "name",
                         sorter: "string",
-                        editor: "input",
                         headerFilter: "input",
                         hozAlign: "center",
                     }, {
                         title: "Apellido",
                         field: "apellido",
                         sorter: "string",
-                        editor: "input",
                         headerFilter: "input",
                         hozAlign: "center",
                     }, {
@@ -54,80 +51,47 @@
                     }, {
                         title: "Codigo",
                         field: "codigo",
-                        hozAlign: "center",
-                    },  {
-                        title: "Horario",
-                        field: "horario",
-                        sorter: "string",
-                        hozAlign: "center",
-                        editor: "select",
-                        editorParams: {
-                            values: {
-                                "Matutino": "Matutino",
-                                "Mediodia": "Mediodia",
-                                "Vespertino": "Vespertino",
-                                "Tiempo Completo": "Tiempo Completo",
-                                "Sabatino": "Sabatino",
-                            }
-                        },
-                    }, {
-                        title: "Cumplidas",
-                        field: "horas_cumplidas",
                         sorter: "number",
-                        hozAlign: "center",
-                    },  {
-                        title: "Restantes",
-                        field: "horas_restantes",
-                        sorter: "number",
-                        hozAlign: "center",
-                    },  {
-                        title: "Carrera",
-                        field: "carrera",
-                        sorter: "string",
-                        hozAlign: "center",
-                    },{
-                        title: "Modificar",
-                        field: "id",
-                        formatter: function (cell, formatterParams, onRendered) {
-                            var row = cell.getRow();
-                            var id = cell.getValue();
-                            var button = document.createElement("button");
-                            button.style = "background-color: blue; color: white; border: 1px solid white; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
-                            button.textContent = "Modificar";
-                            button.title = "";
-                            button.addEventListener("click", function() {
-                                // Obtener el valor actualizado de horario
-                                var value = row.getData().horario;
-                                modificarPrestador(id, value);
-                            });
-                            return button;
-                        }, 
+                        headerFilter: "input",
                         hozAlign: "center",
                     }, {
-                        title: "Desactivar",
+                        title: "Activar",
                         field: "id",
                         formatter: function (cell, formatterParams, onRendered) {
                             var value = cell.getValue();
                             var button = document.createElement("button");
-                            button.style = "background-color: red; color: white; border: 1px solid white; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
-                            button.textContent = "Desactivar";
-                            button.title = "";
+                            button.style = "background-color: #4CAF50; color: white; border: 1px solid #4CAF50; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
+                            button.textContent = "Activar";
+                            button.title ="";
                             button.addEventListener("click", function() {
-                                desactivarPrestador(value);
+                                activarPrestador(value);
+                            });
+                            return button;
+                        }, 
+                        hozAlign: "center",
+                    },
+                    {
+                        title: "Eliminar",
+                        field: "id",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            var value = cell.getValue();
+                            var button = document.createElement("button");
+                            button.style = "background-color: red; color: white; border: 1px solid #4CAF50; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
+                            button.textContent = "Eliminar";
+                            button.title ="";
+                            button.addEventListener("click", function() {
+                                eliminarPrestador(value);
                             });
                             return button;
                         }, 
                         hozAlign: "center",
                     },
                 ],
-                //rowClick: function(e, row) {
-                //    alert("Row " + row.getData().playerid + " Clicked!!!!");
-                //},
             });
 
-            function modificarPrestador(id, value) {
+            function activarPrestador(value) {
                 const token = document.head.querySelector('meta[name="csrf-token"]').content;
-                fetch(`modificar_horario_prestador/${id}/${value}`, {
+                fetch(`activar_prestador/${value}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -136,18 +100,18 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Respuesta del servidor:', data);
+
+                    console.log('Usuario activado:', data);
+
                     window.location.reload(); 
                 })
                 .catch(error => {
                     console.error('Error al activar usuario:', error);
                 });
             } 
-
-            
-            function desactivarPrestador(value) {
+            function eliminarPrestador(value) {
                 const token = document.head.querySelector('meta[name="csrf-token"]').content;
-                fetch(`desactivar_prestador/${value}`, {
+                fetch(`eliminar_prestador/${value}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -157,15 +121,13 @@
                 .then(response => response.json())
                 .then(data => {
 
-                    console.log('Usuario desactivado:', data);
+                    console.log('Usuario activado:', data);
 
                     window.location.reload(); 
                 })
                 .catch(error => {
-                    console.error('Error al desactivar usuario:', error);
+                    console.error('Error al activar usuario:', error);
                 });
             } 
-
-            
     </script>
 @endsection

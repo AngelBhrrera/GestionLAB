@@ -25,7 +25,8 @@ class Prestadorespendientes extends Migration
         `users`.`password` AS `password`,
         `users`.`remember_token` AS `remember_token`,
         `users`.`created_at` AS `created_at`,
-        `users`.`updated_at` AS `updated_at`
+        `users`.`updated_at` AS `updated_at`,
+        `users`.`sede` AS `sede`
         FROM
             `users`
             WHERE `users`.`tipo` IN ('prestadorp', 'voluntariop', 'practicantep')

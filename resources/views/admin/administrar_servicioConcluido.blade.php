@@ -8,12 +8,12 @@
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">Usuarios</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Inactivos</li>
+    <li class="breadcrumb-item active" aria-current="page">Servicio Concluido</li>
 @endsection
 
 @section('subcontent')
 <h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
-    Prestadores Inactivos
+    Prestadores Servicio Concluido (Total de Horas Autorizadas)
 </h2>
 <div id="players"></div>
 @endsection
@@ -24,11 +24,11 @@
             var users = {!! $datos !!};
 
             var table = new Tabulator("#players", {
-                height: "100%",
+                height: 500,
                 data: users,
                 layout: "fitColumns",
                 pagination: "local",
-                paginationSize: 10,
+                paginationSize: 24,
                 tooltips: true,
                 columns: [{
                         title: "Nombre",
@@ -55,16 +55,16 @@
                         headerFilter: "input",
                         hozAlign: "center",
                     }, {
-                        title: "Activar",
+                        title: "Liberar",
                         field: "id",
                         formatter: function (cell, formatterParams, onRendered) {
                             var value = cell.getValue();
                             var button = document.createElement("button");
                             button.style = "background-color: #4CAF50; color: white; border: 1px solid #4CAF50; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
-                            button.textContent = "Activar";
-                            button.title = "";
+                            button.textContent = "Liberar";
+                            button.title ="";
                             button.addEventListener("click", function() {
-                                activarPrestador(value);
+                                liberarPrestador(value);
                             });
                             return button;
                         }, 
@@ -73,9 +73,9 @@
                 ],
             });
 
-            function activarPrestador(value) {
+            function liberarPrestador(value) {
                 const token = document.head.querySelector('meta[name="csrf-token"]').content;
-                fetch(`activar_prestador/${value}`, {
+                fetch(`liberar_prestador/${value}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -84,14 +84,12 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-
-                    console.log('Usuario activado:', data);
-
                     window.location.reload(); 
                 })
                 .catch(error => {
                     console.error('Error al activar usuario:', error);
                 });
             } 
+            
     </script>
 @endsection

@@ -115,12 +115,16 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
                 Route::get('/admin/general', 'general')->name('general');
                 Route::get('/admin/prestadores', 'prestadores')->name('prestadores');
+                Route::get('admin/modificar_horario_prestador/{id}/{value}', 'cambiar_horario')->name('cambiar_horario');
                 Route::get('admin/activar_prestador/{value}', 'activar')->name('activar');
+                Route::get('admin/eliminar_prestador/{value}', 'eliminar')->name('eliminar');
                 Route::get('admin/desactivar_prestador/{value}', 'desactivar')->name('desactivar');
                 
                 Route::get('/admin/clientes', 'clientes')->name('clientes');
 
                 Route::get('/admin/visitas', 'visits')->name('visitas');
+                Route::get('/admin/ver_visitas', 'watch_visits')->name('visitas_reg');
+
                 Route::get('/admin/faltas', 'faltas')->name('faltas');
                 Route::get('/admin/horarios', 'horarios')->name('horarios');
                 
@@ -281,9 +285,8 @@ Route::controller(App\Http\Controllers\VisitanteController::class)->group(functi
         // Route::get('/visita','visita')->name('visitas');
         });    
     });
-
     Route::name('api.')->group(function () {
-        Route::post('visitator', 'registrarVisita')->middleware('role:admin,checkin,Superadmin')->name('registrarVisita');
+        Route::post('visitator', 'registrarVisita')->middleware('role:encargado,admin,checkin,Superadmin')->name('registrarVisita');
     });
 });
 

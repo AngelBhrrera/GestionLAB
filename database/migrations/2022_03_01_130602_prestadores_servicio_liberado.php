@@ -27,7 +27,8 @@ class PrestadoresServicioLiberado extends Migration
         `cuenta_horas`.`horas_restantes` AS `horas_restantes`,
         `users`.`remember_token` AS `remember_token`,
         `users`.`carrera` AS `carrera`,
-        `users`.`horas` AS `horas`
+        `users`.`horas` AS `horas`,
+        `users`.`sede` AS `sede`
         FROM
             (
                 `users` LEFT JOIN 

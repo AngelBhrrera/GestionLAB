@@ -43,6 +43,31 @@ class CreateUsersTable extends Migration
             $table->string('imagen_perfil', 255)->nullable();
             $table->unsignedInteger('experiencia')->default(1)->nullable();
         });
+
+        DB::table('users')->insert([
+            "name" =>"admin",
+            "apellido" => "admin",
+            "correo" => "admin@admin.com",
+            "codigo" => null,
+            "tipo" => "Superadmin",
+            "telefono" => null,
+            "email_verified_at" => null,
+            "password" => Hash::make('123'),
+            "remember_token"=> null,
+            "horas_servicio" => null,
+            "horas"=>null,
+            "sede"=>null,
+            "centro"=> null,
+            "carrera"=> "INCO",
+            "tipo_cliente" => null,
+            "fecha_salida" => null,
+            "horario" => null,
+            "can_admin" => null,
+            "encargado_id" => null,
+            "horario" => null,
+            "imagen_perfil" => null,
+            "experiencia" => null
+        ]);
         
     }
 

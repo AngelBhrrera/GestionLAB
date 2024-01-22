@@ -7,8 +7,8 @@
 
 @section('subcontent')
     
-    <div class="intro-y box p-5">
-        <h2 class="text-2xl mt-5 font-medium">Horario</h2>
+
+        <h2 class="text-2xl mt-5 font-medium pl-5">Horario</h2>
 
         <div class="grid grid-cols-12 gap-6 mt-5" id="alerta">
             <div class="intro-y col-span-12 lg:col-span-6">
@@ -25,7 +25,15 @@
                 @enderror
             </div>
         </div>
-        <br>
+        
+        
+    <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5">
+        <div class="col-span-12 sm:col-span-6">
+            <div class="intro-y box p-5 mt-5">
+                <h3 class="text-2xl mt-5 font-medium">Modificar Sede</h3>
+                <br>
+                <br>
+            
         <form action="{{route('admin.modificarSede')}}" method="POST">
             @csrf
             <input type="hidden" name="idSede" id="idSede" value="">
@@ -40,43 +48,46 @@
             <br><br>
             <input required type="text" name="nuevoNombre" id="nuevoNombre" style="width: 40%" placeholder="Nuevo nombre" class="form-control">
             <div class="form-check mr-2 pt-5"><label class="pl-5 pr-5" for="activa">Activa</label><input type="checkbox" class=" w-10 h-10 form-check-input" name="activa" id="activa"></div>
-
-            <h1 class="text-2xl mt-5 font-medium">Turnos disponibles</h1>
+            <br>
+            <h3 class="text-2xl mt-5 font-medium">Turnos disponibles</h3>
             <div class="flex flex-col sm:flex-row mt-2">
-                <div class="form-check mr-2 pt-5"> <label class="pl-5 pr-5" for="matutino">Matutino</label><input type="checkbox" class="w-10 h-10 form-check-input" name="matutino"id="matutino"></div>
-                <div class="form-check mr-2 pt-5"><label class="pl-5 pr-5" for="mediodia">Medio día</label><input type="checkbox" class="w-10 h-10 form-check-input" name="mediodia" id="mediodia"></div>
-                <div class="form-check mr-2 pt-5"><label class="pl-5 pr-5" for="vespertino">Vespertino</label><input type="checkbox" class="w-10 h-10 form-check-input" name="vespertino" id="vespertino"></div>
-                <div class="form-check mr-2 pt-5"><label class="pl-5 pr-5" for="sabatino">Sabatino</label><input type="checkbox" class=" w-10 h-10 form-check-input" name="sabatino" id="sabatino"></div>
-                <div class="form-check mr-2 pt-5"><label class="pl-5 pr-5" for="completo">Completo</label><input type="checkbox" class=" w-10 h-10 form-check-input" name="completo" id="completo"></div>
+                <div class="form-check mr-2 pt-3"> <label class="pl-5 pr-3" for="matutino">Matutino</label><input type="checkbox" class="w-10 h-10 form-check-input" name="matutino"id="matutino"></div>
+                <div class="form-check mr-2 pt-3"><label class="pl-5 pr-3" for="mediodia">Medio día</label><input type="checkbox" class="w-10 h-10 form-check-input" name="mediodia" id="mediodia"></div>
+                <div class="form-check mr-2 pt-3"><label class="pl-5 pr-3" for="vespertino">Vespertino</label><input type="checkbox" class="w-10 h-10 form-check-input" name="vespertino" id="vespertino"></div>
+                <div class="form-check mr-2 pt-3"><label class="pl-5 pr-3" for="sabatino">Sabatino</label><input type="checkbox" class=" w-10 h-10 form-check-input" name="sabatino" id="sabatino"></div>
+                <div class="form-check mr-2 pt-3"><label class="pl-5 pr-3" for="completo">Completo</label><input type="checkbox" class=" w-10 h-10 form-check-input" name="completo" id="completo"></div>
             </div>
             <br>
-            <button type="Submit" disabled id = "guardar" class="btn btn-primary"> Guardar cambios</button>
-        </form>
+            <br>
+            <button type="Submit" disabled id="guardar" class="btn btn-primary"> Guardar cambios</button>
+            </form>
+        </div>
     </div>
+
     
+    <div class="col-span-12 sm:col-span-6">
+        <div class="intro-y box p-5 mt-5">
+        <h3 class="text-2xl mt-5 font-small">Lista de sedes</h3>
+        <div class="text-center mx-auto" style="padding-left: 10px" id="sedes"></div>
+        </div>
+    </div>
+</div>
+
     <div class="intro-y box p-5 mt-5">
-        <h2 class="text-2xl mt-5 font-small">Añadir una sede</h2>
-        
-        <form action="{{route('admin.nuevaSede')}}" method="POST">
-           
-            @csrf
+    <h3 class="text-2xl mt-5 font-small">Añadir una sede</h3>
+                <form action="{{route('admin.nuevaSede')}}" method="POST">
+                @csrf
             <div class="intro-y col-span-12 sm:col-span-6" id="divCarrera">
                 <p>Nombre de la sede</p>
                 <input required id="nombreSede" type="text" class="form-control" name="nombreSede" placeholder="Nombre" style="width: 40%">
             </div>
             <br>
-            <button type="submit"class="btn btn-primary">Crear</button>
-        </form>
-    </div>
+            <button type="submit" class="btn btn-primary">Crear</button>
+            </form>
+       
+    </div>  
 
-    <div class="intro-y box p-5 mt-5">
-        <h2 class="text-2xl mt-5 font-small">Lista de sedes</h2>
-        <div class="text-center mx-auto" style="padding-left: 10px" id="sedes"></div>
-    </div>
-
-    
-    
-  
+    <div style="height: 65px;"></div>
 
 @endsection
 
@@ -96,7 +107,7 @@
                 resizableColumns: "false",
                 fitColumns: "true",
                 pagination: "local",
-                paginationSize: 5,
+                paginationSize: 10,
                 tooltips: true,
                 columns: [{
                         title: "ID",
@@ -109,7 +120,6 @@
                         headerFilter: "input",
                         sorter: "string",
                         hozAlign: "center",
-                        width: 200,
                     }, {
                         title: "Estado",
                         field: "activa",
@@ -124,13 +134,12 @@
                             return icono;
                         },
                         hozAlign: "center",
-                        width: 100,
                     }
                 ],
             });
     </script>
 
-    <script>
+<script>
         function modificarCamposSede(){
             
             btn_guardar= document.getElementById("guardar");
@@ -203,6 +212,5 @@
 
         }, 4000);
     </script>
-            
     
 @endsection

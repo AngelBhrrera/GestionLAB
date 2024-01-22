@@ -101,7 +101,7 @@ class VisitanteController extends Controller
                 case 'admin':
                 case 'encargado':
                 case 'Superadmin':
-                    $dir = 'admin.visitas';
+                    $dir = 'admin.visitas_reg';
                     $origen = Auth::user()->name . ' ' . Auth::user()->apellido;
                     $origen_id = Auth::user()->id;
                     break;
