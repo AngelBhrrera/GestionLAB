@@ -275,6 +275,9 @@ Route::controller(App\Http\Controllers\VisitanteController::class)->group(functi
             Route::get('/cliente/visitas', 'principal')->name('visitas');
 
             Route::get('/cliente/reg', 'form')->name('form');
+
+            Route::get('/cliente/solicitud_capacitacion', 'solicitud_capacitacion')->name('solicitud_capacitacion');
+            Route::get('/cliente/solicitud_impresion', 'solicitud_impresion')->name('solicitud_impresion');
         // Route::get('/visita','visita')->name('visitas');
         });    
     });

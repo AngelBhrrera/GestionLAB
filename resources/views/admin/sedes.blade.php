@@ -74,6 +74,62 @@
         <div class="text-center mx-auto" style="padding-left: 10px" id="sedes"></div>
     </div>
 
+    
+    
+  
+
+@endsection
+
+@section('script')
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.8.1/dist/js/tabulator.min.js"></script>
+    <script type="text/javascript">
+
+            var sedes = {!! $tabla_sedes !!};
+
+            var table = new Tabulator("#sedes", {
+                height:"100%",
+                data: sedes,
+                layout: "fitColumns",
+                resizableColumns: "false",
+                fitColumns: "true",
+                pagination: "local",
+                paginationSize: 5,
+                tooltips: true,
+                columns: [{
+                        title: "ID",
+                        field: "id",
+                        visible: false,
+                        width: 2,
+                    }, {
+                        title: "Nombre Sede",
+                        field: "nombre_Sede",
+                        headerFilter: "input",
+                        sorter: "string",
+                        hozAlign: "center",
+                        width: 200,
+                    }, {
+                        title: "Estado",
+                        field: "activa",
+                        formatter: function(cell, formatterParams, onRendered) {
+                            var estado = cell.getValue();
+                            var icono = "";
+                            if (estado == "1") {
+                                icono = "✔️";
+                            } else if (estado == "0") {
+                                icono = "❌";
+                            }
+                            return icono;
+                        },
+                        hozAlign: "center",
+                        width: 100,
+                    }
+                ],
+            });
+    </script>
+
     <script>
         function modificarCamposSede(){
             
@@ -146,60 +202,6 @@
             document.getElementById("alerta").style.display="none";
 
         }, 4000);
-    </script>
-    
-  
-
-@endsection
-
-@section('script')
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
-    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.8.1/dist/js/tabulator.min.js"></script>
-    <script type="text/javascript">
-
-            var sedes = {!! $tabla_sedes !!};
-
-            var table = new Tabulator("#sedes", {
-                height:"100%",
-                data: sedes,
-                layout: "fitColumns",
-                resizableColumns: "false",
-                fitColumns: "true",
-                pagination: "local",
-                paginationSize: 5,
-                tooltips: true,
-                columns: [{
-                        title: "ID",
-                        field: "id",
-                        visible: false,
-                        width: 2,
-                    }, {
-                        title: "Nombre Sede",
-                        field: "nombre_Sede",
-                        headerFilter: "input",
-                        sorter: "string",
-                        hozAlign: "center",
-                        width: 200,
-                    }, {
-                        title: "Estado",
-                        field: "activa",
-                        formatter: function(cell, formatterParams, onRendered) {
-                            var estado = cell.getValue();
-                            var icono = "";
-                            if (estado == "1") {
-                                icono = "✔️";
-                            } else if (estado == "0") {
-                                icono = "❌";
-                            }
-                            return icono;
-                        },
-                        hozAlign: "center",
-                        width: 100,
-                    }
-                ],
-            });
     </script>
             
     

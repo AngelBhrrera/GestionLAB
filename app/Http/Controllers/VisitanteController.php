@@ -94,7 +94,7 @@ class VisitanteController extends Controller
 
     public function registrarVisita(Request $request)
     {
-
+        
         try {
             $dir = '';
             switch (Auth::user()->tipo) {
@@ -115,15 +115,34 @@ class VisitanteController extends Controller
                 $query->where('tipo', '=', "maestro")
                     ->orWhere('tipo', '=', "alumno");
                 })
-                ->select('id', 'name', 'apellido', 'correo', 'telefono', 'encargado_id')->get();
-            $verificar = DB::table('visitas')->where('numero', $usuario[0]->telefono)->where('fecha', date("d/m/Y"))->where('hora_salida', null)->exists();
+                ->select('id', 'name', 'apellido', 'correo', 'telefono')->get();
+            $verificar = DB::table('visitas')
+                ->where('numero', $usuario[0]->telefono)
+                ->where('fecha', date("d/m/Y"))
+                ->where('hora_salida', null)
+                ->exists();
+                
+            
             if ($verificar) {
                 $hor = date('H:i:s');
-                $tiempo = DB::table('visitas')->select('hora_llegada')->where('numero', $usuario[0]->telefono)->where('fecha', date("d/m/Y"))->where('hora_salida', null)->get();
-                $salida = DB::table('visitas')->where('numero', $usuario[0]->telefono)->where('fecha', date("d/m/Y"))->where('hora_salida', null)->update(['hora_salida' => $hor]);
-                return redirect()->route($dir)->with('success', 'Visita concluida ' . $usuario[0]->name);
+                $tiempo = DB::table('visitas')
+                    ->select('hora_llegada')
+                    ->where('numero', $usuario[0]->telefono)
+                    ->where('fecha', date("d/m/Y"))
+                    ->where('hora_salida', null)->get();
+                $salida = DB::table('visitas')
+                    ->where('numero', $usuario[0]->telefono)
+                    ->where('fecha', date("d/m/Y"))
+                    ->where('hora_salida', null)
+                    ->update(['hora_salida' => $hor]);
+                return redirect()->route($dir)
+                    ->with('success', 'Visita concluida ' . $usuario[0]->name);
             } else {
-                $inicio = DB::table('visitas')->insert([['numero' => $usuario[0]->telefono, 'correo' => $usuario[0]->correo, 'name' => $usuario[0]->name, 'apellido' => $usuario[0]->apellido, 'fecha' => date("d/m/Y"), 'hora_llegada' => date('H:i:s'), 'responsable' => $origen , 'responsable_id' => $origen_id]]);
+                $inicio = DB::table('visitas')
+                ->insert([['numero' => $usuario[0]->telefono, 'correo' => $usuario[0]->correo, 
+                    'name' => $usuario[0]->name, 'apellido' => $usuario[0]->apellido, 
+                    'fecha' => date("d/m/Y"), 'hora_llegada' => date('H:i:s'), 
+                    'responsable' => $origen , 'responsable_id' => $origen_id]]);
                 return redirect()->route($dir)->with('success', 'Visita registrada ' . $usuario[0]->name . '!');
             }
         } catch (\Throwable $th) {
@@ -131,5 +150,15 @@ class VisitanteController extends Controller
             return redirect()->route($dir)->with('error', $th->getMessage());
         }
     }
+
+    public function solicitud_capacitacion(){
+        return view('visitante.solicitud_capacitacion');
+    }
+
+    public function solicitud_impresion(){
+        return view('visitante.solicitud_impresion');
+    }
+
+
 
 }
