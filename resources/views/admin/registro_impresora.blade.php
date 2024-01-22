@@ -135,7 +135,7 @@
                             return icono;
                         },
                         hozAlign: "center",
-                        width: 100,
+                        width: 200,
                     }, {
                         title: "Activar",
                         field: "id",

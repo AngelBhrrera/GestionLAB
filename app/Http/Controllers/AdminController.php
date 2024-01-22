@@ -340,7 +340,8 @@ class AdminController extends Controller
     
     public function gestionSedes(){
         $sede= DB::select("SELECT * FROM sede;");
-        return view("admin.sedes", ['sede'=>$sede]);
+    
+        return view("admin.sedes", ['sede'=>$sede, 'tabla_sedes' => json_encode($sede)]);
     }
 
     public function nuevaSede(Request $request){
@@ -508,6 +509,9 @@ class AdminController extends Controller
     }
     
     public function busqueda_reportes_parciales(Request $request){
+        if ($request->busqueda==""){
+            return redirect()->route('admin.reportes_parciales')->with(['warning'=>'Debes ingresar un código']);
+        }
         $id_prestador = DB::select("Select id from users where codigo = $request->busqueda");
         
         if(count($id_prestador) == 0){
@@ -523,6 +527,8 @@ class AdminController extends Controller
         }
 
     }
+
+
 
     
     
