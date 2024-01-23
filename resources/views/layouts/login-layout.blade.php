@@ -28,6 +28,7 @@
         }
     </style>
     @yield('content')
+    <script type="module" src="{{ asset('/build/assets/js/app.6c589841.js')}}"></script>
     @yield('script')
     </body>
 @endsection

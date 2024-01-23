@@ -72,7 +72,7 @@
 
 @section('script')
 
-    <script type="module" src={{ asset('build/assets/app.6c589841.js') }}>
+<script type="module" src="{{ asset('/build/assets/js/app.6c589841.js')}}"></script>
         (function () {
             async function login() {
 

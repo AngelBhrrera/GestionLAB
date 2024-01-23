@@ -13,7 +13,7 @@
         <link rel="stylesheet" type="text/css" href="https://www.virtuosoft.eu/code/bootstrap-duallistbox/bootstrap-duallistbox/v3.0.2/bootstrap-duallistbox.css">
 
         {{-- SCRIPTS --}}
-        <script type="module" src="{{ asset('/build/assets/app.6c589841.js')}}"></script>
+        <script type="module" src="{{ asset('/build/assets/js/app.6c589841.js')}}"></script>
         <script src="{{ asset('build/assets/js/jquery-3.6.4.min.js')}}"></script>
         <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
         <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
