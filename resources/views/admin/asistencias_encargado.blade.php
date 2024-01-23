@@ -1,7 +1,7 @@
 @extends('layouts/admin-layout')
 
 @section('subhead')
-    <link href="https://unpkg.com/tabulator-tables@4.8.1/dist/css/tabulator.min.css" rel="stylesheet">
+
     <style>
         .download-button {
             padding: 10px 20px;
@@ -41,20 +41,16 @@
     @endsection
 
     @section('script')
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
-    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.8.1/dist/js/tabulator.min.js"></script>
+    
     <script type="text/javascript">
 
             var assist = {!! $datos !!};
 
             var table = new Tabulator("#players", {
-                height:"100%",
+                height: "100%",
                 data: assist,
-                layout: "fitColumns",
-                resizableColumns: "false",
-                fitColumns: "true",
+                layout: "fitColumns",  // Utiliza layout en lugar de fitColumns
+                resizableColumns: false,  // Ajusté resizableColumns a false (sin comillas)
                 pagination: "local",
                 paginationSize: 8,
                 tooltips: true,

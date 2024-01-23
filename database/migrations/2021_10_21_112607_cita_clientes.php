@@ -17,13 +17,14 @@ class CitaClientes extends Migration
             $table->id('id_citas');
             $table->integer('id',0,0)->nullable();
             $table->integer('id_Cliente');
+            
             $table->string('carrera',100)->nullable();
             $table->integer('semestre',0,0)->nullable();
-            // $table->text('credencial')->nullable();
+
             $table->text('enlaceDrive')->nullable();
             $table->string('proyecto',100);
-            // $table->text('render')->nullable();
-            // $table->text('ArchivoSTL')->nullable();
+
+
             $table->integer('N_piezas',0,0)->default((1));
             $table->text('observaciones');
             $table->timestamp('fecha')->useCurrent();
