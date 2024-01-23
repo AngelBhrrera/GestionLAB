@@ -28,7 +28,7 @@ class CreateMedallasTable extends Migration
         (3, '/images/Medallas/Doble maso de madera.ico', 'Doble maso de madera', '/images/niveles/lvl3.ico'),
         (4, '/images/Medallas/maso-de-piedra.ico', 'Maso de piedra', '/images/niveles/lvl4.ico'),
         (5, '/images/Medallas/doble-maso-de-piedra.ico', 'Doble maso de piedra', '/images/niveles/lvl5.ico'),
-        (6, '/images/Medallas/hacha_simple.ico', 'Hacha simple', '/images/niveles/lvl6.ico'),
+        (6, '/images/Medallas/hacha-simple.ico', 'Hacha simple', '/images/niveles/lvl6.ico'),
         (7, '/images/Medallas/Doble-hacha-simple.ico', 'Doble hacha simple', '/images/niveles/lvl7.ico'),
         (8, '/images/Medallas/Hacha-plateada.ico', 'Hacha plateada', '/images/niveles/lvl8.ico'), 
         (9, '/images/Medallas/Doble-hacha-plateada.ico', 'Doble hacha plateada', '/images/niveles/lvl9.ico'),
