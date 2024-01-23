@@ -8,6 +8,7 @@
     <style>
         .container:hover .imagen-rol {-webkit-transform:scale(1.5);transform:scale(1.5); transition:all .3s}
     </style>
+
     <?php   
         $nivel = DB::table('niveles')
             ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
@@ -77,7 +78,7 @@
                             </ul>
                         </li>
                     </li>
-                    {{--
+                    
                     <li>
                         <a href="#" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="calendar"></i> </div>
@@ -116,7 +117,7 @@
                             </li>
                         </ul>
                     </li>
-
+                    {{--
                     <li>
                         <a href="javascript:;" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="edit"></i> </div>
@@ -285,7 +286,4 @@
 
 @endsection
 
-@section('script')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-@endsection
 

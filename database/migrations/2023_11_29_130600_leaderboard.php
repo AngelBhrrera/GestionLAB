@@ -17,8 +17,8 @@ class leaderboard extends Migration
                 `users`.`experiencia` AS Experiencia,
                 `users`.`codigo` AS codigo
             FROM `users`
-            WHERE `users`.`tipo` = `prestador` OR `users`.`tipo` = `voluntario` OR `users`.`tipo` = `practicante`
-        ORDER BY `users`.`experiencia` DESC 
+            WHERE `users`.`tipo` IN ('prestador', 'voluntario', 'practicante', 'encargado')
+            ORDER BY `users`.`experiencia` DESC;
         ");
 
     }

@@ -18,13 +18,13 @@ class CreateSedeTable extends Migration
     {
         Schema::create('sede', function (Blueprint $table) {
             $table->id('id_Sede');
-            $table->string('nombre_Sede')->length(150);
-            $table->integer('turnoMatutino')->length(10);
-            $table->integer('turnoMediodia')->length(10);
-            $table->integer('turnoVespertino')->length(10);
-            $table->integer('turnoSabatino')->length(10);
-            $table->integer('turnoTiempoCompleto')->length(10);
-            $table->integer('no_Aplica')->length(10);
+            $table->string('nombre_Sede')->default(0);
+            $table->boolean('turnoMatutino')->default(0);
+            $table->boolean('turnoMediodia')->default(0);
+            $table->boolean('turnoVespertino')->default(0);
+            $table->boolean('turnoSabatino')->default(0);
+            $table->boolean('turnoTiempoCompleto')->default(0);
+            $table->boolean('no_Aplica')->default(0);
             $table->boolean('activa')->default(1);
             $table->boolean('servicios_impresion')->default(0);
 

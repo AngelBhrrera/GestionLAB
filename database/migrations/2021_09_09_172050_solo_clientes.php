@@ -19,8 +19,8 @@ class soloclientes extends Migration
         `users`.`name` AS `name`,
         `users`.`apellido` AS `apellido`,
         `users`.`correo` AS `correo`,
-        `users`.`codigo` AS `codigo`
-        `users`.`tipo` AS `tipo`
+        `users`.`codigo` AS `codigo`,
+        `users`.`tipo` AS `tipo`,
         `users`.`telefono` AS `telefono`
         FROM
             (

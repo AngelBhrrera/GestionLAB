@@ -12,14 +12,14 @@
     <meta name="viewport" content="width-device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Font -->
-    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="{{asset('/fonts.googleapis.com')}}">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500" rel="stylesheet">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="build/assets/bootstrap.min.css">
+    <link rel="stylesheet" href="{{asset('build/assets/css/bootstrap.min.css')}}">
     <!-- Owl carousel -->
-    <link rel="stylesheet" href="build/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="{{asset('build/assets/css/owl.carousel.min.css')}}">
     <!-- Main css -->
-    <link href="build/assets/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('build/assets/css/style.css')}}">
 </head>
 
 <body data-spy="scroll" data-target="#navbar" data-offset="30">
@@ -30,7 +30,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <nav class="navbar navbar-dark navbar-expand-lg">
-                        <a class="navbar-brand" href="{{route('landing')}}"><img src="build/assets/images/logosInventores/InventoresLOGOHDWhiteBorder.png" width=70 height =70 class="img-fluid" alt="logo"></a> <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+                        <a class="navbar-brand" href="{{route('landing')}}"><img src="{{ asset('build/assets/images/logosInventores/InventoresLOGOHDWhiteBorder.png')}}" width=70 height =70 class="img-fluid" alt="logo"></a> <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
                         <div class="collapse navbar-collapse" id="navbar">
                             <ul class="navbar-nav ml-auto">
                                 <li class="nav-item"> <a class="nav-link active" href="#home">Inicio <span class="sr-only">(current)</span></a> </li>
@@ -189,49 +189,49 @@
                 <div class="grid-container">
                     <div class="grid-item">
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLScPiGL-g7Os1pJoHGtLqpiA2vJAKslYmVKqW9Mp6mZuTUr2mQ/viewform">
-                            <img src="build/assets/images/creacion-de-piezas-3D.png" alt="image">
+                            <img src="{{ asset('build/assets/images/creacion-de-piezas-3D.png') }}" alt="image">
                             <p class="pdescripcion">Creación de modelos digitales 3D</p>
                         </a>
                         
                     </div>
                     <div class="grid-item">
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSdtHIY-jHHlseVQNvtwobPxLEdkk0JXSpYXmodqwCdMGMJIHg/viewform">
-                            <img src="build/assets/images/capacitacion-de-uso-de-impresoras-3D.png" alt="image">
+                            <img src="{{ asset('build/assets/images/capacitacion-de-uso-de-impresoras-3D.png') }}" alt="image">
                             <p class="pdescripcion">Capacitación de uso de impresoras 3D</p>
                         </a>
                         
                     </div>
                     <div class="grid-item">
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSd2KBuqIvoCTGOX8rx8hihQNkO17cbSaC9V01Iix9I3pW1-Ew/viewform">
-                            <img src="build/assets/images/creacion-de-aplicaciones-de-realidad-virtual.png" alt="image">
+                            <img src="{{ asset('build/assets/images/creacion-de-aplicaciones-de-realidad-virtual.png') }}" alt="image">
                             <p class="pdescripcion">Creación de aplicaciones de realidad virtual</p>
                         </a>
                         
                     </div>
                     <div class="grid-item">
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLScijczjpr9Klw9XVV4ynSR-mNrRwzwEVESFOQLYI_LKCz1clg/viewform">
-                            <img src="build/assets/images/creacion-de-prototipos.png" alt="image">
+                            <img src="{{ asset('build/assets/images/creacion-de-prototipos.png') }}" alt="image">
                             <p class="pdescripcion">Creación de prototipos</p>
                         </a>
                         
                     </div>
                     <div class="grid-item">
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSdoTy4RdctUfzyZGzHQYkDXqA1A_OY80-9ex9CwcpB0jE-MGQ/viewform">
-                            <img src="build/assets/images/creacion-de-sistemas-web.png" alt="image">
+                            <img src="{{ asset('build/assets/images/creacion-de-sistemas-web.png') }}" alt="image">
                             <p class="pdescripcion">Creación de sistemas web</p>
                         </a>
                         
                     </div>
                     <div class="grid-item">
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSerKEtn2s3XaeNaXEw_PQhelRVc2TlPdeVrlTIQmVetotby0g/closedform">
-                            <img src="build/assets/images/creacion-de-videojuegos.png" alt="image">
+                            <img src="{{ asset('build/assets/images/creacion-de-videojuegos.png') }}" alt="image">
                             <p class="pdescripcion">Creación de videojuegos</p>
                         </a>
                         
                     </div>
                     <div class="grid-item">
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSfkOt8vekS_ix9Y8ePYk-SQARCiVuz9rjPzWFOBYTrGJ6WpvA/viewform">
-                            <img src="build/assets/images/nivel.png" alt="image">
+                            <img src="{{ asset('build/assets/images/nivel.png') }}" alt="image">
                             <p class="pdescripcion">Capacitación de desarrollo de videojuegos</p>
                         </a>
                         
@@ -239,14 +239,14 @@
                     <div class="grid-item">
                         
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLScN0dNRm0MbuRs9uT6d-WoUmuizEa7Z5JwI4Bt4BHvuraHATQ/viewform">
-                            <img src="build/assets/images/uso-de-impresoras-3D.png" alt="image">   
+                            <img src="{{ asset('build/assets/images/uso-de-impresoras-3D.png') }}" alt="image">   
                             <p class="pdescripcion">Solicitud de impresión de modelos 3D</p>
                         </a>
                         
                     </div>
                     <div class="grid-item">
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSdQUseThOoCQ3gz287sDFoXRRV7BHA6Vti74_8tWXxKcqaOFA/viewform">
-                            <img src="build/assets/images/capacitacion-de-app-de-realidad-virtual.png" alt="image">
+                            <img src="{{ asset('build/assets/images/capacitacion-de-app-de-realidad-virtual.png') }}" alt="image">
                             <p class="pdescripcion">Capacitación de app de realidad virtual</p>
                         </a>
                         
@@ -256,14 +256,14 @@
                 <div class="grid-containerSec">
                     <div class="grid-item">
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSe4_sPzMttqcztP821RoMMNY5K9GMxij7xDD86cE05px57u2Q/viewform">
-                            <img src="build/assets/images/capacitacion-de-desarrollo-de-aplicacion-interactiva.png" alt="image">
+                            <img src="{{ asset('build/assets/images/capacitacion-de-desarrollo-de-aplicacion-interactiva.png') }}" alt="image">
                             <p class="pdescripcion">Capacitación de desarrollo de aplicación interactiva</p>
                         </a>
                         
                     </div>
                     <div class="grid-item">
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSeOcS6S_OwXiBvDWrflv5AQ44H1DUYQWN8aPMymLa3d-XvSWw/viewform">
-                            <img src="build/assets/images/capacitacion-de-modelado-3D.png" alt="image">
+                            <img src="{{ asset('build/assets/images/capacitacion-de-modelado-3D.png') }}" alt="image">
                             <p class="pdescripcion">Capacitación de modelado 3D</p>
                         </a>
                         
@@ -275,49 +275,49 @@
             
                     <div class="grid-item" style="width:200px; text-align: center; display: inline-block;" alt="lab" class="img-fluid">
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLScPiGL-g7Os1pJoHGtLqpiA2vJAKslYmVKqW9Mp6mZuTUr2mQ/viewform">
-                            <img src="build/assets/images/creacion-de-piezas-3D.png" alt="image">
+                            <img src="{{ asset('build/assets/images/creacion-de-piezas-3D.png') }}" alt="image">
                             <p class="pdescripcion">Creación de modelos digitales 3D</p>
                         </a>
                         
                     </div>
                     <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSdtHIY-jHHlseVQNvtwobPxLEdkk0JXSpYXmodqwCdMGMJIHg/viewform">
-                            <img src="build/assets/images/capacitacion-de-uso-de-impresoras-3D.png" alt="image">
+                            <img src="{{ asset('build/assets/images/capacitacion-de-uso-de-impresoras-3D.png') }}" alt="image">
                             <p class="pdescripcion">Capacitación de uso de impresoras 3D</p>
                         </a>
                         
                     </div>
                     <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSd2KBuqIvoCTGOX8rx8hihQNkO17cbSaC9V01Iix9I3pW1-Ew/viewform">
-                        <img src="build/assets/images/creacion-de-aplicaciones-de-realidad-virtual.png" alt="image">
+                        <img src="{{ asset('build/assets/images/creacion-de-aplicaciones-de-realidad-virtual.png') }}" alt="image">
                         <p class="pdescripcion">Creación de aplicaciones de realidad virtual</p>
                         </a>
                         
                     </div>
                     <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLScijczjpr9Klw9XVV4ynSR-mNrRwzwEVESFOQLYI_LKCz1clg/viewform">
-                            <img src="build/assets/images/creacion-de-prototipos.png" alt="image">
+                            <img src="{{ asset('build/assets/images/creacion-de-prototipos.png') }}" alt="image">
                             <p class="pdescripcion">Creación de prototipos</p>
                         </a>
                         
                     </div>
                     <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSdoTy4RdctUfzyZGzHQYkDXqA1A_OY80-9ex9CwcpB0jE-MGQ/viewform">
-                            <img src="build/assets/images/creacion-de-sistemas-web.png" alt="image">
+                            <img src="{{ asset('build/assets/images/creacion-de-sistemas-web.png') }}" alt="image">
                             <p class="pdescripcion">Creación de sistemas web</p>
                         </a>
                         
                     </div>
                     <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSerKEtn2s3XaeNaXEw_PQhelRVc2TlPdeVrlTIQmVetotby0g/closedform">
-                            <img src="build/assets/images/creacion-de-videojuegos.png" alt="image">
+                            <img src="{{ asset('build/assets/images/creacion-de-videojuegos.png') }}" alt="image">
                             <p class="pdescripcion">Creación de videojuegos</p>
                         </a>
                         
                     </div>
                     <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSfkOt8vekS_ix9Y8ePYk-SQARCiVuz9rjPzWFOBYTrGJ6WpvA/viewform">
-                            <img src="build/assets/images/nivel.png" alt="image">
+                            <img src="{{ asset('build/assets/images/nivel.png') }}" alt="image">
                             <p class="pdescripcion">Capacitación de desarrollo de videojuegos</p>
                         </a>
                         
@@ -325,14 +325,14 @@
                     <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
                         
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLScN0dNRm0MbuRs9uT6d-WoUmuizEa7Z5JwI4Bt4BHvuraHATQ/viewform">
-                            <img src="build/assets/images/uso-de-impresoras-3D.png" alt="image">   
+                            <img src="{{ asset('build/assets/images/uso-de-impresoras-3D.png') }}" alt="image">   
                             <p class="pdescripcion">Solicitud de impresión de modelos 3D</p>
                         </a>
                         
                     </div>
                     <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSdQUseThOoCQ3gz287sDFoXRRV7BHA6Vti74_8tWXxKcqaOFA/viewform">
-                        <img src="build/assets/images/capacitacion-de-app-de-realidad-virtual.png" alt="image">
+                        <img src="{{ asset('build/assets/images/capacitacion-de-app-de-realidad-virtual.png') }}" alt="image">
                         <p class="pdescripcion">Capacitación de app de realidad virtual</p>
                         </a>
                         
@@ -340,14 +340,14 @@
 
                         <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
                             <a href="https://docs.google.com/forms/d/e/1FAIpQLSe4_sPzMttqcztP821RoMMNY5K9GMxij7xDD86cE05px57u2Q/viewform">
-                            <img src="build/assets/images/capacitacion-de-desarrollo-de-aplicacion-interactiva.png" alt="image">
+                            <img src="{{ asset('build/assets/images/capacitacion-de-desarrollo-de-aplicacion-interactiva.png') }}" alt="image">
                             <p class="pdescripcion">Capacitación de desarrollo de aplicación interactiva</p>
                             </a>
                         </div>
 
                     <div class="grid-item"style="width:200px" alt="lab" class="img-fluid" >
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSeOcS6S_OwXiBvDWrflv5AQ44H1DUYQWN8aPMymLa3d-XvSWw/viewform">
-                            <img src="build/assets/images/capacitacion-de-modelado-3D.png" alt="image">
+                            <img src="{{ asset('build/assets/images/capacitacion-de-modelado-3D.png') }}" alt="image">
                             <p class="pdescripcion">Capacitación de modelado 3D</p>
                         </a>
                     </div>
@@ -367,11 +367,12 @@
             </div>
 
             <div class="img-gallery owl-carousel owl-theme">
-                <img src="build/assets/images/labMedia.jpg" alt="image">
-                <img src="build/assets/images/labMedia2.jpg" alt="image">
-                <img src="build/assets/images/labMedia3.jpg" alt="image">
-                <img src="build/assets/images/labMedia4.jpg" alt="image">
-                {{--<img src="build/assets/images/labMedia5.jpg" alt="image" width="200px" height="500px">--}}
+
+                <img src="{{ asset('build/assets/images/labMedia.jpg') }}" alt="image">
+                <img src="{{ asset('build/assets/images/labMedia2.jpg') }}" alt="image">
+                <img src="{{ asset('build/assets/images/labMedia3.jpg') }}" alt="image">
+                <img src="{{ asset('build/assets/images/labMedia4.jpg') }}" alt="image">
+                {{--<img src="{{ asset('build/assets/images/labMedia5.jpg') }}" alt="image" width="200px" height="500px">--}}
             </div>
         </div>
     </div>
@@ -756,14 +757,14 @@
         <div class="container table-responsive">
             <div class="row">
                 <div class="col align-self-start">
-                    <img class="mb-4" src="build/assets/images/logoB.png" height="120" width="480" >
+                    <img class="mb-4" src="{{ asset('build/assets/images/logoB.png')}}" height="120" width="480" >
                 </div>
                 
                 <div class="col align-self-start">
                     <h3 style="font-size:15pt">¡Síguenos en nuestras redes sociales!</h3>
-                    <a href="https://www.facebook.com/Comunidadinventores"><img class="mb-4" src="build/assets/images/image-1.png" height="60" width="60" ></a>
-                    <a href="https://www.instagram.com/inventores_lab_cucei/"><img class="mb-4" src="build/assets/images/image-4.png" height="60" width="60" ></a>
-                    <a href="https://www.tiktok.com/@inventoresudg"><img class="mb-4" src="build/assets/images/tiktok.png" height="60" width="60" ></a>
+                    <a href="https://www.facebook.com/Comunidadinventores"><img class="mb-4" src="{{ asset('build/assets/images/image-1.png')}}" height="60" width="60" ></a>
+                    <a href="https://www.instagram.com/inventores_lab_cucei/"><img class="mb-4" src="{{ asset('build/assets/images/image-4.png')}}" height="60" width="60" ></a>
+                    <a href="https://www.tiktok.com/@inventoresudg"><img class="mb-4" src="{{ asset('build/assets/images/tiktok.png')}}" height="60" width="60" ></a>
                     <h3 style="font-size:15pt">¡Vísita nuestro <a href="https://inventores.org/blog/">blog</a>!</h3>
                     <a href="https://inventores.org/blog/"></a>
                 </div>
@@ -807,19 +808,15 @@
         </div>
     </div>
     <!-- // end .section -->
-
     </footer>
-
-    <!-- jQuery and Bootstrap -->
-    <script src="plugins/jquery/jquery-3.2.1.min.js"></script>
-    <script src="build/assets/bootstrap.bundle.min.js"></script>
-    <!-- Plugins JS -->
-    <script src="build/assets/owl.carousel.min.js"></script>
-
-    <!-- Custom JS -->
-    <script src="build/assets/script.js"></script>
-    <!-- Dialogflow -->
-    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-
-</body>
+        <!-- jQuery and Bootstrap -->
+        <script src="{{ asset('plugins/jquery/jquery-3.2.1.min.js')}}"></script>
+        <script src="{{ asset('build/assets/js/bootstrap.bundle.min.js')}}"></script>
+        <!-- Plugins JS -->
+        <script src="{{ asset('/build/assets/js/owl.carousel.min.js')}}"></script>
+            <!-- Custom JS -->
+        <script src="{{ asset('/build/assets/js/script.js')}}"></script>
+        <!-- Dialogflow -->
+        <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    </body>
 </html>

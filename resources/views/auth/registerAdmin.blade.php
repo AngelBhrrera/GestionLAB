@@ -1,7 +1,6 @@
 @extends('layouts/admin-layout')
 
 @section('subhead')
-<html class='dark'>
     <title>Admin Register</title>
 @endsection
 
@@ -223,8 +222,8 @@
 @endsection
 
 @section('script')
-    <script type="text/javascript">
-        
+
+    <script type="text/javascript">        
         function filtroVisitantes(){
             var inputSede = document.getElementById("sede");
             var inputTurno = document.getElementById("horarios");
