@@ -146,6 +146,7 @@
                                                 <option id="13" value='CUCIENEGA' >CUCIENEGA</option>
                                                 <option id="14" value='CUCSUR'>CUCSUR</option>                    
                                                 <option id="15" value='CUSUR' >CUSUR</option>
+                                                <option id="16" value='Otro' >Otro</option>
                                             </select>
                                             @if(old('opc')=='1')
                                                 @error('centro')
@@ -179,6 +180,25 @@
                                         </select>
                                         @if(old('opc')=='1')
                                             @error('sede')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        @endif      
+                                    </div>
+                                    <div class="intro-y col-span-12 sm:col-span-6" id="divArea" style="display:none">
+                                        <label for="input-wizard-3" class="form-label">Área de trabajo</label>
+                                        <select class="form-control" name="area" id="area" >
+                                            @if (isset($area))
+                                                <option id="area" value="{{null}}">Selecciona un área de trabajo</option>
+                                                @foreach ($area as $dato )
+                                                    <option id="{{$dato->id}}" value="{{$dato->nombre_area}}" data-nombre="{{$dato->nombre_area}}">{{$dato->nombre_area }} </option>
+                                                @endforeach
+                                            @endif
+                                        
+                                        </select>
+                                        @if(old('opc')=='1')
+                                            @error('area')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -438,6 +458,7 @@
             var input8 = document.getElementById('divPW');
             var input9 = document.getElementById('divPW2');
             var input10 = document.getElementById('divTurno');
+            var input11 = document.getElementById('divArea');
 
             if(index =='1'){
                
@@ -462,6 +483,7 @@
                     input5.style.display = "";
                     input6.style.display = "";
                     input10.style.display= "";
+                    input11.style.display="";
                 }else{
                     divAcad.style.display = "";
                 }
@@ -492,6 +514,7 @@
                     input8.style.display = "none";
                     input9.style.display = "none";
                     input10.style.display = "none";
+                    input11.style.display = "none";
             }
         }
 
