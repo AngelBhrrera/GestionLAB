@@ -9,8 +9,8 @@
         @yield('head')
         <link href="{{ asset('build/assets/images/inventores.png')}}" rel="shortcut icon">
         <!-- BEGIN: CSS Assets-->
-        <link rel="stylesheet" href="{{ asset('build/assets/css/app.c07cb30e.css') }}" >
-        <link rel="stylesheet" href="{{ asset('build/assets/css/app.c469cfb8.css') }}" >
+        <link rel="stylesheet" href="{{ asset('build/assets/css/app.c07cb30e.css') }}">
+        <link rel="stylesheet" href="{{ asset('build/assets/css/app.c469cfb8.css') }}">
         <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
         <link rel="stylesheet" href="{{asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
         <link rel="stylesheet" href="{{asset('plugins/daterangepicker/daterangepicker.css')}}">
