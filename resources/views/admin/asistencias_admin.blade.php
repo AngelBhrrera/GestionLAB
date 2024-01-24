@@ -28,11 +28,15 @@
                     <h3  class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;"> Registros de Check - in  </h3>
                 </div>
 
+                <br>
+
                 <div class="table-controls pl-10">
                     <button class="download-button" id="download-json">Download JSON</button>
                     <button class="download-button" id="download-csv">Download CSV</button>
                     <button class="download-button" id="download-xlsx">Download XLSX</button>
                 </div>
+
+                <br>
 
                 <div class="text-center mx-auto" style="padding-left: 1.5px;" id="players"></div>
             </div>
@@ -64,14 +68,12 @@
                         field: "responsable",
                         headerFilter: "input",
                         sorter: "string",
-                        hozAlign: "center",
                         width: 200,
                     },{
                         title: "Encargado",
                         field: "origen",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
                         width: 200,
 
                     },  {
@@ -79,7 +81,6 @@
                         field: "horas",
                         sorter: "number",
                         width: 100,
-                        hozAlign: "center",
                     }, {
                         title: "Estado",
                         field: "estado",
@@ -110,7 +111,6 @@
                             }
                             return icono;
                         },
-                        hozAlign: "center",
                         width: 100,
                         cellEdited: function (cell) {
                             var row = cell.getRow();
@@ -127,7 +127,6 @@
                                 format: "DD/MM/YYYY", 
                             },
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Entrada",
                         field: "hora_entrada",
@@ -136,7 +135,6 @@
                         sorterParams: {
                             format: "HH:mm:ss",
                         },
-                        hozAlign: "center",
                     },
                     {
                         title: "Salida",
@@ -156,7 +154,6 @@
                         sorterParams: {
                             format: "HH:mm:ss",
                         },
-                        hozAlign: "center",
                     },  
                 ],
             });

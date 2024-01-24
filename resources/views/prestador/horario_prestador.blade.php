@@ -1,18 +1,20 @@
 @extends('layouts/prestador-layout')
 
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+@section('subhead')
+
     <script>
 
       document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth'
-        });
-        calendar.render();
+          var calendarEl = document.getElementById('calendar');
+          var calendar = new FullCalendar.Calendar(calendarEl, {
+              initialView: 'dayGridMonth',
+              initialDate: new Date()  // Establecer la fecha actual como la fecha inicial
+          });
+          calendar.render();
       });
 
     </script>
-@section('subhead')
+
 
 @endsection
 
@@ -27,12 +29,8 @@
 
 
 @section('subcontent')
-
-
     <div id='container'>
         <div id='calendar'  style='width: 800px; height: 1150px;'></div>
     </div>
-
-
 @endsection
 

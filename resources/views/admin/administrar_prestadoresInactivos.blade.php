@@ -50,7 +50,7 @@
                         headerFilter: "input",
                         hozAlign: "center",
                     }, {
-                        title: "Activar",
+                        title: "",
                         field: "id",
                         formatter: function (cell, formatterParams, onRendered) {
                             var value = cell.getValue();
@@ -66,7 +66,7 @@
                         hozAlign: "center",
                     },
                     {
-                        title: "Eliminar",
+                        title: "",
                         field: "id",
                         formatter: function (cell, formatterParams, onRendered) {
                             var value = cell.getValue();

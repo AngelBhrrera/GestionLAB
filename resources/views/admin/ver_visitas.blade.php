@@ -24,57 +24,61 @@
                 data: visits,
                 layout: "fitColumns",
                 pagination: "local",
+                resizableColumns: "false",
                 paginationSize: 7,
                 tooltips: true,
                 columns: [{
+                    title: "ID",
+                        field: "id",
+                        visible: false,
+                        width: 2,
+                    },{
                         title: "Fecha",
                         field: "fecha",
                         sorter: "string",
-                        hozAlign: "center",
+                        width: 110,
                     }, {
                         title: "Nombre",
                         field: "name",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Apellido",
                         field: "apellido",
                         sorter: "string",
                         editor: "input",
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Responsable",
                         field: "responsable",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Correo",
                         field: "correo",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Contacto",
                         field: "numero",
-                        hozAlign: "center",
                     }, {
                         title: "Entrada",
                         field: "hora_llegada",
                         sorter: "string",
-                        hozAlign: "center",
                     }, {
                         title: "Salida",
                         field: "hora_salida",
                         sorter: "string",
-                        hozAlign: "center",
                     },{
                         title: "Motivo",
                         field: "motivo",
-                        hozAlign: "center",
                         editor: "input",
+                        cellEdited: function (cell) {
+                            var row = cell.getRow();
+                            var id = row.getData().id;
+                            var value = cell.getValue();
+                            agregarObservaciones(id, value);
+                        },
                     },
                     
                 ],
@@ -83,9 +87,9 @@
                 //},
             });
 
-            function modificarPrestador(value) {
+            function agregarObservaciones(id, value) {
                 const token = document.head.querySelector('meta[name="csrf-token"]').content;
-                fetch(`modificar_prestador/${value}`, {
+                fetch(`motivo_visita/${id}/${value}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -94,10 +98,11 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    window.location.reload(); 
+
+                    console.log('Estado de impresion cambiado', data);
                 })
                 .catch(error => {
-                    console.error('Error al activar usuario:', error);
+                    console.error('Error al cambiar de estado de impresion:', error);
                 });
             } 
 

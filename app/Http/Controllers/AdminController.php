@@ -80,6 +80,14 @@ class AdminController extends Controller
         return view('/admin/ver_visitas', ['datos' => json_encode($data), 'sede' => $n_sede]);
     }
 
+    public function motivo($id, $value)
+    {
+        $sql=    DB::table('visitas')
+        ->where('id', $id)
+        ->update(['motivo' => $value]);
+    return response()->json(['message' => $sql]);
+    }
+
     public function general()
     {
         $data = DB::table('users')
@@ -378,7 +386,7 @@ class AdminController extends Controller
         $sede = auth()->user()->sede;
       
         $data = DB::table('ver_impresiones')
-            ->select('impresora', 'proyecto', 'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
+            ->select('ver_impresiones.id','impresora', 'proyecto', 'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
             ->join('users', 'ver_impresiones.id_Prestador', '=', 'users.id')
             ->where('sede', $sede)
             ->get();
@@ -415,6 +423,24 @@ class AdminController extends Controller
 
         return response()->json(['message' => 'Impresora activada']);
     }
+
+    public function detail_prints($id, $value) {
+
+        $sql=    DB::table('seguimiento_impresiones')
+            ->where('id', $id)
+            ->update(['observaciones' => $value]);
+        return response()->json(['message' => $sql]);
+    }
+
+    public function printstate($id, $state) {
+
+        DB::table('seguimiento_impresiones')
+        ->where('id', $id)
+        ->update(['estado' => $state]);
+
+        return response()->json(['message' => 'Activado exitosamente' . $id]);
+    }
+
 
     public function make_print(Request $request)
     {
@@ -501,73 +527,6 @@ class AdminController extends Controller
         return redirect(route('admin.sedes'))->with('success', 'Modificada correctamente');
     }
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    /*public function activar(Request $request)
-    {
-        try {
-            $id = $request->input('id');
-            $modificar = DB::table('users')->where('id', $id)->update(['tipo' => "prestador"]);
-
-            return redirect()->route($this->rutaRegreso("prestadoresPendientes"))->with('success', 'Activado correctamente');
-        } catch (\Throwable $th) {
-            return redirect()->route($this->rutaRegreso('prestadoresPendientes'))->with('error', $th->getMessage());
-        }
-    }
-
-        //solicitud_aceptada
-
-        public function impresion_terminada(Request $request)
-        {
-    
-            $id_impresion =   $request->id_impresion;
-            $modificar = DB::table('proyectos_prestadores')->where('id_proyecto', $id_impresion)->update(
-                ['status' => 'terminado']
-            );
-            $modificar = DB::table('cita_clientes')->where('id_citas', $id_impresion)->update(
-                ['status' => 'terminado']
-            );
-            return redirect()->route("admin.prestadoresProyectos");
-        }
-
-
-        public function terminar_prestadores(Request $request)
-    {
-        $id = $request->input('id_usuario');
-        $modificar = DB::table('users')->where('id', $id)->update(['tipo' => "prestador_terminado", 'fecha_salida' => date('Y-m-d')]);
-
-        return redirect()->route("admin./admin/homeA");
-    }*/
-
-    /*public function activar_prestadores(Request $request)
-    {
-        $id = $request->input('idusuarioactivar');
-        $modificar = DB::table('users')->where('id', $id)->update(['tipo' => "prestador"]);
-        $columns = array(
-            ["data" => "id", "visible" => false],
-            ["data" => "name"],
-            ["data" => "apellido"],
-            ["data" => "codigo"],
-            ["data" => "carrera"],
-            ["data" => "horas"],
-            ["data" => "horas_cumplidas"],
-            ["data" => "horas_restantes", "visible" => false],
-            ["data" => "acciones", "sortable" => false],
-        );
-
-        return view(
-            '/admin/homeA',
-            [
-                'datos' => ['id', 'name', 'apellido', 'codigo', 'carrera', 'horas', 'horas_cumplidas', 'horas_restantes', 'acciones'],
-                'opcion' => 'table',
-                'titulo' => 'Tabla Prestadores Activos',
-                'ajaxroute' => 'ss.ssPrestadoresA',
-                "columnas" => json_encode($columns),
-            ]
-        );
-    }*/
-
     public function desactivar_prestadores(Request $request)
     {
         $id = $request->input('iddesc');
@@ -626,6 +585,29 @@ class AdminController extends Controller
             return redirect()->route('admin.reportes_parciales')->with(['warning'=>"No se encontraron registros del prestador", 'reportes'=>$reportes, 'codigo'=> $request->busqueda]);
         }
     }
+
+    public function registrarVisitas(Request $request)
+    {
+        $insert = Visitas::create($request->all());
+        return redirect('/')->with('success', 'Creado correctamente');
+    }
+
+    public function salidaVisita(Request $request)
+    {
+        $id = $request->input('id');
+        $vmodificar = Visitas::findOrFail($id);
+
+        $currentDateTime = date('Y-m-d H:i:s');
+        $newDateTime = date('h:i A', strtotime($currentDateTime));
+        $newDateTime2 = date('Y-m-d H:i:s', strtotime($currentDateTime));
+
+        $vmodificar->hora_salida = $newDateTime2;
+        $vmodificar->fecha_salida = $newDateTime2;
+
+        $vmodificar->save();
+        return redirect()->route('admin.visitas');
+    }
+
     
 //VIEJO CONTROLLER. /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -754,40 +736,6 @@ class AdminController extends Controller
                 'descarga' => false
             ]
         );
-    }
-
-    public function registroVisitas()
-    {
-        return view(
-            '/admin/homeA',
-            [
-                'fecha' => date("d/m/Y"),
-                'opcion' => 'registroVisitas',
-                'titulo' => 'Registro de Visitas',
-            ]
-        );
-    }
-
-    public function registrarVisitas(Request $request)
-    {
-        $insert = Visitas::create($request->all());
-        return redirect('/')->with('success', 'Creado correctamente');
-    }
-
-    public function salidaVisita(Request $request)
-    {
-        $id = $request->input('id');
-        $vmodificar = Visitas::findOrFail($id);
-
-        $currentDateTime = date('Y-m-d H:i:s');
-        $newDateTime = date('h:i A', strtotime($currentDateTime));
-        $newDateTime2 = date('Y-m-d H:i:s', strtotime($currentDateTime));
-
-        $vmodificar->hora_salida = $newDateTime2;
-        $vmodificar->fecha_salida = $newDateTime2;
-
-        $vmodificar->save();
-        return redirect()->route('admin.visitas');
     }
 
     public function verCredencial(Request $request)

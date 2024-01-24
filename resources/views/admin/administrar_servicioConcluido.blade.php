@@ -50,7 +50,7 @@
                         headerFilter: "input",
                         hozAlign: "center",
                     }, {
-                        title: "Liberar",
+                        title: "",
                         field: "id",
                         formatter: function (cell, formatterParams, onRendered) {
                             var value = cell.getValue();

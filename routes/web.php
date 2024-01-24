@@ -112,6 +112,9 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::post('/admin/registrar_impresoras', 'make_print')->name('make_print');
                 Route::get('/admin/ver_impresiones', 'watch_prints')->name('watch_prints');
                 Route::get('admin/activar_impresora/{value}', 'activate_print')->name('activate_print');
+                Route::get('admin/changestate_print/{id}/{value}', 'printstate')->name('printstate');
+
+                Route::get('admin/observaciones_impresion/{id}/{value}', 'detail_prints')->name('detail_prints');
 
                 Route::get('/admin/general', 'general')->name('general');
                 Route::get('/admin/prestadores', 'prestadores')->name('prestadores');
@@ -121,9 +124,9 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::get('admin/desactivar_prestador/{value}', 'desactivar')->name('desactivar');
                 
                 Route::get('/admin/clientes', 'clientes')->name('clientes');
-
                 Route::get('/admin/visitas', 'visits')->name('visitas');
                 Route::get('/admin/ver_visitas', 'watch_visits')->name('visitas_reg');
+                Route::get('admin/motivo_visita/{id}/{value}', 'motivo')->name('motivo');
 
                 Route::get('/admin/faltas', 'faltas')->name('faltas');
                 Route::get('/admin/horarios', 'horarios')->name('horarios');

@@ -25,6 +25,7 @@
                 layout: "fitColumns",
                 pagination: "local",
                 paginationSize: 24,
+                groupBy: "sede",
                 tooltips: true,
                 columns: [{
                         title: "Nombre",
