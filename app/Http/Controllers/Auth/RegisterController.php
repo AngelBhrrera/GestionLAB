@@ -78,6 +78,18 @@ class RegisterController extends Controller
                 $rHoras =  ['nullable'];
                 $rEncargado = ['nullable'];
                 break;
+
+            case 'encargado':
+                $rCentro = ['nullable'];
+                $rTelefono = ['nullable'];
+                $rCodigo = ['nullable'];
+                $rCarrera = ['nullable'];
+                $rSede = ['nullable'];
+                $rhorario = ['nullable'];
+                $rHoras =  ['nullable'];
+                $rEncargado = ['nullable'];
+                break;
+
         }
 
         return Validator::make($data, [

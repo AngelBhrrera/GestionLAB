@@ -9,6 +9,7 @@ use DB;
 use Auth;
 use App\Models\User;
 use App\Rules\MaxWordsRule;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
@@ -22,9 +23,7 @@ class HomeController extends Controller
         return view("/visitante/public_form");
     }
 
-    public function public_form(request $request){
-        return redirect()->route("formulariop");
-    }
+  
 
     public function register()
     {
@@ -37,14 +36,9 @@ class HomeController extends Controller
         return view('checkin',['nombre'=>'checkin']);
     }
 
-    public function registro_impresion_form(Request $request){
+    public function public_form(Request $request){
         $validator = Validator::make($request->all(),[
             'enlaceDrive'=>'required',
-            'correo'=>'required',
-            'nombre'=> 'required',
-            'telefono'=> 'required|max:10',
-            'carrera' =>'required',
-            'semestre' =>'required',
             'N_piezas'=> 'required',
             'proyecto'=> 'required',
             'observaciones' =>'required', //[new MaxWordsRule('hola', $request->input('Observaciones'))],
@@ -53,15 +47,54 @@ class HomeController extends Controller
             'trabajosRelacionados' =>'required',
             'propuesta' =>'required',
             'conclusion' =>'required',
+
+            'name'=>"required|string|max:255",
+            'apellido' =>'required|string|max:255',
+            'correo'=>"required|email|unique:users",
+            'telefono'=> 'required|max:10',
+            'password' => 'required|string|min:3|confirmed',
+            'tipo' => 'required|string',
+            'centro' => 'required|string',
+            'carrera' => 'required|string|max:255',
+            'codigo' => 'required',
+            'sede' => 'null',
+            'semestre'=>'required',
+            
         ]);
 
-        if($validator ->fails()){
-            return redirect()->route("formulario")->withInput()->withErrors($validator->errors());
+
+        if($validator->fails()){
+            return redirect()->route("inventores")->withInput()->withErrors($validator);
         }else{
+
            $datos = $request->all();
-           $insert = cita_cliente::create($datos);
-           $usuarios = DB::table('users')->get();
-           return redirect()->route('formulario')->with('success', 'Mensaje de éxito');
+           $insert = cita_cliente::create([
+                "semestre" =>$datos["semestre"],
+                "enlaceDrive" =>$datos["enlaceDrive"],
+                "N_piezas" =>$datos["N_piezas"],
+                "proyecto" =>$datos["proyecto"],
+                "observaciones" =>$datos["observaciones"],
+                "palabrasClave" =>$datos["palabrasClave"],
+                "introduccion" =>$datos["introduccion"],
+                "trabajosRelacionados" =>$datos["trabajosRelacionados"],
+                "propuesta" =>$datos["propuesta"],
+                "conclusion" =>$datos["conclusion"],
+           ]);
+
+           $datos2 = $request->all();
+           $insert2 = User::create([
+            "name" =>$datos2["name"],
+            "apellido" =>$datos2["apellido"],
+            "correo" =>$datos2["correo"],
+            "password" => Hash::make($datos2['password']),
+            "tipo" =>$datos2["tipo"],
+            "centro" =>$datos2["centro"],
+            "carrera" =>$datos2["carrera"],
+            "codigo" =>$datos2["codigo"],
+            'sede' => 0,
+           ]);
+
+           return redirect()->route('login')->with('success', 'Mensaje de éxito'); //regresar al login para inicio de sesion posterior
         }
     }
     public function update(Request $request)

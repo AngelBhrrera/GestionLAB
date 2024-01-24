@@ -17,7 +17,7 @@
                 </div>
                 <div class="card-body">
 
-                    <form class="from-prevent-multiple-submits" method="POST" action="{{ route('formulariof') }}"  enctype="multipart/form-data">
+                    <form class="from-prevent-multiple-submits" method="POST" action="{{ route('cliente.formulariof') }}"  enctype="multipart/form-data">
 
                     @csrf
                         <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de ingresar el correo institucional">

@@ -31,14 +31,14 @@ class VisitanteController extends Controller
     }
 
     public function form(){
-        return view("/visitante/public_form");
+        return view("/visitante/registro_impresion_form");
     }
 
     public function visita(){
         return view('/visitante/homeV',['opcion'=>'visitas']);
     }
 
-    public function guardarCita(Request $request)
+    public function registro_impresion_form(Request $request)
     {
         $validator = Validator::make($request->all(),[
             // 'credencial'=>'required|image|mimes:jpg,jpeg,png|max:5120',
@@ -48,8 +48,8 @@ class VisitanteController extends Controller
             'correo'=>'required',
             'nombre'=> 'required',
             'telefono'=> 'required|max:10',
-            'carrera' =>'required',
-            'semestre' =>'required',
+            'carrera' =>'null',
+            'semestre' =>'null',
             'N_piezas'=> 'required',
             'proyecto'=> 'required',
             'observaciones' =>'required', //[new MaxWordsRule('hola', $request->input('Observaciones'))],
@@ -67,11 +67,11 @@ class VisitanteController extends Controller
         }
         */
         if($validator ->fails()){
-            return redirect()->route("formulario")->withInput()->withErrors($validator->errors());
+            return redirect()->route("cliente.formulariof")->withInput()->withErrors($validator->errors());
         }else{
             $datos = $request->all();
             $insert = cita_cliente::create($datos);
-            return redirect()->route('formulario')->with('success', 'Mensaje de éxito');
+            return redirect()->route('cliente.formulariof')->with('success', 'Mensaje de éxito');
         }
     }
 
