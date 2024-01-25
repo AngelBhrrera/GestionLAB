@@ -33,6 +33,9 @@ class LoginController extends Controller
           case 'admin':
             return '/admin/home';
             break;
+          case 'voluntario':
+          case 'practicante':
+          case 'encargado':
           case 'prestador':
             return '/prestador/home';
             break;

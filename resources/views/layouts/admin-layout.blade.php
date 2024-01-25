@@ -106,6 +106,12 @@
                             <div class="side-menu__title">Gestión sedes</div>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{route('admin.categorias')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                            <div class="side-menu__title">Gestión categorias</div>
+                        </a>
+                    </li>
                 </ul>
             </li>
         @endsection
@@ -403,7 +409,7 @@
     @endif
 
     @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "Superadmin")
-        @section('actividades') {{--
+        @section('actividades') 
             <li>
                 <a href="javascript:;" class="side-menu">
                     <div class="side-menu__icon"> <i data-lucide="edit"></i> </div>
@@ -473,7 +479,7 @@
                     </li>
                 </ul>
             </li>
-        --}} @endsection
+        @endsection
     @endif
 
     @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "Superadmin")

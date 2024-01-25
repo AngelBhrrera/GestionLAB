@@ -60,7 +60,6 @@ class logsysController extends Controller
             case 'checkin':
                 return redirect('/check-in');
                 break;
-
             default:
                 return redirect('/login');
         }

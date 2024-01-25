@@ -535,6 +535,51 @@ class AdminController extends Controller
         return redirect()->route("admin./admin/homeA");
     }
 
+    public function categorias(){
+
+        $categ= DB::select("SELECT * FROM categorias");
+        $subcateg = DB::table('subcategorias')
+            ->select('subcategorias.*', 'categorias.nombre AS categoria')
+            ->join('categorias', 'subcategorias.categoria', '=', 'categorias.id')
+            ->get();
+        return view("admin.categorias", ['categoria'=>$categ, 'tabla_subcategorias' => json_encode($subcateg) ]);
+    }
+
+    public function nuevaCateg(Request $request){
+
+        $request->validate([
+            'nombreCateg' => 'required|max:255',
+        ]);
+
+        $buscarCat = DB::Select("Select nombre from categorias where nombre = '$request->nombreCateg'");
+        if (count($buscarCat)==0){
+            $nombre=$request->input("nombreCateg");
+            DB::insert("INSERT INTO categorias (nombre) Values('$nombre')");
+            return redirect(route('admin.categorias'))->with('success', 'Creada correctamente');
+        }else{
+            return redirect(route('admin.categorias'))->with('warning', "Ya existe una categoria con ese nombre");
+        }
+
+    }
+
+    public function nuevaSubcateg(Request $request){
+
+        $request->validate([
+            'categ' => 'required',
+            'nombreSubc' => 'required|max:255',
+        ]);
+
+        $categ=$request->input("categ");
+        $subcateg=$request->input("nombreSubc");
+        $sql = DB::insert("INSERT INTO subcategorias (nombre, categoria) Values('$subcateg', '$categ')");
+        if ( $sql == 1){
+            return redirect(route('admin.categorias'))->with('success', 'Creada correctamente');
+        }else{
+            return redirect(route('admin.categorias'))->with('warning', "No se puedo crear la subcategoria");
+        }
+    
+    }
+
 
     public function cambiarRol()
     {

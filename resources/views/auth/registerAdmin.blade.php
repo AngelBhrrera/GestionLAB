@@ -213,12 +213,10 @@
                     </button>
         </form>
                 </div>
-                <!-- End FormOne -->
             </div>
 
     </div>
     <div style="height: 65px;"></div>
-    <!-- END: Wizard Layout -->
 @endsection
 
 @section('script')

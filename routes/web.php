@@ -13,17 +13,13 @@ use Illuminate\Support\Facades\Route;
         //pd3. Uwu
 
 //Rutas generales
+
 Auth::routes([
     'verify' => false,
 ]);
 
 Route::get('/foo', function () {
     Artisan::call('storage:link');
-    });
-
-//PRUEBAS
-Route::get('/adminLayout', function(){
-    return view('admin.PruebaAdminLayout');
 });
 
 Route::get('/spiderw', function(){
@@ -138,16 +134,25 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::middleware('role:admin,Superadmin')->group(function() {
 
                     Route::get('/admin/registro', 'registro')->name('registro'); //NUEVA RUTA
+
+                    Route::get('admin/changestate/{id}/{value}', 'checkinstate')->name('checkinstate');
+                    Route::get('/admin/premios', 'premios')->name('premios');
+                    Route::get('admin/liberar_prestador/{value}', 'liberar')->name('liberar');
+                    Route::get('admin/ver_reportes_parciales', 'ver_reportes_parciales')->name('reportes_parciales');
+                    Route::get('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
+
+                    Route::get('/admin/administradores', 'administradores')->name('administradores');
+
                     Route::get('admin/gestionSedes', 'gestionSedes')->name('sedes');
                     Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
                     Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
-                    Route::get('admin/changestate/{id}/{value}', 'checkinstate')->name('checkinstate');
-                    Route::get('/admin/premios', 'premios')->name('premios');
+                    
                     Route::get('/admin/Dias_no_laborables', 'diasfestivos')->name('diasfestivos');
-                    Route::get('admin/liberar_prestador/{value}', 'liberar')->name('liberar');
-                    Route::get('/admin/administradores', 'administradores')->name('administradores');
-                    Route::get('admin/ver_reportes_parciales', 'ver_reportes_parciales')->name('reportes_parciales');
-                    Route::get('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
+
+                    Route::get('/admin/categorias', 'categorias')->name('categorias');
+                    Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
+                    Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg');
+                    
                 });
 
                
