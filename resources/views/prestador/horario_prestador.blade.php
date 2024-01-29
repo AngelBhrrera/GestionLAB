@@ -49,6 +49,9 @@
           display: "background"
         });
     });
+
+    //Días festivos
+    
     
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
