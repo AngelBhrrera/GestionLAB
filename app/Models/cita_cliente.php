@@ -13,11 +13,9 @@ class cita_cliente extends Model
 protected $fillable = [
     'id_citas',
     'id',
-    'correo',
-    'nombre',
-    'telefono',
     'carrera',
     'semestre',
+    'user_id',
     // 'credencial',
     'N_piezas',
     'proyecto',
