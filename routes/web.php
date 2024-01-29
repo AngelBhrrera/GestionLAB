@@ -206,7 +206,6 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::post('/marcar', 'marcar')->middleware('role:admin,checkin,Superadmin,encargado')->name('marcar');
         Route::post('/afirmas', 'asignarfirmas')->name('afirmas');    
     });
-    
     Route::middleware('role:prestador,voluntario,practicante,encargado')->group(function() {
         Route::get('prestador/home', 'home')->name('homeP');
 

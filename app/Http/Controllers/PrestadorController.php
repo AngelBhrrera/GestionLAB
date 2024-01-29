@@ -39,7 +39,7 @@ class PrestadorController extends Controller
     }
 
     public function home(){
-
+        
         $id = Auth::user()->id;
         $experiencia = Auth::user()->experiencia;
         $horasAutorizadas = DB::table('registros_checkin')->where('idusuario', $id)->where('estado', 'autorizado')->sum('horas');
@@ -47,7 +47,7 @@ class PrestadorController extends Controller
         $horasTotales = DB::table('users')->where('id', $id)->select('horas')->get();
         $horasRestantes = $horasTotales[0]->horas - $horasAutorizadas;
         $leaderBoard= DB::select("SELECT * from full_leaderboard limit 10");
-        $posicionUsuario = DB::select("SELECT x.experiencia, x.id, x.position, CONCAT(x.name, ' ', x.apellido) AS 'Nombre' FROM (SELECT users.id, users.name, users.apellido, @rownum := @rownum + 1 AS position,
+        $posicionUsuario = DB::select("SELECT x.experiencia, x.id, x.position, CONCAT(x.name, ' ', x.apellido) AS 'Nombre' FROM (SELECT users.id, users.name, users.apellido, @rownum := @rownum + 1 AS position, 
         users.experiencia FROM users JOIN (SELECT @rownum := 0) r ORDER BY users.experiencia DESC) x WHERE x.id = $id;");
         $usuarioMedalla = DB::table('niveles')
         ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
@@ -55,8 +55,8 @@ class PrestadorController extends Controller
         ->where('niveles.experiencia_acumulada', '<=', $experiencia?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
         ->orderByDesc('niveles.experiencia_acumulada')
         ->first();
-
-
+        
+        
         return view(
             'prestador/newHomeP',
             [
@@ -101,10 +101,10 @@ class PrestadorController extends Controller
         $minutos = $request->input('minutos');
         $minsFormateados = str_pad($minutos, 2, '0', STR_PAD_LEFT);
         $tiempo = $horasFormateadas . 'h' . $minsFormateados . 'm';
-
+        
         $make_imp = DB::table('seguimiento_impresiones')
-        ->insert([['id_Prestador' => $origin, 'id_Impresora' => $name,
-        'id_Proyecto' => $proy, 'nombre_modelo_stl' => $model,
+        ->insert([['id_Prestador' => $origin, 'id_Impresora' => $name, 
+        'id_Proyecto' => $proy, 'nombre_modelo_stl' => $model, 
          'color' => $color, 'piezas' => $pieces,
          'peso' => $w, 'tiempo_impresion' => $tiempo]]);
 
@@ -133,50 +133,35 @@ class PrestadorController extends Controller
 
     }
 
-
+    
     public function horario()
     {
         $id = Auth::user()->id;
-
+        
         $turno = Auth::user()->horario;
 
-        // $asistencias = DB::table('registros_checkin')
-        //     ->select('fecha')
-        //     ->where('idusuario', $id)
-        //     ->orderBy('fecha_actual', 'desc')
-        //     ->get();
+        $asistencias = DB::table('registros_checkin')
+            ->select('fecha')
+            ->where('idusuario', $id)
+            ->orderBy('fecha_actual', 'desc')
+            ->get();
 
-        // $diasAsistenciaMesActual = [];
+        $diasAsistenciaMesActual = [];
 
-        // $mesActual = date('m');
+        $mesActual = date('m'); 
 
-        // foreach ($asistencias as $asistencia) {
+        foreach ($asistencias as $asistencia) {
 
-        //     $mesAsistencia = (int)substr($asistencia->fecha, 0, 1);
-        //     $diaAsistencia = (int)substr($asistencia->fecha, 3, 4);
+            $mesAsistencia = (int)substr($asistencia->fecha, 0, 1); 
+            $diaAsistencia = (int)substr($asistencia->fecha, 3, 4); 
 
-        //     if ($mesAsistencia == $mesActual) {
-        //         $diasAsistenciaMesActual[] = $diaAsistencia;
-        //     }
-        // }
-
-        $asistencias = DB::select("Select fecha from registros_checkin where idusuario = $id");
-
-        
-        foreach($asistencias as $valor){
-            // Crear un objeto DateTime interpretando la cadena original
-            $fechaObjeto = DateTime::createFromFormat('d/m/Y', $valor->fecha);
-
-            // Obtener la nueva cadena de fecha en el formato deseado ("d/m/Y")
-            $valor->fecha = $fechaObjeto->format('Y-m-d');
+            if ($mesAsistencia == $mesActual) {
+                $diasAsistenciaMesActual[] = $diaAsistencia;
+            }
         }
-
-        
-
         return view('/prestador/horario_prestador', [
-                // 'asistencias' => $diasAsistenciaMesActual,
-                // 'turno' => $turno
-                'asistencias'=>$asistencias
+                'asistencias' => $diasAsistenciaMesActual,
+                'turn' => $turno
         ]);
     }
 
@@ -253,8 +238,8 @@ class PrestadorController extends Controller
                 } else {
 
                     $inicio = DB::table('registros_checkin')
-                    ->insert([['origen' => $origen, 'idusuario' => $usuario[0]->id, 'fecha' => date("d/m/Y"),
-                    'hora_entrada' => date('H:i:s'), 'horas' => 0, 'responsable'=> $responsable, 'tipo' => $usuario[0]->tipo,
+                    ->insert([['origen' => $origen, 'idusuario' => $usuario[0]->id, 'fecha' => date("d/m/Y"), 
+                    'hora_entrada' => date('H:i:s'), 'horas' => 0, 'responsable'=> $responsable, 'tipo' => $usuario[0]->tipo, 
                     'encargado_id' => Auth::user()->id]]);
 
                     return redirect()->route($dir)
@@ -956,7 +941,7 @@ class PrestadorController extends Controller
 
         $nombre_archivo = basename($reporte_path);
         $insertar= DB::table('reportes_s_s')->insert(['id_prestador' => $user_id, 'nombre_reporte' => $nombre_archivo, 'tipo'=>$tipo_reporte, 'fecha_subida' => date("Y/m/d")]);
-
+        
         return redirect()->route('parciales')->with('success', 'Archivo subido con éxito');
     }
 
@@ -969,7 +954,7 @@ class PrestadorController extends Controller
             DB::table('reportes_s_s')->where('id', $id)->delete();
             unlink($file_path);
         }
-
+        
         return redirect()->route('parciales')->with('warning', 'Archivo y registro eliminados con éxito');
     }
 }
