@@ -1,7 +1,17 @@
-
 @extends('layouts/prestador-layout')
 
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+    <script>
 
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth'
+        });
+        calendar.render();
+      });
+
+    </script>
 @section('subhead')
 
 @endsection
@@ -22,43 +32,7 @@
     <div id='container'>
         <div id='calendar'  style='width: 800px; height: 1150px;'></div>
     </div>
-    <div id="asistencias" data-asistencias="{{json_encode($asistencias)}}"></div>
 
 
 @endsection
-
-<script src="{{asset('build/assets/js/calendar.global.min.js')}}"></script>
-
-<script>
-  
-  document.addEventListener('DOMContentLoaded', function() {
-    
-    var asistencias = document.getElementById("asistencias").getAttribute('data-asistencias');
-    var array = JSON.parse(asistencias);
-    var a=[];
-    
-    //Asistencias
-    array.forEach(function(elemento) {
-          console.log(elemento.fecha);
-          a.push({
-          id: 'a',
-          title: 'Asistencia',
-          start: elemento.fecha,
-          end: elemento.fecha,
-          backgroundColor: "#00FFF0",
-          display: "background"
-        });
-    });
-    
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-      initialDate: Date.now(),
-      events: [
-          ...a
-        ],
-    });
-    calendar.render();
-  });
-
-</script>
 
