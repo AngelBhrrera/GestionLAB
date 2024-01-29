@@ -21,7 +21,7 @@
 
         {{-- <script src="{{ asset('dist/js/adminlte.min.js') }}"></script> --}}
 
-        <script src="{{ asset('build/assets/js/moment.min.js')}}"></script>
+        <script src="{{ asset('plugins/moment/moment.min.js')}}"></script>
         <script src="{{ asset('build/assets/js/xlsx.full.min.js')}}"></script>
         <script src="{{ asset('build/assets/js/tabulator.min.js')}}" type="text/javascript" ></script>
 
