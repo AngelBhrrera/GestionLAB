@@ -167,27 +167,21 @@
                                     </div>
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divSede" style="display:none">
-                                        <label for="input-wizard-3" class="form-label">Sede *</label>
-                                        <select class="form-control @if(old('opc')=='1') @error('sede') is-invalid @enderror @endif" name="sede" id="sede"  onchange="filtroSede()">
+                                        <label for="input-wizard-3" class="form-label">Sede</label>
+                                        <select class="form-control" name="sede" id="sede"  onchange="filtroSede()">
                                             @if (isset($sede))
-                                                <option id="sede" value="{{null}}" {{isset($dV[0]->sede) ? $dV[0]->sede == null ? 'selected="selected"' : '' : ''}}>Selecciona una sede</option>
+                                                <option id="sede" value="" {{ !is_null(old('sede')) ? 'selected' : '' }} >Selecciona una sede</option>
                                                 @foreach ($sede as $dato )
-                                                    <option id="{{$dato->id_Sede}}" value="{{$dato->id_Sede}}" data-nombre="{{$dato->nombre_Sede}}"  {{old('sede') == $dato->id_Sede ? 'selected="selected"' : '' }}>{{$dato->nombre_Sede }} </option>
+                                                    <option id="{{$dato->id_Sede}}" value="{{$dato->id_Sede}}" data-nombre="{{$dato->nombre_Sede}}">{{$dato->nombre_Sede }} </option>
                                                 @endforeach
                                             @endif
                                         
-                                        </select>
-                                        @if(old('opc')=='1')
-                                            @error('sede')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        @endif      
+                                        </select>  
                                     </div>
+
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divArea" style="display:none">
                                         <label for="input-wizard-3" class="form-label">Área de trabajo</label>
-                                        <select class="form-control" id="area" name="tipo_actividad" required>
+                                        <select class="form-control" id="area" name="tipo_actividad" required disabled>
                                             <option value="">Selecciona un área de trabajo</option>
                                             @foreach ($area as $dato)
                                             <option id="{{ $dato->area_id }}" value="{{ $dato->area_id }}"> {{ $dato->area_nombre }}</option>
@@ -197,7 +191,7 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divTurno" style="display:none">
                                         <label for="input-wizard-4" class="form-label">Turno</label>
-                                        <select class="form-control" name="horario" id="horarios" onchange="filtroTurno()">
+                                        <select class="form-control" name="horario" id="horarios" onchange="filtroTurno()" disabled>
                                             <option selected id="1" value='null'>Seleccione un turno</option> 
                                             <option id="100" value='Matutino'>Matutino (8-12) </option>
                                             <option id="101" value='Mediodia'>Mediodia (12-4)</option>
@@ -227,7 +221,7 @@
                                     
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divEncargado" style="display:none">
                                         <label for="input-wizard-4" class="form-label">Encargado *</label>
-                                        <select class="form-control @if(old('opc')=='1') @error('id_encargado') is-invalid @enderror @endif" name="id_encargado" id="id_encargado">
+                                        <select class="form-control @if(old('opc')=='1') @error('id_encargado') is-invalid @enderror @endif" name="id_encargado" id="id_encargado" disabled>
                                             @if (isset($encargado))
                                                 <option id="prede" value="prede" {{isset($dV[0]->id_encargado) ? $dV[0]->id_encargado == null ? 'selected="selected"' : '' : ''}}>Seleccione un encargado</option>
                                                 @foreach ($encargado as $dato )
@@ -426,6 +420,8 @@
         areaSelect.innerHTML = '<option value=""> Selecciona un área de trabajo</option>';
         horarioSelect.innerHTML = '<option value=""> Selecciona un turno </option>';
         if (sedeId === '') {
+            areaSelect.disabled = true;
+            horarioSelect.disabled = true;
             return;
         }
         var xhr = new XMLHttpRequest();
@@ -434,6 +430,8 @@
                 if (xhr.status === 200) {
                     var areas = JSON.parse(xhr.responseText);
                     console.log(areas);
+                    areaSelect.disabled = false;
+                    horarioSelect.disabled = false;
                     areas.forEach(function(area) {
                         var option = document.createElement('option');
                         option.value = area.area_id;
@@ -488,7 +486,8 @@
         var horario = horarioSelect.value;
         var sede = sedeSelect.value;
         encargadoSelect.innerHTML = '<option value=""> Selecciona un encargado</option>';
-        if (horario === '') {
+        if (horario === '1') {
+           encargadoSelect.disabled = true;
             return;
         }
         var xhr = new XMLHttpRequest();
@@ -496,7 +495,7 @@
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
                     var encargados = JSON.parse(xhr.responseText);
-                    console.log(encargados);
+                    encargadoSelect.disabled = false;
                     encargados.forEach(function(encargado) {
                         var option = document.createElement('option');
                         option.value = encargado.id;
@@ -510,9 +509,6 @@
         };
         xhr.open('GET', 'turno/' + horario + '/' + sede);
         xhr.send();
-
     }
-
-
     </script>
 @endsection

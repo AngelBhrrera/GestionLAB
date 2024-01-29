@@ -154,6 +154,10 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     Route::get('/admin/categorias', 'categorias')->name('categorias');
                     Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
                     Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg');
+
+                    Route::middleware('role:admin,Superadmin')->group(function() {
+                        Route::get('/superadmin/gestion', 'gestionViews')->name('gestionViews');
+                    });
                     
                 });
 

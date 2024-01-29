@@ -53,8 +53,17 @@ class AdminController extends Controller
 
     public function registro()
     {
-        $sede = DB::select("SELECT * FROM sede;");
-        $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin' OR tipo = 'encargado';");
+        if (Auth::user()->tipo == ('encargado' || 'admin')){
+            $id = Auth::user()->sede;
+            $sede = DB::select("SELECT * FROM sede WHERE id_Sede = $id;");
+            $area = DB::select("SELECT * FROM filtrosede WHERE id_Sede = $id;;");
+            $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin' OR tipo = 'encargado' AND WHERE sede = $id;");
+        }else{
+            $sede = DB::select("SELECT * FROM sede;");
+            $area = DB::select("SELECT * FROM filtrosede;");
+
+        }
+        
         return view('auth/registerAdmin', ['encargado'=>$encargado,'sede'=>$sede]);
     }
 
@@ -463,12 +472,6 @@ class AdminController extends Controller
 
         return redirect()->back();
     }
-    
-    public function gestionSedes(){
-        $sedes= DB::select("SELECT * FROM sede WHERE id_Sede != 0;");
-        
-        return view("admin.sedes", ['sede'=>$sedes, 'tabla_sedes' => json_encode($sedes)]);
-    }
 
     public function nuevaSede(Request $request){
         $request->validate([
@@ -485,6 +488,12 @@ class AdminController extends Controller
             return redirect(route('admin.sedes'))->with('warning', "Ya existe una sede con ese nombre");
         }
          
+    }
+    
+    public function gestionSedes(){
+        $sedes= DB::select("SELECT * FROM sede WHERE id_Sede != 0;");
+        
+        return view("admin.sedes", ['sede'=>$sedes, 'tabla_sedes' => json_encode($sedes)]);
     }
 
     public function  modificarSede(Request $request){
@@ -651,6 +660,54 @@ class AdminController extends Controller
 
         $vmodificar->save();
         return redirect()->route('admin.visitas');
+    }
+
+    public function gestionViews(){
+
+        $gest= DB::select("SELECT *, s.nombre_Sede FROM supergestiones AS g INNER JOIN sede AS s 
+        ON g.id = s.id_Sede;");
+        
+        return view("admin.supergestor", ['gest'=>$gest]);
+    }
+
+    public function  modificarViews(Request $request){
+        
+        $nombre=$request->input("nuevoNombre");
+        
+        $id=$request->input("idSede");
+        $matutino=($request->has("matutino")) ? 1 : 0;
+        $mediodia=($request->has("mediodia")) ? 1 : 0;
+        $vespertino=($request->has("vespertino")) ? 1 : 0;
+        $sabatino=($request->has("sabatino")) ? 1 : 0;
+        $completo=($request->has("completo")) ? 1 : 0;
+        $activa=($request->has("activa")) ? 1 : 0;
+
+        $nombreAnterior = DB::select("Select nombre_Sede from sede where id_Sede=$id");
+
+        if($nombreAnterior[0]->nombre_Sede === $nombre){
+            //no hace nada xd
+        }else{
+            $request->validate([
+                'nuevoNombre' => 'required|min:3|max:255|unique:sede,nombre_Sede',
+            ]);
+            $buscarSede = DB::Select("Select nombre_Sede from sede where nombre_Sede = '$nombre'");
+            if (count($buscarSede)>0){
+                return redirect(route('admin.sedes'))->with('warning', "Ya existe una sede con ese nombre");
+            }
+        }
+        
+        $buscarSede = DB::Select("Select nombre_Sede from sede where nombre_Sede = '$request->nombreSede'");
+        DB::update("Update sede 
+        set nombre_Sede='$nombre',
+        turnoMatutino=$matutino,
+        turnoMediodia=$mediodia,
+        turnoVespertino=$vespertino,
+        turnoSabatino=$sabatino,
+        turnoTiempoCompleto=$completo,
+        activa=$activa
+        where id_Sede=$id");
+
+        return redirect(route('admin.sedes'))->with('success', 'Modificada correctamente');
     }
 
     

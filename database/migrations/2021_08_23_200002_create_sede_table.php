@@ -26,8 +26,6 @@ class CreateSedeTable extends Migration
             $table->boolean('turnoTiempoCompleto')->default(0);
             $table->boolean('no_Aplica')->default(0);
             $table->boolean('activa')->default(1);
-            $table->boolean('servicios_impresion')->default(0);
-
         });
 
             DB::table('sede')->insert([

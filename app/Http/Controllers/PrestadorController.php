@@ -182,23 +182,30 @@ class PrestadorController extends Controller
         try {
             $dir = '';
             switch (Auth::user()->tipo) {
-                case 'admin':
+                
                 case 'Superadmin':
+                    $codigo = $request->input('codigo');
+                    $sedeVerif =  true;
+                case 'admin':
                 case 'encargado':
                     $dir = 'admin.checkin';
                     $responsable = Auth::user()->name . ' ' . Auth::user()->apellido;
+                    $codigo = $request->input('codigo');
+                    $sedeVerif =  DB::table('users')
+                    ->select('sede')
+                    ->where('codigo', $codigo)
+                    ->get();
                     break;
                 case 'checkin':
                     $dir = 'api.checkin';
                     $origen = 'checkin';
+                    $codigo = $request->input('codigo');
+                    $sedeVerif =  DB::table('users')
+                    ->select('sede')
+                    ->where('codigo', $codigo)
+                    ->get();
                     break;
             };
-            $codigo = $request->input('codigo');
-
-            $sedeVerif =  DB::table('users')
-            ->select('sede')
-            ->where('codigo', $codigo)
-            ->get();
 
             if($sedeVerif->first()->sede == Auth::user()->sede){
 
