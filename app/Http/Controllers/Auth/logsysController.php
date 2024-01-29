@@ -79,9 +79,29 @@ class logsysController extends Controller
 
     public function show(){
         $sede= DB::select("SELECT * FROM sede;");
-        $area = DB::select("SELECT * FROM areas;");
+        $area = DB::select("SELECT * FROM filtrosede;");
         $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'encargado' OR tipo = 'admin';");   // muestra en el box la lista
         $var = 1;
         return view('auth.register', ['encargado'=>$encargado,'sede'=>$sede, 'area'=>$area]);
+    }
+
+    public function filtroSede($id){
+
+        $area=    DB::table('filtrosede')
+            ->where('id_Sede', $id)
+            ->get();
+
+        return response()->json($area);
+    }
+
+    public function filtroTurno($t, $sede){
+
+        $turno=   DB::table('users')
+            ->where('sede', $sede)
+            ->where('horario', $t)
+            ->where('tipo', 'encargado')
+            ->orWhere('tipo', 'admin')
+            ->get();
+        return response()->json($turno);
     }
 }

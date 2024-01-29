@@ -172,7 +172,7 @@
             </li>
         @endsection
     @endif
-    @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "encargado")
         @section('prestadores')
             <li>
                 <a href="#" class="side-menu">
@@ -262,6 +262,15 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('admin.visitas_reg') }}" class="side-menu">
+                            <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-check">
+                                        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+                                        <path d="m9 9.5 2 2 4-4" />
+                                    </svg></i> </div>
+                            <div class="side-menu__title">Registro de visitas</div>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('admin.administradores') }}" class="side-menu">
                             <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-cog">
                                         <circle cx="18" cy="15" r="3" />
@@ -283,7 +292,7 @@
             </li>
         @endsection
     @endif
-    @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "encargado")
         @section('contacto')
             <li>
                 <a href="#" class="side-menu">

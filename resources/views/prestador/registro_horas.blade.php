@@ -13,12 +13,8 @@
 @endsection
 
 @section('breadcrumb')
-    <nav aria-label="breadcrumb" class="-intro-x hidden xl:flex">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{route('homeP')}}">Prestador</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Registro de horas</li>
-        </ol>
-    </nav>
+    <li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Registro de horas</li>
 @endsection
 
 @section('subcontent')
@@ -26,12 +22,13 @@
     <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
         <h2 class="text-lg font-medium mr-auto">REGISTRO DE HORAS</h2>
     </div>
+    <br>
     <div class="table-controls pl-10">
                     <button class="download-button" id="download-json">Download JSON</button>
                     <button class="download-button" id="download-csv">Download CSV</button>
                     <button class="download-button" id="download-xlsx">Download XLSX</button>
     </div>
-
+    <br>
     <div id="players"></div>
 
 @endsection

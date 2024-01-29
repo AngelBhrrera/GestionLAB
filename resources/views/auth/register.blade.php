@@ -99,7 +99,6 @@
                             </div>
                         </div>
 
-
                         <div> 
                             <div id="formTwo" style="display:none" class="font-medium text-base">Ajustes para Visitantes</div> 
                             <div id="formThree" style="display:none" class="font-medium text-base">Ajustes para Prestadores del Servicio Social y Voluntarios</div> 
@@ -169,7 +168,7 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divSede" style="display:none">
                                         <label for="input-wizard-3" class="form-label">Sede *</label>
-                                        <select class="form-control @if(old('opc')=='1') @error('sede') is-invalid @enderror @endif" name="sede" id="sede"  onchange="sedeNavs()">
+                                        <select class="form-control @if(old('opc')=='1') @error('sede') is-invalid @enderror @endif" name="sede" id="sede"  onchange="filtroSede()">
                                             @if (isset($sede))
                                                 <option id="sede" value="{{null}}" {{isset($dV[0]->sede) ? $dV[0]->sede == null ? 'selected="selected"' : '' : ''}}>Selecciona una sede</option>
                                                 @foreach ($sede as $dato )
@@ -188,27 +187,17 @@
                                     </div>
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divArea" style="display:none">
                                         <label for="input-wizard-3" class="form-label">Área de trabajo</label>
-                                        <select class="form-control" name="area" id="area" >
-                                            @if (isset($area))
-                                                <option id="area" value="{{null}}">Selecciona un área de trabajo</option>
-                                                @foreach ($area as $dato )
-                                                    <option id="{{$dato->id}}" value="{{$dato->nombre_area}}" data-nombre="{{$dato->nombre_area}}">{{$dato->nombre_area }} </option>
-                                                @endforeach
-                                            @endif
-                                        
+                                        <select class="form-control" id="area" name="tipo_actividad" required>
+                                            <option value="">Selecciona un área de trabajo</option>
+                                            @foreach ($area as $dato)
+                                            <option id="{{ $dato->area_id }}" value="{{ $dato->area_id }}"> {{ $dato->area_nombre }}</option>
+                                            @endforeach
                                         </select>
-                                        @if(old('opc')=='1')
-                                            @error('area')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        @endif      
                                     </div>
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divTurno" style="display:none">
                                         <label for="input-wizard-4" class="form-label">Turno</label>
-                                        <select class="form-control" name="horario" id="horarios" onchange="filtroEncargados()">
+                                        <select class="form-control" name="horario" id="horarios" onchange="filtroTurno()">
                                             <option selected id="1" value='null'>Seleccione un turno</option> 
                                             <option id="100" value='Matutino'>Matutino (8-12) </option>
                                             <option id="101" value='Mediodia'>Mediodia (12-4)</option>
@@ -238,7 +227,7 @@
                                     
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divEncargado" style="display:none">
                                         <label for="input-wizard-4" class="form-label">Encargado *</label>
-                                        <select class="form-control @if(old('opc')=='1') @error('id_encargado') is-invalid @enderror @endif" name="id_encargado" id="id_encargado" disabled >
+                                        <select class="form-control @if(old('opc')=='1') @error('id_encargado') is-invalid @enderror @endif" name="id_encargado" id="id_encargado">
                                             @if (isset($encargado))
                                                 <option id="prede" value="prede" {{isset($dV[0]->id_encargado) ? $dV[0]->id_encargado == null ? 'selected="selected"' : '' : ''}}>Seleccione un encargado</option>
                                                 @foreach ($encargado as $dato )
@@ -323,96 +312,6 @@
                 changeCase(1);
             }else{
                 changeCase(2);
-            }
-        }
-
-        function sedeNavs(){  // Filtros de los select (sedes)
-            window.sedeDinamico = @json($sede);
-            var optionSelect = document.getElementById("horarios"); 
-            var optionSelect2 = document.getElementById("id_encargado");
-            var sedeSelect = document.getElementById("sede").dataset.nombre;
-            reiniciarEncargado(optionSelect);
-            reiniciarTurno(optionSelect2); // reinicia los select y coloca la opcion determinada
-            sedeDinamico.forEach(function(campo){                      
-                if (sedeSelect === campo.nombre_Sede){
-                    deshabilitarOpcion(optionSelect, "Matutino", campo.turnoMatutino === 0);
-                    habilitarOpcion(optionSelect, "Matutino", campo.turnoMatutino === 1);
-                    deshabilitarOpcion(optionSelect, "Mediodia", campo.turnoMediodia === 0);
-                    habilitarOpcion(optionSelect, "Mediodia", campo.turnoMediodia === 1);
-                    deshabilitarOpcion(optionSelect, "Vespertino", campo.turnoVespertino === 0);
-                    habilitarOpcion(optionSelect, "Vespertino", campo.turnoVespertino === 1);
-                    deshabilitarOpcion(optionSelect, "Sabatino", campo.turnoSabatino === 0);
-                    habilitarOpcion(optionSelect, "Sabatino", campo.turnoSabatino === 1);
-                    deshabilitarOpcion(optionSelect, "TC", campo.turnoTiempoCompleto === 0);
-                    habilitarOpcion(optionSelect, "TC", campo.turnoTiempoCompleto === 1);
-                } 
-            });
-        }
-
-        function deshabilitarOpcion(select, opcion, condicion) {
-            for (var k = 0; k < select.options.length; k++) {
-                if (select.options[k].value === opcion && condicion){ // filtros
-                    select.options[k].disabled = true;
-                }
-            }
-        }
-
-        function habilitarOpcion(select, opcion, condicion) {
-            for (var k = 0; k < select.options.length; k++) {
-                if (select.options[k].value === opcion && condicion) { // filtros
-                    select.options[k].disabled = false;
-                }
-            }
-        }
-
-        function filtroEncargados(){ // Filtros de encargados en relacion al horario y sede
-           window.encargadosql = @json($encargado);
-           var optionSelect = document.getElementById("id_encargado"); // valor de las opciones de encargados
-           var turnoSelect = document.getElementById("horarios").value; // valor de las opciones de turnos
-           var sedeEncargado = document.getElementById("sede");
-           var indiceSeleccionado = sedeEncargado.selectedIndex;
-           var opcionSeleccionada = sedeEncargado.options[indiceSeleccionado];
-           var valorId = opcionSeleccionada.id;    
-           optionSelect.disabled = false;
-           encargadosql.forEach(function(campo){
-                deshabilitartodo(optionSelect);
-                deshabilitarEncargado(optionSelect, turnoSelect, valorId, campo.sede);
-           }); 
-        }
-
-        function deshabilitarEncargado(select, opcion, id, sede){ // filtros
-            for (var k = 1; k < select.options.length; k++){
-                if(select.options[k].dataset.horario === opcion){
-                    if (select.options[k].id == id ){
-                        select.options[k].disabled = false;
-                    }
-                }
-                if(select.options[k].value === "prede"){
-                    select.options[k].disabled = false;
-                }
-            }
-        }
-
-        function reiniciarEncargado(select){ // filtros
-            select.selectedIndex = 0;
-        }
-
-        function reiniciarTurno(select){ // filtros
-            select.selectedIndex = 0;
-        }
-
-        function deshabilitartodo(select) {
-            for (var k = 0; k < select.options.length; k++) {
-                select.options[k].disabled = true;
-                if(select.options[k].value === "prede"){ // filtros
-                    select.options[k].disabled = false;
-                }
-            }
-        }
-
-        function habilitarTodasLasOpciones(select) {
-            for (var k = 0; k < select.options.length; k++) { // filtros
-                select.options[k].disabled = false;
             }
         }
 
@@ -517,5 +416,103 @@
                     input11.style.display = "none";
             }
         }
+
+        function filtroSede() {
+        var sedeSelect = document.getElementById('sede');
+        var areaSelect = document.getElementById('area');
+        var horarioSelect = document.getElementById('horarios');
+
+        var sedeId = sedeSelect.value;
+        areaSelect.innerHTML = '<option value=""> Selecciona un área de trabajo</option>';
+        horarioSelect.innerHTML = '<option value=""> Selecciona un turno </option>';
+        if (sedeId === '') {
+            return;
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var areas = JSON.parse(xhr.responseText);
+                    console.log(areas);
+                    areas.forEach(function(area) {
+                        var option = document.createElement('option');
+                        option.value = area.area_id;
+                        option.text = area.area_nombre;
+                        areaSelect.appendChild(option);
+                    });
+                    var horariosSede = areas[0];
+                    if (horariosSede.turnoMatutino === 1) {
+                        var option1 = document.createElement('option');
+                        option1.value = 'Matutino';
+                        option1.text = 'Matutino';
+                        horarioSelect.appendChild(option1);
+                    }
+                    if (horariosSede.turnoMediodia === 1) {
+                        var option1 = document.createElement('option');
+                        option1.value = 'Mediodia';
+                        option1.text = 'Mediodia';
+                        horarioSelect.appendChild(option1);
+                    }
+                    if (horariosSede.turnoVespertino === 1) {
+                        var option1 = document.createElement('option');
+                        option1.value = 'Vespertino';
+                        option1.text = 'Vespertino';
+                        horarioSelect.appendChild(option1);
+                    }
+                    if (horariosSede.turnoSabatino === 1) {
+                        var option1 = document.createElement('option');
+                        option1.value = 'Sabatino';
+                        option1.text = 'Sabatino';
+                        horarioSelect.appendChild(option1);
+                    }
+                    if (horariosSede.turnoTiempoCompleto === 1) {
+                        var option1 = document.createElement('option');
+                        option1.value = 'TC';
+                        option1.text = 'TC';
+                        horarioSelect.appendChild(option1);
+                    }
+
+                } else {
+                    console.error('Error al obtener las actividades');
+                }
+            }
+        };
+        xhr.open('GET', 'sede/' + sedeId);
+        xhr.send();
+    }
+
+    function filtroTurno() {
+        var sedeSelect = document.getElementById('sede');
+        var horarioSelect = document.getElementById('horarios');
+        var encargadoSelect = document.getElementById('id_encargado');
+        var horario = horarioSelect.value;
+        var sede = sedeSelect.value;
+        encargadoSelect.innerHTML = '<option value=""> Selecciona un encargado</option>';
+        if (horario === '') {
+            return;
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var encargados = JSON.parse(xhr.responseText);
+                    console.log(encargados);
+                    encargados.forEach(function(encargado) {
+                        var option = document.createElement('option');
+                        option.value = encargado.id;
+                        option.text = encargado.name + ' ' + encargado.apellido;
+                        encargadoSelect.appendChild(option);
+                    });
+                } else {
+                    console.error('Error al obtener las actividades');
+                }
+            }
+        };
+        xhr.open('GET', 'turno/' + horario + '/' + sede);
+        xhr.send();
+
+    }
+
+
     </script>
 @endsection

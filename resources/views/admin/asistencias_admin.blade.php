@@ -15,8 +15,9 @@
 @endsection
 
 @section('breadcrumb')
-<li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-<li class="breadcrumb-item active" aria-current="page">Home</li>
+    <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Gestion</li>
+    <li class="breadcrumb-item active" aria-current="page">Horas del Servicio</li>
 @endsection
 
 @section('subcontent')
@@ -65,13 +66,13 @@
                         width: 2,
                     }, {
                         title: "Prestador",
-                        field: "responsable",
+                        field: "origen",
                         headerFilter: "input",
                         sorter: "string",
                         width: 200,
                     },{
                         title: "Encargado",
-                        field: "origen",
+                        field: "responsable",
                         sorter: "string",
                         headerFilter: "input",
                         width: 200,

@@ -45,6 +45,8 @@ Route::controller(App\Http\Controllers\Auth\logsysController::class)->group(func
     Route::get('/login', 'log')->name('login')->middleware('guest');
     Route::post('/login', 'loginF')->name('login');
     Route::get('/logout', 'logoutF')->name('logout');
+    Route::get('/sede/{id}', 'filtroSede')->name('filtroSede');
+    Route::get('/turno/{t}/{sed}', 'filtroTurno')->name('filtroTurno');
 });
 
 //Rutas de Admin gestionadas desde el AdminController
@@ -285,8 +287,9 @@ Route::controller(App\Http\Controllers\VisitanteController::class)->group(functi
             Route::post('/cliente/cita','guardarCita')->name('cita');
             Route::post('/cliente/visitaguardar','guardarVisita')->name('guardarVisita');
             Route::get('/cliente/visitas', 'principal')->name('visitas');
-
             Route::get('/cliente/reg', 'form')->name('form');
+            Route::post('/cliente/reg', 'registro_impresion_form')->name('formulariof'); // ruta formulario no publica
+            
         // Route::get('/visita','visita')->name('visitas');
         });    
     });

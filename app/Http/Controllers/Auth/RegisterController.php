@@ -33,6 +33,7 @@ class RegisterController extends Controller
                 $rCentro = ['required','string'];
                 $rCarrera = ['required', 'string', 'max:255'];
                 $rSede = ['required'];
+                $rArea = ['required'];
                 $rhorario = ['required','string'];
                 $rHoras =  ['nullable'];
                 $rEncargado = ['required'];
@@ -49,6 +50,7 @@ class RegisterController extends Controller
                 $rCentro = ['required','string'];
                 $rCarrera = ['required', 'string', 'max:255'];
                 $rSede = ['required'];
+                $rArea = ['required'];
                 $rhorario = ['required','string'];
                 $rHoras =  ['required'];
                 $rEncargado = ['required'];
@@ -62,6 +64,7 @@ class RegisterController extends Controller
                 $rCentro = ['required','string'];
                 $rCarrera = ['required', 'string', 'max:255'];
                 $rSede = ['nullable'];
+                $rArea = ['nullable'];
                 $rhorario = ['nullable'];
                 $rHoras =  ['nullable'];
                 $rEncargado = ['nullable'];
@@ -74,6 +77,7 @@ class RegisterController extends Controller
                 $rCodigo = ['nullable'];
                 $rCarrera = ['nullable'];
                 $rSede = ['nullable'];
+                $rArea = ['nullable'];
                 $rhorario = ['nullable'];
                 $rHoras =  ['nullable'];
                 $rEncargado = ['nullable'];
@@ -85,6 +89,7 @@ class RegisterController extends Controller
                 $rCodigo = ['nullable'];
                 $rCarrera = ['nullable'];
                 $rSede = ['nullable'];
+                $rArea = ['nullable'];
                 $rhorario = ['nullable'];
                 $rHoras =  ['nullable'];
                 $rEncargado = ['nullable'];
@@ -110,6 +115,7 @@ class RegisterController extends Controller
             //PRESTADORES Y VOLUNTARIOS
 
             'sede' =>  $rSede,
+            'area' =>$rArea,
             'horario' => $rhorario,
             'horas' => $rHoras,
             'encargado_id' =>  ['nullable'],
@@ -125,6 +131,7 @@ class RegisterController extends Controller
         $vCentro =  null;
         $vCarrera = null;
         $vSede = null;
+        $vArea = null;
         $vhorario = null;
         $vHoras =  null;
         $vEncargado = null;
@@ -145,6 +152,7 @@ class RegisterController extends Controller
                 $vCentro =  $data['centro'];
                 $vCarrera = $data['carrera'];
                 $vSede = $data['sede'];
+                $vArea = $data['area'];
                 $vhorario = $data['horario'];    
                 $vHoras =  $data['horas'];
                 $vEncargado = $data['id_encargado'];
@@ -157,6 +165,7 @@ class RegisterController extends Controller
                 $vCentro =  $data['centro'];
                 $vCarrera = $data['carrera'];
                 $vSede = $data['sede'];
+                $vArea = $data['area'];
                 $vhorario = $data['horario'];    
                 $vHoras =  null;
                 $vEncargado = $data['id_encargado'];
@@ -185,6 +194,7 @@ class RegisterController extends Controller
 
             'carrera' => $vCarrera,
             'sede' => $vSede,
+            'area' => $vArea,
             'horario' => $vhorario,
 
             'horas' => $vHoras,

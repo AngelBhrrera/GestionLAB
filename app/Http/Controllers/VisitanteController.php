@@ -23,11 +23,13 @@ class VisitanteController extends Controller
 
     public function principal()
     {
-        $codigo = Auth::user()->id;
+        /*$codigo = Auth::user()->id;
         $correo = Auth::user()->correo;
         $users = DB::table('users')->where('id',$codigo)->get();
         $cita = DB::table('cita_clientes')->where('correo',$correo)->get();
-        return view('/visitante/homeV',['opcion'=>'principal_clientes', 'users'=>$users, 'cita'=>$cita, 'datos'=>['curso1', 'curso2', 'curso3'], 'datos2'=>['proyecto', 'fecha', 'status']]);
+return view('/visitante/homeV',['opcion'=>'principal_clientes', 'users'=>$users, 'cita'=>$cita, 'datos'=>['curso1', 'curso2', 'curso3'], 'datos2'=>['proyecto', 'fecha', 'status']]);
+        */
+        return view('/visitante/homeV');
     }
 
     public function form(){

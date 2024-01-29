@@ -32,12 +32,10 @@ document.addEventListener('DOMContentLoaded', function() {
 @endsection
 
 @section('breadcrumb')
-    <nav aria-label="breadcrumb" class="-intro-x hidden xl:flex">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{route('homeP')}}">Prestador</a></li>
+
+            <li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
             <li class="breadcrumb-item active" aria-current="page">Registro de asistencias</li>
-        </ol>
-    </nav>
+
 @endsection
 
 @section('subcontent')

@@ -40,6 +40,6 @@ class tablaImpresiones extends Migration
      */
     public function down()
     {
-        //DB::statement("DROP VIEW ver_impresiones");
+        DB::statement("DROP VIEW ver_impresiones");
     }
 }

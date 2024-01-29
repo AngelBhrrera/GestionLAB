@@ -13,7 +13,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Font -->
     <link rel="dns-prefetch" href="{{asset('/fonts.googleapis.com')}}">
-    <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{asset('build/assets/css/rubik.font')}}">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{asset('build/assets/css/bootstrap.min.css')}}">
     <!-- Owl carousel -->
@@ -809,14 +810,11 @@
     </div>
     <!-- // end .section -->
     </footer>
-        <!-- jQuery and Bootstrap -->
         <script src="{{ asset('plugins/jquery/jquery-3.2.1.min.js')}}"></script>
         <script src="{{ asset('build/assets/js/bootstrap.bundle.min.js')}}"></script>
         <!-- Plugins JS -->
         <script src="{{ asset('/build/assets/js/owl.carousel.min.js')}}"></script>
             <!-- Custom JS -->
         <script src="{{ asset('/build/assets/js/script.js')}}"></script>
-        <!-- Dialogflow -->
-        <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
     </body>
 </html>

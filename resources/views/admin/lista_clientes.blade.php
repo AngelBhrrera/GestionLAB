@@ -14,9 +14,9 @@
 @endsection
 
 @section('breadcrumb')
-<li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-<li class="breadcrumb-item"><a href="{{route('homeP')}}">Usuarios</a></li>
-<li class="breadcrumb-item active" aria-current="page">Clientes</li>
+    <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{{route('admin.general')}}">Usuarios</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Clientes</li>
 @endsection
 
 @section('subcontent')
