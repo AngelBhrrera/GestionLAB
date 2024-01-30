@@ -159,7 +159,7 @@ class PrestadorController extends Controller
         // }
 
         $asistencias = DB::select("Select fecha from registros_checkin where idusuario = $id");
-
+        $festivos = DB::select("Select * from eventos");
         
         foreach($asistencias as $valor){
             // Crear un objeto DateTime interpretando la cadena original
@@ -169,12 +169,21 @@ class PrestadorController extends Controller
             $valor->fecha = $fechaObjeto->format('Y-m-d');
         }
 
+        foreach($festivos as $valor){
+            // Crear un objeto DateTime interpretando la cadena original
+            $fechaObjeto = DateTime::createFromFormat('Y-m-d H:i:s', $valor->inicio);
+            // Obtener la nueva cadena de fecha en el formato deseado ("d/m/Y")
+            $valor->inicio = $fechaObjeto->format('Y-m-d');
+
+            $fechaObjeto = DateTime::createFromFormat('Y-m-d H:i:s', $valor->final);
+            // Obtener la nueva cadena de fecha en el formato deseado ("d/m/Y")
+            $valor->final = $fechaObjeto->format('Y-m-d');
+        }
         
 
         return view('/prestador/horario_prestador', [
-                // 'asistencias' => $diasAsistenciaMesActual,
-                // 'turno' => $turno
-                'asistencias'=>$asistencias
+                'asistencias'=>$asistencias,
+                'festivos'=>$festivos
         ]);
     }
 
