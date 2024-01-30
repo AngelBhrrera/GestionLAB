@@ -149,7 +149,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     Route::get('admin/gestionSedes', 'gestionSedes')->name('sedes');
                     Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
                     Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
-<<<<<<< HEAD
+
                     Route::get('admin/changestate/{id}/{value}', 'checkinstate')->name('checkinstate');
                     Route::get('/admin/premios', 'premios')->name('premios');
 
@@ -160,7 +160,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     Route::get('/admin/administradores', 'administradores')->name('administradores');
                     Route::get('admin/ver_reportes_parciales', 'ver_reportes_parciales')->name('reportes_parciales');
                     Route::get('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
-=======
+
                     
                     Route::get('/admin/Dias_no_laborables', 'diasfestivos')->name('diasfestivos');
 
@@ -172,7 +172,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                         Route::get('/superadmin/gestion', 'gestionViews')->name('gestionViews');
                     });
                     
->>>>>>> origin/main
+
                 });
 
                
@@ -310,14 +310,12 @@ Route::controller(App\Http\Controllers\VisitanteController::class)->group(functi
             Route::post('/cliente/visitaguardar','guardarVisita')->name('guardarVisita');
             Route::get('/cliente/visitas', 'principal')->name('visitas');
             Route::get('/cliente/reg', 'form')->name('form');
-<<<<<<< HEAD
 
             Route::get('/cliente/solicitud_capacitacion', 'solicitud_capacitacion')->name('solicitud_capacitacion');
             Route::get('/cliente/solicitud_impresion', 'solicitud_impresion')->name('solicitud_impresion');
-=======
+
             Route::post('/cliente/reg', 'registro_impresion_form')->name('formulariof'); // ruta formulario no publica
             
->>>>>>> origin/main
         // Route::get('/visita','visita')->name('visitas');
         });    
     });

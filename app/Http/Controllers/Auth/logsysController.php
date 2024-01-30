@@ -77,16 +77,15 @@ class logsysController extends Controller
     }
 
     public function show(){
-<<<<<<< HEAD
         $sede= DB::select("SELECT * FROM sede;");
         $area = DB::select("SELECT * FROM areas;");
         $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'encargado' OR tipo = 'admin';");   // muestra en el box la lista
         return view('auth.register', ['encargado'=>$encargado,'sede'=>$sede, 'area'=>$area]);
-=======
+
         $sede= DB::select("SELECT * FROM sedes;");
 
         return view('auth.register', ['sede'=>$sede]);
->>>>>>> origin/main
+
     }
 
     public function filtroSede($id){
