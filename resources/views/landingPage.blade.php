@@ -51,9 +51,8 @@
     </div>
 
     <header class="" id="home">
-
         <h3 class="pt-3">¡Bienvenido al Laboratorio de Inventores!</h3>
-        <div class="main-gallery owl-carousel owl-theme">
+        <div class="main-gallery owl-carousel owl-theme" id="carousel_main">
             <div class="img-holder mt-3"><img src="{{asset('build/assets/images/imagenLat.jpg')}}" alt="lab" class="img-fluid"></div>
             <div class="img-holder mt-3"><img src="{{asset('build/assets/images/imagenLab2.jpg')}}" alt="lab" class="img-fluid"></div>
             <div class="img-holder mt-3"><img src="{{asset('build/assets/images/labMedia.jpg')}}" alt="image" class="img-fluid"></div>
@@ -67,13 +66,12 @@
         </div>
     </header>   
 
-    <div class="section light-bg" id="features"></div>
+    <!--<div class="section light-bg" id="features"></div>  div de separacion-->
     <div class="section">
         <div class="container">
             <div class="section-title">
                 <h3>¿Qué puedes hacer aquí?</h3>
             </div>
-
             <div class="row">
                 <div class="col-12 col-lg-4">
                     <div class="card features">
@@ -178,9 +176,9 @@
         </div>
     </div>
     <!-- // end .section -->
-    <div class = "section" style="height: 1px; width: 100%; background-color: aliceblue;" id="servicios"></div>
+    <div class = "section" style="height: 1px; width: 100%; background-color: aliceblue;"></div>
     <div class="section">
-        <div class="container">
+        <div class="container" id="servicios">
             <div class="section-title">
                 <h3>Servicios que ofrecemos</h3>
                 <p>Puedes solicitar cualquiera de nuestros servicios, con gusto te atenderemos.</p>
@@ -239,7 +237,7 @@
                     </div>
                     <div class="grid-item">
                         
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLScN0dNRm0MbuRs9uT6d-WoUmuizEa7Z5JwI4Bt4BHvuraHATQ/viewform">
+                        <a href="">
                             <img src="{{ asset('build/assets/images/uso-de-impresoras-3D.png') }}" alt="image">   
                             <p class="pdescripcion">Solicitud de impresión de modelos 3D</p>
                         </a>
@@ -263,90 +261,6 @@
                         
                     </div>
                     <div class="grid-item">
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeOcS6S_OwXiBvDWrflv5AQ44H1DUYQWN8aPMymLa3d-XvSWw/viewform">
-                            <img src="{{ asset('build/assets/images/capacitacion-de-modelado-3D.png') }}" alt="image">
-                            <p class="pdescripcion">Capacitación de modelado 3D</p>
-                        </a>
-                        
-                    </div>
-                </div>
-            </div>
-            <div id="vistaMovil"class="container">
-                <div class="img-gallery owl-carousel owl-theme">
-            
-                    <div class="grid-item" style="width:200px; text-align: center; display: inline-block;" alt="lab" class="img-fluid">
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLScPiGL-g7Os1pJoHGtLqpiA2vJAKslYmVKqW9Mp6mZuTUr2mQ/viewform">
-                            <img src="{{ asset('build/assets/images/creacion-de-piezas-3D.png') }}" alt="image">
-                            <p class="pdescripcion">Creación de modelos digitales 3D</p>
-                        </a>
-                        
-                    </div>
-                    <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdtHIY-jHHlseVQNvtwobPxLEdkk0JXSpYXmodqwCdMGMJIHg/viewform">
-                            <img src="{{ asset('build/assets/images/capacitacion-de-uso-de-impresoras-3D.png') }}" alt="image">
-                            <p class="pdescripcion">Capacitación de uso de impresoras 3D</p>
-                        </a>
-                        
-                    </div>
-                    <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSd2KBuqIvoCTGOX8rx8hihQNkO17cbSaC9V01Iix9I3pW1-Ew/viewform">
-                        <img src="{{ asset('build/assets/images/creacion-de-aplicaciones-de-realidad-virtual.png') }}" alt="image">
-                        <p class="pdescripcion">Creación de aplicaciones de realidad virtual</p>
-                        </a>
-                        
-                    </div>
-                    <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLScijczjpr9Klw9XVV4ynSR-mNrRwzwEVESFOQLYI_LKCz1clg/viewform">
-                            <img src="{{ asset('build/assets/images/creacion-de-prototipos.png') }}" alt="image">
-                            <p class="pdescripcion">Creación de prototipos</p>
-                        </a>
-                        
-                    </div>
-                    <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdoTy4RdctUfzyZGzHQYkDXqA1A_OY80-9ex9CwcpB0jE-MGQ/viewform">
-                            <img src="{{ asset('build/assets/images/creacion-de-sistemas-web.png') }}" alt="image">
-                            <p class="pdescripcion">Creación de sistemas web</p>
-                        </a>
-                        
-                    </div>
-                    <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSerKEtn2s3XaeNaXEw_PQhelRVc2TlPdeVrlTIQmVetotby0g/closedform">
-                            <img src="{{ asset('build/assets/images/creacion-de-videojuegos.png') }}" alt="image">
-                            <p class="pdescripcion">Creación de videojuegos</p>
-                        </a>
-                        
-                    </div>
-                    <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfkOt8vekS_ix9Y8ePYk-SQARCiVuz9rjPzWFOBYTrGJ6WpvA/viewform">
-                            <img src="{{ asset('build/assets/images/nivel.png') }}" alt="image">
-                            <p class="pdescripcion">Capacitación de desarrollo de videojuegos</p>
-                        </a>
-                        
-                    </div>
-                    <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
-                        
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLScN0dNRm0MbuRs9uT6d-WoUmuizEa7Z5JwI4Bt4BHvuraHATQ/viewform">
-                            <img src="{{ asset('build/assets/images/uso-de-impresoras-3D.png') }}" alt="image">   
-                            <p class="pdescripcion">Solicitud de impresión de modelos 3D</p>
-                        </a>
-                        
-                    </div>
-                    <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdQUseThOoCQ3gz287sDFoXRRV7BHA6Vti74_8tWXxKcqaOFA/viewform">
-                        <img src="{{ asset('build/assets/images/capacitacion-de-app-de-realidad-virtual.png') }}" alt="image">
-                        <p class="pdescripcion">Capacitación de app de realidad virtual</p>
-                        </a>
-                        
-                    </div>
-
-                        <div class="grid-item" style="width:200px" alt="lab" class="img-fluid">
-                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSe4_sPzMttqcztP821RoMMNY5K9GMxij7xDD86cE05px57u2Q/viewform">
-                            <img src="{{ asset('build/assets/images/capacitacion-de-desarrollo-de-aplicacion-interactiva.png') }}" alt="image">
-                            <p class="pdescripcion">Capacitación de desarrollo de aplicación interactiva</p>
-                            </a>
-                        </div>
-
-                    <div class="grid-item"style="width:200px" alt="lab" class="img-fluid" >
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSeOcS6S_OwXiBvDWrflv5AQ44H1DUYQWN8aPMymLa3d-XvSWw/viewform">
                             <img src="{{ asset('build/assets/images/capacitacion-de-modelado-3D.png') }}" alt="image">
                             <p class="pdescripcion">Capacitación de modelado 3D</p>
@@ -399,7 +313,8 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#global">Todos los tiempos</a>
+                        <a class="nav-link" data-toggle="tab" href="#global">Todos 
+                        </a>
                     </li>
 
                 </ul>
@@ -430,9 +345,9 @@
                         </ul>
                     </div>
                     
-                    <div class="tab-pane fade" id="mensual">
-                            <ul class="nav nav-tabs nav-justified" role="tablist">
-                                <li class="nav-item">
+                    <div class="tab-pane fade " id="mensual">
+                            <ul class="nav nav-tabs nav-justified " role="tablist">
+                                <li class="nav-item ">
                                     <a class="nav-link active">Posición</a>
                                     @foreach ($leaderBoard as $top)
                                         <p id="leaderBoard" class="nav-link">{{$top->Posicion}}</p>
@@ -758,7 +673,7 @@
         <div class="container table-responsive">
             <div class="row">
                 <div class="col align-self-start">
-                    <img class="mb-4" src="{{ asset('build/assets/images/logoB.png')}}" height="120" width="480" >
+                    <img class="mb-4" src="{{ asset('build/assets/images/logoB.png')}}" height="120" width="480" id="udg">
                 </div>
                 
                 <div class="col align-self-start">

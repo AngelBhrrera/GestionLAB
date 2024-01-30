@@ -277,9 +277,12 @@ Route::controller(App\Http\Controllers\MedallasController::class)->group(functio
 
 Route::controller(App\Http\Controllers\HomeController::class)->group(function(){
     //Route::post('/crearImpresion', 'crearImpresion')->middleware('guest')->name('crearImpresion'); <--- registro de las solicitudes de impresion 3D
-    Route::post('update', 'update')->name('update');
-    Route::get('modificaradmin', 'modificaradmin')->name('modificaradmin');
-    Route::post('/cliente/reg', 'registro_impresion_form')->name('formulariof');
+    Route::name('inventores.')->group(function (){
+        Route::post('update', 'update')->name('update');
+        Route::get('modificaradmin', 'modificaradmin')->name('modificaradmin');
+        Route::get('/inventores/form', 'formp')->name('formp');  // ruta del formulario publico
+        Route::post('/inventores/form', 'public_form')->name('formulariop'); // nueva ruta para el formulario publico
+    });
 });
 
 Route::controller(App\Http\Controllers\VisitanteController::class)->group(function(){
@@ -297,9 +300,6 @@ Route::controller(App\Http\Controllers\VisitanteController::class)->group(functi
             
         // Route::get('/visita','visita')->name('visitas');
         });    
-    });
-    Route::name('api.')->group(function () {
-        Route::post('visitator', 'registrarVisita')->middleware('role:encargado,admin,checkin,Superadmin')->name('registrarVisita');
     });
 });
 
