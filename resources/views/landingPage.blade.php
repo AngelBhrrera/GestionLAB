@@ -312,7 +312,8 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#global">Todos los tiempos</a>
+                        <a class="nav-link" data-toggle="tab" href="#global">Todos 
+                        </a>
                     </li>
 
                 </ul>
@@ -343,9 +344,9 @@
                         </ul>
                     </div>
                     
-                    <div class="tab-pane fade" id="mensual">
-                            <ul class="nav nav-tabs nav-justified" role="tablist">
-                                <li class="nav-item">
+                    <div class="tab-pane fade " id="mensual">
+                            <ul class="nav nav-tabs nav-justified " role="tablist">
+                                <li class="nav-item ">
                                     <a class="nav-link active">Posición</a>
                                     @foreach ($leaderBoard as $top)
                                         <p id="leaderBoard" class="nav-link">{{$top->Posicion}}</p>
@@ -565,7 +566,7 @@
                 <h3>CONTACTO</h3>
             </div>
             <div class="container">
-                <table class="table" id="contacto">
+                <table class="table">
                     <tbody>
                         <tr>
                             <td>
@@ -671,7 +672,7 @@
         <div class="container table-responsive">
             <div class="row">
                 <div class="col align-self-start">
-                    <img class="mb-4" src="{{ asset('build/assets/images/logoB.png')}}" height="120" width="480" >
+                    <img class="mb-4" src="{{ asset('build/assets/images/logoB.png')}}" height="120" width="480" id="udg">
                 </div>
                 
                 <div class="col align-self-start">

@@ -434,25 +434,25 @@ header {
     border-bottom-left-radius: 3px;
     background-color: #FFF;
     box-shadow: 0px 5px 7px 0px rgba(0, 0, 0, 0.04);
-    padding: 3rem;
+    box-sizing: border-box;
 }
 
-@media (max-width:992px) {
-    .tab-content {
-        padding: 1.5rem;
-    }
-}
 
 .tab-content p {
-    line-height: 1.8;
+    line-height: auto; /* Reduzca el espacio entre líneas para que el texto ocupe menos espacio vertical */
+    font-size: 16px; /* Ajuste el tamaño de la fuente según sea necesario */
+    margin-bottom: 0.5rem;
+
 }
 
 .tab-content h2 {
-    margin-bottom: 0.5rem;
+    font-size: 20px; /* Ajuste el tamaño de la fuente de los encabezados según sea necesario */
+    margin-bottom: 0.3rem;
 }
 
 .nav-tabs {
     border-bottom: 0;
+
 }
 
 .nav-tabs .nav-item .nav-link,
@@ -463,6 +463,49 @@ header {
     font-size: 19px;
     color: #c8b4a4;
     background: #f5eff7;
+    margin: 5px;
+}
+
+
+@media(max-width:450px){
+    .nav-tabs .nav-item .nav-link,
+    .nav-tabs .nav-link:focus,
+    .nav-tabs .nav-link:hover {
+    padding: 1rem 1rem;
+    border-color: #faf6fb #faf6fb #FFF;
+    font-size: 19px;
+    color: #c8b4a4;
+    background: #f5eff7;
+    margin: 5px;
+    width: 85px;
+    }
+}
+
+
+@media(max-width:375px){
+    .nav-tabs .nav-item .nav-link,
+    .nav-tabs .nav-link:focus,
+    .nav-tabs .nav-link:hover {
+    display: flex;
+    border-color: #faf6fb #faf6fb #FFF;
+    font-size: 16px;
+    color: #c8b4a4;
+    background: #f5eff7;
+    width: 70px;
+    }
+}
+
+@media(max-width:321px){
+    .nav-tabs .nav-item .nav-link,
+    .nav-tabs .nav-link:focus,
+    .nav-tabs .nav-link:hover {
+    display: flex;
+    border-color: #faf6fb #faf6fb #FFF;
+    font-size: 16px;
+    color: #c8b4a4;
+    background: #f5eff7;
+    width: 55px;
+    }
 }
 
 .nav-tabs .nav-link.active {
@@ -826,6 +869,17 @@ header {
     }
   }
 
-  #contacto{
-    display: inline-flex;
-  }
+
+@media(max-width:450px){
+    #udg{
+        width: 390px;
+        height: 120px;
+    }
+}
+
+@media(max-width:375px){
+    #udg{
+        width: 300px;
+        height: 100px;
+    }
+}
