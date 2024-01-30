@@ -27,6 +27,6 @@ class CreateSedesAreasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('areas');
+        Schema::dropIfExists('sedes_areas');
     }
 }

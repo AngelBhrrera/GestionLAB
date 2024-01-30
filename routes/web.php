@@ -40,6 +40,7 @@ Route::controller(App\Http\Controllers\Auth\RegisterController::class)->group(fu
     Route::post('/registro', 'register')->name('registrar');
 });
 Route::controller(App\Http\Controllers\Auth\logsysController::class)->group(function(){
+    
     Route::get('/', 'redirectTo')->name('root');
     Route::get('/register', 'show')->name('register')->middleware('guest');
     Route::get('/login', 'log')->name('login')->middleware('guest');

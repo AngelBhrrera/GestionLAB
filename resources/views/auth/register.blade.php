@@ -168,9 +168,9 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divSede" style="display:none">
                                         <label for="input-wizard-3" class="form-label">Sede</label>
-                                        <select class="form-control" name="sede" id="sede"  onchange="filtroSede()">
+                                        <select class="form-control" name="sede" id="sedeSelect"  onchange="filtroSede()">
                                             @if (isset($sede))
-                                                <option id="sede" value="" {{ !is_null(old('sede')) ? 'selected' : '' }} >Selecciona una sede</option>
+                                                <option id="sede" value="" >Selecciona una sede</option>
                                                 @foreach ($sede as $dato )
                                                     <option id="{{$dato->id_Sede}}" value="{{$dato->id_Sede}}" data-nombre="{{$dato->nombre_Sede}}">{{$dato->nombre_Sede }} </option>
                                                 @endforeach
@@ -181,30 +181,16 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divArea" style="display:none">
                                         <label for="input-wizard-3" class="form-label">Área de trabajo</label>
-                                        <select class="form-control" id="area" name="tipo_actividad" required disabled>
-                                            <option value="">Selecciona un área de trabajo</option>
-                                            @foreach ($area as $dato)
-                                            <option id="{{ $dato->area_id }}" value="{{ $dato->area_id }}"> {{ $dato->area_nombre }}</option>
-                                            @endforeach
+                                        <select class="form-control" id="area" name="area" required disabled>
+                                            <option id="0" value="">Selecciona un área de trabajo</option>
                                         </select>
                                     </div>
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divTurno" style="display:none">
                                         <label for="input-wizard-4" class="form-label">Turno</label>
                                         <select class="form-control" name="horario" id="horarios" onchange="filtroTurno()" disabled>
-                                            <option selected id="1" value='null'>Seleccione un turno</option> 
-                                            <option id="100" value='Matutino'>Matutino (8-12) </option>
-                                            <option id="101" value='Mediodia'>Mediodia (12-4)</option>
-                                            <option id="102" value='Vespertino'>Vespertino (4-8)</option>
-                                            <option id="103" value='Sabatino' >Sabados</option>
-                                            <option id="104" value='TC'>Tiempo completo</option>                    
-                                            
+                                            <option selected id="0" value="">Seleccione un turno</option> 
                                         </select>
-                                            @error('horario')
-                                                <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
                                     </div>
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divHoras" style="display:none">
@@ -222,20 +208,8 @@
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divEncargado" style="display:none">
                                         <label for="input-wizard-4" class="form-label">Encargado *</label>
                                         <select class="form-control @if(old('opc')=='1') @error('id_encargado') is-invalid @enderror @endif" name="id_encargado" id="id_encargado" disabled>
-                                            @if (isset($encargado))
-                                                <option id="prede" value="prede" {{isset($dV[0]->id_encargado) ? $dV[0]->id_encargado == null ? 'selected="selected"' : '' : ''}}>Seleccione un encargado</option>
-                                                @foreach ($encargado as $dato )
-                                                    <option id= "{{$dato->sede}}" value="{{$dato->id}}" data-horario="{{$dato->horario}}" {{old('id_encargado') == $dato->id ? 'selected="selected"' : '' }}> {{$dato->name }} {{$dato->apellido}}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                        @if(old('opc')=='1')
-                                            @error('encargado')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        @endif                
+                                                <option id="0" value="" {{isset($dV[0]->id_encargado) ? $dV[0]->id_encargado == null ? 'selected="selected"' : '' : ''}}>Seleccione un encargado</option>
+                                        </select>              
                                     </div>
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divPW" style="display:none">
@@ -284,6 +258,7 @@
 @section('script')
     <script type="text/javascript">
 
+
     function changeCase($var){
 
         var ref = $var; 
@@ -311,7 +286,7 @@
 
         function ValidarCorreo(){
             var correo = document.getElementById("correo").value;
-            var regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // exprecion regular de validacion
+            var regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // expresion regular de validacion
             if(!regexCorreo.test(correo)){
                 alert("ingresa un correo valido");
                 return false;
@@ -329,93 +304,72 @@
 
             var index = $var; 
 
-            var step1 =  document.getElementById('stepOne');
-            var step2 =  document.getElementById('stepTwo');
-
-            var divBasic = document.getElementById('formOne');
-            var divAcad = document.getElementById('formTwo');
-            var divPrest = document.getElementById('formThree');
-
-            var divAlt1 = document.getElementById('btn-next1'); //siguiente 1
-            var divAlt2 = document.getElementById('btn-prev1'); //anterior disabled
-            var divAlt3 = document.getElementById('btn-reg');  //registrarse
-            var divAlt4 = document.getElementById('btn-prev2'); //anterior 1
-
-            var input1 = document.getElementById('divTelefono');
-            var input2 = document.getElementById('divEscuela');
-            var input3 = document.getElementById('divCarrera');
-            var input4 = document.getElementById('divHoras');
-            var input5 = document.getElementById('divSede');
-            var input6 = document.getElementById('divEncargado');
-            var input7 = document.getElementById('divCode');
-            var input8 = document.getElementById('divPW');
-            var input9 = document.getElementById('divPW2');
-            var input10 = document.getElementById('divTurno');
-            var input11 = document.getElementById('divArea');
-
             if(index =='1'){
                
-                step2.style.display = "";
-                divAlt3.style.display = "";
-                divAlt4.style.display = "";
+                document.getElementById('stepTwo').style.display = "";
+                document.getElementById('btn-reg').style.display = "";
+                document.getElementById('btn-prev2').style.display = "";
+                document.getElementById('divCode').style.display = "";
+                document.getElementById('divTelefono').style.display = "";
+                document.getElementById('divEscuela').style.display = "";
+                document.getElementById('divCarrera').style.display = "";
 
-                input7.style.display = "";
-                input1.style.display = "";
-                input2.style.display = "";
-                input3.style.display = "";
-
-
-                divBasic.style.display = "none";
-                step1.style.display = "none";
-                divAlt1.style.display = "none";
-                divAlt2.style.display = "none";
+                document.getElementById('formOne').style.display = "none";
+                document.getElementById('stepOne').style.display = "none";
+                document.getElementById('btn-next1').style.display = "none";
+                document.getElementById('btn-prev1').style.display = "none";
 
                 if ((document.getElementById('RBprestador').selected) || (document.getElementById('RBvoluntario').selected) || (document.getElementById('RBpracticante').selected)){
-                    divPrest.style.display = "";
-                    input4.style.display = "";
-                    input5.style.display = "";
-                    input6.style.display = "";
-                    input10.style.display= "";
-                    input11.style.display="";
-                }else{
-                    divAcad.style.display = "";
-                }
 
-                input8.style.display = "";
-                input9.style.display = "";
+                    document.getElementById('formThree').style.display = "";
+                    document.getElementById('divHoras').style.display = "";
+                    document.getElementById('divSede').style.display = "";
+                    document.getElementById('divEncargado').style.display = "";
+                    document.getElementById('divTurno').style.display= "";
+                    document.getElementById('divArea').style.display="";
+
+                    document.getElementById('sedeSelect').value ="";
+                    document.getElementById('horarios').disabled= true;
+                    document.getElementById('area').disabled=true;
+                    document.getElementById('id_encargado').disabled = true;
+                }else{
+                    document.getElementById('formTwo').style.display = "";
+                }
+                document.getElementById('divPW').style.display = "";
+                document.getElementById('divPW2').style.display = "";
 
             }else if(index == '2'){
 
-                    divBasic.style.display = "";
-                    step1.style.display = "";
-                    divAlt1.style.display = "";
-                    divAlt2.style.display = "";
+                document.getElementById('formOne').style.display = "";
+                document.getElementById('stepOne').style.display = "";
+                document.getElementById('btn-next1').style.display = "";
+                document.getElementById('btn-prev1').style.display = "";
 
-                    divAcad.style.display = "none";
-                    divPrest.style.display = "none";
-                    step2.style.display = "none";
-                    divAlt3.style.display = "none";
-                    divAlt4.style.display = "none";
+                document.getElementById('formTwo').style.display = "none";
+                document.getElementById('formThree').style.display = "none";
+                document.getElementById('stepTwo').style.display = "none";
+                document.getElementById('btn-reg').style.display = "none";
+                document.getElementById('btn-prev2').style.display = "none";
 
-                    input1.style.display = "none";
-                    input2.style.display = "none";
-                    input3.style.display = "none";
-                    input4.style.display = "none";
-                    input5.style.display = "none";
-                    input6.style.display = "none";
-                    input7.style.display = "none";
-                    input8.style.display = "none";
-                    input9.style.display = "none";
-                    input10.style.display = "none";
-                    input11.style.display = "none";
+                document.getElementById('divTelefono').style.display = "none";
+                document.getElementById('divEscuela').style.display = "none";
+                document.getElementById('divCarrera').style.display = "none";
+                document.getElementById('divHoras').style.display = "none";
+                document.getElementById('divSede').style.display = "none";
+                document.getElementById('divEncargado').style.display = "none";
+                document.getElementById('divCode').style.display = "none";
+                document.getElementById('divPW').style.display = "none";
+                document.getElementById('divPW2').style.display = "none";
+                document.getElementById('divTurno').style.display = "none";
+                document.getElementById('divArea').style.display = "none";
             }
         }
 
         function filtroSede() {
-        var sedeSelect = document.getElementById('sede');
+        var sedeSelect = document.getElementById('sedeSelect');
         var areaSelect = document.getElementById('area');
         var horarioSelect = document.getElementById('horarios');
-
+        
         var sedeId = sedeSelect.value;
         areaSelect.innerHTML = '<option value=""> Selecciona un área de trabajo</option>';
         horarioSelect.innerHTML = '<option value=""> Selecciona un turno </option>';
@@ -423,55 +377,54 @@
             areaSelect.disabled = true;
             horarioSelect.disabled = true;
             return;
-        }
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    var areas = JSON.parse(xhr.responseText);
-                    console.log(areas);
-                    areaSelect.disabled = false;
-                    horarioSelect.disabled = false;
-                    areas.forEach(function(area) {
-                        var option = document.createElement('option');
-                        option.value = area.area_id;
-                        option.text = area.area_nombre;
-                        areaSelect.appendChild(option);
-                    });
-                    var horariosSede = areas[0];
-                    if (horariosSede.turnoMatutino === 1) {
-                        var option1 = document.createElement('option');
-                        option1.value = 'Matutino';
-                        option1.text = 'Matutino';
-                        horarioSelect.appendChild(option1);
+        }else{
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var areas = JSON.parse(xhr.responseText);
+                        areaSelect.disabled = false;
+                        horarioSelect.disabled = false;
+                        areas.forEach(function(area) {
+                            var option = document.createElement('option');
+                            option.value = area.area_id;
+                            option.text = area.area_nombre;
+                            areaSelect.appendChild(option);
+                        });
+                        var horariosSede = areas[0];
+                        if (horariosSede.turnoMatutino === 1) {
+                            var option1 = document.createElement('option');
+                            option1.value = 'Matutino';
+                            option1.text = 'Matutino';
+                            horarioSelect.appendChild(option1);
+                        }
+                        if (horariosSede.turnoMediodia === 1) {
+                            var option1 = document.createElement('option');
+                            option1.value = 'Mediodia';
+                            option1.text = 'Mediodia';
+                            horarioSelect.appendChild(option1);
+                        }
+                        if (horariosSede.turnoVespertino === 1) {
+                            var option1 = document.createElement('option');
+                            option1.value = 'Vespertino';
+                            option1.text = 'Vespertino';
+                            horarioSelect.appendChild(option1);
+                        }
+                        if (horariosSede.turnoSabatino === 1) {
+                            var option1 = document.createElement('option');
+                            option1.value = 'Sabatino';
+                            option1.text = 'Sabatino';
+                            horarioSelect.appendChild(option1);
+                        }
+                        if (horariosSede.turnoTiempoCompleto === 1) {
+                            var option1 = document.createElement('option');
+                            option1.value = 'TC';
+                            option1.text = 'TC';
+                            horarioSelect.appendChild(option1);
+                        }
+                    } else {
+                        console.error('Error al obtener las actividades');
                     }
-                    if (horariosSede.turnoMediodia === 1) {
-                        var option1 = document.createElement('option');
-                        option1.value = 'Mediodia';
-                        option1.text = 'Mediodia';
-                        horarioSelect.appendChild(option1);
-                    }
-                    if (horariosSede.turnoVespertino === 1) {
-                        var option1 = document.createElement('option');
-                        option1.value = 'Vespertino';
-                        option1.text = 'Vespertino';
-                        horarioSelect.appendChild(option1);
-                    }
-                    if (horariosSede.turnoSabatino === 1) {
-                        var option1 = document.createElement('option');
-                        option1.value = 'Sabatino';
-                        option1.text = 'Sabatino';
-                        horarioSelect.appendChild(option1);
-                    }
-                    if (horariosSede.turnoTiempoCompleto === 1) {
-                        var option1 = document.createElement('option');
-                        option1.value = 'TC';
-                        option1.text = 'TC';
-                        horarioSelect.appendChild(option1);
-                    }
-
-                } else {
-                    console.error('Error al obtener las actividades');
                 }
             }
         };
@@ -480,35 +433,35 @@
     }
 
     function filtroTurno() {
-        var sedeSelect = document.getElementById('sede');
+
         var horarioSelect = document.getElementById('horarios');
         var encargadoSelect = document.getElementById('id_encargado');
         var horario = horarioSelect.value;
         var sede = sedeSelect.value;
         encargadoSelect.innerHTML = '<option value=""> Selecciona un encargado</option>';
-        if (horario === '1') {
-           encargadoSelect.disabled = true;
-            return;
-        }
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    var encargados = JSON.parse(xhr.responseText);
-                    encargadoSelect.disabled = false;
-                    encargados.forEach(function(encargado) {
-                        var option = document.createElement('option');
-                        option.value = encargado.id;
-                        option.text = encargado.name + ' ' + encargado.apellido;
-                        encargadoSelect.appendChild(option);
-                    });
-                } else {
-                    console.error('Error al obtener las actividades');
+        if (horario === '') {
+            encargadoSelect.disabled = true;
+        }else{
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        encargadoSelect.disabled = false;
+                        var encargados = JSON.parse(xhr.responseText);
+                        encargados.forEach(function(encargado) {
+                            var option = document.createElement('option');
+                            option.value = encargado.id;
+                            option.text = encargado.name + ' ' + encargado.apellido;
+                            encargadoSelect.appendChild(option);
+                        });
+                    } else {
+                        console.error('Error al obtener encargados');
+                    }
                 }
-            }
-        };
-        xhr.open('GET', 'turno/' + horario + '/' + sede);
-        xhr.send();
+            };
+            xhr.open('GET', 'turno/' + horario + '/' + sede);
+            xhr.send();
+        }
     }
     </script>
 @endsection

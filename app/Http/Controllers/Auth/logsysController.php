@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class logsysController extends Controller
 {
-
     public function log(){
        
         return view('auth.login');
@@ -79,9 +78,8 @@ class logsysController extends Controller
 
     public function show(){
         $sede= DB::select("SELECT * FROM sede;");
-        $area = DB::select("SELECT * FROM filtrosede;");
-        $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'encargado' OR tipo = 'admin';"); 
-        return view('auth.register', ['encargado'=>$encargado,'sede'=>$sede, 'area'=>$area]);
+
+        return view('auth.register', ['sede'=>$sede]);
     }
 
     public function filtroSede($id){
@@ -105,4 +103,5 @@ class logsysController extends Controller
         ->get();
         return response()->json($turno);
     }
+
 }
