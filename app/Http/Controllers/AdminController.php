@@ -53,8 +53,17 @@ class AdminController extends Controller
 
     public function registro()
     {
-        $sede = DB::select("SELECT * FROM sede;");
-        $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin' OR tipo = 'encargado';");
+        if (Auth::user()->tipo == ('encargado' || 'admin')){
+            $id = Auth::user()->sede;
+            $sede = DB::select("SELECT * sedes WHERE id_Sede = $id;");
+            $area = DB::select("SELECT * FROM filtrosedes WHERE id_Sede = $id;;");
+            $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'admin' OR tipo = 'encargado' AND WHERE sede = $id;");
+        }else{
+            $sede = DB::select("SELECT * FROM sedes;");
+            $area = DB::select("SELECT * FROM filtrosedes;");
+
+        }
+        
         return view('auth/registerAdmin', ['encargado'=>$encargado,'sede'=>$sede]);
     }
 
@@ -70,7 +79,7 @@ class AdminController extends Controller
 
     public function watch_visits()
     {
-        $n_sede = DB::table('sede')
+        $n_sede = DB::table('sedes')
             ->where('id_Sede', Auth::user()->sede)
             ->value('nombre_Sede');
         $data = DB::table('visitas')
@@ -78,6 +87,14 @@ class AdminController extends Controller
         ->get();
     
         return view('/admin/ver_visitas', ['datos' => json_encode($data), 'sede' => $n_sede]);
+    }
+
+    public function motivo($id, $value)
+    {
+        $sql=    DB::table('visitas')
+        ->where('id', $id)
+        ->update(['motivo' => $value]);
+    return response()->json(['message' => $sql]);
     }
 
     public function general()
@@ -101,7 +118,7 @@ class AdminController extends Controller
 
     public function prestadores()
     {
-        $n_sede = DB::table('sede')
+        $n_sede = DB::table('sedes')
             ->where('id_Sede', Auth::user()->sede)
             ->value('nombre_Sede');
         if(Auth::user()->tipo == 'Superadmin')
@@ -137,7 +154,7 @@ class AdminController extends Controller
         DB::table('users')
         ->where('id', $id)
         ->update([
-            'horario' => DB::table('sede')->where('id_Sede', $sede)->value($n_Turno) == 1 ? $horario : DB::raw('horario')]);
+            'horario' => DB::table('sedes')->where('id_Sede', $sede)->value($n_Turno) == 1 ? $horario : DB::raw('horario')]);
 
             return response()->json(['message' => 'Activado exitosamente']);
     }
@@ -353,7 +370,7 @@ class AdminController extends Controller
     public function asign_act()
     {
 
-        $n_Sede =  DB::table('sede')
+        $n_Sede =  DB::table('sedes')
         ->select('nombre_Sede')
         ->where('id_Sede', auth()->user()->sede)
         ->get();
@@ -378,7 +395,7 @@ class AdminController extends Controller
         $sede = auth()->user()->sede;
       
         $data = DB::table('ver_impresiones')
-            ->select('impresora', 'proyecto', 'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
+            ->select('ver_impresiones.id','impresora', 'proyecto', 'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
             ->join('users', 'ver_impresiones.id_Prestador', '=', 'users.id')
             ->where('sede', $sede)
             ->get();
@@ -416,6 +433,24 @@ class AdminController extends Controller
         return response()->json(['message' => 'Impresora activada']);
     }
 
+    public function detail_prints($id, $value) {
+
+        $sql=    DB::table('seguimiento_impresiones')
+            ->where('id', $id)
+            ->update(['observaciones' => $value]);
+        return response()->json(['message' => $sql]);
+    }
+
+    public function printstate($id, $state) {
+
+        DB::table('seguimiento_impresiones')
+        ->where('id', $id)
+        ->update(['estado' => $state]);
+
+        return response()->json(['message' => 'Activado exitosamente' . $id]);
+    }
+
+
     public function make_print(Request $request)
     {
 
@@ -437,19 +472,13 @@ class AdminController extends Controller
 
         return redirect()->back();
     }
-    
-    public function gestionSedes(){
-        $sedes= DB::select("SELECT * FROM sede WHERE id_Sede != 0;");
-        
-        return view("admin.sedes", ['sede'=>$sedes, 'tabla_sedes' => json_encode($sedes)]);
-    }
 
     public function nuevaSede(Request $request){
         $request->validate([
             'nombreSede' => 'required|max:255',
         ]);
 
-        $buscarSede = DB::Select("Select nombre_Sede from sede where nombre_Sede = '$request->nombreSede'");
+        $buscarSede = DB::Select("Select nombre_Sede from sedes where nombre_Sede = '$request->nombreSede'");
         if (count($buscarSede)==0){
             $nombre=$request->input("nombreSede");
             DB::insert("INSERT INTO sede (nombre_Sede, turnoMatutino, turnoMediodia, turnoVespertino, turnoSabatino, 
@@ -459,6 +488,12 @@ class AdminController extends Controller
             return redirect(route('admin.sedes'))->with('warning', "Ya existe una sede con ese nombre");
         }
          
+    }
+    
+    public function gestionSedes(){
+        $sedes= DB::select("SELECT * FROM sedes WHERE id_Sede != 0;");
+        
+        return view("admin.sedes", ['sede'=>$sedes, 'tabla_sedes' => json_encode($sedes)]);
     }
 
     public function  modificarSede(Request $request){
@@ -473,7 +508,7 @@ class AdminController extends Controller
         $completo=($request->has("completo")) ? 1 : 0;
         $activa=($request->has("activa")) ? 1 : 0;
 
-        $nombreAnterior = DB::select("Select nombre_Sede from sede where id_Sede=$id");
+        $nombreAnterior = DB::select("Select nombre_Sede from sedes where id_Sede=$id");
 
         if($nombreAnterior[0]->nombre_Sede === $nombre){
             //no hace nada xd
@@ -481,13 +516,13 @@ class AdminController extends Controller
             $request->validate([
                 'nuevoNombre' => 'required|min:3|max:255|unique:sede,nombre_Sede',
             ]);
-            $buscarSede = DB::Select("Select nombre_Sede from sede where nombre_Sede = '$nombre'");
+            $buscarSede = DB::Select("Select nombre_Sede from sedes where nombre_Sede = '$nombre'");
             if (count($buscarSede)>0){
                 return redirect(route('admin.sedes'))->with('warning', "Ya existe una sede con ese nombre");
             }
         }
         
-        $buscarSede = DB::Select("Select nombre_Sede from sede where nombre_Sede = '$request->nombreSede'");
+        $buscarSede = DB::Select("Select nombre_Sede from sedes where nombre_Sede = '$request->nombreSede'");
         DB::update("Update sede 
         set nombre_Sede='$nombre',
         turnoMatutino=$matutino,
@@ -501,79 +536,57 @@ class AdminController extends Controller
         return redirect(route('admin.sedes'))->with('success', 'Modificada correctamente');
     }
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    /*public function activar(Request $request)
-    {
-        try {
-            $id = $request->input('id');
-            $modificar = DB::table('users')->where('id', $id)->update(['tipo' => "prestador"]);
-
-            return redirect()->route($this->rutaRegreso("prestadoresPendientes"))->with('success', 'Activado correctamente');
-        } catch (\Throwable $th) {
-            return redirect()->route($this->rutaRegreso('prestadoresPendientes'))->with('error', $th->getMessage());
-        }
-    }
-
-        //solicitud_aceptada
-
-        public function impresion_terminada(Request $request)
-        {
-    
-            $id_impresion =   $request->id_impresion;
-            $modificar = DB::table('proyectos_prestadores')->where('id_proyecto', $id_impresion)->update(
-                ['status' => 'terminado']
-            );
-            $modificar = DB::table('cita_clientes')->where('id_citas', $id_impresion)->update(
-                ['status' => 'terminado']
-            );
-            return redirect()->route("admin.prestadoresProyectos");
-        }
-
-
-        public function terminar_prestadores(Request $request)
-    {
-        $id = $request->input('id_usuario');
-        $modificar = DB::table('users')->where('id', $id)->update(['tipo' => "prestador_terminado", 'fecha_salida' => date('Y-m-d')]);
-
-        return redirect()->route("admin./admin/homeA");
-    }*/
-
-    /*public function activar_prestadores(Request $request)
-    {
-        $id = $request->input('idusuarioactivar');
-        $modificar = DB::table('users')->where('id', $id)->update(['tipo' => "prestador"]);
-        $columns = array(
-            ["data" => "id", "visible" => false],
-            ["data" => "name"],
-            ["data" => "apellido"],
-            ["data" => "codigo"],
-            ["data" => "carrera"],
-            ["data" => "horas"],
-            ["data" => "horas_cumplidas"],
-            ["data" => "horas_restantes", "visible" => false],
-            ["data" => "acciones", "sortable" => false],
-        );
-
-        return view(
-            '/admin/homeA',
-            [
-                'datos' => ['id', 'name', 'apellido', 'codigo', 'carrera', 'horas', 'horas_cumplidas', 'horas_restantes', 'acciones'],
-                'opcion' => 'table',
-                'titulo' => 'Tabla Prestadores Activos',
-                'ajaxroute' => 'ss.ssPrestadoresA',
-                "columnas" => json_encode($columns),
-            ]
-        );
-    }*/
-
     public function desactivar_prestadores(Request $request)
     {
         $id = $request->input('iddesc');
         $modificar = DB::table('users')->where('id', $id)->update(['tipo' => "prestador_inactivo"]);
 
         return redirect()->route("admin./admin/homeA");
+    }
+
+    public function categorias(){
+
+        $categ= DB::select("SELECT * FROM categorias");
+        $subcateg = DB::table('subcategorias')
+            ->select('subcategorias.*', 'categorias.nombre AS categoria')
+            ->join('categorias', 'subcategorias.categoria', '=', 'categorias.id')
+            ->get();
+        return view("admin.categorias", ['categoria'=>$categ, 'tabla_subcategorias' => json_encode($subcateg) ]);
+    }
+
+    public function nuevaCateg(Request $request){
+
+        $request->validate([
+            'nombreCateg' => 'required|max:255',
+        ]);
+
+        $buscarCat = DB::Select("Select nombre from categorias where nombre = '$request->nombreCateg'");
+        if (count($buscarCat)==0){
+            $nombre=$request->input("nombreCateg");
+            DB::insert("INSERT INTO categorias (nombre) Values('$nombre')");
+            return redirect(route('admin.categorias'))->with('success', 'Creada correctamente');
+        }else{
+            return redirect(route('admin.categorias'))->with('warning', "Ya existe una categoria con ese nombre");
+        }
+
+    }
+
+    public function nuevaSubcateg(Request $request){
+
+        $request->validate([
+            'categ' => 'required',
+            'nombreSubc' => 'required|max:255',
+        ]);
+
+        $categ=$request->input("categ");
+        $subcateg=$request->input("nombreSubc");
+        $sql = DB::insert("INSERT INTO subcategorias (nombre, categoria) Values('$subcateg', '$categ')");
+        if ( $sql == 1){
+            return redirect(route('admin.categorias'))->with('success', 'Creada correctamente');
+        }else{
+            return redirect(route('admin.categorias'))->with('warning', "No se puedo crear la subcategoria");
+        }
+    
     }
 
 
@@ -626,6 +639,78 @@ class AdminController extends Controller
             return redirect()->route('admin.reportes_parciales')->with(['warning'=>"No se encontraron registros del prestador", 'reportes'=>$reportes, 'codigo'=> $request->busqueda]);
         }
     }
+
+    public function registrarVisitas(Request $request)
+    {
+        $insert = Visitas::create($request->all());
+        return redirect('/')->with('success', 'Creado correctamente');
+    }
+
+    public function salidaVisita(Request $request)
+    {
+        $id = $request->input('id');
+        $vmodificar = Visitas::findOrFail($id);
+
+        $currentDateTime = date('Y-m-d H:i:s');
+        $newDateTime = date('h:i A', strtotime($currentDateTime));
+        $newDateTime2 = date('Y-m-d H:i:s', strtotime($currentDateTime));
+
+        $vmodificar->hora_salida = $newDateTime2;
+        $vmodificar->fecha_salida = $newDateTime2;
+
+        $vmodificar->save();
+        return redirect()->route('admin.visitas');
+    }
+
+    public function gestionViews(){
+
+        $gest= DB::select("SELECT *, s.nombre_Sede FROM sedes_vistas AS v 
+            INNER JOIN sede AS s ON g.id = s.id_Sede;
+            INNER JOIN sede_");
+        
+        return view("admin.supergestor", ['gest'=>$gest]);
+    }
+
+    public function  modificarViews(Request $request){
+        
+        $nombre=$request->input("nuevoNombre");
+        
+        $id=$request->input("idSede");
+        $matutino=($request->has("matutino")) ? 1 : 0;
+        $mediodia=($request->has("mediodia")) ? 1 : 0;
+        $vespertino=($request->has("vespertino")) ? 1 : 0;
+        $sabatino=($request->has("sabatino")) ? 1 : 0;
+        $completo=($request->has("completo")) ? 1 : 0;
+        $activa=($request->has("activa")) ? 1 : 0;
+
+        $nombreAnterior = DB::select("Select nombre_Sede from sedes where id_Sede=$id");
+
+        if($nombreAnterior[0]->nombre_Sede === $nombre){
+            //no hace nada xd
+        }else{
+            $request->validate([
+                'nuevoNombre' => 'required|min:3|max:255|unique:sede,nombre_Sede',
+            ]);
+            $buscarSede = DB::Select("Select nombre_Sede from sedes where nombre_Sede = '$nombre'");
+            if (count($buscarSede)>0){
+                return redirect(route('admin.sedes'))->with('warning', "Ya existe una sede con ese nombre");
+            }
+        }
+        
+        $buscarSede = DB::Select("Select nombre_Sede from sedes where nombre_Sede = '$request->nombreSede'");
+        DB::update("Update sede 
+        set nombre_Sede='$nombre',
+        turnoMatutino=$matutino,
+        turnoMediodia=$mediodia,
+        turnoVespertino=$vespertino,
+        turnoSabatino=$sabatino,
+        turnoTiempoCompleto=$completo,
+        activa=$activa
+        where id_Sede=$id");
+
+        return redirect(route('admin.sedes'))->with('success', 'Modificada correctamente');
+    }
+
     
 //VIEJO CONTROLLER. /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -754,40 +839,6 @@ class AdminController extends Controller
                 'descarga' => false
             ]
         );
-    }
-
-    public function registroVisitas()
-    {
-        return view(
-            '/admin/homeA',
-            [
-                'fecha' => date("d/m/Y"),
-                'opcion' => 'registroVisitas',
-                'titulo' => 'Registro de Visitas',
-            ]
-        );
-    }
-
-    public function registrarVisitas(Request $request)
-    {
-        $insert = Visitas::create($request->all());
-        return redirect('/')->with('success', 'Creado correctamente');
-    }
-
-    public function salidaVisita(Request $request)
-    {
-        $id = $request->input('id');
-        $vmodificar = Visitas::findOrFail($id);
-
-        $currentDateTime = date('Y-m-d H:i:s');
-        $newDateTime = date('h:i A', strtotime($currentDateTime));
-        $newDateTime2 = date('Y-m-d H:i:s', strtotime($currentDateTime));
-
-        $vmodificar->hora_salida = $newDateTime2;
-        $vmodificar->fecha_salida = $newDateTime2;
-
-        $vmodificar->save();
-        return redirect()->route('admin.visitas');
     }
 
     public function verCredencial(Request $request)

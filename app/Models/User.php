@@ -29,6 +29,7 @@ class User extends Authenticatable
         'carrera',
         'telefono',
         'sede',
+        'area',
         'horario',
         'can_admin',
         'encargado_id'

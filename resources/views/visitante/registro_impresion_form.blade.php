@@ -1,8 +1,8 @@
 @extends('layouts/visitante-layout')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Registro</a></li>
+    <li class="breadcrumb-item"><a href="{{route('cliente.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
+    <li class="breadcrumb-item">Solicitud</li>
     <li class="breadcrumb-item active" aria-current="page">Impresion</li>
 @endsection
 
@@ -17,7 +17,7 @@
                 </div>
                 <div class="card-body">
 
-                    <form class="from-prevent-multiple-submits" method="POST" action="{{ route('formulariof') }}"  enctype="multipart/form-data">
+                    <form class="from-prevent-multiple-submits" method="POST" action="{{ route('cliente.formulariof') }}"  enctype="multipart/form-data">
 
                     @csrf
                         <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de ingresar el correo institucional">

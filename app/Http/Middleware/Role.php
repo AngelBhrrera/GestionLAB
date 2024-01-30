@@ -18,6 +18,6 @@ class Role {
           return $next($request);
   }
 
-    return redirect('/login');
+    return redirect()->back();
   }
 }

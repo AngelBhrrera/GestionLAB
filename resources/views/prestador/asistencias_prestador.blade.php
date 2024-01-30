@@ -16,15 +16,15 @@
     }
     </style>
 
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
     <script>
 
-      document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth'
-        });
-        calendar.render();
+document.addEventListener('DOMContentLoaded', function() {
+          var calendarEl = document.getElementById('calendar');
+          var calendar = new FullCalendar.Calendar(calendarEl, {
+              initialView: 'dayGridMonth',
+              initialDate: new Date() 
+          });
+          calendar.render();
       });
 
     </script>
@@ -32,12 +32,10 @@
 @endsection
 
 @section('breadcrumb')
-    <nav aria-label="breadcrumb" class="-intro-x hidden xl:flex">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{route('homeP')}}">Prestador</a></li>
+
+            <li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
             <li class="breadcrumb-item active" aria-current="page">Registro de asistencias</li>
-        </ol>
-    </nav>
+
 @endsection
 
 @section('subcontent')

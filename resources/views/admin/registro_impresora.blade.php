@@ -2,7 +2,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Registro</a></li>
+    <li class="breadcrumb-item"><a>Gestion</a></li>
     <li class="breadcrumb-item active" aria-current="page">Impresora</li>
 @endsection
 
@@ -90,25 +90,22 @@
                         field: "nombre",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
                         width: 150,
                     }, {
                         title: "Marca",
                         field: "marca",
                         sorter: "string",
-                        hozAlign: "center",
+                        headerFilter: "input",
                         width: 150,
                     }, {
                         title: "Ultimo Uso",
                         field: "ultimo_uso",
                         sorter: "string",
-                        hozAlign: "center",
                         width: 200,
                     }, {
                         title: "Tipo",
                         field: "tipo",
                         sorter: "string",
-                        hozAlign: "center",
                         editor: "select",
                         headerFilter: true,
                         headerFilterParams: {
@@ -129,22 +126,35 @@
                             }
                             return icono;
                         },
+<<<<<<< HEAD
                         hozAlign: "center",
                         width: 200,
+=======
+                        width: 100,
+>>>>>>> origin/main
                     }, {
-                        title: "Activar",
+                        title: "",
                         field: "id",
                         formatter: function (cell, formatterParams, onRendered) {
-                            var value = cell.getValue();
+
                             var button = document.createElement("button");
-                            button.style = "background-color: #4CAF50; color: white; border: 1px solid #4CAF50; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
-                            button.textContent = "Activar";
+                            var row = cell.getRow();
+                            var state = row.getData().estado;
+                            if(state == 1){
+                                button.style = "background-color: red; color: white; border: 1px solid red; padding: 5px 15px; border-radius: 5px; font-size: 12px;";
+                                button.textContent = "Desctivar";
+                            }else{
+                                button.style = "background-color: #4CAF50; color: white; border: 1px solid #4CAF50; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
+                                button.textContent = "Activar";
+                                button.title ="";
+                            }
+                           
                             button.addEventListener("click", function() {
+                                var value = cell.getValue();
                                 activarImpresora(value);
                             });
                             return button;
                         }, 
-                        hozAlign: "center",
                     },
                 ],  
             });

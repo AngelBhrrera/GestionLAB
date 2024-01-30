@@ -3,7 +3,7 @@
 
 
 <?php $__env->startSection('head'); ?>
-    <title>CFE Login</title>
+    <title>LOGIN</title>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -14,7 +14,7 @@
         <div class="w-full min-h-screen p-5 md:p-20 flex items-center justify-center">
             <div class="w-96 intro-y">
 
-                <a href="<?php echo e(route('landing')); ?>"><img class="mx-auto my-auto" alt="Inventores" width="200px" height="150px" src="<?php echo e(asset('build/assets//images/logosinventores/InventoresBannerHDBlueBorder2.png')); ?>"></a>
+                <a href="<?php echo e(route('landing')); ?>"><img class="mx-auto my-auto" alt="Inventores" width="200px" height="150px" src="<?php echo e(asset('build/assets//images/logosinventores/InventoresBannerHDWhiteBorder.png')); ?>"></a>
                 
                 <div class="box px-5 py-8 mt-10 max-w-[450px] relative before:content-[''] before:z-[-1] before:w-[95%] before:h-full before:bg-slate-200 before:border before:border-slate-200 before:-mt-5 before:absolute before:rounded-lg before:mx-auto before:inset-x-0 before:dark:bg-darkmode-600/70 before:dark:border-darkmode-500/60">
                     <?php if(session('FAIL')): ?>
@@ -71,53 +71,9 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('script'); ?>
+<script type="module" src="<?php echo e(asset('/build/assets/js/app.6c589841.js')); ?>"></script>
 
-    <script type="module" src=<?php echo e(asset('build/assets/app.6c589841.js')); ?>>
-        (function () {
-            async function login() {
 
-                $('#login-form').find('.login__input').removeClass('border-danger')
-                $('#login-form').find('.login__input-error').html('')
-
-                // Post form
-                let email = $('#email').val()
-                let password = $('#password').val()
-
-                // Loading state
-                $('#btn-login').html('<i data-loading-icon="oval" data-color="white" class="w-5 h-5 mx-auto"></i>')
-                tailwind.svgLoader()
-                await helper.delay(1500)
-
-                axios.post(`login`, {
-                    email: email,
-                    password: password
-                }).then(res => {
-                    location.href = '/'
-                }).catch(err => {
-                    $('#btn-login').html('Login')
-                    if (err.response.data.message != 'Wrong email or password.') {
-                        for (const [key, val] of Object.entries(err.response.data.errors)) {
-                            $(`#${key}`).addClass('border-danger')
-                            $(`#error-${key}`).html(val)
-                        }
-                    } else {
-                        $(`#password`).addClass('border-danger')
-                        $(`#error-password`).html(err.response.data.message)
-                    }
-                })
-            }
-
-            $('#login-form').on('keyup', function(e) {
-                if (e.keyCode === 13) {
-                    login()
-                }
-            })
-
-            $('#btn-login').on('click', function() {
-                login()
-            })
-        })()
-    </script>
 
 <?php $__env->stopSection(); ?>
 

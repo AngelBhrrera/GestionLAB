@@ -2,7 +2,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Registro</a></li>
+    <li class="breadcrumb-item"><a>Registro</a></li>
     <li class="breadcrumb-item active" aria-current="page">Impresion</li>
 @endsection
 
@@ -253,19 +253,6 @@ $('.from-prevent-multiple-submits').on('submit', function(){
             localStorage.setItem("observaciones", observaciones);
             localStorage.setItem("propuesta", propuesta);
             localStorage.setItem("conclusion", conclusion);
-
-            // document.getElementById("correo").value = "";
-            // document.getElementById("nombre").value = "";
-            // document.getElementById("telefono").value = "";
-            // document.getElementById("enlaceDrive").value = "";
-            // document.getElementById("N_piezas").value = "";
-            // document.getElementById("proyecto").value = "";
-            // document.getElementById("palabrasClave").text = "";
-            // document.getElementById("introduccion").text = "";
-            // document.getElementById("trabajosRelacionados").text = "";
-            // document.getElementById("observaciones").text = "";
-            // document.getElementById("propuesta").text = "";
-            // document.getElementById("conclusion").text = "";
 
         });
     });

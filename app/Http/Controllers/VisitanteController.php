@@ -26,8 +26,7 @@ class VisitanteController extends Controller
         $codigo = Auth::user()->id;
         $correo = Auth::user()->correo;
         $users = DB::table('users')->where('id',$codigo)->get();
-        $cita = DB::table('cita_clientes')->where('correo',$correo)->get();
-        return view('/visitante/homeV',['opcion'=>'principal_clientes', 'users'=>$users, 'cita'=>$cita, 'datos'=>['curso1', 'curso2', 'curso3'], 'datos2'=>['proyecto', 'fecha', 'status']]);
+        return view('/visitante/homeV',['opcion'=>'principal_clientes', 'users'=>$users, 'datos'=>['curso1', 'curso2', 'curso3'], 'datos2'=>['proyecto', 'fecha', 'status']]);
     }
 
     public function form(){
@@ -67,11 +66,11 @@ class VisitanteController extends Controller
         }
         */
         if($validator ->fails()){
-            return redirect()->route("formulario")->withInput()->withErrors($validator->errors());
+            return redirect()->route("cliente.form")->withInput()->withErrors($validator->errors());
         }else{
             $datos = $request->all();
             $insert = cita_cliente::create($datos);
-            return redirect()->route('formulario')->with('success', 'Mensaje de éxito');
+            return redirect()->route('cliente.form')->with('success', 'Mensaje de éxito');
         }
     }
 

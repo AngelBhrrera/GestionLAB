@@ -1,14 +1,15 @@
 @extends('layouts/admin-layout')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Home</li>
+    <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Gestion</li>
+    <li class="breadcrumb-item active" aria-current="page">Sedes</li>
 @endsection
 
 @section('subcontent')
     
 
-        <h2 class="text-2xl mt-5 font-medium pl-5">Horario</h2>
+        <h2 class="text-2xl mt-5 font-medium pl-5">Sedes</h2>
 
         <div class="grid grid-cols-12 gap-6 mt-5">
             <div class="intro-y col-span-12 lg:col-span-6" id="alerta">

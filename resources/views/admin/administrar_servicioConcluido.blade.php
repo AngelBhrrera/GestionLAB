@@ -1,8 +1,8 @@
 @extends('layouts/admin-layout')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Usuarios</a></li>
+    <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{{route('admin.general')}}">Usuarios</a></li>
     <li class="breadcrumb-item active" aria-current="page">Servicio Concluido</li>
 @endsection
 
@@ -50,7 +50,7 @@
                         headerFilter: "input",
                         hozAlign: "center",
                     }, {
-                        title: "Liberar",
+                        title: "",
                         field: "id",
                         formatter: function (cell, formatterParams, onRendered) {
                             var value = cell.getValue();

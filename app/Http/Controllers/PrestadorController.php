@@ -35,7 +35,7 @@ class PrestadorController extends Controller
             ->addIndexColumn()
             ->make(true);
         }
-        return view('homeP');
+        return view('prestador/registro_horas');
     }
 
     public function home(){
@@ -198,7 +198,8 @@ class PrestadorController extends Controller
         ->orderBy('fecha_actual', 'desc')
         ->get();
 
-        return view('prestador/homeP', ['datos' => json_encode($asistencias)]);
+
+        return view('prestador/registro_horas', ['datos' => json_encode($asistencias)]);
 
     }
 
@@ -207,23 +208,30 @@ class PrestadorController extends Controller
         try {
             $dir = '';
             switch (Auth::user()->tipo) {
-                case 'admin':
+                
                 case 'Superadmin':
+                    $codigo = $request->input('codigo');
+                    $sedeVerif =  true;
+                case 'admin':
                 case 'encargado':
                     $dir = 'admin.checkin';
                     $responsable = Auth::user()->name . ' ' . Auth::user()->apellido;
+                    $codigo = $request->input('codigo');
+                    $sedeVerif =  DB::table('users')
+                    ->select('sede')
+                    ->where('codigo', $codigo)
+                    ->get();
                     break;
                 case 'checkin':
                     $dir = 'api.checkin';
                     $origen = 'checkin';
+                    $codigo = $request->input('codigo');
+                    $sedeVerif =  DB::table('users')
+                    ->select('sede')
+                    ->where('codigo', $codigo)
+                    ->get();
                     break;
             };
-            $codigo = $request->input('codigo');
-
-            $sedeVerif =  DB::table('users')
-            ->select('sede')
-            ->where('codigo', $codigo)
-            ->get();
 
             if($sedeVerif->first()->sede == Auth::user()->sede){
 
@@ -451,7 +459,6 @@ class PrestadorController extends Controller
     public function registro_reporte()
     {
         $encargado_id = auth()->user()->encargado_id;
-        // $prestadores = DB::table('users')::where('encargado_id', $encargado_id)->get();
         $prestadores = DB::table('users')->select('id', 'name', 'apellido')->where('id', auth()->user()->id)->get();
         $categorias = DB::table('categorias')->get();
         $actividades = DB::table('actividades')->get();
@@ -462,11 +469,9 @@ class PrestadorController extends Controller
     public function obtenerActividades(Request $request)
     {
         $categoriaId = $request->input('categoriaId');
-
         $actividades = DB::table('actividades')
             ->where('id_categoria', $categoriaId)
             ->get();
-
         return response()->json($actividades);
     }
 
@@ -706,9 +711,9 @@ class PrestadorController extends Controller
     {
         $user = Auth::user();
 
-        $sede = DB::table('sede')
-        ->select('sede.nombre_Sede', 'sede.id_Sede')
-        ->where('sede.id_Sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
+        $sede = DB::table('sedes')
+        ->select('sedes.nombre_Sede', 'sedes.id_Sede')
+        ->where('sedes.id_Sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
         ->first();
 
         $nivel = DB::table('niveles')
@@ -953,6 +958,8 @@ class PrestadorController extends Controller
             'tipo_reporte'  => 'required',
         ], [
             'reporte_parcial.max' => 'El archivo debe pesar menos de 4MB',
+            'reporte_parcial.required'=> 'El campo reporte es obligatorio',
+            'tipo_reporte.required'=> 'El campo tipo es obligatorio'
         ]);
 
         // Obtener el usuario autenticado

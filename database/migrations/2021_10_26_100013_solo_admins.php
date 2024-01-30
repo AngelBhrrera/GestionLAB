@@ -23,11 +23,11 @@ class Soloadmins extends Migration
             `users`.`horario` AS `horario`,
             `users`.`telefono` AS `contacto`,
             `users`.`tipo` AS `tipo`,
-            `sede`.`nombre_Sede` AS `sede`
+            `sedes`.`nombre_Sede` AS `sede`
         FROM
             `users`
         INNER JOIN
-            `sede` ON `users`.`sede` = `sede`.`id_Sede`
+            `sedes` ON `users`.`sede` = `sedes`.`id_Sede`
         WHERE
             `users`.`tipo` IN ('encargado', 'admin');
         ");

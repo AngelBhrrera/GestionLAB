@@ -12,6 +12,7 @@ class tablaImpresiones extends Migration
         CREATE VIEW ver_impresiones AS
         SELECT 
             i.nombre AS 'impresora', 
+            s.id AS 'id',
             s.id_Proyecto,
             COALESCE(p.titulo, 'Interno') AS 'proyecto', 
             s.id_Prestador,
@@ -39,6 +40,6 @@ class tablaImpresiones extends Migration
      */
     public function down()
     {
-        //DB::statement("DROP VIEW ver_impresiones");
+        DB::statement("DROP VIEW ver_impresiones");
     }
 }

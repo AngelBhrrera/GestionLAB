@@ -29,6 +29,14 @@
             z-index: 1000; 
         }
     </style>
+
+    <?php   
+        $sede = Auth::user()->sede;
+        $filtro = DB::table('sedes_vistas')
+            ->where('id', $sede)
+            ->first();
+    ?>
+
     @yield('subhead')
 @endsection
 
@@ -106,6 +114,12 @@
                             <div class="side-menu__title">Gestión sedes</div>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{route('admin.categorias')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                            <div class="side-menu__title">Gestión categorias</div>
+                        </a>
+                    </li>
                 </ul>
             </li>
         @endsection
@@ -166,7 +180,7 @@
             </li>
         @endsection
     @endif
-    @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "encargado")
         @section('prestadores')
             <li>
                 <a href="#" class="side-menu">
@@ -224,6 +238,8 @@
             </li>
         @endsection
     @endif
+
+@if ($filtro->visitas == 1)
     @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "Superadmin")
         @section('contacto_admin')
             <li>
@@ -256,6 +272,15 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('admin.visitas_reg') }}" class="side-menu">
+                            <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-check">
+                                        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+                                        <path d="m9 9.5 2 2 4-4" />
+                                    </svg></i> </div>
+                            <div class="side-menu__title">Registro de visitas</div>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('admin.administradores') }}" class="side-menu">
                             <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-cog">
                                         <circle cx="18" cy="15" r="3" />
@@ -277,7 +302,7 @@
             </li>
         @endsection
     @endif
-    @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "encargado")
         @section('contacto')
             <li>
                 <a href="#" class="side-menu">
@@ -353,7 +378,9 @@
             </li>
         @endsection
     @endif
+@endif
 
+@if ($filtro->torneo == 1)
     @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "Superadmin")
         @section('actividades') {{--
             <li>
@@ -404,7 +431,7 @@
     @endif
 
     @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "Superadmin")
-        @section('actividades') {{--
+        @section('actividades') 
             <li>
                 <a href="javascript:;" class="side-menu">
                     <div class="side-menu__icon"> <i data-lucide="edit"></i> </div>
@@ -474,9 +501,11 @@
                     </li>
                 </ul>
             </li>
-        --}} @endsection
+        @endsection
     @endif
+@endif
 
+@if ($filtro->impresiones == 1)
     @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "Superadmin")
         @section('impresiones')
             <li>
@@ -524,41 +553,42 @@
             </li>
         @endsection
     @endif
+@endif
+
+    @section('asistencias'){{--
+        <li>
+            <a href="#" class="side-menu">
+                <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-check-2">
+                            <path d="M21 14V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8" />
+                            <line x1="16" x2="16" y1="2" y2="6" />
+                            <line x1="8" x2="8" y1="2" y2="6" />
+                            <line x1="3" x2="21" y1="10" y2="10" />
+                            <path d="m16 20 2 2 4-4" />
+                        </svg></i> </div>
+                <div class="side-menu__title">
+                    ASISTENCIAS (TEMPORAL, AUN NO SABEMOS SI SE QUEDARA O NO)
+                    <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                </div>
+            </a>
+            <ul class="">
+
+                <li>
+                    <a href="{{ route('admin.firmasPendientes') }}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="check">!</i> </div>
+                        <div class="side-menu__title">Registro de Asistencia Pendientes</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.faltas') }}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="x"></i> </div>
+                        <div class="side-menu__title">Faltas</div>
+                    </a>
+                </li>
+            </ul>
+        </li> 
+    --}}@endsection
+
 @endsection
-
-@section('asistencias') {{--
-    <li>
-        <a href="#" class="side-menu">
-            <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-check-2">
-                        <path d="M21 14V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8" />
-                        <line x1="16" x2="16" y1="2" y2="6" />
-                        <line x1="8" x2="8" y1="2" y2="6" />
-                        <line x1="3" x2="21" y1="10" y2="10" />
-                        <path d="m16 20 2 2 4-4" />
-                    </svg></i> </div>
-            <div class="side-menu__title">
-                ASISTENCIAS (TEMPORAL, AUN NO SABEMOS SI SE QUEDARA O NO)
-                <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
-            </div>
-        </a>
-        <ul class="">
-
-            <li>
-                <a href="{{ route('admin.firmasPendientes') }}" class="side-menu">
-                    <div class="side-menu__icon"> <i data-lucide="check">!</i> </div>
-                    <div class="side-menu__title">Registro de Asistencia Pendientes</div>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('admin.faltas') }}" class="side-menu">
-                    <div class="side-menu__icon"> <i data-lucide="x"></i> </div>
-                    <div class="side-menu__title">Faltas</div>
-                </a>
-            </li>
-        </ul>
-    </li>
---}} @endsection
-
 
 @section('structure')
     <div class="wrapper">
@@ -623,14 +653,13 @@
         </div>
     </div>
 @endsection
-
 @section('footer')
-<div class="footer-container">
+    <div class="footer-container">
         <footer class="main-footer" id="mobileFooter">
             <div class="float-right">
                 <b>Version</b> 3.1.1
             </div>
             <strong>Copyright &copy; 2024 <a href="https://www.inventores.mx/">Laboratorio de Inventores</a>.</strong> All rights reserved.
         </footer>
-</div>
+    </div>
 @endsection

@@ -26,8 +26,15 @@
         .btn-primary:hover{
             color: rgb(147,36,0);
         }
+        .hidden {
+           display: none;
+        }
+        .visible {
+            display: block;
+        }
     </style>
     @yield('content')
+    <script type="module" src="{{ asset('/build/assets/js/app.6c589841.js')}}"></script>
     @yield('script')
     </body>
 @endsection

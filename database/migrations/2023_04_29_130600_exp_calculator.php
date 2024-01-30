@@ -11,7 +11,7 @@ class expCalculator extends Migration
         DB::statement("
         CREATE VIEW exp_calculator AS 
         SELECT  
-            actividades_prestadores.id, u.name AS prestador, a.nombre AS actividad, d.nombre AS categoria,
+            actividades_prestadores.id, u.name AS prestador, a.titulo AS actividad, d.nombre AS categoria,
             CASE 
                 WHEN a.TEC > TEU THEN  TEU
                 ELSE a.TEC
