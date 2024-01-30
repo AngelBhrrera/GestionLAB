@@ -10,8 +10,8 @@
 
         <h2 class="text-2xl mt-5 font-medium pl-5">Horario</h2>
 
-        <div class="grid grid-cols-12 gap-6 mt-5" id="alerta">
-            <div class="intro-y col-span-12 lg:col-span-6">
+        <div class="grid grid-cols-12 gap-6 mt-5">
+            <div class="intro-y col-span-12 lg:col-span-6" id="alerta">
                 @if (session('success'))
                     <h6 class="alert alert-success">{{session('success')}}</h6>     
                 @endif

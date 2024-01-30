@@ -1998,39 +1998,39 @@ class AdminController extends Controller
         );
     }
 
-    public function diasfestivos(Request $request)
-    {
-
-        $nombre = $request->input('nombre');
-        $id = $request->input('id');
-
-        $columns = array(
-            ["data" => "fecha", "sortable" => false],
-            ["data" => "acciones", "sortable" => false]
-        );
-        return view(
-            '/admin/homeA',
-            [
-                'datos' => ['fecha', 'acciones'],
-                'opcion' => 'tablecalendario',
-                'titulo' => 'Tabla dias lo laborales',
-                'ajaxroute' => 'ss.ssDiasFestivos',
-                'id' => $id,
-                "columnas" => json_encode($columns),
-                'button' => false,
-                'accion' => false,
-                'cursos' => false,
-                'descarga' => false,
-            ]
-        );
+    public function diasfestivos()
+    {   
+        return view('admin.dias_festivos');
     }
 
-    public function guardardiafestivo(Request $request)
+    public function guardarFestivos(Request $request)
+    {   
+        if($request->input('tipo')=='vacaciones'){
+
+            $modificar = DB::table('eventos')->insert(
+                ['evento'=> $request->input('descripcion'),                   
+                'inicio' => $request->input('vacacionesInicio'),
+                'final'=> $request->input('vacacionesFin'),
+                'tipo'=>$request->input('tipo')]
+            );
+        }else{
+            $modificar = DB::table('eventos')->insert(
+                ['evento'=> $request->input('descripcion'),                   
+                'inicio' => $request->input('diaFestivo'),
+                'final'=> $request->input('diaFestivo'),
+                'tipo'=>$request->input('tipo')]
+            );
+        }
+        
+        return redirect()->route('admin.diasfestivos');
+    }
+
+    public function guardarVacaciones(Request $request)
     {
         $modificar = DB::table('dias_festivos')->insert(
             ['fecha' => $request->input('fecha')]
         );
-        return redirect()->route('admin.diasfestivos');
+        return redirect()->route('admin.dias_no_laborables');
     }
 
     public function eliminardiafestivo(Request $request)

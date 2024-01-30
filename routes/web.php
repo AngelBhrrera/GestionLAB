@@ -140,7 +140,10 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
                     Route::get('admin/changestate/{id}/{value}', 'checkinstate')->name('checkinstate');
                     Route::get('/admin/premios', 'premios')->name('premios');
-                    Route::get('/admin/Dias_no_laborables', 'diasfestivos')->name('diasfestivos');
+
+                    Route::get('/admin/dias_festivos', 'diasfestivos')->name('diasfestivos');
+                    Route::post('/admin/agregar_festivos', 'guardarFestivos')->name('agregar_festivos');
+
                     Route::get('admin/liberar_prestador/{value}', 'liberar')->name('liberar');
                     Route::get('/admin/administradores', 'administradores')->name('administradores');
                     Route::get('admin/ver_reportes_parciales', 'ver_reportes_parciales')->name('reportes_parciales');

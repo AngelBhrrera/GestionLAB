@@ -73,7 +73,7 @@
                             <div class="side-menu__icon"> <i data-lucide="award"></i> </div>
                             <div class="side-menu__title">Registrar recompensas</div>
                         </a>
-                    </li>
+                    </li>--}}
                     <li>
                         <a href="{{ route('admin.diasfestivos') }}" class="side-menu">
                             <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-off">
@@ -87,7 +87,7 @@
                             <div class="side-menu__title">Dias no Laborales</div>
                         </a>
                     </li>
-                    <li>
+                    {{--<li>
                         <a href="{{route('admin.horarios')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="clock"></i> </div>
                             <div class="side-menu__title">Horario Prestadores</div>
