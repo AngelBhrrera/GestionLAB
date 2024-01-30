@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
-class CreateSedeTable extends Migration
+class CreateSedesTable extends Migration
 {
     protected $table =  'sede';
 
@@ -16,7 +16,7 @@ class CreateSedeTable extends Migration
      */
     public function up()
     {
-        Schema::create('sede', function (Blueprint $table) {
+        Schema::create('sedes', function (Blueprint $table) {
             $table->id('id_Sede');
             $table->string('nombre_Sede')->default(0);
             $table->boolean('turnoMatutino')->default(0);
@@ -28,7 +28,7 @@ class CreateSedeTable extends Migration
             $table->boolean('activa')->default(1);
         });
 
-            DB::table('sede')->insert([
+            DB::table('sedes')->insert([
                 "nombre_Sede" => "Inventores CUCEI",
                 'turnoMatutino'=> 1,
                 'turnoMediodia'=> 1,
@@ -37,7 +37,7 @@ class CreateSedeTable extends Migration
                 'turnoTiempoCompleto'=> 1,
                 'no_Aplica'=> 1,
             ]);
-            DB::table('sede')->insert([
+            DB::table('sedes')->insert([
                 "nombre_Sede" => "CORCOM",
                 'turnoMatutino'=> 1,
                 'turnoMediodia'=> 1,
@@ -46,7 +46,7 @@ class CreateSedeTable extends Migration
                 'turnoTiempoCompleto'=> 0,
                 'no_Aplica'=> 1,
             ]);
-            DB::table('sede')->insert([
+            DB::table('sedes')->insert([
                 "nombre_Sede" => "CUCEI Innovación",
                 'turnoMatutino'=> 1,
                 'turnoMediodia'=> 1,
@@ -55,7 +55,7 @@ class CreateSedeTable extends Migration
                 'turnoTiempoCompleto'=> 1,
                 'no_Aplica'=> 0,
             ]);
-            DB::table('sede')->insert([
+            DB::table('sedes')->insert([
                 "nombre_Sede" => "CFE",
                 'turnoMatutino'=> 0,
                 'turnoMediodia'=> 0,
@@ -64,7 +64,7 @@ class CreateSedeTable extends Migration
                 'turnoTiempoCompleto'=> 1,
                 'no_Aplica'=> 1,
             ]);
-            DB::table('sede')->insert([
+            DB::table('sedes')->insert([
                 "nombre_Sede" => "CUCS",
                 'turnoMatutino'=> 1,
                 'turnoMediodia'=> 1,
@@ -83,6 +83,6 @@ class CreateSedeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sede');
+        Schema::dropIfExists('sedes');
     }
 }

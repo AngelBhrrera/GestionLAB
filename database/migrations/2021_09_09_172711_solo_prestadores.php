@@ -22,7 +22,7 @@ class Soloprestadores extends Migration
                 `users`.`codigo` AS `codigo`,
                 `users`.`tipo` AS `tipo`,
                 `users`.`sede` AS `id_Sede`,
-                `sede`.`nombre_Sede` AS `sede`,
+                `sedes`.`nombre_Sede` AS `sede`,
                 `users`.`horario` AS `horario`,
                 `users`.`carrera` AS `carrera`,
                 `users`.`horas` AS `horas`,
@@ -32,7 +32,7 @@ class Soloprestadores extends Migration
             FROM
                 `users`
             LEFT JOIN `cuenta_horas` ON `users`.`id` = `cuenta_horas`.`id`
-            LEFT JOIN `sede` ON `users`.`sede` = `sede`.`id_Sede`
+            LEFT JOIN `sedes` ON `users`.`sede` = `sedes`.`id_Sede`
             WHERE
                 `users`.`tipo` IN ('prestador', 'practicante', 'voluntario');
         ");

@@ -4,12 +4,12 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSedeVistasTable extends Migration
+class CreateSedesVistasTable extends Migration
 {
 
     public function up()
     {
-        Schema::create('sede_vistas', function (Blueprint $table) {
+        Schema::create('sedes_vistas', function (Blueprint $table) {
             
             $table->id();
 
@@ -23,6 +23,6 @@ class CreateSedeVistasTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('sede_visitas');
+        Schema::dropIfExists('sedes_visitas');
     }
 }

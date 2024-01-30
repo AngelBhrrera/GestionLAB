@@ -32,7 +32,7 @@
 
     <?php   
         $sede = Auth::user()->sede;
-        $filtro = DB::table('supergestiones')
+        $filtro = DB::table('sedes_vistas')
             ->where('id', $sede)
             ->first();
     ?>

@@ -77,7 +77,7 @@ class logsysController extends Controller
     }
 
     public function show(){
-        $sede= DB::select("SELECT * FROM sede;");
+        $sede= DB::select("SELECT * FROM sedes;");
 
         return view('auth.register', ['sede'=>$sede]);
     }

@@ -9,7 +9,7 @@ class sedeFilter extends Migration
     public function up()
     {
         DB::statement("
-        CREATE VIEW filtroSede AS
+        CREATE VIEW filtroSedes AS
             SELECT 
                 S.id_Sede,
                 S.nombre_Sede AS sede_nombre,
@@ -21,7 +21,7 @@ class sedeFilter extends Migration
                 S.turnoSabatino,
                 S.turnoTiempoCompleto
             FROM `sedes_areas` AS SA
-            INNER JOIN `sede` AS S ON SA.id_sede = S.id_Sede
+            INNER JOIN `sedes` AS S ON SA.id_sede = S.id_Sede
             INNER JOIN `areas` AS A ON SA.id_area = A.id;
         ");
 
@@ -34,6 +34,6 @@ class sedeFilter extends Migration
      */
     public function down()
     {
-        DB::statement("DROP VIEW filtroSede");
+        DB::statement("DROP VIEW filtroSedes");
     }
 }

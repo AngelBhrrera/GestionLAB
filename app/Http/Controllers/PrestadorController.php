@@ -685,9 +685,9 @@ class PrestadorController extends Controller
     {
         $user = Auth::user();
 
-        $sede = DB::table('sede')
-        ->select('sede.nombre_Sede', 'sede.id_Sede')
-        ->where('sede.id_Sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
+        $sede = DB::table('sedes')
+        ->select('sedes.nombre_Sede', 'sedes.id_Sede')
+        ->where('sedes.id_Sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
         ->first();
 
         $nivel = DB::table('niveles')
