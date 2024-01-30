@@ -1,24 +1,24 @@
 @extends('layouts/admin-layout')
 
 @section('subhead')
-    <title>Admin Register</title>
+<title>Admin Register</title>
 @endsection
 
 @section('breadcrumb')
-<nav aria-label="breadcrumb" class="-intro-x hidden xl:flex">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{route('homeP')}}">Administrador</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Registro</li>
-        </ol>
-    </nav>
+
+    <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
+    <li class="breadcrumb-item"><a>Registro</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Usuarios</li>
+
 @endsection
+
 
 @section('subcontent')
     <div style="display: flex;">
         <form method="POST" action="{{ route('registrar') }}">
             <div class="px-5 sm:px-20 pt-10 border-t border-slate-200/60 dark:border-darkmode-400">
                 <div id="formOne">
-                    <div class="font-medium text-base">Ajustes de Perfil</div>
+                <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">Ajustes de Perfil </h3>
                     <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5">
                     @csrf
                         <!-- Sección 1 -->
@@ -213,161 +213,159 @@
                     </button>
         </form>
                 </div>
-                <!-- End FormOne -->
             </div>
 
     </div>
     <div style="height: 65px;"></div>
-    <!-- END: Wizard Layout -->
+
 @endsection
 
 @section('script')
 
-    <script type="text/javascript">        
-        function filtroVisitantes(){
-            var inputSede = document.getElementById("sede");
-            var inputTurno = document.getElementById("horarios");
-            var inputHoras = document.getElementById("horas");
-            var inputEncargado = document.getElementById("id_encargado");
-            if (document.getElementById("clientA").selected){
-                inputSede.disabled = true;
-                inputTurno.disabled = true;
-                inputHoras.disabled = true;
-                inputEncargado.disabled = true;
-            }
-            if (document.getElementById("clientM").selected){
-                inputSede.disabled = true;
-                inputTurno.disabled = true;
-                inputHoras.disabled = true;
-                inputEncargado.disabled = true;
-            }
-            if (document.getElementById("RBprestador").selected){
-                inputSede.disabled = false;
-                inputTurno.disabled = false;
-                inputHoras.disabled = false;
-                inputEncargado.disabled = false;
-                
-            }
-            if (document.getElementById("RBpracticante").selected){
-                inputSede.disabled = false;
-                inputTurno.disabled = false;
-                inputHoras.disabled = false;
-                inputEncargado.disabled = false;
-                
-            }
-            if (document.getElementById("RBvoluntario").selected){
-                inputSede.disabled = false;
-                inputTurno.disabled = false;
-                inputHoras.disabled = false;
-                inputEncargado.disabled = false;
-                
-            }
+<script type="text/javascript">
+    function filtroVisitantes() {
+        var inputSede = document.getElementById("sede");
+        var inputTurno = document.getElementById("horarios");
+        var inputHoras = document.getElementById("horas");
+        var inputEncargado = document.getElementById("id_encargado");
+        if (document.getElementById("clientA").selected) {
+            inputSede.disabled = true;
+            inputTurno.disabled = true;
+            inputHoras.disabled = true;
+            inputEncargado.disabled = true;
+        }
+        if (document.getElementById("clientM").selected) {
+            inputSede.disabled = true;
+            inputTurno.disabled = true;
+            inputHoras.disabled = true;
+            inputEncargado.disabled = true;
+        }
+        if (document.getElementById("RBprestador").selected) {
+            inputSede.disabled = false;
+            inputTurno.disabled = false;
+            inputHoras.disabled = false;
+            inputEncargado.disabled = false;
 
-            if (document.getElementById("admin").selected){
-                inputSede.disabled = false;
-                inputTurno.disabled = false;
-                inputHoras.disabled = false;
-                inputEncargado.disabled = false;
-                
-            }
-            if (document.getElementById("encargados").selected){
-                inputSede.disabled = false;
-                inputTurno.disabled = false;
-                inputHoras.disabled = false;
-                inputEncargado.disabled = false;
-                
-            }
+        }
+        if (document.getElementById("RBpracticante").selected) {
+            inputSede.disabled = false;
+            inputTurno.disabled = false;
+            inputHoras.disabled = false;
+            inputEncargado.disabled = false;
+
+        }
+        if (document.getElementById("RBvoluntario").selected) {
+            inputSede.disabled = false;
+            inputTurno.disabled = false;
+            inputHoras.disabled = false;
+            inputEncargado.disabled = false;
+
         }
 
-        function sedeNavs(){
-            window.sedeDinamico = @json($sede);
-            var optionSelect = document.getElementById("horarios"); 
-            var optionSelect2 = document.getElementById("id_encargado");
-            var sedeSelect = document.getElementById("sede").value;
-            reiniciarEncargado(optionSelect);
-            reiniciarTurno(optionSelect2); // reinicia los select y coloca la opcion determinada
-            sedeDinamico.forEach(function(campo){                      
-                if (sedeSelect === campo.nombre_Sede){
-                    deshabilitarOpcion(optionSelect, "Matutino", campo.turnoMatutino === 0);
-                    habilitarOpcion(optionSelect, "Matutino", campo.turnoMatutino === 1);
-                    deshabilitarOpcion(optionSelect, "Mediodia", campo.turnoMediodia === 0);
-                    habilitarOpcion(optionSelect, "Mediodia", campo.turnoMediodia === 1);
-                    deshabilitarOpcion(optionSelect, "Vespertino", campo.turnoVespertino === 0);
-                    habilitarOpcion(optionSelect, "Vespertino", campo.turnoVespertino === 1);
-                    deshabilitarOpcion(optionSelect, "Sabatino", campo.turnoSabatino === 0);
-                    habilitarOpcion(optionSelect, "Sabatino", campo.turnoSabatino === 1);
-                    deshabilitarOpcion(optionSelect, "TC", campo.turnoTiempoCompleto === 0);
-                    habilitarOpcion(optionSelect, "TC", campo.turnoTiempoCompleto === 1);
-                } 
-            });
-        }
+        if (document.getElementById("admin").selected) {
+            inputSede.disabled = false;
+            inputTurno.disabled = false;
+            inputHoras.disabled = false;
+            inputEncargado.disabled = false;
 
-        function deshabilitarOpcion(select, opcion, condicion) {
-            for (var k = 0; k < select.options.length; k++) {
-                if (select.options[k].value === opcion && condicion){
-                    select.options[k].disabled = true;
-                }
+        }
+        if (document.getElementById("encargados").selected) {
+            inputSede.disabled = false;
+            inputTurno.disabled = false;
+            inputHoras.disabled = false;
+            inputEncargado.disabled = false;
+
+        }
+    }
+
+    function sedeNavs() {
+        window.sedeDinamico = @json($sede);
+        var optionSelect = document.getElementById("horarios");
+        var optionSelect2 = document.getElementById("id_encargado");
+        var sedeSelect = document.getElementById("sede").value;
+        reiniciarEncargado(optionSelect);
+        reiniciarTurno(optionSelect2); // reinicia los select y coloca la opcion determinada
+        sedeDinamico.forEach(function(campo) {
+            if (sedeSelect === campo.nombre_Sede) {
+                deshabilitarOpcion(optionSelect, "Matutino", campo.turnoMatutino === 0);
+                habilitarOpcion(optionSelect, "Matutino", campo.turnoMatutino === 1);
+                deshabilitarOpcion(optionSelect, "Mediodia", campo.turnoMediodia === 0);
+                habilitarOpcion(optionSelect, "Mediodia", campo.turnoMediodia === 1);
+                deshabilitarOpcion(optionSelect, "Vespertino", campo.turnoVespertino === 0);
+                habilitarOpcion(optionSelect, "Vespertino", campo.turnoVespertino === 1);
+                deshabilitarOpcion(optionSelect, "Sabatino", campo.turnoSabatino === 0);
+                habilitarOpcion(optionSelect, "Sabatino", campo.turnoSabatino === 1);
+                deshabilitarOpcion(optionSelect, "TC", campo.turnoTiempoCompleto === 0);
+                habilitarOpcion(optionSelect, "TC", campo.turnoTiempoCompleto === 1);
             }
-        }
+        });
+    }
 
-        function habilitarOpcion(select, opcion, condicion) {
-            for (var k = 0; k < select.options.length; k++) {
-                if (select.options[k].value === opcion && condicion) {
-                    select.options[k].disabled = false;
-                }
-            }
-        }
-
-        function filtroEncargados(){ // Filtros de encargados en relacion al horario y sede
-           window.encargadosql = @json($encargado);
-           var optionSelect = document.getElementById("id_encargado"); // valor de las opciones de encargados
-           var turnoSelect = document.getElementById("horarios").value; // valor de las opciones de turnos
-           var sedeEncargado = document.getElementById("sede");
-           var indiceSeleccionado = sedeEncargado.selectedIndex;
-           var opcionSeleccionada = sedeEncargado.options[indiceSeleccionado];
-           var valorId = opcionSeleccionada.id;    
-           optionSelect.disabled = false;
-           encargadosql.forEach(function(campo){
-                deshabilitartodo(optionSelect);
-                deshabilitarEncargado(optionSelect, turnoSelect, valorId, campo.sede);
-           }); 
-        }
-
-        function deshabilitarEncargado(select, opcion, id, sede){ // filtros
-            for (var k = 1; k < select.options.length; k++){
-                if(select.options[k].dataset.horario === opcion){
-                    if (select.options[k].id == id ){
-                        select.options[k].disabled = false;
-                    }
-                }
-                if(select.options[k].value === "prede"){
-                    select.options[k].disabled = false;
-                }
-            }
-        }
-
-        function reiniciarEncargado(select){
-            select.selectedIndex = 0;
-        }
-
-        function reiniciarTurno(select){
-            select.selectedIndex = 0;
-        }
-
-        function deshabilitartodo(select) {
-            for (var k = 0; k < select.options.length; k++) {
+    function deshabilitarOpcion(select, opcion, condicion) {
+        for (var k = 0; k < select.options.length; k++) {
+            if (select.options[k].value === opcion && condicion) {
                 select.options[k].disabled = true;
-                if(select.options[k].value === "prede"){
-                    select.options[k].disabled = false;
-                }
             }
         }
+    }
 
-        function habilitarTodasLasOpciones(select) {
-            for (var k = 0; k < select.options.length; k++) {
+    function habilitarOpcion(select, opcion, condicion) {
+        for (var k = 0; k < select.options.length; k++) {
+            if (select.options[k].value === opcion && condicion) {
                 select.options[k].disabled = false;
             }
         }
+    }
 
-    </script>
+    function filtroEncargados() { // Filtros de encargados en relacion al horario y sede
+        window.encargadosql = @json($encargado);
+        var optionSelect = document.getElementById("id_encargado"); // valor de las opciones de encargados
+        var turnoSelect = document.getElementById("horarios").value; // valor de las opciones de turnos
+        var sedeEncargado = document.getElementById("sede");
+        var indiceSeleccionado = sedeEncargado.selectedIndex;
+        var opcionSeleccionada = sedeEncargado.options[indiceSeleccionado];
+        var valorId = opcionSeleccionada.id;
+        optionSelect.disabled = false;
+        encargadosql.forEach(function(campo) {
+            deshabilitartodo(optionSelect);
+            deshabilitarEncargado(optionSelect, turnoSelect, valorId, campo.sede);
+        });
+    }
+
+    function deshabilitarEncargado(select, opcion, id, sede) { // filtros
+        for (var k = 1; k < select.options.length; k++) {
+            if (select.options[k].dataset.horario === opcion) {
+                if (select.options[k].id == id) {
+                    select.options[k].disabled = false;
+                }
+            }
+            if (select.options[k].value === "prede") {
+                select.options[k].disabled = false;
+            }
+        }
+    }
+
+    function reiniciarEncargado(select) {
+        select.selectedIndex = 0;
+    }
+
+    function reiniciarTurno(select) {
+        select.selectedIndex = 0;
+    }
+
+    function deshabilitartodo(select) {
+        for (var k = 0; k < select.options.length; k++) {
+            select.options[k].disabled = true;
+            if (select.options[k].value === "prede") {
+                select.options[k].disabled = false;
+            }
+        }
+    }
+
+    function habilitarTodasLasOpciones(select) {
+        for (var k = 0; k < select.options.length; k++) {
+            select.options[k].disabled = false;
+        }
+    }
+</script>
 @endsection

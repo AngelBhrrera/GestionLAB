@@ -15,8 +15,9 @@
 @endsection
 
 @section('breadcrumb')
-<li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-<li class="breadcrumb-item active" aria-current="page">Home</li>
+    <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Gestion</li>
+    <li class="breadcrumb-item active" aria-current="page">Horas del Servicio</li>
 @endsection
 
 @section('subcontent')
@@ -28,11 +29,15 @@
                     <h3  class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;"> Registros de Check - in  </h3>
                 </div>
 
+                <br>
+
                 <div class="table-controls pl-10">
                     <button class="download-button" id="download-json">Download JSON</button>
                     <button class="download-button" id="download-csv">Download CSV</button>
                     <button class="download-button" id="download-xlsx">Download XLSX</button>
                 </div>
+
+                <br>
 
                 <div class="text-center mx-auto" style="padding-left: 1.5px;" id="players"></div>
             </div>
@@ -61,17 +66,15 @@
                         width: 2,
                     }, {
                         title: "Prestador",
-                        field: "responsable",
+                        field: "origen",
                         headerFilter: "input",
                         sorter: "string",
-                        hozAlign: "center",
                         width: 200,
                     },{
                         title: "Encargado",
-                        field: "origen",
+                        field: "responsable",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
                         width: 200,
 
                     },  {
@@ -79,7 +82,6 @@
                         field: "horas",
                         sorter: "number",
                         width: 100,
-                        hozAlign: "center",
                     }, {
                         title: "Estado",
                         field: "estado",
@@ -110,7 +112,6 @@
                             }
                             return icono;
                         },
-                        hozAlign: "center",
                         width: 100,
                         cellEdited: function (cell) {
                             var row = cell.getRow();
@@ -127,7 +128,6 @@
                                 format: "DD/MM/YYYY", 
                             },
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Entrada",
                         field: "hora_entrada",
@@ -136,7 +136,6 @@
                         sorterParams: {
                             format: "HH:mm:ss",
                         },
-                        hozAlign: "center",
                     },
                     {
                         title: "Salida",
@@ -156,7 +155,6 @@
                         sorterParams: {
                             format: "HH:mm:ss",
                         },
-                        hozAlign: "center",
                     },  
                 ],
             });

@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class logsysController extends Controller
 {
-
     public function log(){
        
         return view('auth.login');
@@ -60,7 +59,6 @@ class logsysController extends Controller
             case 'checkin':
                 return redirect('/check-in');
                 break;
-
             default:
                 return redirect('/login');
         }
@@ -79,9 +77,31 @@ class logsysController extends Controller
     }
 
     public function show(){
-        $sede= DB::select("SELECT * FROM sede;");
-        $area = DB::select("SELECT * FROM areas;");
-        $encargado=DB::select("SELECT * FROM USERS WHERE tipo = 'encargado' OR tipo = 'admin';");   // muestra en el box la lista
-        return view('auth.register', ['encargado'=>$encargado,'sede'=>$sede, 'area'=>$area]);
+        $sede= DB::select("SELECT * FROM sedes;");
+
+        return view('auth.register', ['sede'=>$sede]);
     }
+
+    public function filtroSede($id){
+
+        $area=    DB::table('filtrosede')
+            ->where('id_Sede', $id)
+            ->get();
+
+        return response()->json($area);
+    }
+
+    public function filtroTurno($t, $sede){
+
+        $turno = DB::table('users')
+        ->where('sede', $sede)
+        ->where('horario', $t)
+        ->where(function ($query) {
+            $query->where('tipo', 'encargado')
+                ->orWhere('tipo', 'admin');
+        })
+        ->get();
+        return response()->json($turno);
+    }
+
 }

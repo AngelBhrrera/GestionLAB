@@ -56,19 +56,37 @@
                         <a href="{{route('cliente.solicitud_capacitacion')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="laptop"></i> </div>
                             <div class="side-menu__title">
-                                CAPACITACIÓN
-                                
+                                SERVICIOS
+                                <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                             </div>
                         </a>
-                    </li>
-
-                    <li>
-                        <a href="{{route('cliente.solicitud_impresion')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="file-text"></i> </div>
-                            <div class="side-menu__title">
-                                SOLICITUDES
-                            </div>
-                        </a>
+                        <ul class="">
+                            <li>
+                                <a href="{{route('prestadoresProyectosCompletados')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="box"></i> </div>
+                                    <div class="side-menu__title">Capacitación </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{route('prestadoresProyectosCompletados')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="codesandbox"></i> </div>
+                                    <div class="side-menu__title">Desarrollo</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="side-menu-light-crud-data-list.html" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="gamepad-2"></i> </div>
+                                    <div class="side-menu__title">Solicitud</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{route('cliente.form')}}" class="side-menu">
+                                        <div class="side-menu__icon"> <i data-lucide="codesandbox"></i> </div>
+                                        <div class="side-menu__title">Impresion de Modelos 3D</div>
+                                </a>
+                            </li>
+                            
+                        </ul>
                     </li>
 
                 </ul>

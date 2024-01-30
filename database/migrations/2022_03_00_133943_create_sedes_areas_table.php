@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEventsTable extends Migration
+class CreateSedesAreasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateEventsTable extends Migration
      */
     public function up()
     {
-        Schema::create('eventos', function (Blueprint $table) {
+        Schema::create('sedes_areas', function (Blueprint $table) {
             $table->id();
-            $table->string('evento')->default('No laborable');
-            $table->datetime('inicio');
-            $table->datetime('final');
-            $table->string('tipo');
+            $table->integer('id_sede');
+            $table->integer('id_area');
         });
     }
 
@@ -29,6 +27,6 @@ class CreateEventsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('sedes_areas');
     }
 }

@@ -17,7 +17,13 @@
             ->orderByDesc('niveles.experiencia_acumulada')
             ->first();
         $nivel_str = strval($nivel->nivel);
+
+        $sede = Auth::user()->sede;
+        $filtro = DB::table('sedes_vistas')
+            ->where('id', $sede)
+            ->first();
     ?>
+
 
 <body class="main">
     <div class="xl:pl-5 xl:py-5 flex h-screen">
@@ -61,12 +67,6 @@
                                     <a href="{{route('horas')}}" class="side-menu">
                                         <div class="side-menu__icon"> <i data-lucide="clock"></i> </div>
                                         <div class="side-menu__title">  Registro de horas </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{route('perfil')}}" class="side-menu">
-                                        <div class="side-menu__icon"> <i data-lucide="crown"></i> </div>
-                                        <div class="side-menu__title">Insignias obtenidas</div>
                                     </a>
                                 </li>
                                 <li>
@@ -117,7 +117,7 @@
                             </li>
                         </ul>
                     </li>
-                    {{--
+                @if ($filtro->torneo == 1)
                     <li>
                         <a href="javascript:;" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="edit"></i> </div>
@@ -171,7 +171,40 @@
                             </li>
                         </ul>
                     </li>
-                    --}}
+
+                    <li>
+                        <a href="#" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="calendar"></i> </div>
+                            <div class="side-menu__title">
+                                TORNEO
+                                <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                            </div>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="{{route('horario')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="clock"></i> </div>
+                                    <div class="side-menu__title">Leaderboard W/M</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{route('perfil')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="crown"></i> </div>
+                                    <div class="side-menu__title">Insignias obtenidas</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{route('faltas')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="x"></i> </div>
+                                    <div class="side-menu__title">Niveles</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                @endif
+
+                @if ($filtro->impresiones == 1)
                     <li>
                         <a href="javascript:;" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="hard-drive"></i> </div>
@@ -196,6 +229,7 @@
                             </li>
                         </ul>
                     </li>
+                @endif
                 </ul>
             </div>
         <!-- END: Side Menu -->

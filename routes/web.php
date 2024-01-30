@@ -13,17 +13,13 @@ use Illuminate\Support\Facades\Route;
         //pd3. Uwu
 
 //Rutas generales
+
 Auth::routes([
     'verify' => false,
 ]);
 
 Route::get('/foo', function () {
     Artisan::call('storage:link');
-    });
-
-//PRUEBAS
-Route::get('/adminLayout', function(){
-    return view('admin.PruebaAdminLayout');
 });
 
 Route::get('/spiderw', function(){
@@ -44,11 +40,14 @@ Route::controller(App\Http\Controllers\Auth\RegisterController::class)->group(fu
     Route::post('/registro', 'register')->name('registrar');
 });
 Route::controller(App\Http\Controllers\Auth\logsysController::class)->group(function(){
+    
     Route::get('/', 'redirectTo')->name('root');
     Route::get('/register', 'show')->name('register')->middleware('guest');
     Route::get('/login', 'log')->name('login')->middleware('guest');
     Route::post('/login', 'loginF')->name('login');
     Route::get('/logout', 'logoutF')->name('logout');
+    Route::get('/sede/{id}', 'filtroSede')->name('filtroSede');
+    Route::get('/turno/{t}/{sed}', 'filtroTurno')->name('filtroTurno');
 });
 
 //Rutas de Admin gestionadas desde el AdminController
@@ -112,6 +111,9 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::post('/admin/registrar_impresoras', 'make_print')->name('make_print');
                 Route::get('/admin/ver_impresiones', 'watch_prints')->name('watch_prints');
                 Route::get('admin/activar_impresora/{value}', 'activate_print')->name('activate_print');
+                Route::get('admin/changestate_print/{id}/{value}', 'printstate')->name('printstate');
+
+                Route::get('admin/observaciones_impresion/{id}/{value}', 'detail_prints')->name('detail_prints');
 
                 Route::get('/admin/general', 'general')->name('general');
                 Route::get('/admin/prestadores', 'prestadores')->name('prestadores');
@@ -121,9 +123,9 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::get('admin/desactivar_prestador/{value}', 'desactivar')->name('desactivar');
                 
                 Route::get('/admin/clientes', 'clientes')->name('clientes');
-
                 Route::get('/admin/visitas', 'visits')->name('visitas');
                 Route::get('/admin/ver_visitas', 'watch_visits')->name('visitas_reg');
+                Route::get('admin/motivo_visita/{id}/{value}', 'motivo')->name('motivo');
 
                 Route::get('/admin/faltas', 'faltas')->name('faltas');
                 Route::get('/admin/horarios', 'horarios')->name('horarios');
@@ -135,9 +137,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::middleware('role:admin,Superadmin')->group(function() {
 
                     Route::get('/admin/registro', 'registro')->name('registro'); //NUEVA RUTA
-                    Route::get('admin/gestionSedes', 'gestionSedes')->name('sedes');
-                    Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
-                    Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
+
                     Route::get('admin/changestate/{id}/{value}', 'checkinstate')->name('checkinstate');
                     Route::get('/admin/premios', 'premios')->name('premios');
 
@@ -145,9 +145,25 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     Route::post('/admin/agregar_festivos', 'guardarFestivos')->name('agregar_festivos');
 
                     Route::get('admin/liberar_prestador/{value}', 'liberar')->name('liberar');
-                    Route::get('/admin/administradores', 'administradores')->name('administradores');
                     Route::get('admin/ver_reportes_parciales', 'ver_reportes_parciales')->name('reportes_parciales');
                     Route::get('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
+
+                    Route::get('/admin/administradores', 'administradores')->name('administradores');
+
+                    Route::get('admin/gestionSedes', 'gestionSedes')->name('sedes');
+                    Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
+                    Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
+                    
+                    Route::get('/admin/Dias_no_laborables', 'diasfestivos')->name('diasfestivos');
+
+                    Route::get('/admin/categorias', 'categorias')->name('categorias');
+                    Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
+                    Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg');
+
+                    Route::middleware('role:admin,Superadmin')->group(function() {
+                        Route::get('/superadmin/gestion', 'gestionViews')->name('gestionViews');
+                    });
+                    
                 });
 
                
@@ -281,7 +297,6 @@ Route::controller(App\Http\Controllers\VisitanteController::class)->group(functi
             Route::post('/cliente/cita','guardarCita')->name('cita');
             Route::post('/cliente/visitaguardar','guardarVisita')->name('guardarVisita');
             Route::get('/cliente/visitas', 'principal')->name('visitas');
-
             Route::get('/cliente/reg', 'form')->name('form');
 
             Route::get('/cliente/solicitud_capacitacion', 'solicitud_capacitacion')->name('solicitud_capacitacion');

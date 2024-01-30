@@ -10,7 +10,7 @@ class Seguimiento extends Migration
     {
         DB::statement("
         CREATE VIEW detalles_proyecto AS 
-            SELECT p.titulo, a.nombre, p.status, u.name AS 'prestador asignado' , fecha AS 'fecha_comienzo', Tiempo_Invertido
+            SELECT p.`id`, p.`titulo` AS 'Proyecto', a.titulo, p.estado, u.name AS 'prestador asignado' , fecha AS 'fecha_comienzo', Tiempo_Invertido
             FROM actividades_prestadores
             INNER JOIN actividades AS a ON id_actividad = a.id
             INNER JOIN users AS u ON id_prestador = u.id
@@ -20,7 +20,7 @@ class Seguimiento extends Migration
         DB::statement("
         CREATE VIEW seguimiento_actividades AS 
             SELECT  
-                u.name AS prestador, u.id AS id_prestador, a.nombre AS actividad, d.nombre AS categoria, p.titulo AS proyecto_origen, Tiempo_Real AS duracion, fecha, detalles,
+                u.name AS prestador, u.id AS id_prestador, a.titulo AS actividad, d.nombre AS categoria, p.titulo AS proyecto_origen, Tiempo_Real AS duracion, fecha, detalles,
                 CASE 
                     WHEN Tiempo_Real <= (CASE WHEN a.TEC > TEU THEN TEU ELSE a.TEC END) THEN 10
                     WHEN Tiempo_Real <= (a.TEC + TEU) THEN 8
@@ -37,7 +37,7 @@ class Seguimiento extends Migration
 
         DB::statement("
         CREATE VIEW seguimiento_proyecto AS 
-            SELECT p.`titulo`, p.`status`, p.`id_encargado`, p.`fecha_inicio`, 
+            SELECT p.`id`, p.`titulo` AS 'Proyecto' , p.`estado`, p.`fecha_inicio`, 
             COALESCE(SUM(ap.Tiempo_Invertido), 0) AS duracion, 
             ( SELECT COUNT(*) FROM actividades_prestadores ot WHERE ot.id_proyecto = p.id ) AS conteo_total, 
             ( SELECT COUNT(*) FROM actividades_prestadores ot WHERE ot.id_proyecto = p.id AND ot.Tiempo_Invertido = ot.Tiempo_Real ) AS conteo_terminado 
