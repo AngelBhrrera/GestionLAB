@@ -18,6 +18,20 @@ class CreateSedesAreasTable extends Migration
             $table->integer('id_sede');
             $table->integer('id_area');
         });
+
+        DB::table('sedes_areas')->insert([
+            ['id_sede' => 1, 'id_area' => 1],
+            ['id_sede' => 1, 'id_area' => 2],
+            ['id_sede' => 1, 'id_area' => 3],
+            ['id_sede' => 2, 'id_area' => 6],
+            ['id_sede' => 3, 'id_area' => 3],
+            ['id_sede' => 3, 'id_area' => 4],
+            ['id_sede' => 4, 'id_area' => 2],
+            ['id_sede' => 4, 'id_area' => 4],
+            ['id_sede' => 5, 'id_area' => 3],
+            ['id_sede' => 7, 'id_area' => 6],
+            ['id_sede' => 6, 'id_area' => 3],
+        ]);
     }
 
     /**

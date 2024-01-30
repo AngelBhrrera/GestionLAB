@@ -13,6 +13,15 @@ class CreateAreasTable extends Migration
             $table->id();
             $table->string('nombre_area', 255);
         });
+
+        DB::table('areas')->insert([
+            ['nombre_area' => 'Modelado 3D'],
+            ['nombre_area' => 'Informatica'],
+            ['nombre_area' => 'Biomedica'],
+            ['nombre_area' => 'Analisis de Datos'],
+            ['nombre_area' => 'Experiencias interactivas'],
+            ['nombre_area' => 'Organizacion'],
+        ]);
     }
 
 
