@@ -301,12 +301,14 @@ class AdminController extends Controller
 
 
         $categorias = DB::table('categorias')->get();
+        $subcategorias = DB::table('subcategorias')->get();
 
         return view(
             '/admin/registro_actividades',
             [
                 'prestadores' => $prestadores,
                 'categorias' => $categorias,
+                'subcategorias' => $subcategorias,
             ]
         );
     }

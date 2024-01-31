@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Tipo categoria</label>
+                        <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Categoría</label>
                         <div class="col-md-6">
                             <select class="form-control" id="tipo_categoria" name="tipo_categoria" required>
                                 <option value="">Selecciona una categoría</option>
@@ -51,12 +51,34 @@
                             </select>
                         </div>
                     </div>
-
+                    <br>
                     <div class="form-group row">
-                        <label for="descripcion" class="col-md-4 col-form-label text-md-right">Descripcion</label>
-
+                        <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Subcategoría</label>
                         <div class="col-md-6">
-                            <textarea id="descripcion" type="text" class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" required>@if(isset($actm)){{$actm[0]->descripcion}}@endif</textarea>
+                            <select class="form-control" id="tipo_categoria" name="tipo_categoria" required>
+                                <option value="">Selecciona una categoría</option>
+                                @foreach ($subcategorias as $subcategoria)
+                                <option value="{{ $categoria->id }}">{{ $subcategoria->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <label for="tipo_actividad" class="text-center">Tipo de actividad</label>
+                        <div class="row text-center">
+                            <div class="col">
+                                <select class="form-control" name="tipo_actividad">
+                                    <option value="{{null}}">Selecciona un tipo de actividad</option>
+                                    <option value="generica">Genérica</option>
+                                    <option value="particular">Particular</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-md-6">
+                        <label for="recursos">Recursos necesarios</label>
+                            <textarea id="recursos" type="text" class="form-control" name="recursos"></textarea>
 
                             @error('descripcion')
                             <span class="invalid-feedback" role="alert">
@@ -68,13 +90,34 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Tiempo estimado (TEC)</label>
+                        <label for="descripcion" class="col-md-4 col-form-label text-md-right">Descripción</label>
+
                         <div class="col-md-6">
-                            <div class="input-group date" id="datetimepicker" data-target-input="nearest">
-                                <input name="horas" type="number" class="form-control" placeholder="Horas" min="0" max="23" step="1" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
-                                <input name="minutos" type="number" class="form-control" placeholder="Minutos" min="0" max="59" step="1" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
-                            </div>
+                            <textarea id="descripcion" type="text" class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" required>@if(isset($actm)){{$actm[0]->descripcion}}@endif</textarea>
+
+                            @error('descripcion')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
                         </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="resultados" class="col-md-4 col-form-label text-md-right">Resultados</label>
+
+                        <div class="col-md-6">
+                            <textarea id="resultados" type="text" class="form-control" name="resultados" required></textarea>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Tiempo estimado (TEC)</label>
+                            <div class="col-md-6">
+                                    <input name="horas" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
+                                    <input name="minutos" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
+                            </div>
                     </div>
 
 

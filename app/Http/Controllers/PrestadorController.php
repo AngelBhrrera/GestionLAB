@@ -140,26 +140,6 @@ class PrestadorController extends Controller
 
         $turno = Auth::user()->horario;
 
-        // $asistencias = DB::table('registros_checkin')
-        //     ->select('fecha')
-        //     ->where('idusuario', $id)
-        //     ->orderBy('fecha_actual', 'desc')
-        //     ->get();
-
-        // $diasAsistenciaMesActual = [];
-
-        // $mesActual = date('m');
-
-        // foreach ($asistencias as $asistencia) {
-
-        //     $mesAsistencia = (int)substr($asistencia->fecha, 0, 1);
-        //     $diaAsistencia = (int)substr($asistencia->fecha, 3, 4);
-
-        //     if ($mesAsistencia == $mesActual) {
-        //         $diasAsistenciaMesActual[] = $diaAsistencia;
-        //     }
-        // }
-
         $asistencias = DB::select("Select fecha from registros_checkin where idusuario = $id");
         $festivos = DB::select("Select * from eventos");
         
