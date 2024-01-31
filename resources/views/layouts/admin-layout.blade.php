@@ -109,15 +109,15 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('admin.sedes')}}" class="side-menu">
+                        <a href="{{route('admin.sede')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
-                            <div class="side-menu__title">Gestión sedes</div>
+                            <div class="side-menu__title">Modificar sede</div>
                         </a>
                     </li>
                     <li>
                         <a href="{{route('admin.categorias')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
-                            <div class="side-menu__title">Gestión categorias</div>
+                            <div class="side-menu__title">Añadir categorias</div>
                         </a>
                     </li>
                 </ul>

@@ -139,68 +139,29 @@
 <script>
         function modificarCamposSede(){
             
-            btn_guardar= document.getElementById("guardar");
-            selectSede = document.getElementById("sede");
-            campoNombre = document.getElementById("nuevoNombre");
-            idSede=document.getElementById("idSede");
             checks= document.querySelectorAll('.form-check-input');
             
-            if(selectSede.value === "null"){
+            if(document.getElementById("sede").value === "null"){
                  // Restablecer los campos al estado inicial
-                campoNombre.value = "";
-                idSede.value = "";
-                btn_guardar.disabled = true;
+                 document.getElementById("nuevoNombre").value = "";
+                 document.getElementById("idSede").value = "";
+                document.getElementById("guardar").disabled = true;
                 for(var check of checks){
                     check.checked = false;
                 }
-
                 return;
             }
-            btn_guardar.disabled = false;
-            datoSede = JSON.parse(selectSede.value);
-            campoNombre.value=datoSede.nombre_Sede;
-            idSede.value = datoSede.id_Sede;
+            document.getElementById("guardar").disabled = false;
+            document.getElementById("nuevoNombre").value=datoSede.nombre_Sede;
+            document.getElementById("idSede").value = datoSede.id_Sede;
+            datoSede = JSON.parse(document.getElementById("sede").value);
 
+            const propiedades = ['activa', 'turnoMatutino', 'turnoMediodia', 'turnoVespertino', 'turnoSabatino', 'turnoTiempoCompleto'];
 
-            //Cheack activo/inactivo
-            if(datoSede.activa == 1){
-                checks[0].checked = true;
-            }else{
-                checks[0].checked = false;
-            }
-            //Check turno matituno
-            if(datoSede.turnoMatutino == 1){
-                checks[1].checked = true;
-            }else{
-                checks[1].checked = false;
-            }
-            //Check turno medio día
-            if(datoSede.turnoMediodia == 1){
-                checks[2].checked = true;
-            }else{
-                checks[2].checked = false;
-            }
-
-            //Check turno vespertino
-            if(datoSede.turnoVespertino== 1){
-                checks[3].checked = true;
-            }else{
-                checks[3].checked = false;
-            }
-
-            //Check turno sabatino
-            if(datoSede.turnoSabatino== 1){
-                checks[4].checked = true;
-            }else{
-                checks[4].checked = false;
-            }
-
-            //Check turno completo
-            if(datoSede.turnoTiempoCompleto == 1){
-                checks[5].checked = true;
-            }else{
-                checks[5].checked = false;
-            }
+            propiedades.forEach((propiedad, index) => {
+                const checkbox = checks[index];
+                checkbox.checked = datoSede[propiedad] == 1;
+            });
             
         }
         setTimeout(function(){

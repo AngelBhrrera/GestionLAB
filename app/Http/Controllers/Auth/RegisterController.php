@@ -182,6 +182,8 @@ class RegisterController extends Controller
                 break;
         }
 
+        
+
         return User::create([
             'name' => $data['name'],
             'apellido' => $data['apellido'],
@@ -200,7 +202,6 @@ class RegisterController extends Controller
             'horas' => $vHoras,
             'encargado_id' => $vEncargado,
             'password' => Hash::make($data['password']),
-
         ]);
     }
 }
