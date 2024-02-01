@@ -34,7 +34,7 @@
                         <div class="col-span-2 md:col-span-1 flex items-center justify-center 2xl:justify-start"> <i data-lucide="clock" class="w-4 h-4 mr-2"></i>Turno: No definido</div>
                     @endif
                     @if(isset($user->sede))
-                        <div class="col-span-2 md:col-span-1 flex items-center justify-center 2xl:justify-start"> <i data-lucide="building" class="w-4 h-4 mr-2"></i>Sede: {{$sede->nombre_Sede}}</div>
+                        <div class="col-span-2 md:col-span-1 flex items-center justify-center 2xl:justify-start"> <i data-lucide="building" class="w-4 h-4 mr-2"></i>Sede: {{$sede->nombre_sede}}</div>
                     @else
                         <div class="col-span-2 md:col-span-1 flex items-center justify-center 2xl:justify-start"> <i data-lucide="building" class="w-4 h-4 mr-2"></i>Sede: No definida</div>
                     @endif

@@ -243,7 +243,7 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::get('/prestador/cambiarRol', 'cambiarRol')->name('cambiarRol');
 
         Route::get('prestador/horas', 'horas')->name('horas');
-        Route::get('prestador/registro_reporte', 'registro_reporte')->name('registro_reporte');
+        Route::get('prestador/actividadesPrestador', 'actividadesPrestador')->name('actividadesPrestador');
         Route::get('prestador/horario', 'horario')->name('horario');
         Route::get('/prestador/asistencias', 'asistencias')->name('asistencias');
 

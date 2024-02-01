@@ -152,7 +152,7 @@
                                 @if (isset($sede))
                                 <option id="sede" value="">Selecciona una sede</option>
                                     @foreach ($sede as $dato )
-                                        <option id="{{$dato->id_Sede}}" value="{{$dato->id_Sede}}" data-nombre="{{$dato->nombre_Sede}}">{{$dato->nombre_Sede }} </option>
+                                        <option id="{{$dato->id_sede}}" value="{{$dato->id_sede}}" data-nombre="{{$dato->nombre_sede}}">{{$dato->nombre_sede }} </option>
                                     @endforeach
                                 @endif
                             </select>
@@ -226,7 +226,7 @@
                         areas.forEach(function(area) {
                             var option = document.createElement('option');
                             option.value = area.area_id;
-                            option.text = area.area_nombre;
+                            option.text = area.nombre_area;
                             areaSelect.appendChild(option);
                         });
                         var horariosSede = areas[0];

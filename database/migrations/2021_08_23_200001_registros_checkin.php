@@ -7,11 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class RegistrosCheckIn extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+
     public function up()
     {
 
@@ -20,9 +16,6 @@ class RegistrosCheckIn extends Migration
 
             $table->integer('idusuario',0,0)->nullable();
             $table->string('origen',50)->default('');
-            //$table->string('codigo',50);
-            //$table->string('nombre',50);
-            //$table->string('apellido',50);
             $table->string('tipo',50);
 
             $table->string('fecha',50);

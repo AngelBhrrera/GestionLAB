@@ -17,62 +17,22 @@ class CreateSedesTable extends Migration
     public function up()
     {
         Schema::create('sedes', function (Blueprint $table) {
-            $table->id('id_Sede');
-            $table->string('nombre_Sede')->default(0);
-            $table->boolean('turnoMatutino')->default(0);
-            $table->boolean('turnoMediodia')->default(0);
-            $table->boolean('turnoVespertino')->default(0);
-            $table->boolean('turnoSabatino')->default(0);
-            $table->boolean('turnoTiempoCompleto')->default(0);
-            $table->boolean('no_Aplica')->default(0);
-            $table->boolean('activa')->default(1);
+            $table->id('id_sede');
+            $table->string('nombre_sede')->default(0);
         });
 
-            DB::table('sedes')->insert([
-                "nombre_Sede" => "Inventores CUCEI",
-                'turnoMatutino'=> 1,
-                'turnoMediodia'=> 1,
-                'turnoVespertino'=> 1,
-                'turnoSabatino'=> 1,
-                'turnoTiempoCompleto'=> 1,
-                'no_Aplica'=> 1,
-            ]);
-            DB::table('sedes')->insert([
-                "nombre_Sede" => "CORCOM",
-                'turnoMatutino'=> 1,
-                'turnoMediodia'=> 1,
-                'turnoVespertino'=> 1,
-                'turnoSabatino'=> 0,
-                'turnoTiempoCompleto'=> 0,
-                'no_Aplica'=> 1,
-            ]);
-            DB::table('sedes')->insert([
-                "nombre_Sede" => "CUCEI Innovación",
-                'turnoMatutino'=> 1,
-                'turnoMediodia'=> 1,
-                'turnoVespertino'=> 1,
-                'turnoSabatino'=> 1,
-                'turnoTiempoCompleto'=> 1,
-                'no_Aplica'=> 0,
-            ]);
-            DB::table('sedes')->insert([
-                "nombre_Sede" => "CFE",
-                'turnoMatutino'=> 0,
-                'turnoMediodia'=> 0,
-                'turnoVespertino'=> 0,
-                'turnoSabatino'=> 1,
-                'turnoTiempoCompleto'=> 1,
-                'no_Aplica'=> 1,
-            ]);
-            DB::table('sedes')->insert([
-                "nombre_Sede" => "CUCS",
-                'turnoMatutino'=> 1,
-                'turnoMediodia'=> 1,
-                'turnoVespertino'=> 1,
-                'turnoSabatino'=> 1,
-                'turnoTiempoCompleto'=> 1,
-                'no_Aplica'=> 1,
-            ]);
+        DB::table('sedes')->insert([
+            "nombre_sede" => "CUCEI"
+        ]);
+        DB::table('sedes')->insert([
+            "nombre_sede" => "CFE"
+        ]);
+        DB::table('sedes')->insert([
+            "nombre_sede" => "ECRO"
+        ]);
+        DB::table('sedes')->insert([
+            "nombre_sede" => "CUTonala"
+        ]);
     }
 
 

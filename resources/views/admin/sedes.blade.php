@@ -42,7 +42,7 @@
                 @if (isset($sede))
                     <option id="sede" value="null">Selecciona una sede</option>
                     @foreach ($sede as $dato )
-                        <option id="{{$dato->nombre_Sede}}" value="{{json_encode($dato)}}" {{old('sede') == $dato->id_Sede ? 'selected="selected"' : '' }}>{{$dato->nombre_Sede }} </option>
+                        <option id="{{$dato->nombre_sede}}" value="{{json_encode($dato)}}" {{old('sede') == $dato->id_sede ? 'selected="selected"' : '' }}>{{$dato->nombre_sede }} </option>
                     @endforeach
                 @endif
             </select>
@@ -152,8 +152,8 @@
                 return;
             }
             document.getElementById("guardar").disabled = false;
-            document.getElementById("nuevoNombre").value=datoSede.nombre_Sede;
-            document.getElementById("idSede").value = datoSede.id_Sede;
+            document.getElementById("nuevoNombre").value=datoSede.nombre_sede;
+            document.getElementById("idSede").value = datoSede.id_sede;
             datoSede = JSON.parse(document.getElementById("sede").value);
 
             const propiedades = ['activa', 'turnoMatutino', 'turnoMediodia', 'turnoVespertino', 'turnoSabatino', 'turnoTiempoCompleto'];

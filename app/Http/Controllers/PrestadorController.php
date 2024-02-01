@@ -454,14 +454,14 @@ class PrestadorController extends Controller
         );
     }
 
-    public function registro_reporte()
+    public function actividadesPrestador()
     {
         $encargado_id = auth()->user()->encargado_id;
         $prestadores = DB::table('users')->select('id', 'name', 'apellido')->where('id', auth()->user()->id)->get();
         $categorias = DB::table('categorias')->get();
         $actividades = DB::table('actividades')->get();
 
-        return view('/prestador/registro_reporte_prestador', compact('prestadores', 'actividades', 'categorias'));
+        return view('/prestador/crear_actividad_prestador', compact('prestadores', 'actividades', 'categorias'));
     }
 
     public function obtenerActividades(Request $request)
@@ -710,8 +710,8 @@ class PrestadorController extends Controller
         $user = Auth::user();
 
         $sede = DB::table('sedes')
-        ->select('sedes.nombre_Sede', 'sedes.id_Sede')
-        ->where('sedes.id_Sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
+        ->select('sedes.nombre_Sede', 'sedes.id_sede')
+        ->where('sedes.id_sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
         ->first();
 
         $nivel = DB::table('niveles')
