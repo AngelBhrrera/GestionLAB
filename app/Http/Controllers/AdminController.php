@@ -165,22 +165,22 @@ class AdminController extends Controller
         $type = DB::table('users')
         ->select('tipo')
         ->where('id', $id)
-        ->get();
-
-        if($type == ('prestadorp' || 'prestador_inactivo')){
+        ->value('tipo');
+        
+        if(($type == 'prestadorp') || ($type == 'prestador_inactivo')){
             DB::table('users')
             ->where('id', $id)
             ->update(['tipo' => 'prestador']);
-        }else if($type == ('voluntariop' || 'voluntario_inactivo')){
+        }else if(($type == 'voluntariop') || ($type == 'voluntario_inactivo')){
             DB::table('users')
             ->where('id', $id)
             ->update(['tipo' => 'voluntario']);
-        }else if($type == ('practicantep' || 'practicante_inactivo')){
+        }else if(($type == 'practicantep') || ($type == 'practicante_inactivo')){
             DB::table('users')
             ->where('id', $id)
             ->update(['tipo' => 'practicante']);
         }
-    
+
         return response()->json(['message' => 'Activado exitosamente']);
     }
 
@@ -393,33 +393,6 @@ class AdminController extends Controller
         return view('admin/lista_clientes', ['datos' => json_encode($data)]);
     }
 
-    //VISITAS
-
-    public function visits()
-    {
-        return view('/auth/visitator', ['ruta' => 'registrar']);
-    }
-    
-    public function watch_visits()
-    {            
-        $n_sede = DB::table('sedes')
-            ->where('id_Sede', Auth::user()->sede)
-            ->value('nombre_Sede');
-        $data = DB::table('visitas')
-            ->orderBy('id', 'DESC')
-            ->get();
-        
-        return view('/admin/ver_visitas', ['datos' => json_encode($data), 'sede' => $n_sede]);
-    }
-    
-    public function motivo($id, $value)
-    {
-        $sql=    DB::table('visitas')
-            ->where('id', $id)
-            ->update(['motivo' => $value]);
-        return response()->json(['message' => $sql]);
-    }
-
     //IMPRESORAS
 
     public function watch_prints()
@@ -604,7 +577,34 @@ class AdminController extends Controller
         }
     }
 
-    // CHECKIN DE VISITANTES
+    
+    //VISITAS
+
+    public function visits()
+    {
+        return view('/auth/visitator', ['ruta' => 'registrar']);
+    }
+    
+    public function watch_visits()
+    {            
+        $n_sede = DB::table('sedes')
+            ->where('id_Sede', Auth::user()->sede)
+            ->value('nombre_Sede');
+        $data = DB::table('visitas')
+            ->orderBy('id', 'DESC')
+            ->get();
+        
+        return view('/admin/ver_visitas', ['datos' => json_encode($data), 'sede' => $n_sede]);
+    }
+    
+    public function motivo($id, $value)
+    {
+        $sql=    DB::table('visitas')
+            ->where('id', $id)
+            ->update(['motivo' => $value]);
+        return response()->json(['message' => $sql]);
+    }
+
 
     public function registrarVisitas(Request $request)
     {

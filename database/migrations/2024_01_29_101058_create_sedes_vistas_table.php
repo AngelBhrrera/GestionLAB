@@ -19,6 +19,15 @@ class CreateSedesVistasTable extends Migration
             $table->boolean('reportes')->default(0);
            
         });
+
+        DB::table('sedes_vistas')->insert([
+            ['id' => 0, 'torneo' => 1, 'impresiones' => 1, 'visitas' => 1, 'reportes' => 1],
+            ['id' => 1, 'torneo' => 1, 'impresiones' => 1, 'visitas' => 1, 'reportes' => 0],
+            ['id' => 2, 'torneo' => 0, 'impresiones' => 0, 'visitas' => 0, 'reportes' => 1],
+            ['id' => 3, 'torneo' => 0, 'impresiones' => 0, 'visitas' => 1, 'reportes' => 1],
+            ['id' => 4, 'torneo' => 1, 'impresiones' => 0, 'visitas' => 1, 'reportes' => 0],
+            ['id' => 5, 'torneo' => 1, 'impresiones' => 0, 'visitas' => 1, 'reportes' => 0],
+        ]);
     }
 
     public function down()

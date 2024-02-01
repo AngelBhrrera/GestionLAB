@@ -24,6 +24,7 @@
                 data: users,
                 layout: "fitColumns",
                 pagination: "local",
+                resizableColumns: false,  
                 paginationSize: 24,
                 groupBy: "sede",
                 tooltips: true,
@@ -33,29 +34,33 @@
                         sorter: "string",
                         editor: "input",
                         headerFilter: "input",
-                        hozAlign: "center",
+                      
                     }, {
                         title: "Apellido",
                         field: "apellido",
                         sorter: "string",
                         editor: "input",
                         headerFilter: "input",
-                        hozAlign: "center",
+                      
                     }, {
                         title: "Correo",
                         field: "correo",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
+                      
                     }, {
+                        title: "Tipo",
+                        field: "tipo",
+                      
+                    },{
                         title: "Codigo",
                         field: "codigo",
-                        hozAlign: "center",
+                      
                     },  {
                         title: "Horario",
                         field: "horario",
                         sorter: "string",
-                        hozAlign: "center",
+                      
                         editor: "select",
                         editorParams: {
                             values: {
@@ -70,17 +75,17 @@
                         title: "Cumplidas",
                         field: "horas_cumplidas",
                         sorter: "number",
-                        hozAlign: "center",
+                      
                     },  {
                         title: "Restantes",
                         field: "horas_restantes",
                         sorter: "number",
-                        hozAlign: "center",
+                      
                     },  {
                         title: "Carrera",
                         field: "carrera",
                         sorter: "string",
-                        hozAlign: "center",
+                      
                     },{
                         title: "Modificar",
                         field: "id",
@@ -92,13 +97,12 @@
                             button.textContent = "Modificar";
                             button.title = "";
                             button.addEventListener("click", function() {
-                                // Obtener el valor actualizado de horario
                                 var value = row.getData().horario;
                                 modificarPrestador(id, value);
                             });
                             return button;
                         }, 
-                        hozAlign: "center",
+                      
                     }, {
                         title: "Desactivar",
                         field: "id",
@@ -113,12 +117,9 @@
                             });
                             return button;
                         }, 
-                        hozAlign: "center",
+                      
                     },
                 ],
-                //rowClick: function(e, row) {
-                //    alert("Row " + row.getData().playerid + " Clicked!!!!");
-                //},
             });
 
             function modificarPrestador(id, value) {
