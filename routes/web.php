@@ -45,8 +45,11 @@ Route::controller(App\Http\Controllers\Auth\logsysController::class)->group(func
     Route::post('/login', 'loginF')->name('login');
     Route::get('/logout', 'logoutF')->name('logout');
     Route::get('/sede/{id}', 'filtroSede')->name('filtroSede');
+    Route::get('/area/{id}', 'filtroArea')->name('filtroArea');
     Route::get('/turno/{t}/{sed}', 'filtroTurno')->name('filtroTurno');
+
     Route::get('admin/sede/{id}', 'filtroSede')->name('filtroSede');
+    Route::get('admin/area/{id}', 'filtroArea')->name('filtroArea');
     Route::get('admin/turno/{t}/{sed}', 'filtroTurno')->name('filtroTurno');
 });
 

@@ -91,17 +91,25 @@ class logsysController extends Controller
         return response()->json($area);
     }
 
-    public function filtroTurno($t, $sede){
+    public function filtroArea($id){
 
-        $turno = DB::table('users')
-        ->where('sede', $sede)
+        $turno = DB::table('areas')
+        ->where('id', $id)
+        ->get();
+        return response()->json($turno);
+    }
+
+    public function filtroTurno($t, $area){
+
+        $users = DB::table('users')
+        ->where('area', $area)
         ->where('horario', $t)
         ->where(function ($query) {
             $query->where('tipo', 'encargado')
                 ->orWhere('tipo', 'admin');
         })
         ->get();
-        return response()->json($turno);
+        return response()->json($users);
     }
 
 }
