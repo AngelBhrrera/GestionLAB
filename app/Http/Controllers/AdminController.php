@@ -275,12 +275,24 @@ class AdminController extends Controller
     
         public function create_proy()
         {
-      
-            $prestadores = DB::table('solo_prestadores')
-                ->where('sede', auth()->user()->sede)
+
+            if (auth()->user()->tipo == 'Superadmin'){
+                $prestadores = DB::table('solo_prestadores')
+                ->get();
+                
+            }else if(auth()->user()->tipo == 'admin'){
+                $prestadores = DB::table('solo_prestadores')
+                ->where('id_Sede', auth()->user()->sede)
+                ->get();
+            }else{
+                $prestadores = DB::table('solo_prestadores')
+                ->where('id_Sede', auth()->user()->sede)
                 ->where('horario', auth()->user()->horario)
                 ->get();
-    
+            }
+
+            
+
             $actividades = DB::table('actividades')->get();
     
             return view(
@@ -626,7 +638,7 @@ class AdminController extends Controller
         $buscarSede = DB::Select("Select nombre_Sede from sedes where nombre_Sede = '$request->nombreSede'");
         if (count($buscarSede)==0){
             $nombre=$request->input("nombreSede");
-            DB::insert("INSERT INTO sede (nombre_Sede, turnoMatutino, turnoMediodia, turnoVespertino, turnoSabatino, 
+            DB::insert("INSERT INTO sedes (nombre_Sede, turnoMatutino, turnoMediodia, turnoVespertino, turnoSabatino, 
             turnoTiempoCompleto, no_Aplica) Values('$nombre', 1,1,1,1,1,1)");
             return redirect(route('admin.sedes'))->with('success', 'Creada correctamente');
         }else{
@@ -637,23 +649,27 @@ class AdminController extends Controller
     
     public function gestionSede(){
 
-        $gest = DB::table('sedes_vistas as v')
-            ->select('v.*', 's.nombre_Sede')
-            ->join('sedes as s', 'v.id', '=', 's.id_Sede')
-            ->join('sedes_areas as a', 'v.id', '=', 'a.id_sede')
+        $gest = DB::table('filtrosedes as f')
+            ->select('f.*', 'v.*')
+            ->join('sedes_vistas as v', 'v.id', '=', 'f.id_Sede')
             ->get();
-        //$sedes= DB::select("SELECT * FROM sedes WHERE id_Sede != 0;");
+        
+
         if(Auth::user()->sede != 'Superadmin'){
             $gest = DB::table('filtrosedes as f')
             ->select('f.*', 'v.*')
             ->join('sedes_vistas as v', 'v.id', '=', 'f.id_Sede')
             ->where('f.id_Sede', '=', Auth()->user()->sede)
             ->get();
-            //dd($gest);
+            
         }
 
+        $areasNoDeseadas = $gest->pluck('area_id')->toArray();
+        $areas = DB::table('areas')
+            //->whereNotIn('id', $areasNoDeseadas)
+            ->get();
         
-        return view("admin.modificar_sedes", ['gest' => $gest]);
+        return view("admin.modificar_sedes", ['gest' => $gest, 'areas' => $areas]);
     }
 
     public function gestionSedes(){

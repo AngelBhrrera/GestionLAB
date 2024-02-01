@@ -50,7 +50,14 @@
                 <div class="form-check mr-2 pt-3"><label class="pl-5 pr-5" for="reportes">Reportes</label><input type="checkbox" class=" w-10 h-10 form-check-input" name="sabatino" id="sabatino"></div>
             </div>
             <br>
+            <h3 class="text-2xl mt-5 font-medium">Areas disponibles</h3>
 
+            <select class="duallistbox" name="duallistbox_demo[]" id="opcionPrestadores" multiple="multiple" required>
+                @foreach ($areas as $registro)
+                    <option value="{{ $registro->id }}">{{ $registro->nombre_area }}</option>
+                @endforeach
+            </select>
+            <br>
             <button type="Submit" id="guardar" class="btn btn-primary"> Guardar cambios</button>
         </form>
     </div>
@@ -63,21 +70,30 @@
 
 @section('script')
 
+<script src="{{asset('plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}"></script>
+
+<script type="text/javascript">
+    var demo = $('select[name="duallistbox_demo[]"]').bootstrapDualListbox({
+        preserveSelectionOnMove: 'Mover ',
+        moveAllLabel: 'Mover todo',
+        removeAllLabel: 'Borrar todo',
+    });
+
+</script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var miInput = document.getElementById('nuevoNombre');
-        miInput.value = "{{ $gest->first()->sede_nombre }}";
+        miInput.value = "{{ $gest->first()->sede_nombre}}";
 
-        datoView = "{!! json_encode($gest->first()) !!}";
+        datoView = {!! json_encode($gest->first()) !!};
 
         checks = document.querySelectorAll('.form-check-input');
-        const propiedades = ['turnoMatutino', 'turnoMediodia', 'turnoVespertino', 'turnoSabatino', 'turnoTiempoCompleto'];
+        const propiedades = ['turnoMatutino', 'turnoMediodia', 'turnoVespertino', 'turnoSabatino', 'turnoTiempoCompleto','torneo', 'impresiones', 'visitas', 'reportes'];
         propiedades.forEach((propiedad, index) => {
             const checkbox = checks[index];
-            checkbox.checked = datoSede[propiedad] == 1;
+            checkbox.checked = datoView[propiedad] == 1;
         });
-
-        datoArea = "{!! json_encode($gest->first()) !!}";
     });
 </script>
 
