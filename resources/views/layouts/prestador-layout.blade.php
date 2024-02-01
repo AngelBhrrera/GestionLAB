@@ -18,9 +18,9 @@
             ->first();
         $nivel_str = strval($nivel->nivel);
 
-        $sede = Auth::user()->sede;
-        $filtro = DB::table('sedes_vistas')
-            ->where('id', $sede)
+        $area = Auth::user()->area;
+        $filtro = DB::table('modulos')
+            ->where('id', $area)
             ->first();
     ?>
 
@@ -85,7 +85,7 @@
                         </li>
                     </li>
                     
-                @if ($filtro->torneo == 1)
+                @if ($filtro->gamificacion == 1)
                     <li>
                         <a href="javascript:;" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="edit"></i> </div>

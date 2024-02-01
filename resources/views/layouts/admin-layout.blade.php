@@ -31,9 +31,9 @@
     </style>
 
     <?php   
-        $sede = Auth::user()->sede;
-        $filtro = DB::table('sedes_vistas')
-            ->where('id', $sede)
+        $area = Auth::user()->area;
+        $filtro = DB::table('modulos')
+            ->where('id', $area)
             ->first();
     ?>
 
@@ -379,7 +379,7 @@
     @endif
 @endif
 
-@if ($filtro->torneo == 1)
+@if ($filtro->gamificacion == 1)
     @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "Superadmin")
         @section('actividades')
             <li>
