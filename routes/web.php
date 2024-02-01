@@ -136,6 +136,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::get('/admin/registrovisitas', 'registroVisitas')->name('registrovisitas');
                 
                 Route::get('/admin/obtenerActividades', 'obtenerActividades')->name('obtenerActividades');
+                Route::get('/admin/obtenerSubcategoria', 'obtenerSubcategorias')->name('obtenerSubcategorias');
                 Route::get('/admin/newCategoriaYActividad', 'newCategoriaYActividad')->name('newCategoriaYActividad');
 
 

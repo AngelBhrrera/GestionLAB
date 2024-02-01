@@ -318,10 +318,17 @@ class AdminController extends Controller
             $categorias = DB::table('categorias')->get();
             $actividades = DB::table('actividades')->get();
     
-            $id_actividad = $request->input('id_actividad');
             $nomact = $request->input('nombre');
+
             $categoria = $request->input('tipo_categoria');
+            $subcategoria = $request->input('tipo_subcategoria');
+            if($subcategoria == '')
+                $subcategoria = null;
+            $tipo = $request->input('tipo_actividad');
+
             $desc = $request->input('descripcion');
+            $reso = $request->input('recursos');
+            $obj = $request->input('resultados');
     
             $horas = $request->input('horas')*60;
             $minutos = $request->input('minutos');
@@ -329,11 +336,16 @@ class AdminController extends Controller
     
             DB::table('actividades')->insert([
     
-                'id_categoria' => $id_actividad,
-                'nombre' => $nomact,
+                'titulo' => $nomact,
                 'id_categoria' => $categoria,
-                'TEC' => $tec,
+                'id_subcategoria' => $subcategoria,
+                'tipo' => $tipo,
+                
+                'recursos' => $reso,
                 'descripcion' => $desc,
+                'objetivos' => $obj,
+
+                'TEC' => $tec,
             ]);
     
             return view( 'admin/asignar_actividades', [
@@ -345,17 +357,25 @@ class AdminController extends Controller
     
         public function asign_act()
         {
-    
+
             $n_Sede =  DB::table('sedes')
             ->select('nombre_Sede')
             ->where('id_Sede', auth()->user()->sede)
             ->get();
-    
-            $prestadores = DB::table('solo_prestadores')
-            ->where('sede', $n_Sede->first()->nombre_Sede)
-            ->where('horario', auth()->user()->horario)
-            ->get();
-    
+
+           
+                if (auth()->user()->tipo == "admin") {
+                    $prestadores = DB::table('solo_prestadores')
+                        ->where('sede', $n_Sede->first()->nombre_Sede)
+                        ->get();
+                } else {
+                    $prestadores = DB::table('solo_prestadores')
+                        ->where('sede', $n_Sede->first()->nombre_Sede)
+                        ->where('horario', auth()->user()->horario)
+                        ->get();
+                }
+
+            
             $categorias = DB::table('categorias')->get();
             $actividades = DB::table('actividades')->get();
     
@@ -812,6 +832,27 @@ class AdminController extends Controller
     }
 
 
+    public function obtenerActividades(Request $request)
+    {
+        $categoriaId = $request->input('categoriaId');
+
+        $actividades = DB::table('actividades')
+            ->where('categoria_id', $categoriaId)
+            ->get();
+
+        return response()->json($actividades);
+    }
+
+    public function obtenerSubcategorias(Request $request)
+    {
+        $categoriaId = $request->input('categoriaId');
+
+        $subcateg = DB::table('subcategorias')
+            ->where('categoria', $categoriaId)
+            ->get();
+
+        return response()->json($subcateg);
+    }
     
 //VIEJO CONTROLLER. /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -2403,17 +2444,6 @@ class AdminController extends Controller
         }
 
         return $cantidad;
-    }
-
-    public function obtenerActividades(Request $request)
-    {
-        $categoriaId = $request->input('categoriaId');
-
-        $actividades = DB::table('actividades')
-            ->where('categoria_id', $categoriaId)
-            ->get();
-
-        return response()->json($actividades);
     }
 
         /*public function index()
