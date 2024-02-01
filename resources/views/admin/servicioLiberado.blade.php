@@ -23,6 +23,7 @@
                 data: users,
                 layout: "fitColumns",
                 pagination: "local",
+                resizableColumns: false,  
                 paginationSize: 24,
                 tooltips: true,
                 columns: [{

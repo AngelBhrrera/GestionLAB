@@ -23,6 +23,7 @@
                 data: users,
                 layout: "fitColumns",
                 pagination: "local",
+                resizableColumns: false,  
                 paginationSize: 10,
                 tooltips: true,
                 columns: [{
@@ -30,25 +31,25 @@
                         field: "name",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
+                        
                     }, {
                         title: "Apellido",
                         field: "apellido",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
+                        
                     }, {
                         title: "Correo",
                         field: "correo",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
+                        
                     }, {
                         title: "Codigo",
                         field: "codigo",
                         sorter: "number",
                         headerFilter: "input",
-                        hozAlign: "center",
+                        
                     }, {
                         title: "Activar",
                         field: "id",
@@ -63,7 +64,7 @@
                             });
                             return button;
                         }, 
-                        hozAlign: "center",
+                        
                     },
                 ],
             });

@@ -74,49 +74,17 @@
                                         <div class="side-menu__icon"> <i data-lucide="file"></i> </div>
                                         <div class="side-menu__title">Reportes parciales</div>
                                     </a>
+                                </li>
+                                <li>
+                                <a href="{{route('horario')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="clock"></i> </div>
+                                    <div class="side-menu__title">Horario prestador</div>
+                                </a>
                                 </li>                             
                             </ul>
                         </li>
                     </li>
                     
-                    <li>
-                        <a href="#" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="calendar"></i> </div>
-                            <div class="side-menu__title">
-                                HORARIO
-                                <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
-                            </div>
-                        </a>
-                        <ul class="submenu">
-                            <li>
-                                <a href="{{route('horario')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="clock"></i> </div>
-                                    <div class="side-menu__title">Horario prestador</div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{route('asistencias')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="check"></i> </div>
-                                    <div class="side-menu__title">  Asistencias</div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{route('faltas')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="x"></i> </div>
-                                    <div class="side-menu__title">Faltas</div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="side-menu-light-crud-data-list.html" class="side-menu">
-                                <div class="side-menu__icon"> <i> <svg xmlns="http://www.w3.org/2000/svg" 
-                                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-                                    class="lucide lucide-vote"><path d="m9 12 2 2 4-4"/><path d="M5 7c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v12H5V7Z"/><path d="M22 19H2"/></svg></i> </div>
-                                    <div class="side-menu__title">Solicitar permiso</div>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
                 @if ($filtro->torneo == 1)
                     <li>
                         <a href="javascript:;" class="side-menu">

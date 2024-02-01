@@ -23,6 +23,7 @@
                 data: users,
                 layout: "fitColumns",
                 pagination: "local",
+                resizableColumns: false,  
                 paginationSize: 24,
                 tooltips: true,
                 columns: [{
@@ -30,25 +31,21 @@
                         field: "name",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Apellido",
                         field: "apellido",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Correo",
                         field: "correo",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Codigo",
                         field: "codigo",
                         sorter: "number",
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, 
                     {
                         title: "Activar",
@@ -64,12 +61,8 @@
                             });
                             return button;
                         }, 
-                        hozAlign: "center",
                     },
                 ],
-                //rowClick: function(e, row) {
-                //    alert("Row " + row.getData().playerid + " Clicked!!!!");
-                //},
             });
 
             function activarPrestador(value) {
