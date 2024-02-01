@@ -929,7 +929,18 @@ class PrestadorController extends Controller
     public function show_reportes(){
         $user_id = Auth::user()->id;
         $reportes = DB::select("Select * from reportes_s_s where id_prestador = $user_id");
-        return view('prestador.reportes_parciales',['reportes' =>$reportes]);
+        
+        
+        
+        //Validar oficio
+        $oficio = (count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Oficio de comision'"))==0)? true : false;
+        $reporte1 = (!$oficio && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte parcial 1'"))==0)? true : false;
+        $reporte2 = (!$oficio && !$reporte1 && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte parcial 2'"))==0)? true : false;
+        $reporte3 = (!$oficio && !$reporte1 && !$reporte2 && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte parcial 3'"))==0)? true : false;
+        $final = (!$oficio && !$reporte1 && !$reporte2 && !$reporte3 && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte final'"))==0)? true : false;
+        //Validar reportes parciales 
+        return view('prestador.reportes_parciales',['reportes' =>$reportes, 'oficio' => $oficio, 
+        'reporte1'=>$reporte1, 'reporte2'=>$reporte2, 'reporte3'=> $reporte3, 'final'=> $final]);
     }
 
     public function subir_reportes_parciales(Request $request){
@@ -942,10 +953,10 @@ class PrestadorController extends Controller
             'tipo_reporte.required'=> 'El campo tipo es obligatorio'
         ]);
 
+        
         // Obtener el usuario autenticado
         $user_id = Auth::user()->id;
-        $tipo_reporte = $request->tipo_reporte;
-
+        $tipo_reporte = $request->tipo_reporte; 
 
         // Almacenar el archivo
         $reporte_path = $request->file('reporte_parcial')->store('public/reportes_parciales/');

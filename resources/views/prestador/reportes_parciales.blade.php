@@ -24,7 +24,6 @@
             <h6 class="alert alert-danger" id="error">{{$message}}</h6>
         @enderror
     </div>
-
     <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
         <h2 class="text-lg font-medium mr-auto">Reportes parciales</h2>
         <div class="text-center">
@@ -124,11 +123,27 @@
                                                 </div>
                                             </label>
                                         </div>
+
                                         <select class="form-select mt-2 sm:mr-2" aria-label="Default select example" name="tipo_reporte" id="tipo_reporte">
                                             <option value="{{null}}">Seleccione un tipo reporte</option>
-                                            <option value="Reporte parcial">Reporte parcial</option>
-                                            <option value="Oficio de comision">Oficio de comisión</option>
-                                            <option value="Reporte final">Reporte final</option>
+                                            
+                                            @if($oficio)
+                                                <option value="Oficio de comision">Oficio de comisión</option>
+                                            @endif
+                                            @if ($reporte1)
+                                                <option value="Reporte parcial 1">Reporte parcial 1</option>
+                                            @endif
+                                            @if ($reporte2)
+                                                <option value="Reporte parcial 2">Reporte parcial 2</option>
+                                            @endif
+                                            @if ($reporte3)
+                                                <option value="Reporte parcial 3">Reporte parcial 3</option>
+                                            @endif
+                                            
+                                            @if ($final)
+                                                <option value="Reporte final">Reporte final</option>
+                                            @endif
+                                            
                                         </select>
                                         
                                     </div>
