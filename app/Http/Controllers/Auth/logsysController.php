@@ -90,7 +90,7 @@ class logsysController extends Controller
 
     public function filtroSede($id){
 
-        $area=    DB::table('filtrosede')
+        $area=    DB::table('filtrosedes')
             ->where('id_Sede', $id)
             ->get();
 

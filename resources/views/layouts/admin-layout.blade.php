@@ -77,7 +77,7 @@
                     </li>
                     {{--
                     <li>
-                        <a href="{{ route('admin.firmasPendientes') }}" class="side-menu">
+                        <a href="{{ route('') }}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="award"></i> </div>
                             <div class="side-menu__title">Registrar recompensas</div>
                         </a>
@@ -109,15 +109,15 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('admin.sedes')}}" class="side-menu">
+                        <a href="{{route('admin.sede')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
-                            <div class="side-menu__title">Gestión sedes</div>
+                            <div class="side-menu__title">Modificar sede</div>
                         </a>
                     </li>
                     <li>
                         <a href="{{route('admin.categorias')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
-                            <div class="side-menu__title">Gestión categorias</div>
+                            <div class="side-menu__title">Añadir categorias</div>
                         </a>
                     </li>
                 </ul>
@@ -525,7 +525,7 @@
                     </li>
                     <li>
                         <a href="{{route('admin.watch_prints')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="kanban-square-dashed"></i> </div>
+                        <div class="side-menu__icon"> <i data-lucide="kanban-square-dashed"></i> </div>
                             <div class="side-menu__title">Gestión Impresiones</div>
                         </a>
                     </li>
@@ -554,39 +554,6 @@
         @endsection
     @endif
 @endif
-
-    @section('asistencias'){{--
-        <li>
-            <a href="#" class="side-menu">
-                <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-check-2">
-                            <path d="M21 14V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8" />
-                            <line x1="16" x2="16" y1="2" y2="6" />
-                            <line x1="8" x2="8" y1="2" y2="6" />
-                            <line x1="3" x2="21" y1="10" y2="10" />
-                            <path d="m16 20 2 2 4-4" />
-                        </svg></i> </div>
-                <div class="side-menu__title">
-                    ASISTENCIAS (TEMPORAL, AUN NO SABEMOS SI SE QUEDARA O NO)
-                    <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
-                </div>
-            </a>
-            <ul class="">
-
-                <li>
-                    <a href="{{ route('admin.firmasPendientes') }}" class="side-menu">
-                        <div class="side-menu__icon"> <i data-lucide="check">!</i> </div>
-                        <div class="side-menu__title">Registro de Asistencia Pendientes</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('admin.faltas') }}" class="side-menu">
-                        <div class="side-menu__icon"> <i data-lucide="x"></i> </div>
-                        <div class="side-menu__title">Faltas</div>
-                    </a>
-                </li>
-            </ul>
-        </li> 
-    --}}@endsection
 
 @endsection
 

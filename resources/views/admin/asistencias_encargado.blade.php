@@ -50,8 +50,8 @@
             var table = new Tabulator("#players", {
                 height: "100%",
                 data: assist,
-                layout: "fitColumns",  // Utiliza layout en lugar de fitColumns
-                resizableColumns: false,  // Ajusté resizableColumns a false (sin comillas)
+                layout: "fitColumns",  
+                resizableColumns: false,  
                 pagination: "local",
                 paginationSize: 8,
                 tooltips: true,

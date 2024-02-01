@@ -10,7 +10,6 @@
         <link rel="modulepreload" href="{{ asset('build/assets/js/_commonjsHelpers.712cc82f.js') }}">
 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-        <link rel="stylesheet" type="text/css" href="https://www.virtuosoft.eu/code/bootstrap-duallistbox/bootstrap-duallistbox/v3.0.2/bootstrap-duallistbox.css">
 
         {{-- SCRIPTS --}}
         <script type="module" src="{{ asset('/build/assets/js/app.6c589841.js')}}"></script>

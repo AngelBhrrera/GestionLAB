@@ -43,10 +43,10 @@
                     <div class="form-group row">
                         <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Categoría</label>
                         <div class="col-md-6">
-                            <select class="form-control" id="tipo_categoria" name="tipo_categoria" required>
+                        <select class="form-control" id="tipo_categoria" name="tipo_categoria" required onchange="filtrarActividades()">
                                 <option value="">Selecciona una categoría</option>
                                 @foreach ($categorias as $categoria)
-                                <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+                                    <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -55,10 +55,10 @@
                     <div class="form-group row">
                         <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Subcategoría</label>
                         <div class="col-md-6">
-                            <select class="form-control" id="tipo_categoria" name="tipo_categoria" required>
-                                <option value="">Selecciona una categoría</option>
+                            <select class="form-control" id="tipo_subcategoria" name="tipo_subcategoria">
+                                <option value="">Selecciona una subcategoría</option>
                                 @foreach ($subcategorias as $subcategoria)
-                                <option value="{{ $categoria->id }}">{{ $subcategoria->nombre }}</option>
+                                <option value="{{ $subcategoria->id }}">{{ $subcategoria->nombre }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -104,7 +104,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="resultados" class="col-md-4 col-form-label text-md-right">Resultados</label>
+                        <label for="resultados" class="col-md-4 col-form-label text-md-right">Objetivos</label>
 
                         <div class="col-md-6">
                             <textarea id="resultados" type="text" class="form-control" name="resultados" required></textarea>
@@ -132,63 +132,37 @@
 @endsection
 
 @section('script')
-
-{{-- para que funcione todo, nota: este debe importarse primero si no, todo se chinga xd --}}
-<script src={{asset('plugins/jquery/jquery.min.js')}}></script>
-
-<!-- AdminLTE App -->
-{{-- para que funcionen los componentes de adminlte como los botones laterales xd --}}
-<script src={{asset('dist/js/adminlte.min.js')}}></script>
-
-{{-- componentes necesarios para que funcione el dualistbox --}}
-<script src={{asset('plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}></script>
-<script src="{{asset('plugins/moment/moment.min.js')}}"></script>
-<script src="{{asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
-
-<script type="text/javascript">
-    var demo1 = $('select[name="duallistbox_demo1[]"]').bootstrapDualListbox({
-        preserveSelectionOnMove: 'Mover ',
-        moveAllLabel: 'Mover todo',
-        removeAllLabel: 'Borrar todo'
-    });
-
-
-    $(function() {
-
-        $('#datetimepicker').datetimepicker({
-            icons: {
-                time: 'far fa-calendar'
-            },
-            minDate: new Date(),
-            daysOfWeekDisabled: [0],
-            format: 'DD/MM/YYYY HH:mm',
-
-        });
-    });
-</script>
-
 <script>
-    $(function() {
-        $('#timepicker').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm',
-            defaultDate: moment(),
-            icons: {
-                time: 'far fa-clock'
+function filtrarActividades() {
+        var categoriaSelect = document.getElementById('tipo_categoria');
+        var subcategoriaSelect = document.getElementById('tipo_subcategoria');
+        var categoriaId = categoriaSelect.value;
+
+        subcategoriaSelect.innerHTML = '<option value="">Selecciona una subcategoria (Opcional)</option>';
+
+        if (categoriaId === '') {
+            return;
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var actividades = JSON.parse(xhr.responseText);
+
+                    actividades.forEach(function(actividad) {
+                        var option = document.createElement('option');
+                        option.value = actividad.id;
+                        option.text = actividad.nombre;
+                        subcategoriaSelect.appendChild(option);
+                    });
+                } else {
+                    console.error('Error al obtener las actividades');
+                }
             }
-        });
-
-        // Cuando cambie la hora o los minutos, actualizar el campo time_estimado
-        $('#horas, #minutos').on('change', function() {
-            var horas = $('#horas').val();
-            var minutos = $('#minutos').val();
-            var fecha = moment($('#timepicker').datetimepicker('date'));
-
-            fecha.hours(horas);
-            fecha.minutes(minutos);
-
-            $('input[name="time_estimado"]').val(fecha.format('YYYY-MM-DD HH:mm'));
-        });
-    });
+        };
+        xhr.open('GET', '{{ route('admin.obtenerSubcategorias') }}?categoriaId=' + categoriaId);
+        xhr.send();
+    }
 </script>
-
 @endsection
