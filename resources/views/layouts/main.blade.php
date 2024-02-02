@@ -17,7 +17,7 @@
         <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
         <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
-        {{-- <script src="{{ asset('dist/js/adminlte.min.js') }}"></script> --}}
+        {{--<script src="{{ asset('dist/js/adminlte.min.js') }}"></script>--}}
 
         <script src="{{ asset('plugins/moment/moment.min.js')}}"></script>
         <script src="{{ asset('build/assets/js/xlsx.full.min.js')}}"></script>
@@ -30,6 +30,6 @@
         <script src="{{asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
 
         @yield('script')
-        
+        @include('../layouts/components/quitarAlerta')
     </body>
 @endsection

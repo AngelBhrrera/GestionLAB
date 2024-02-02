@@ -164,11 +164,11 @@
             });
             
         }
-        setTimeout(function(){
+        // setTimeout(function(){
 
-            document.getElementById("alerta").style.display="none";
+        //     document.getElementById("alerta").style.display="none";
 
-        }, 4000);
+        // }, 4000);
     </script>
     
 @endsection
