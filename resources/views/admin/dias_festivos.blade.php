@@ -65,5 +65,57 @@
         </div>
     </div>
 
+    <div class="col-span-12 sm:col-span-6">
+        <div class="intro-y box p-5 mt-5">
+        <h3 class="text-2xl mt-5 font-small">Lista de sedes</h3>
+        <div class="text-center mx-auto" style="padding-left: 10px" id="sedes"></div>
+        </div>
+    </div>
+
     <div style="height: 65px;"></div>
+@endsection
+
+@section('script')
+    <script type="text/javascript">
+
+            var sedes = {!! $no_laboral !!};
+
+            var table = new Tabulator("#sedes", {
+                height:"100%",
+                data: sedes,
+                layout: "fitColumns",
+                resizableColumns: "false",
+                fitColumns: "true",
+                pagination: "local",
+                paginationSize: 10,
+                tooltips: true,
+                columns: [{
+                        title: "ID",
+                        field: "id",
+                        visible: false,
+                        width: 2,
+                    }, {
+                        title: "Nombre Sede",
+                        field: "nombre_Sede",
+                        headerFilter: "input",
+                        sorter: "string",
+                        hozAlign: "center",
+                    }, {
+                        title: "Estado",
+                        field: "activa",
+                        formatter: function(cell, formatterParams, onRendered) {
+                            var estado = cell.getValue();
+                            var icono = "";
+                            if (estado == "1") {
+                                icono = "✔️";
+                            } else if (estado == "0") {
+                                icono = "❌";
+                            }
+                            return icono;
+                        },
+                        hozAlign: "center",
+                    }
+                ],
+            });
+    </script>
 @endsection
