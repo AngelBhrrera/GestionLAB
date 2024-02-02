@@ -103,12 +103,16 @@ class logsysController extends Controller
 
         $users = DB::table('users')
         ->where('area', $area)
-        ->where('horario', $t)
+        ->where(function ($query) use ($t) {
+            $query->where('horario', $t)
+                ->orWhere('horario', 'No Aplica');
+        }) 
         ->where(function ($query) {
             $query->where('tipo', 'encargado')
                 ->orWhere('tipo', 'admin');
         })
         ->get();
+
         return response()->json($users);
     }
 

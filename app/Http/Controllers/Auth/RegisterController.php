@@ -158,6 +158,8 @@ class RegisterController extends Controller
                 $vEncargado = $data['id_encargado'];
                 break;
             case 'admin':
+                $vArea = $data['area'];
+            case 'admin_sede':     
                 $vSede = $data['sede'];
                 break;
         }

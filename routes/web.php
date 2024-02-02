@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
-//Estimado prestador de servicio que tiene que dar mantenimiento a esta fregadera
+//Estimado prestador de servicio que tiene que dar mantenimiento a esta fregadera [Abril, 2023]
 
         //mire compa, al chile cuando empezamos esto no sabiamos un carajo, tuvimos que improvisar jeje
         // suerte
@@ -13,8 +13,16 @@ use Illuminate\Support\Facades\Artisan;
         //pd2. pura clika 14 alv
         //pd3. Uwu
 
-//Rutas generales
+//Estimado prestador de servicio al que le toco continuar con este proyecto... [Febrero, 2024]
+        //Asi como los de sistemas, empezamos sin saber nada de Laravel, Migraciones, AJAX y Tailwind
+        //Sin embargo tratamos de darle un mejor orden. No es perfecto, pero es trabajo honesto
+        //Como dijo un gran ingeniero:
+        //    "Always leave a place better than you found it."
+        //                                          ―Iron Man
+        //PD.
+        
 
+//Rutas generales
 Auth::routes([
     'verify' => false,
 ]);
@@ -27,7 +35,6 @@ Route::get('/spiderw', function(){
     return view('/TEST/spider');
 })->name('spider');
 
-
 Route::controller(App\Http\Controllers\LandingController::class)->group(function(){
     Route::get('/inventores', 'index')->name('landing');
     Route::get('/devTeam', 'devTeam')->name('devTeam');
@@ -38,19 +45,22 @@ Route::controller(App\Http\Controllers\Auth\RegisterController::class)->group(fu
     Route::post('/registro', 'register')->name('registrar');
 });
 Route::controller(App\Http\Controllers\Auth\logsysController::class)->group(function(){
-    
+
     Route::get('/', 'redirectTo')->name('root');
     Route::get('/register', 'show')->name('register')->middleware('guest');
     Route::get('/login', 'log')->name('login')->middleware('guest');
     Route::post('/login', 'loginF')->name('login');
     Route::get('/logout', 'logoutF')->name('logout');
-    Route::get('/sede/{id}', 'filtroSede')->name('filtroSede');
-    Route::get('/area/{id}', 'filtroArea')->name('filtroArea');
-    Route::get('/turno/{t}/{sed}', 'filtroTurno')->name('filtroTurno');
 
-    Route::get('admin/sede/{id}', 'filtroSede')->name('filtroSede');
-    Route::get('admin/area/{id}', 'filtroArea')->name('filtroArea');
-    Route::get('admin/turno/{t}/{sed}', 'filtroTurno')->name('filtroTurno');
+    Route::name('api.')->group(function () {
+        Route::get('/sede/{id}', 'filtroSede')->name('filtroSede');
+        Route::get('/area/{id}', 'filtroArea')->name('filtroArea');
+        Route::get('/turno/{t}/{sed}', 'filtroTurno')->name('filtroTurno');
+
+        Route::get('admin/sede/{id}', 'filtroSede')->name('filtroSede');
+        Route::get('admin/area/{id}', 'filtroArea')->name('filtroArea');
+        Route::get('admin/turno/{t}/{sed}', 'filtroTurno')->name('filtroTurno');
+    });
 });
 
 //Rutas de Admin gestionadas desde el AdminController
@@ -77,11 +87,6 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::get('admin/changestate/{id}/{value}', 'checkinstate')->name('checkinstate');
             });
         });
-
-        //ACTIVAR Y DESACTIVAR
-        //HORARIOS
-        //CHECKIN
-        //CREAR ACTIVIDADES Y CATEGORIAS
 
         Route::post('/actualizarcursos1',  'guardarcursos1')->name('actualizarcursos1');
         Route::post('/actualizarcursos2', 'guardarcursos2')->name('actualizarcursos2');

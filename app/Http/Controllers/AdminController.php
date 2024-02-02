@@ -60,26 +60,32 @@ class AdminController extends Controller
 
     public function registro()
     {
-        $area = null;
-        $encargado = null;
-        if (in_array(Auth::user()->tipo, ['encargado', 'admin'])) {
-            $id = Auth::user()->sede;
-            $sede = DB::select("SELECT * FROM sedes WHERE id_sede = $id;");
-            $area = DB::select("SELECT * FROM filtrosedes WHERE id_sede = $id;");
-            $encargado = DB::table('users')
-                ->where(function ($query) {
-                    $query->where('tipo', 'admin')
-                        ->orWhere('tipo', 'encargado');
-                })
-                ->where('sede', $id)
-                ->get();
-        }else{
-            $sede = DB::select("SELECT * FROM sedes;");
-            $area = DB::select("SELECT * FROM filtrosedes;");
+        $id_S = Auth::user()->sede;
+        $id_A = Auth::user()->area;
+        $areas = null;
+        $users = [];
+        
+        $users[] = ['id' => 'ext', 'value' => 'externo', 'name' => 'Visitante Externo'];
+        $users[] = ['id' => "clientM", 'value' => 'maestro', 'name' => 'Visitante Maestro'];
+        $users[] = ['id' => "clientA", 'value' => 'alumno', 'name' => 'Visitante Alumno'];
+        $users[] = ['id' => "RBvoluntario", 'value' => 'voluntario', 'name' => 'Voluntario'];
+        $users[] = ['id' => "RBpracticante", 'value' => 'practicante', 'name' => 'Practicas Profesionales'];
+        $users[] = ['id' => "RBprestador", 'value' => 'prestador', 'name' => 'Prestador Servicio Social'];
+        $users[] = ['id' => "RBencargado", 'value' => 'encargado', 'name' => 'Encargado'];
 
+        if(in_array(Auth::user()->tipo, ['encargado', 'admin'])) {
+            $sedes = DB::select("SELECT * FROM sedes WHERE id_sede = $id_S;"); 
+            $areas =  DB::select("SELECT * FROM areas WHERE id = $id_A;");
+        }else if (Auth::user()->tipo == 'admin_sede'){
+            $sedes = DB::select("SELECT * FROM sedes WHERE id_sede = $id_S;"); 
+            $users[] = ['id' => "RBadmin", 'value' => 'admin', 'name' => 'Admin'];
+        }else if (Auth::user()->tipo == 'Superadmin'){
+            $sedes = DB::select("SELECT * FROM sedes;");
+            $users[] = ['id' => "RBadmin", 'value' => 'admin', 'name' => 'Admin'];
+            $users[] = ['id' => "RBadminsede", 'value' => 'admin_sede', 'name' => 'Admin de Sede'];
         }
         
-        return view('auth/registerAdmin', ['sede'=>$sede, 'area'=> $area, 'encargado'=>$encargado]);
+        return view('auth/registerAdmin', [ 'sedes'=>$sedes, 'areas'=>$areas, 'users'=>$users ]);
     }
 
     public function checkin()
@@ -89,6 +95,9 @@ class AdminController extends Controller
 
     public function prestadores()
     {
+        $n_area = DB::table('areas')
+            ->where('id', Auth::user()->area)
+            ->value('nombre_area');
         $n_sede = DB::table('sedes')
             ->where('id_sede', Auth::user()->sede)
             ->value('nombre_sede');
@@ -96,11 +105,17 @@ class AdminController extends Controller
         {
             $data = DB::table('solo_prestadores')
             ->get();
+        }else  if(Auth::user()->tipo == 'admin_sede')  {
+
+            $data = DB::table('solo_prestadores')
+                ->where('nombre_sede', $n_sede)
+                ->where('nombre_area', $n_area)
+                ->get();
         }else{
             $data = DB::table('solo_prestadores')
-                ->where('sede', $n_sede)
+                ->where('nombre_area', $n_area)
                 ->get();
-        }   
+        }
         return view('admin/activos', ['datos' => json_encode($data)]);
     }
 
@@ -257,7 +272,7 @@ class AdminController extends Controller
         {
       
             $prestadores = DB::table('solo_prestadores')
-                ->where('sede', auth()->user()->sede)
+                ->where('id_area', auth()->user()->area)
                 ->where('horario', auth()->user()->horario)
                 ->get();
     
@@ -391,9 +406,9 @@ class AdminController extends Controller
     public function general()
     {
         $data = DB::table('users')
-            ->select('users.name', 'users.apellido', 'users.correo', 'users.codigo', 'users.tipo', 'users.telefono', 'sede.nombre_sede')
+            ->select('users.name', 'users.apellido', 'users.correo', 'users.codigo', 'users.tipo', 'users.telefono', 'areas.nombre_area')
             ->whereNotIn('users.tipo', ['Admin', 'Superadmin'])
-            ->join('sede', 'users.sede', '=', 'sede.id_sede')
+            ->join('areas', 'users.area', '=', 'areas.id')
             ->get();
 
         return view('admin/general_users', ['datos' => json_encode($data)]);

@@ -468,7 +468,7 @@
         var horarioSelect = document.getElementById('horarios');
         var encargadoSelect = document.getElementById('id_encargado');
         var horario = horarioSelect.value;
-        var sede = sedeSelect.value;
+        var area = document.getElementById('area').value;
         encargadoSelect.innerHTML = '<option value=""> Selecciona un encargado</option>';
         if (horario === '') {
             encargadoSelect.disabled = true;
@@ -490,7 +490,7 @@
                     }
                 }
             };
-            xhr.open('GET', 'turno/' + horario + '/' + sede);
+            xhr.open('GET', 'turno/' + horario + '/' + area);
             xhr.send();
         }
     }
