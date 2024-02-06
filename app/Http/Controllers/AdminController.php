@@ -664,20 +664,6 @@ class AdminController extends Controller
 
     //CONTROL DE SEDES
 
-    public function gestionSedes(){
-        
-        if(auth()->user()->tipo == 'Superadmin'){
-            $sedes = DB::table('sedes_areas')->get();
-            $s = DB::table('sedes')->get();
-        }else{
-            $sedes = DB::table('sedes_areas')->where('id_sede', '=', auth()->user()->sede)->get();
-            $s = DB::table('sedes')->where('id_sede', '=', auth()->user()->sede)->get();
-        }
-
-        
-        return view("admin.sedes", ['s'=>$s, 'tabla_sedes' => json_encode($sedes)]);
-    }
-
     public function nuevaSede(Request $request){
         $request->validate([
             'nombreSede' => 'required|max:255',
@@ -686,29 +672,133 @@ class AdminController extends Controller
         $buscarSede = DB::Select("Select nombre_sede from sedes where nombre_sede = '$request->nombreSede'");
         if (count($buscarSede)==0){
             $nombre=$request->input("nombreSede");
-            DB::insert("INSERT INTO sedes (nombre_sede) Values('$nombre')");
-            return redirect(route('admin.sede'))->with('success', 'Creada correctamente');
+            DB::insert("INSERT INTO sedes (nombre_sede, turnoMatutino, turnoMediodia, turnoVespertino, turnoSabatino, 
+            turnoTiempoCompleto, no_Aplica) Values('$nombre', 1,1,1,1,1,1)");
+            return redirect(route('admin.sedes'))->with('success', 'Creada correctamente');
         }else{
-            return redirect(route('admin.sede'))->with('warning', "Ya existe una sede con ese nombre");
+            return redirect(route('admin.sedes'))->with('warning', "Ya existe una sede con ese nombre");
         }
+         
+    }
+    
+    public function gestionSede(){
+
+        $gest = DB::table('filtrosedes as f')
+            ->select('f.*', 'v.*')
+            ->join('sedes_vistas as v', 'v.id', '=', 'f.id_sede')
+            ->get();
+        
+
+        if(Auth::user()->sede != 'Superadmin'){
+            $gest = DB::table('filtrosedes as f')
+            ->select('f.*', 'v.*')
+            ->join('sedes_vistas as v', 'v.id', '=', 'f.id_sede')
+            ->where('f.id_sede', '=', Auth()->user()->sede)
+            ->get();
+            
+        }
+
+        $areasNoDeseadas = $gest->pluck('area_id')->toArray();
+        $areas = DB::table('areas')
+            //->whereNotIn('id', $areasNoDeseadas)
+            ->get();
+        
+        return view("admin.modificar_sedes", ['gest' => $gest, 'areas' => $areas]);
     }
 
-    public function nuevaArea(Request $request){
-        $request->validate([
-            'nombreSede' => 'required|max:255',
-        ]);
+    public function gestionSedes(){
 
+        $sede = DB::table('sedes')->where('id_sede', '!=', '0');
+
+        return view("admin.modificar_sedes", ['sede'=>$sede, 'tabla_sedes' => json_encode($sede)]);
+    }
+
+    public function  modificarSede(Request $request){
+        
+        $nombre=$request->input("nuevoNombre");
+        
+        $id=$request->input("idSede");
+        $matutino=($request->has("matutino")) ? 1 : 0;
+        $mediodia=($request->has("mediodia")) ? 1 : 0;
+        $vespertino=($request->has("vespertino")) ? 1 : 0;
+        $sabatino=($request->has("sabatino")) ? 1 : 0;
+        $completo=($request->has("completo")) ? 1 : 0;
+        $activa=($request->has("activa")) ? 1 : 0;
+
+        $nombreAnterior = DB::select("Select nombre_sede from sedes where id_sede=$id");
+
+        if($nombreAnterior[0]->nombre_sede === $nombre){
+            //no hace nada xd
+        }else{
+            $request->validate([
+                'nuevoNombre' => 'required|min:3|max:255|unique:sede,nombre_sede',
+            ]);
+            $buscarSede = DB::Select("Select nombre_sede from sedes where nombre_sede = '$nombre'");
+            if (count($buscarSede)>0){
+                return redirect(route('admin.sedes'))->with('warning', "Ya existe una sede con ese nombre");
+            }
+        }
+        
         $buscarSede = DB::Select("Select nombre_sede from sedes where nombre_sede = '$request->nombreSede'");
-        if (count($buscarSede)==0){
-            $nombre=$request->input("nombreSede");
-            DB::insert("INSERT INTO sedes (nombre_sede) Values('$nombre')");
-            return redirect(route('admin.sede'))->with('success', 'Creada correctamente');
-        }else{
-            return redirect(route('admin.sede'))->with('warning', "Ya existe una sede con ese nombre");
-        }
+        DB::update("Update sede 
+        set nombre_sede='$nombre',
+        turnoMatutino=$matutino,
+        turnoMediodia=$mediodia,
+        turnoVespertino=$vespertino,
+        turnoSabatino=$sabatino,
+        turnoTiempoCompleto=$completo,
+        activa=$activa
+        where id_sede=$id");
+
+        return redirect(route('admin.sedes'))->with('success', 'Modificada correctamente');
     }
 
+    public function gestionViews(){
 
+        $sedes = DB::table('sedes')->where('id_sede', '!=', 0)->get();
+        
+        return view("admin.sedes", ['sede'=>$sedes, 'tabla_sedes' => json_encode($sedes)]);
+    }
+
+    public function  modificarViews(Request $request){
+        
+        $nombre=$request->input("nuevoNombre");
+        
+        $id=$request->input("idSede");
+        $matutino=($request->has("matutino")) ? 1 : 0;
+        $mediodia=($request->has("mediodia")) ? 1 : 0;
+        $vespertino=($request->has("vespertino")) ? 1 : 0;
+        $sabatino=($request->has("sabatino")) ? 1 : 0;
+        $completo=($request->has("completo")) ? 1 : 0;
+        $activa=($request->has("activa")) ? 1 : 0;
+
+        $nombreAnterior = DB::select("Select nombre_sede from sedes where id_sede=$id");
+
+        if($nombreAnterior[0]->nombre_sede === $nombre){
+            //no hace nada xd
+        }else{
+            $request->validate([
+                'nuevoNombre' => 'required|min:3|max:255|unique:sede,nombre_sede',
+            ]);
+            $buscarSede = DB::Select("Select nombre_sede from sedes where nombre_sede = '$nombre'");
+            if (count($buscarSede)>0){
+                return redirect(route('admin.sedes'))->with('warning', "Ya existe una sede con ese nombre");
+            }
+        }
+        
+        $buscarSede = DB::Select("Select nombre_sede from sedes where nombre_sede = '$request->nombreSede'");
+        DB::update("Update sede 
+        set nombre_sede='$nombre',
+        turnoMatutino=$matutino,
+        turnoMediodia=$mediodia,
+        turnoVespertino=$vespertino,
+        turnoSabatino=$sabatino,
+        turnoTiempoCompleto=$completo,
+        activa=$activa
+        where id_sede=$id");
+
+        return redirect(route('admin.sedes'))->with('success', 'Modificada correctamente');
+    }
 
     //CALENDARIO
 
