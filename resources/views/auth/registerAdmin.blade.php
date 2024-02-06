@@ -160,8 +160,8 @@
                         <div class="intro-y col-span-12 sm:col-span-6" id="divArea">
                             <label for="area" class="form-label">Área de trabajo</label>
                             <select class="form-control" id="area" name="area" disabled onchange="filtroArea()">
+                                <option id="0" value="">Selecciona un área de trabajo</option>    
                                 @if (isset($areas))
-                                <option id="0" value="">Selecciona un área de trabajo</option>
                                     @foreach ($areas as $dato )
                                         <option id="{{$dato->id}}" value="{{$dato->id}}" data-nombre="{{$dato->nombre_area}}">{{$dato->nombre_area }} </option>
                                     @endforeach
