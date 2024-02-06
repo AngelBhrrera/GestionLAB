@@ -1,7 +1,7 @@
-@extends('layouts/admin-layout')
+@extends('layouts/prestador-layout')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
+    <li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">Registro</a></li>
     <li class="breadcrumb-item active" aria-current="page">Actividades</li>
 @endsection

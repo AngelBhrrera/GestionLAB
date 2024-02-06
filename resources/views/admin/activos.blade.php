@@ -26,7 +26,7 @@
                 pagination: "local",
                 resizableColumns: false,  
                 paginationSize: 24,
-                groupBy: "sede",
+                groupBy: "nombre_area",
                 tooltips: true,
                 columns: [{
                         title: "Nombre",

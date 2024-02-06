@@ -31,9 +31,9 @@
     </style>
 
     <?php   
-        $sede = Auth::user()->sede;
-        $filtro = DB::table('sedes_vistas')
-            ->where('id', $sede)
+        $area = Auth::user()->area;
+        $filtro = DB::table('modulos')
+            ->where('id', $area)
             ->first();
     ?>
 
@@ -42,7 +42,7 @@
 
 @section('scroll-menu')
     <li class="side-nav__devider mb-4">MENU</li>
-    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
         @section('gestion')
             <li>
                 <a href="#" class="side-menu">
@@ -109,23 +109,25 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('admin.sede')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
-                            <div class="side-menu__title">Modificar sede</div>
-                        </a>
-                    </li>
-                    <li>
                         <a href="{{route('admin.categorias')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
                             <div class="side-menu__title">Añadir categorias</div>
                         </a>
                     </li>
+                    @if (Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
+                    <li>
+                        <a href="{{route('admin.sede')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                            <div class="side-menu__title">Modificar sede</div>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
         @endsection
     @endif
 
-    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
         @section('prestadores_admin')
             <li>
                 <a href="#" class="side-menu">
@@ -240,7 +242,7 @@
     @endif
 
 @if ($filtro->visitas == 1)
-    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
         @section('contacto_admin')
             <li>
                 <a href="#" class="side-menu">
@@ -380,8 +382,8 @@
     @endif
 @endif
 
-@if ($filtro->torneo == 1)
-    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "Superadmin")
+@if ($filtro->gamificacion == 1)
+    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
         @section('actividades')
             <li>
                 <a href="javascript:;" class="side-menu">
@@ -578,7 +580,7 @@
                 </div>
                 <div class="intro-x relative ml-auto flex sm:mx-auto"></div>
                 <div class="intro-x relative ml-auto flex sm:mx-auto">
-                    @if (Auth::user()->tipo == "encargado" && Auth::user()->tipo != "Superadmin")
+                    @if (Auth::user()->tipo == "encargado")
                     <a href="{{ route('admin.cambiorol') }}">
                         <div class="container">
                             <img class="imagen-rol" title="Cambiar a Prestador" src="{{asset('build/assets/images/prestico3.svg')}}" width="30" height="30" alt="">

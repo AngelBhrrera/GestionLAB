@@ -108,8 +108,8 @@
 
         btn_guardar.disabled = false;
         datoSede = JSON.parse(selectSede.value);
-        campoNombre.value = datoSede.nombre_Sede;
-        idSede.value = datoSede.id_Sede;
+        campoNombre.value = datoSede.nombre_sede;
+        idSede.value = datoSede.id_sede;
         const propiedades = ['activa', 'turnoMatutino', 'turnoMediodia', 'turnoVespertino', 'turnoSabatino', 'turnoTiempoCompleto'];
 
         propiedades.forEach((propiedad, index) => {

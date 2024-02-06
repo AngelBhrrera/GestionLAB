@@ -42,7 +42,7 @@
                 @if (isset($gest))
                     <option id="gest" value="null">Selecciona una sede</option>
                     @foreach ($gest as $dato )
-                        <option id="{{$dato->nombre_Sede}}" value="{{json_encode($dato)}}">{{$dato->nombre_Sede }} </option>
+                        <option id="{{$dato->nombre_sede}}" value="{{json_encode($dato)}}">{{$dato->nombre_sede }} </option>
                     @endforeach
                 @endif
             </select>
@@ -94,8 +94,8 @@
             }
             btn_guardar.disabled = false;
             datoSede = JSON.parse(selectSede.value);
-            campoNombre.value=datoSede.nombre_Sede;
-            idSede.value = datoSede.id_Sede;
+            campoNombre.value=datoSede.nombre_sede;
+            idSede.value = datoSede.id_sede;
 
 
             if(datoSede.torneo == 1){

@@ -20,6 +20,62 @@ class PrestadorController extends Controller
         $this->middleware('auth');
     }
 
+    public function create_act()
+    {
+
+        $categorias = DB::table('categorias')->get();
+        $subcategorias = DB::table('subcategorias')->get();
+    
+        return view('/prestador/registro_nActividad_prestador',
+                ['categorias' => $categorias, 'subcategorias' => $subcategorias,]);
+    }
+
+    public function make_act(Request $request)
+    {
+
+        $categorias = DB::table('categorias')->get();
+        $actividades = DB::table('actividades')->get();
+    
+        $nomact = $request->input('nombre');
+
+        $categoria = $request->input('tipo_categoria');
+        $subcategoria = $request->input('tipo_subcategoria');
+        if($subcategoria == '')
+            $subcategoria = null;
+        $tipo = $request->input('tipo_actividad');
+
+        $desc = $request->input('descripcion');
+        $reso = $request->input('recursos');
+        $obj = $request->input('resultados');
+    
+        $horas = $request->input('horas')*60;
+        $minutos = $request->input('minutos');
+        $tec = $horas + $minutos;
+    
+        DB::table('actividades')->insert([
+            'titulo' => $nomact,
+            'id_categoria' => $categoria,
+            'id_subcategoria' => $subcategoria,
+            'tipo' => $tipo,                
+            'recursos' => $reso,
+            'descripcion' => $desc,
+            'objetivos' => $obj,
+
+            'TEC' => $tec,
+        ]);
+    
+        return view( 'prestador/asignar_actividad_prestador', ['categorias' => $categorias,'actividades' => $actividades]);
+    }
+
+    public function asign_act()
+    {
+
+        $categorias = DB::table('categorias')->get();
+        $actividades = DB::table('actividades')->get();
+    
+        return view( 'prestador/asignar_actividad_prestador', [ 'categorias' => $categorias, 'actividades' => $actividades]);
+    }    
+
     public function index()
     {
 
@@ -436,14 +492,14 @@ class PrestadorController extends Controller
         );
     }
 
-    public function registro_reporte()
+    public function actividadesPrestador()
     {
         $encargado_id = auth()->user()->encargado_id;
         $prestadores = DB::table('users')->select('id', 'name', 'apellido')->where('id', auth()->user()->id)->get();
         $categorias = DB::table('categorias')->get();
         $actividades = DB::table('actividades')->get();
 
-        return view('/prestador/registro_reporte_prestador', compact('prestadores', 'actividades', 'categorias'));
+        return view('/prestador/crear_actividad_prestador', compact('prestadores', 'actividades', 'categorias'));
     }
 
     public function obtenerActividades(Request $request)
@@ -692,8 +748,8 @@ class PrestadorController extends Controller
         $user = Auth::user();
 
         $sede = DB::table('sedes')
-        ->select('sedes.nombre_Sede', 'sedes.id_Sede')
-        ->where('sedes.id_Sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
+        ->select('sedes.nombre_sede', 'sedes.id_sede')
+        ->where('sedes.id_sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
         ->first();
 
         $nivel = DB::table('niveles')
@@ -915,15 +971,8 @@ class PrestadorController extends Controller
 
     public function cambiarRol()
     {
-        if (Auth::user()->tipo == "encargado") {
-
-                $user = User::find(Auth::user()->id);
-                if($user->tipo == "prestador"){
-                    $user->tipo="encargado";
-                    $user->save();
-                }
-                return redirect('/admin/home');
-        }
+        echo "<script>console.log('Mensaje en consola antes de redirección');</script>";
+        return redirect()->route('admin.home');
     }
 
     public function show_reportes(){

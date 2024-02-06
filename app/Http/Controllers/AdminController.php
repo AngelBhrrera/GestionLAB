@@ -60,26 +60,32 @@ class AdminController extends Controller
 
     public function registro()
     {
-        $area = null;
-        $encargado = null;
-        if (in_array(Auth::user()->tipo, ['encargado', 'admin'])) {
-            $id = Auth::user()->sede;
-            $sede = DB::select("SELECT * FROM sedes WHERE id_Sede = $id;");
-            $area = DB::select("SELECT * FROM filtrosedes WHERE id_Sede = $id;");
-            $encargado = DB::table('users')
-                ->where(function ($query) {
-                    $query->where('tipo', 'admin')
-                        ->orWhere('tipo', 'encargado');
-                })
-                ->where('sede', $id)
-                ->get();
-        }else{
-            $sede = DB::select("SELECT * FROM sedes;");
-            $area = DB::select("SELECT * FROM filtrosedes;");
+        $id_S = Auth::user()->sede;
+        $id_A = Auth::user()->area;
+        $areas = null;
+        $users = [];
+        
+        $users[] = ['id' => 'ext', 'value' => 'externo', 'name' => 'Visitante Externo'];
+        $users[] = ['id' => "clientM", 'value' => 'maestro', 'name' => 'Visitante Maestro'];
+        $users[] = ['id' => "clientA", 'value' => 'alumno', 'name' => 'Visitante Alumno'];
+        $users[] = ['id' => "RBvoluntario", 'value' => 'voluntario', 'name' => 'Voluntario'];
+        $users[] = ['id' => "RBpracticante", 'value' => 'practicante', 'name' => 'Practicas Profesionales'];
+        $users[] = ['id' => "RBprestador", 'value' => 'prestador', 'name' => 'Prestador Servicio Social'];
+        $users[] = ['id' => "RBencargado", 'value' => 'encargado', 'name' => 'Encargado'];
 
+        if(in_array(Auth::user()->tipo, ['encargado', 'admin'])) {
+            $sedes = DB::select("SELECT * FROM sedes WHERE id_sede = $id_S;"); 
+            $areas =  DB::select("SELECT * FROM areas WHERE id = $id_A;");
+        }else if (Auth::user()->tipo == 'admin_sede'){
+            $sedes = DB::select("SELECT * FROM sedes WHERE id_sede = $id_S;"); 
+            $users[] = ['id' => "RBadmin", 'value' => 'admin', 'name' => 'Admin'];
+        }else if (Auth::user()->tipo == 'Superadmin'){
+            $sedes = DB::select("SELECT * FROM sedes;");
+            $users[] = ['id' => "RBadmin", 'value' => 'admin', 'name' => 'Admin'];
+            $users[] = ['id' => "RBadminsede", 'value' => 'admin_sede', 'name' => 'Admin de Sede'];
         }
         
-        return view('auth/registerAdmin', ['sede'=>$sede, 'area'=> $area, 'encargado'=>$encargado]);
+        return view('auth/registerAdmin', [ 'sedes'=>$sedes, 'areas'=>$areas, 'users'=>$users ]);
     }
 
     public function checkin()
@@ -89,18 +95,27 @@ class AdminController extends Controller
 
     public function prestadores()
     {
+        $n_area = DB::table('areas')
+            ->where('id', Auth::user()->area)
+            ->value('nombre_area');
         $n_sede = DB::table('sedes')
-            ->where('id_Sede', Auth::user()->sede)
-            ->value('nombre_Sede');
+            ->where('id_sede', Auth::user()->sede)
+            ->value('nombre_sede');
         if(Auth::user()->tipo == 'Superadmin')
         {
             $data = DB::table('solo_prestadores')
             ->get();
+        }else  if(Auth::user()->tipo == 'admin_sede')  {
+
+            $data = DB::table('solo_prestadores')
+                ->where('nombre_sede', $n_sede)
+                ->where('nombre_area', $n_area)
+                ->get();
         }else{
             $data = DB::table('solo_prestadores')
-                ->where('sede', $n_sede)
+                ->where('nombre_area', $n_area)
                 ->get();
-        }   
+        }
         return view('admin/activos', ['datos' => json_encode($data)]);
     }
 
@@ -246,7 +261,7 @@ class AdminController extends Controller
         DB::table('users')
         ->where('id', $id)
         ->update([
-            'horario' => DB::table('sedes')->where('id_Sede', $sede)->value($n_Turno) == 1 ? $horario : DB::raw('horario')]);
+            'horario' => DB::table('sedes')->where('id_sede', $sede)->value($n_Turno) == 1 ? $horario : DB::raw('horario')]);
 
             return response()->json(['message' => 'Activado exitosamente']);
     }
@@ -257,7 +272,7 @@ class AdminController extends Controller
         {
       
             $prestadores = DB::table('solo_prestadores')
-                ->where('sede', auth()->user()->sede)
+                ->where('id_area', auth()->user()->area)
                 ->where('horario', auth()->user()->horario)
                 ->get();
     
@@ -284,16 +299,14 @@ class AdminController extends Controller
                 
             }else if(auth()->user()->tipo == 'admin'){
                 $prestadores = DB::table('solo_prestadores')
-                ->where('id_Sede', auth()->user()->sede)
+                ->where('id_sede', auth()->user()->sede)
                 ->get();
             }else{
                 $prestadores = DB::table('solo_prestadores')
-                ->where('id_Sede', auth()->user()->sede)
+                ->where('id_sede', auth()->user()->sede)
                 ->where('horario', auth()->user()->horario)
                 ->get();
             }
-
-            
 
             $actividades = DB::table('actividades')->get();
     
@@ -302,7 +315,6 @@ class AdminController extends Controller
                 [
                     'prestadores' => $prestadores,
                     'actividades' => $actividades,
-    
                 ]
             );
         }
@@ -311,7 +323,7 @@ class AdminController extends Controller
         {
     
             $prestadores = DB::table('solo_prestadores')
-            ->where('sede', auth()->user()->sede)
+            ->where('id_sede', auth()->user()->sede)
             ->where('horario', auth()->user()->horario)
             ->get();
     
@@ -359,18 +371,18 @@ class AdminController extends Controller
         {
 
             $n_Sede =  DB::table('sedes')
-            ->select('nombre_Sede')
-            ->where('id_Sede', auth()->user()->sede)
+            ->select('nombre_sede')
+            ->where('id_sede', auth()->user()->sede)
             ->get();
 
            
                 if (auth()->user()->tipo == "admin") {
                     $prestadores = DB::table('solo_prestadores')
-                        ->where('sede', $n_Sede->first()->nombre_Sede)
+                        ->where('nombre_sede', $n_Sede->first()->nombre_sede)
                         ->get();
                 } else {
                     $prestadores = DB::table('solo_prestadores')
-                        ->where('sede', $n_Sede->first()->nombre_Sede)
+                        ->where('nombre_sede', $n_Sede->first()->nombre_sede)
                         ->where('horario', auth()->user()->horario)
                         ->get();
                 }
@@ -391,9 +403,9 @@ class AdminController extends Controller
     public function general()
     {
         $data = DB::table('users')
-            ->select('users.name', 'users.apellido', 'users.correo', 'users.codigo', 'users.tipo', 'users.telefono', 'sede.nombre_Sede')
+            ->select('users.name', 'users.apellido', 'users.correo', 'users.codigo', 'users.tipo', 'users.telefono', 'areas.nombre_area')
             ->whereNotIn('users.tipo', ['Admin', 'Superadmin'])
-            ->join('sede', 'users.sede', '=', 'sede.id_Sede')
+            ->join('areas', 'users.area', '=', 'areas.id')
             ->get();
 
         return view('admin/general_users', ['datos' => json_encode($data)]);
@@ -432,7 +444,7 @@ class AdminController extends Controller
     public function control_print()
     {
         $data = DB::table('impresoras')
-        ->where('id_Sede', auth()->user()->sede)
+        ->where('id_sede', auth()->user()->sede)
         ->get();
 
         return view('admin/registro_impresora',
@@ -488,7 +500,7 @@ class AdminController extends Controller
             'nombre' => $name,
             'marca' => $mark,
             'tipo' => $type,
-            'id_Sede' =>auth()->user()->sede
+            'id_sede' =>auth()->user()->sede
 
         ]);
 
@@ -610,8 +622,8 @@ class AdminController extends Controller
     public function watch_visits()
     {            
         $n_sede = DB::table('sedes')
-            ->where('id_Sede', Auth::user()->sede)
-            ->value('nombre_Sede');
+            ->where('id_sede', Auth::user()->sede)
+            ->value('nombre_sede');
         $data = DB::table('visitas')
             ->orderBy('id', 'DESC')
             ->get();
@@ -652,141 +664,51 @@ class AdminController extends Controller
 
     //CONTROL DE SEDES
 
+    public function gestionSedes(){
+        
+        if(auth()->user()->tipo == 'Superadmin'){
+            $sedes = DB::table('sedes_areas')->get();
+            $s = DB::table('sedes')->get();
+        }else{
+            $sedes = DB::table('sedes_areas')->where('id_sede', '=', auth()->user()->sede)->get();
+            $s = DB::table('sedes')->where('id_sede', '=', auth()->user()->sede)->get();
+        }
+
+        
+        return view("admin.sedes", ['s'=>$s, 'tabla_sedes' => json_encode($sedes)]);
+    }
+
     public function nuevaSede(Request $request){
         $request->validate([
             'nombreSede' => 'required|max:255',
         ]);
 
-        $buscarSede = DB::Select("Select nombre_Sede from sedes where nombre_Sede = '$request->nombreSede'");
+        $buscarSede = DB::Select("Select nombre_sede from sedes where nombre_sede = '$request->nombreSede'");
         if (count($buscarSede)==0){
             $nombre=$request->input("nombreSede");
-            DB::insert("INSERT INTO sedes (nombre_Sede, turnoMatutino, turnoMediodia, turnoVespertino, turnoSabatino, 
-            turnoTiempoCompleto, no_Aplica) Values('$nombre', 1,1,1,1,1,1)");
-            return redirect(route('admin.sedes'))->with('success', 'Creada correctamente');
+            DB::insert("INSERT INTO sedes (nombre_sede) Values('$nombre')");
+            return redirect(route('admin.sede'))->with('success', 'Creada correctamente');
         }else{
-            return redirect(route('admin.sedes'))->with('warning', "Ya existe una sede con ese nombre");
+            return redirect(route('admin.sede'))->with('warning', "Ya existe una sede con ese nombre");
         }
-         
-    }
-    
-    public function gestionSede(){
-
-        $gest = DB::table('filtrosedes as f')
-            ->select('f.*', 'v.*')
-            ->join('sedes_vistas as v', 'v.id', '=', 'f.id_Sede')
-            ->get();
-        
-
-        if(Auth::user()->sede != 'Superadmin'){
-            $gest = DB::table('filtrosedes as f')
-            ->select('f.*', 'v.*')
-            ->join('sedes_vistas as v', 'v.id', '=', 'f.id_Sede')
-            ->where('f.id_Sede', '=', Auth()->user()->sede)
-            ->get();
-            
-        }
-
-        $areasNoDeseadas = $gest->pluck('area_id')->toArray();
-        $areas = DB::table('areas')
-            //->whereNotIn('id', $areasNoDeseadas)
-            ->get();
-        
-        return view("admin.modificar_sedes", ['gest' => $gest, 'areas' => $areas]);
     }
 
-    public function gestionSedes(){
+    public function nuevaArea(Request $request){
+        $request->validate([
+            'nombreSede' => 'required|max:255',
+        ]);
 
-        $sede = DB::table('sedes')->where('id_Sede', '!=', '0');
-
-        return view("admin.modificar_sedes", ['sede'=>$sede, 'tabla_sedes' => json_encode($sede)]);
-    }
-
-    public function  modificarSede(Request $request){
-        
-        $nombre=$request->input("nuevoNombre");
-        
-        $id=$request->input("idSede");
-        $matutino=($request->has("matutino")) ? 1 : 0;
-        $mediodia=($request->has("mediodia")) ? 1 : 0;
-        $vespertino=($request->has("vespertino")) ? 1 : 0;
-        $sabatino=($request->has("sabatino")) ? 1 : 0;
-        $completo=($request->has("completo")) ? 1 : 0;
-        $activa=($request->has("activa")) ? 1 : 0;
-
-        $nombreAnterior = DB::select("Select nombre_Sede from sedes where id_Sede=$id");
-
-        if($nombreAnterior[0]->nombre_Sede === $nombre){
-            //no hace nada xd
+        $buscarSede = DB::Select("Select nombre_sede from sedes where nombre_sede = '$request->nombreSede'");
+        if (count($buscarSede)==0){
+            $nombre=$request->input("nombreSede");
+            DB::insert("INSERT INTO sedes (nombre_sede) Values('$nombre')");
+            return redirect(route('admin.sede'))->with('success', 'Creada correctamente');
         }else{
-            $request->validate([
-                'nuevoNombre' => 'required|min:3|max:255|unique:sede,nombre_Sede',
-            ]);
-            $buscarSede = DB::Select("Select nombre_Sede from sedes where nombre_Sede = '$nombre'");
-            if (count($buscarSede)>0){
-                return redirect(route('admin.sedes'))->with('warning', "Ya existe una sede con ese nombre");
-            }
+            return redirect(route('admin.sede'))->with('warning', "Ya existe una sede con ese nombre");
         }
-        
-        $buscarSede = DB::Select("Select nombre_Sede from sedes where nombre_Sede = '$request->nombreSede'");
-        DB::update("Update sede 
-        set nombre_Sede='$nombre',
-        turnoMatutino=$matutino,
-        turnoMediodia=$mediodia,
-        turnoVespertino=$vespertino,
-        turnoSabatino=$sabatino,
-        turnoTiempoCompleto=$completo,
-        activa=$activa
-        where id_Sede=$id");
-
-        return redirect(route('admin.sedes'))->with('success', 'Modificada correctamente');
     }
 
-    public function gestionViews(){
 
-        $sedes = DB::table('sedes')->where('id_Sede', '!=', 0)->get();
-        
-        return view("admin.sedes", ['sede'=>$sedes, 'tabla_sedes' => json_encode($sedes)]);
-    }
-
-    public function  modificarViews(Request $request){
-        
-        $nombre=$request->input("nuevoNombre");
-        
-        $id=$request->input("idSede");
-        $matutino=($request->has("matutino")) ? 1 : 0;
-        $mediodia=($request->has("mediodia")) ? 1 : 0;
-        $vespertino=($request->has("vespertino")) ? 1 : 0;
-        $sabatino=($request->has("sabatino")) ? 1 : 0;
-        $completo=($request->has("completo")) ? 1 : 0;
-        $activa=($request->has("activa")) ? 1 : 0;
-
-        $nombreAnterior = DB::select("Select nombre_Sede from sedes where id_Sede=$id");
-
-        if($nombreAnterior[0]->nombre_Sede === $nombre){
-            //no hace nada xd
-        }else{
-            $request->validate([
-                'nuevoNombre' => 'required|min:3|max:255|unique:sede,nombre_Sede',
-            ]);
-            $buscarSede = DB::Select("Select nombre_Sede from sedes where nombre_Sede = '$nombre'");
-            if (count($buscarSede)>0){
-                return redirect(route('admin.sedes'))->with('warning', "Ya existe una sede con ese nombre");
-            }
-        }
-        
-        $buscarSede = DB::Select("Select nombre_Sede from sedes where nombre_Sede = '$request->nombreSede'");
-        DB::update("Update sede 
-        set nombre_Sede='$nombre',
-        turnoMatutino=$matutino,
-        turnoMediodia=$mediodia,
-        turnoVespertino=$vespertino,
-        turnoSabatino=$sabatino,
-        turnoTiempoCompleto=$completo,
-        activa=$activa
-        where id_Sede=$id");
-
-        return redirect(route('admin.sedes'))->with('success', 'Modificada correctamente');
-    }
 
     //CALENDARIO
 

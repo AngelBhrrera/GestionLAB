@@ -26,10 +26,10 @@ class logsysController extends Controller
         if(Auth::attempt($credentials, $remember)){
 
             $request->session()->regenerate();
-
             return redirect('/');
             
         }else{
+
           return redirect('/login')->with('FAIL', 'Correo o contraseña incorrecta');
         }
 
@@ -42,6 +42,7 @@ class logsysController extends Controller
         switch ($role) {
            
             case 'admin':
+            case 'admin_sede':
             case 'Superadmin':
                 return redirect('/admin/home');
                 break;
@@ -91,23 +92,35 @@ class logsysController extends Controller
     public function filtroSede($id){
 
         $area=    DB::table('filtrosedes')
-            ->where('id_Sede', $id)
+            ->where('id_sede', $id)
             ->get();
 
         return response()->json($area);
     }
 
-    public function filtroTurno($t, $sede){
+    public function filtroArea($id){
 
-        $turno = DB::table('users')
-        ->where('sede', $sede)
-        ->where('horario', $t)
+        $turno = DB::table('areas')
+        ->where('id', $id)
+        ->get();
+        return response()->json($turno);
+    }
+
+    public function filtroTurno($t, $area){
+
+        $users = DB::table('users')
+        ->where('area', $area)
+        ->where(function ($query) use ($t) {
+            $query->where('horario', $t)
+                ->orWhere('horario', 'No Aplica');
+        }) 
         ->where(function ($query) {
             $query->where('tipo', 'encargado')
                 ->orWhere('tipo', 'admin');
         })
         ->get();
-        return response()->json($turno);
+
+        return response()->json($users);
     }
 
 }

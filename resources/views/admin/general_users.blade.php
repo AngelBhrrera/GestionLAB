@@ -30,7 +30,7 @@
                 resizableColumns: false,  
                 paginationSize: 8,
                 tooltips: true,
-                groupBy:"nombre_Sede",
+                groupBy:"nombre_area",
                 columns: [{
                         title: "Nombre",
                         field: "name",
