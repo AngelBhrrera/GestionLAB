@@ -308,8 +308,6 @@ class AdminController extends Controller
                 ->get();
             }
 
-            
-
             $actividades = DB::table('actividades')->get();
     
             return view(
@@ -317,7 +315,6 @@ class AdminController extends Controller
                 [
                     'prestadores' => $prestadores,
                     'actividades' => $actividades,
-    
                 ]
             );
         }
@@ -326,7 +323,7 @@ class AdminController extends Controller
         {
     
             $prestadores = DB::table('solo_prestadores')
-            ->where('sede', auth()->user()->sede)
+            ->where('id_sede', auth()->user()->sede)
             ->where('horario', auth()->user()->horario)
             ->get();
     
@@ -381,11 +378,11 @@ class AdminController extends Controller
            
                 if (auth()->user()->tipo == "admin") {
                     $prestadores = DB::table('solo_prestadores')
-                        ->where('sede', $n_Sede->first()->nombre_sede)
+                        ->where('nombre_sede', $n_Sede->first()->nombre_sede)
                         ->get();
                 } else {
                     $prestadores = DB::table('solo_prestadores')
-                        ->where('sede', $n_Sede->first()->nombre_sede)
+                        ->where('nombre_sede', $n_Sede->first()->nombre_sede)
                         ->where('horario', auth()->user()->horario)
                         ->get();
                 }
