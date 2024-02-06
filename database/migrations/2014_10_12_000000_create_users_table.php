@@ -61,7 +61,9 @@ class CreateUsersTable extends Migration
             "centro"=> null,
             "carrera"=> "INCO",
             "fecha_salida" => null,
+            "horario" => null,
             "encargado_id" => null,
+            "horario" => null,
             "imagen_perfil" => null,
             "experiencia" => null
         ]);

@@ -22,7 +22,6 @@
         $filtro = DB::table('modulos')
             ->where('id', $area)
             ->first();
-
     ?>
 
 
@@ -97,21 +96,21 @@
                         </a>
                         <ul class="submenu">
                             <li>
-                                <a href="{{route('create_act')}}" class="side-menu">
+                                <a href="{{route('actividadesPrestador')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="plus-circle"></i> </div>
                                     <div class="side-menu__title"> Crear nueva actividad </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{route('asign_act')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
-                                    <div class="side-menu__title"> Asignar actividad</div>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{route('obtenerActividades')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
                                     <div class="side-menu__title">Todas las actividades </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{route('actividades_creadas')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
+                                    <div class="side-menu__title"> Actividades creadas</div>
                                 </a>
                             </li>
                             <li>

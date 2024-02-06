@@ -64,124 +64,11 @@ Route::controller(App\Http\Controllers\Auth\logsysController::class)->group(func
 });
 
 //Rutas de Admin gestionadas desde el AdminController
-//Requieres el rol encargado, admin, admin_sede o superadmin para acceder
+//Requieres el rol admin o superadmin para acceder 
 Route::controller(App\Http\Controllers\AdminController::class)->group(function(){
+    Route::name('api.')->group(function () {
 
-    Route::middleware('role: Superadmin, admin_sede, admin. encargado')->group(function() {
-
-        Route::name('admin.')->group(function () {
-
-            Route::middleware('role:encargado')->group(function() {
-                Route::get('encargado/cambiarRol', 'cambiarRol')->name('cambiorol');
-            });
-
-            Route::get('/admin/home', 'firmas')->name('home');
-
-            Route::get('admin/check-in', 'checkin')->name('checkin');
-            Route::get('/admin/C_actividades', 'create_act')->name('create_act');
-            Route::post('/admin/M_actividades', 'make_act')->name('make_act');
-            Route::get('/admin/A_actividades', 'asign_act')->name('asign_act');
-            Route::get('/admin/actividades', 'actividades')->name('actividades');
-            Route::get('/admin/C_proyectos', 'create_proy')->name('create_proy');
-
-            Route::get('/admin/ver_impresoras', 'control_print')->name('control_print');
-            Route::post('/admin/registrar_impresoras', 'make_print')->name('make_print');
-            Route::get('/admin/ver_impresiones', 'watch_prints')->name('watch_prints');
-                
-            Route::get('/admin/general', 'general')->name('general');
-            Route::get('/admin/prestadores', 'prestadores')->name('prestadores');
-            Route::get('/admin/prestadoresPendientes', 'prestadoresPendientes')->name('prestadoresPendientes');
-            Route::get('/admin/prestadores_inactivos', 'prestadores_inactivos')->name('prestadores_inactivos');
-            Route::get('/admin/prestadores_liberados', 'prestadores_liberados')->name('prestadores_liberados');
-            Route::get('/admin/prestadores_terminados','prestadores_terminados')->name('prestadores_terminados');
-                
-            Route::get('/admin/clientes', 'clientes')->name('clientes');
-            Route::get('/admin/visitas', 'visits')->name('visitas');
-            Route::get('/admin/ver_visitas', 'watch_visits')->name('visitas_reg');
-            Route::get('admin/motivo_visita/{id}/{value}', 'motivo')->name('motivo');
-            Route::get('/admin/registrovisitas', 'registroVisitas')->name('registrovisitas');
-                
-            Route::get('/admin/obtenerActividades', 'obtenerActividades')->name('obtenerActividades');
-            Route::get('/admin/obtenerSubcategoria', 'obtenerSubcategorias')->name('obtenerSubcategorias');
-            Route::get('/admin/newCategoriaYActividad', 'newCategoriaYActividad')->name('newCategoriaYActividad');
-
-
-            Route::middleware('role:admin,Superadmin')->group(function() {
-
-                Route::get('/admin/registro', 'registro')->name('registro'); //NUEVA RUTA
-                Route::get('/admin/premios', 'premios')->name('premios');
-                    
-                Route::get('admin/ver_reportes_parciales', 'ver_reportes_parciales')->name('reportes_parciales');
-                Route::get('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
-
-                Route::get('/admin/administradores', 'administradores')->name('administradores');
-
-                Route::get('admin/gestionSede', 'gestionSede')->name('sede');
-                Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
-                Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
-                    
-                Route::get('/admin/faltas', 'faltas')->name('faltas');
-                Route::get('/admin/horarios', 'horarios')->name('horarios');
-                Route::get('/admin/Dias_no_laborables', 'diasfestivos')->name('diasfestivos');
-                Route::post('/admin/agregar_festivos', 'guardarFestivos')->name('agregar_festivos');
-
-                Route::get('/admin/categorias', 'categorias')->name('categorias');
-                Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
-                Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg');
-
-                Route::middleware('role:Superadmin')->group(function() {
-                    Route::get('/superadmin/gestion', 'gestionViews')->name('gestionViews');
-                });
-                    
-            });
-
-                Route::get('/admin/firmas', 'firmas')->name('firmas');
-                Route::get('/admin/actividades_en_progreso','actividades_en_progreso')->name('actividades_en_progreso');
-                Route::get('/admin/actividades_revision', 'actividades_revision')->name('actividades_revision');
-
-                /*
-                Route::get('/admin/modificar', 'modificar')->name('modificar');
-               
-                Route::get('/admin/citas', 'citas')->name('citas');
-                Route::get('/admin/citas_pendientes', 'citas_pendientes')->name('citas_pendientes');
-     
-                Route::post('/admin/descargarArchivo', 'descargarArchivo')->name('descargarArchivo');
-                Route::post('/admin/verImagenCredencial')->name('verCredencial');
-                Route::post('/admin/verImagenRender', 'verRender')->name('verRender');
-                
-                Route::get('/admin/firmasPendientes', 'firmasPendientes')->name('firmasPendientes');
-                Route::get('/admin/recompensasRegistro', 'recompensas')->name('recompensas');
-
-                Route::post('/admin/update',  'App\Http\Controllers\AdminController@adminUpdate')->name('update');
-                
-                Route::get('/admin/prestadoresProyectos', 'prestadoresProyectos')->name('prestadoresProyectos');
-                Route::get('/admin/prestadoresProyectos2', 'prestadoresProyectos2')->name('prestadoresProyectos2');
-                Route::get('/admin/prestadoresProyectos3', 'prestadoresProyectos3')->name('prestadoresProyectos3');
-                Route::get('/admin/ProyectosCitados', 'ProyectosCitados')->name('ProyectosCitados');
-                
-                Route::get('/admin/actividades_revision/{id}/detalles', 'actividadDetalles')->name('actividades.detalles');
-                Route::get('/admin/actividades_revision/finalizar/{id}/{experiencia}', 'actividadRevisada')->name('actividadRevisada');
-                
-                Route::post('/admin/terminar_actividad', 'terminar_actividad')->name('terminar_actividad');
-                Route::post('/admin/actividad_cancelar', 'actividad_cancelar')->name('actividad_cancelar');
-                Route::get('/admin/tabla_terminados', 'tabla_terminados')->name('tabla_terminados');
-                Route::get('/admin/tabla_actividades_canceladas', 'tabla_actividades_canceladas')->name('tabla_actividades_canceladas');
-                Route::post('/admin/mod', 'actividad_modificar')->name('actividad_modificar');
-                Route::post('/admin/reasignar','actividad_cancelada')->name('actividad_cancelada');
-                Route::post('/admin/participantes', 'participantes')->name('participantes');
-                Route::get('/admin/horario', 'horarioadmin')->name('horarioadmin');
-                Route::post('prestador/horario_guardar_admin', 'horario_guardar_admin')->middleware('role:prestador,admin,Superadmin')->name('horario_guardar_admin');
-                Route::get('/admin/veractividades', 'veractividades')->name('veractividades');
-                Route::get('/admin/veractividades_pendientes', 'veractividades_pendientes')->name('veractividades_pendientes');
-                Route::get('/admin/veractividades_completadas', 'veractividades_completadas')->name('veractividades_completadas');
-
-                
-                Route::get('/admin/actividades_revision/{id}/detalles', 'actividadDetalles')->name('actividad.detalles');
-                Route::get('/admin/actividades_revision/{id}', 'finalizarActividad')->name('finalizar.actividad');
-                Route::get('/actividad-revisada/{id}/{experiencia}', 'vistaFinalizacionActividad')->name('admin.actividadRevisada');*/
-        });
-
-        Route::name('api.')->group(function () {
+        Route::middleware('role:admin, Superadmin, encargado')->group(function() {
             Route::post('/actualizar', 'guardar')->name('actualizar');
             Route::post('/actualizarb', 'guardar2')->name('actualizarb');
             //AJUSTES DE PRESTADOR
@@ -199,7 +86,6 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::get('admin/liberar_prestador/{value}', 'liberar')->name('liberar');
                 Route::get('admin/changestate/{id}/{value}', 'checkinstate')->name('checkinstate');
             });
-
         });
 
         Route::post('/actualizarcursos1',  'guardarcursos1')->name('actualizarcursos1');
@@ -226,21 +112,128 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
     });
 
+        Route::name('admin.')->group(function () {
+
+            Route::middleware('role:admin,Superadmin,encargado')->group(function() {
+
+                Route::get('/admin/home', 'firmas')->name('home');
+
+                Route::get('admin/check-in', 'checkin')->name('checkin');
+                Route::get('/admin/C_actividades', 'create_act')->name('create_act');
+                Route::post('/admin/M_actividades', 'make_act')->name('make_act');
+                Route::get('/admin/A_actividades', 'asign_act')->name('asign_act');
+                Route::get('/admin/actividades', 'actividades')->name('actividades');
+                Route::get('/admin/C_proyectos', 'create_proy')->name('create_proy');
+
+                Route::get('/admin/cambiarRol', 'cambiarRol')->name('cambiorol');
+                Route::get('/admin/ver_impresoras', 'control_print')->name('control_print');
+                Route::post('/admin/registrar_impresoras', 'make_print')->name('make_print');
+                Route::get('/admin/ver_impresiones', 'watch_prints')->name('watch_prints');
+                
+                Route::get('/admin/general', 'general')->name('general');
+                Route::get('/admin/prestadores', 'prestadores')->name('prestadores');
+                Route::get('/admin/prestadoresPendientes', 'prestadoresPendientes')->name('prestadoresPendientes');
+                Route::get('/admin/prestadores_inactivos', 'prestadores_inactivos')->name('prestadores_inactivos');
+                Route::get('/admin/prestadores_liberados', 'prestadores_liberados')->name('prestadores_liberados');
+                Route::get('/admin/prestadores_terminados','prestadores_terminados')->name('prestadores_terminados');
+                
+                Route::get('/admin/clientes', 'clientes')->name('clientes');
+                Route::get('/admin/visitas', 'visits')->name('visitas');
+                Route::get('/admin/ver_visitas', 'watch_visits')->name('visitas_reg');
+                Route::get('admin/motivo_visita/{id}/{value}', 'motivo')->name('motivo');
+                Route::get('/admin/registrovisitas', 'registroVisitas')->name('registrovisitas');
+                
+                Route::get('/admin/obtenerActividades', 'obtenerActividades')->name('obtenerActividades');
+                Route::get('/admin/obtenerSubcategoria', 'obtenerSubcategorias')->name('obtenerSubcategorias');
+                Route::get('/admin/newCategoriaYActividad', 'newCategoriaYActividad')->name('newCategoriaYActividad');
+
+
+                Route::middleware('role:admin,Superadmin')->group(function() {
+
+                    Route::get('/admin/registro', 'registro')->name('registro'); //NUEVA RUTA
+                    Route::get('/admin/premios', 'premios')->name('premios');
+                    
+                    Route::get('admin/ver_reportes_parciales', 'ver_reportes_parciales')->name('reportes_parciales');
+                    Route::get('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
+
+                    Route::get('/admin/administradores', 'administradores')->name('administradores');
+
+                    Route::get('admin/gestionSede', 'gestionSede')->name('sede');
+                    Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
+                    Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
+                    
+                    Route::get('/admin/faltas', 'faltas')->name('faltas');
+                    Route::get('/admin/horarios', 'horarios')->name('horarios');
+                    Route::get('/admin/Dias_no_laborables', 'diasfestivos')->name('diasfestivos');
+                    Route::post('/admin/agregar_festivos', 'guardarFestivos')->name('agregar_festivos');
+
+                    Route::get('/admin/categorias', 'categorias')->name('categorias');
+                    Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
+                    Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg');
+
+                    Route::middleware('role:admin,Superadmin')->group(function() {
+                        Route::get('/superadmin/gestion', 'gestionViews')->name('gestionViews');
+                    });
+                    
+                });
+
+                Route::get('/admin/firmas', 'firmas')->name('firmas');
+                Route::get('/admin/actividades_en_progreso','actividades_en_progreso')->name('actividades_en_progreso');
+                Route::get('/admin/actividades_revision', 'actividades_revision')->name('actividades_revision');
+
+                /*
+                Route::get('/admin/modificar', 'modificar')->name('modificar');
+               
+                Route::get('/admin/citas', 'citas')->name('citas');
+                Route::get('/admin/citas_pendientes', 'citas_pendientes')->name('citas_pendientes');
+     
+                Route::post('/admin/descargarArchivo', 'descargarArchivo')->name('descargarArchivo');
+                Route::post('/admin/verImagenCredencial')->name('verCredencial');
+                Route::post('/admin/verImagenRender', 'verRender')->name('verRender');
+                
+                Route::get('/admin/firmasPendientes', 'firmasPendientes')->name('firmasPendientes');
+                Route::get('/admin/recompensasRegistro', 'recompensas')->name('recompensas');
+
+                Route::post('/admin/update',  'App\Http\Controllers\AdminController@adminUpdate')->name('update');
+                
+                Route::get('/admin/prestadoresProyectos', 'prestadoresProyectos')->name('prestadoresProyectos');
+                Route::get('/admin/prestadoresProyectos2', 'prestadoresProyectos2')->name('prestadoresProyectos2');
+                Route::get('/admin/prestadoresProyectos3', 'prestadoresProyectos3')->name('prestadoresProyectos3');
+                Route::get('/admin/ProyectosCitados', 'ProyectosCitados')->name('ProyectosCitados');
+                
+                
+                Route::get('/admin/actividades_revision/{id}/detalles', 'actividadDetalles')->name('actividades.detalles');
+                Route::get('/admin/actividades_revision/finalizar/{id}/{experiencia}', 'actividadRevisada')->name('actividadRevisada');
+                
+                Route::post('/admin/terminar_actividad', 'terminar_actividad')->name('terminar_actividad');
+                Route::post('/admin/actividad_cancelar', 'actividad_cancelar')->name('actividad_cancelar');
+                Route::get('/admin/tabla_terminados', 'tabla_terminados')->name('tabla_terminados');
+                Route::get('/admin/tabla_actividades_canceladas', 'tabla_actividades_canceladas')->name('tabla_actividades_canceladas');
+                Route::post('/admin/mod', 'actividad_modificar')->name('actividad_modificar');
+                Route::post('/admin/reasignar','actividad_cancelada')->name('actividad_cancelada');
+                Route::post('/admin/participantes', 'participantes')->name('participantes');
+                Route::get('/admin/horario', 'horarioadmin')->name('horarioadmin');
+                Route::post('prestador/horario_guardar_admin', 'horario_guardar_admin')->middleware('role:prestador,admin,Superadmin')->name('horario_guardar_admin');
+                Route::get('/admin/veractividades', 'veractividades')->name('veractividades');
+                Route::get('/admin/veractividades_pendientes', 'veractividades_pendientes')->name('veractividades_pendientes');
+                Route::get('/admin/veractividades_completadas', 'veractividades_completadas')->name('veractividades_completadas');
+
+                
+                Route::get('/admin/actividades_revision/{id}/detalles', 'actividadDetalles')->name('actividad.detalles');
+                Route::get('/admin/actividades_revision/{id}', 'finalizarActividad')->name('finalizar.actividad');
+                Route::get('/actividad-revisada/{id}/{experiencia}', 'vistaFinalizacionActividad')->name('admin.actividadRevisada');*/
+            });
+       });
 });
 
 //Rutas Prestador
 Route::controller(App\Http\Controllers\PrestadorController::class)->group(function(){
-
     Route::name('api.')->group(function () {
         Route::post('/marcar', 'marcar')->middleware('role:admin,checkin,Superadmin,encargado')->name('marcar');
         Route::post('/afirmas', 'asignarfirmas')->name('afirmas');    
     });
     
-    Route::middleware('role: prestador, voluntario, practicante, encargado')->group(function() {
-        
-        Route::middleware('role:encargado')->group(function() {
-            Route::get('/encargado/cambiarRol', 'cambiarRol')->name('cambiarRol');
-        });
+    Route::middleware('role:prestador,voluntario,practicante,encargado')->group(function() {
 
         Route::get('prestador/home', 'home')->name('homeP');
 
@@ -255,14 +248,12 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::get('/prestador/home/perfil', 'perfil')->name('perfil');
         Route::post('/prestador/home/perfil/cambiar-imagen-perfil', 'cambiarImagenPerfil')->name('cambiarImagenPerfil');
 
+        Route::get('/prestador/cambiarRol', 'cambiarRol')->name('cambiarRol');
+
         Route::get('prestador/horas', 'horas')->name('horas');
         Route::get('prestador/actividadesPrestador', 'actividadesPrestador')->name('actividadesPrestador');
         Route::get('prestador/horario', 'horario')->name('horario');
         Route::get('/prestador/asistencias', 'asistencias')->name('asistencias');
-
-        Route::get('prestador/C_actividades', 'create_act')->name('create_act');
-        Route::post('prestador/M_actividades', 'make_act')->name('make_act');
-        Route::get('prestador/A_actividades', 'asign_act')->name('asign_act');
 
         Route::post('prestador/completar_impresion','completar_impresion')->name('completar_impresion');
         Route::post('prestador/completar_actividad', 'completar_actividad')->name('completar_actividad');
