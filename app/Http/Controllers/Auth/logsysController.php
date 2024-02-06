@@ -26,10 +26,10 @@ class logsysController extends Controller
         if(Auth::attempt($credentials, $remember)){
 
             $request->session()->regenerate();
-
             return redirect('/');
             
         }else{
+
           return redirect('/login')->with('FAIL', 'Correo o contraseña incorrecta');
         }
 
@@ -42,6 +42,7 @@ class logsysController extends Controller
         switch ($role) {
            
             case 'admin':
+            case 'admin_sede':
             case 'Superadmin':
                 return redirect('/admin/home');
                 break;
