@@ -100,12 +100,14 @@
                         headerFilter: "input",
                         sorter: "string",
                         editor: "input",
+                        width: 300,
                     },{
                         title: "Nombre Area",
                         field: "nombre_area",
                         headerFilter: "input",
                         sorter: "string",
                         editor: "input",
+                        width: 300,
                     },{
                         title: "Asistentes",
                         field: "total_personal",
@@ -119,6 +121,7 @@
                         editor: "tickCross",
                         cellClick: function(e, cell) {
                             cell.setValue(!cell.getValue()); // Cambia el valor al hacer clic
+                            activar()
                         },
                     }, {
                         title: "Horario",
