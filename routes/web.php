@@ -35,6 +35,19 @@ Route::get('/spiderw', function(){
     return view('/TEST/spider');
 })->name('spider');
 
+Route::get('/dualist', function(){
+    return view('/TEST/dualist');
+})->name('dual');
+
+Route::get('/actest', function(){
+    $prestadores=DB::table('solo_prestadores')
+                        ->where('tipo','prestador')
+                        ->get();
+        return view(
+            '/TEST/actest',
+            );
+})->name('tester');
+
 Route::controller(App\Http\Controllers\LandingController::class)->group(function(){
     Route::get('/inventores', 'index')->name('landing');
     Route::get('/devTeam', 'devTeam')->name('devTeam');
@@ -90,6 +103,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::get('admin/gestionSede', 'gestionSedes')->name('sede');
 
                 Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
+                Route::post('admin/nuevaArea', 'nuevaArea')->name('nuevaArea');
                 Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
                     
                 Route::get('/admin/faltas', 'faltas')->name('faltas');
@@ -135,7 +149,9 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/registrovisitas', 'registroVisitas')->name('registrovisitas');
                 
             Route::get('/admin/obtenerActividades', 'obtenerActividades')->name('obtenerActividades');
-            Route::get('/admin/obtenerSubcategoria', 'obtenerSubcategorias')->name('obtenerSubcategorias');
+            Route::get('/admin/obtenerActividadesB', 'obtenerActividadesB')->name('obtenerActividadesB');
+            Route::get('/admin/obtenerSubcategoria', 'obtenerSubcategoria')->name('obtenerSubcategorias');
+
             Route::get('/admin/newCategoriaYActividad', 'newCategoriaYActividad')->name('newCategoriaYActividad');
 
             Route::get('/admin/firmas', 'firmas')->name('firmas');
@@ -149,6 +165,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             //AJUSTES DE PRESTADOR
           
             Route::get('admin/modificar_horario_prestador/{id}/{value}', 'cambiar_horario')->name('cambiar_horario');
+            Route::get('admin/modificar_tipo_prestador/{id}/{value}', 'cambiar_tipo')->name('cambiar_tipo');
             Route::get('admin/activar_prestador/{value}', 'activar')->name('activar');
             Route::get('admin/eliminar_prestador/{value}', 'eliminar')->name('eliminar');
             Route::get('admin/desactivar_prestador/{value}', 'desactivar')->name('desactivar');
@@ -157,9 +174,10 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('admin/changestate_print/{id}/{value}', 'printstate')->name('printstate');
             Route::get('admin/observaciones_impresion/{id}/{value}', 'detail_prints')->name('detail_prints');
             //
-            Route::middleware('role:admin,Superadmin')->group(function() {
+            Route::middleware('role:admin,admin_sede,Superadmin')->group(function() {
                 Route::get('admin/liberar_prestador/{value}', 'liberar')->name('liberar');
                 Route::get('admin/changestate/{id}/{value}', 'checkinstate')->name('checkinstate');
+                Route::get('admin/activar_area/{id}/{campo}', 'activate_area')->name('activatearea');
             });
             /*
             Route::post('/actualizarcursos1',  'guardarcursos1')->name('actualizarcursos1');
@@ -247,6 +265,9 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::get('prestador/actividadesPrestador', 'actividadesPrestador')->name('actividadesPrestador');
         Route::get('prestador/horario', 'horario')->name('horario');
         Route::get('/prestador/asistencias', 'asistencias')->name('asistencias');
+        Route::get('prestador/obtenerActividades', 'obtenerActividades')->name('obtenerActividades');
+        Route::get('prestador/obtenerActividadesB', 'obtenerActividadesB')->name('obtenerActividadesB');
+        Route::get('prestador/obtenerSubcategoria', 'obtenerSubcategorias')->name('obtenerSubcategorias');
 
         Route::get('prestador/C_actividades', 'create_act')->name('create_act');
         Route::post('prestador/M_actividades', 'make_act')->name('make_act');

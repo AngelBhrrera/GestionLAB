@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Schema;
 
 /*
 use Illuminate\Support\Facades\Hash;
@@ -264,6 +265,15 @@ class AdminController extends Controller
             'horario' => DB::table('sedes')->where('id_sede', $sede)->value($n_Turno) == 1 ? $horario : DB::raw('horario')]);
 
             return response()->json(['message' => 'Activado exitosamente']);
+    }
+
+    public function cambiar_tipo($id, $value){
+
+        DB::table('users')
+        ->where('id', $id)
+        ->update(['tipo' => $value]);
+
+        return response()->json(['message' => 'Modificado exitosamente']);
     }
 
         // ACTIVIDADES Y PROYECTOS
@@ -678,12 +688,26 @@ class AdminController extends Controller
         return view("admin.sedes", ['s'=>$s, 'tabla_sedes' => json_encode($sedes)]);
     }
 
+    public function activate_area($id, $campo)
+    {
+        if (Schema::hasColumn('areas', $campo)) {
+            $sql = DB::table('areas')
+                ->where('id', $id)
+                ->update([$campo => DB::raw('NOT '.$campo)]);
+        } else if (Schema::hasColumn('modulos', $campo)){
+            $sql = DB::table('modulos')
+                ->where('id', $id)
+                ->update([$campo => DB::raw('NOT '.$campo)]);
+        }
+        return response()->json(['message' => $sql]);
+    }
+
     public function nuevaSede(Request $request){
         $request->validate([
             'nombreSede' => 'required|max:255',
         ]);
-
-        $buscarSede = DB::Select("Select nombre_sede from sedes where nombre_sede = '$request->nombreSede'");
+        $nombre= strtoupper($request->input('nombreSede'));
+        $buscarSede = DB::Select("Select nombre_sede from sedes where nombre_sede = '$nombre'");
         if (count($buscarSede)==0){
             $nombre=$request->input("nombreSede");
             DB::insert("INSERT INTO sedes (nombre_sede) Values('$nombre')");
@@ -695,20 +719,22 @@ class AdminController extends Controller
 
     public function nuevaArea(Request $request){
         $request->validate([
-            'nombreSede' => 'required|max:255',
+            'sede'=> 'required',
+            'nombreArea' => 'required|max:255',
         ]);
-
-        $buscarSede = DB::Select("Select nombre_sede from sedes where nombre_sede = '$request->nombreSede'");
-        if (count($buscarSede)==0){
-            $nombre=$request->input("nombreSede");
-            DB::insert("INSERT INTO sedes (nombre_sede) Values('$nombre')");
+        $nombre= strtoupper($request->input('nombreArea'));
+        $idSede = $request->input('sede');
+        $buscarArea = DB::select("Select nombre_area from areas where nombre_area = '$nombre'");
+        if (count($buscarArea)==0){
+            DB::insert("INSERT INTO areas (nombre_area, id_sede) Values('$nombre', $idSede)");
+            $id = DB::select("Select id from areas where nombre_area = '$nombre'");
+            $id = $id[0]->id;
+            DB::insert("INSERT INTO modulos (id) values($id)");
             return redirect(route('admin.sede'))->with('success', 'Creada correctamente');
         }else{
-            return redirect(route('admin.sede'))->with('warning', "Ya existe una sede con ese nombre");
+            return redirect(route('admin.sede'))->with('warning', "Ya existe una área con ese nombre");
         }
     }
-
-
 
     //CALENDARIO
 
@@ -759,13 +785,24 @@ class AdminController extends Controller
         $categoriaId = $request->input('categoriaId');
 
         $actividades = DB::table('actividades')
-            ->where('categoria_id', $categoriaId)
+            ->where('id_categoria', $categoriaId)
             ->get();
 
         return response()->json($actividades);
     }
 
-    public function obtenerSubcategorias(Request $request)
+    public function obtenerActividadesB(Request $request)
+    {
+        $subcategoriaId = $request->input('subcategoriaId');
+
+        $actividades = DB::table('actividades')
+            ->where('id_subcategoria', $subcategoriaId)
+            ->get();
+
+        return response()->json($actividades);
+    }
+
+    public function obtenerSubcategoria(Request $request)
     {
         $categoriaId = $request->input('categoriaId');
 
@@ -775,7 +812,7 @@ class AdminController extends Controller
 
         return response()->json($subcateg);
     }
-    
+
 //VIEJO CONTROLLER. /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     //Guardar Estado

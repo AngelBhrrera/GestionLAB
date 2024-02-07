@@ -507,7 +507,7 @@
 @endif
 
 @if ($filtro->impresiones == 1)
-    @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "admin" || Auth::user()->tipo == "Superadmin")
         @section('impresiones')
             <li>
                 <a href="javascript:;" class="side-menu">

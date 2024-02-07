@@ -34,51 +34,51 @@
                 pagination: "local",
                 paginationSize: 24,
                 tooltips: true,
+                resizableColumns:false,
                 columns: [{
                         title: "Impresora",
                         field: "impresora",
                         sorter: "string",
                         width: 150,
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Proyecto",
                         field: "proyecto",
                         sorter: "string",
-                        hozAlign: "center",
+                        width: 150,
                     }, {
                         title: "Fecha",
                         field: "fecha",
                         sorter: "date",
-                        hozAlign: "center",
+                        width: 150,
                     },  {
                         title: "Modelo",
                         field: "nombre_modelo_stl",
                         sorter: "string",
-                        hozAlign: "center",
-                        headerFilter: "input"
+                        headerFilter: "input",
+                        width: 150,
                     }, {
                         title: "Tiempo Impresion",
                         field: "tiempo_impresion",
                         sorter: "number",
-                        hozAlign: "center",
+                        width: 150,
                     },  {
                         title: "Color",
                         field: "color",
                         sorter: "string",
-                        hozAlign: "center",
-                        headerFilter: "input"
+                        headerFilter: "input",
+                        width: 150,
                     },  {
                         title: "Piezas",
                         field: "piezas",
                         sorter: "number",
-                        hozAlign: "center",
+                        width: 150,
                     }, {
                         title: "Estado",
                         field: "estado",
                         sorter: "string",
-                        hozAlign: "center",
                         editor: "select",
+                        width: 150,
                         headerFilter: true,
                         headerFilterParams: {
                             "autorizado": "autorizado",
@@ -89,13 +89,13 @@
                         title: "Peso",
                         field: "peso",
                         sorter: "number",
-                        hozAlign: "center",
+                        width: 150,
                     },  {
                         title: "Observaciones",
                         field: "observaciones",
                         sorter: "number",
-                        hozAlign: "center",
                         editor:"input",
+                        width: 150,
                     },
                 ],
                 //rowClick: function(e, row) {

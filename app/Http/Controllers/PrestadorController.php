@@ -18,6 +18,17 @@ class PrestadorController extends Controller
         $this->middleware('auth');
     }
 
+    
+    public function actividadesPrestador()
+    {
+        $encargado_id = auth()->user()->encargado_id;
+        $prestadores = DB::table('users')->select('id', 'name', 'apellido')->where('id', auth()->user()->id)->get();
+        $categorias = DB::table('categorias')->get();
+        $actividades = DB::table('actividades')->get();
+
+        return view('/prestador/crear_actividad_prestador', compact('prestadores', 'actividades', 'categorias'));
+    }
+
     public function create_act()
     {
 
@@ -73,6 +84,39 @@ class PrestadorController extends Controller
     
         return view( 'prestador/asignar_actividad_prestador', [ 'categorias' => $categorias, 'actividades' => $actividades]);
     }    
+
+    public function obtenerActividades(Request $request)
+    {
+        $categoriaId = $request->input('categoriaId');
+
+        $actividades = DB::table('actividades')
+            ->where('id_categoria', $categoriaId)
+            ->get();
+
+        return response()->json($actividades);
+    }
+
+    public function obtenerActividadesB(Request $request)
+    {
+        $subcategoriaId = $request->input('subcategoriaId');
+
+        $actividades = DB::table('actividades')
+            ->where('id_subcategoria', $subcategoriaId)
+            ->get();
+
+        return response()->json($actividades);
+    }
+
+    public function obtenerSubcategorias(Request $request)
+    {
+        $categoriaId = $request->input('categoriaId');
+
+        $subcateg = DB::table('subcategorias')
+            ->where('categoria', $categoriaId)
+            ->get();
+
+        return response()->json($subcateg);
+    }
 
     public function index()
     {
@@ -509,26 +553,6 @@ class PrestadorController extends Controller
             ]
         );
     }
-
-    public function actividadesPrestador()
-    {
-        $encargado_id = auth()->user()->encargado_id;
-        $prestadores = DB::table('users')->select('id', 'name', 'apellido')->where('id', auth()->user()->id)->get();
-        $categorias = DB::table('categorias')->get();
-        $actividades = DB::table('actividades')->get();
-
-        return view('/prestador/crear_actividad_prestador', compact('prestadores', 'actividades', 'categorias'));
-    }
-
-    public function obtenerActividades(Request $request)
-    {
-        $categoriaId = $request->input('categoriaId');
-        $actividades = DB::table('actividades')
-            ->where('id_categoria', $categoriaId)
-            ->get();
-        return response()->json($actividades);
-    }
-
 
     public function registro_reporte_guardar(Request $request)
     {

@@ -51,6 +51,13 @@
                     }, {
                         title: "Tipo",
                         field: "tipo",
+                        editor: "select",
+                        editorParams: {
+                            values: {
+                                    "Prestador": "prestador",
+                                    "Encargado": "encargado",
+                                }
+                        },
                       
                     },{
                         title: "Codigo",
@@ -98,7 +105,9 @@
                             button.title = "";
                             button.addEventListener("click", function() {
                                 var value = row.getData().horario;
-                                modificarPrestador(id, value);
+                                var value2 = row.getData().tipo;
+                                modificarHPrestador(id, value);
+                                modificarTPrestador(id, value2);
                             });
                             return button;
                         }, 
@@ -122,7 +131,26 @@
                 ],
             });
 
-            function modificarPrestador(id, value) {
+            function modificarTPrestador(id, value) {
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`modificar_tipo_prestador/${id}/${value}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Respuesta del servidor:', data);
+                    window.location.reload(); 
+                })
+                .catch(error => {
+                    console.error('Error al activar usuario:', error);
+                });
+            } 
+
+            function modificarHPrestador(id, value) {
                 const token = document.head.querySelector('meta[name="csrf-token"]').content;
                 fetch(`modificar_horario_prestador/${id}/${value}`, {
                     method: 'GET',

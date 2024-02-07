@@ -72,21 +72,7 @@
                         field: "telefono",
                         sorter: "number",
                        
-                    },  {
-                        title: "",
-                        field: "id",
-                        formatter: function (cell, formatterParams, onRendered) {
-                            var value = cell.getValue();
-                            var button = document.createElement("button");
-                            button.style = "background-color: blue; color: white; border: 1px solid dark-blue; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
-                            button.textContent = "Modificar";
-                            button.addEventListener("click", function() {
-                                modificarPrestador(value);
-                            });
-                            return button;
-                        }, 
-                       
-                    },  {
+                    }, {
                         title: "",
                         field: "id",
                         formatter: function (cell, formatterParams, onRendered) {

@@ -15,7 +15,7 @@
 
             <div class="card-body pl-10 pr-10">
 
-                <form method="POST" action="{{route('admin.make_act')}}">
+                <form method="POST" action="{{route('make_act')}}">
                     @if (isset($tipo))
                     <input id="tipo" name="tipo" value={{ $tipo }} type="hidden">
                     @endif
@@ -159,7 +159,7 @@ function filtrarActividades() {
                 }
             }
         };
-        xhr.open('GET', '{{ route('admin.obtenerSubcategorias') }}?categoriaId=' + categoriaId);
+        xhr.open('GET', '{{ route('obtenerSubcategorias') }}?categoriaId=' + categoriaId);
         xhr.send();
     }
 </script>

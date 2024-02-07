@@ -19,6 +19,8 @@ class CreateEventsTable extends Migration
             $table->datetime('inicio');
             $table->datetime('final');
             $table->string('tipo');
+            $table->tinyInteger('sede');
+            $table->tinyInteger('area');
         });
     }
 

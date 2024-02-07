@@ -49,7 +49,7 @@
         <div class="col-md-6">
             <div class="intro-y box p-5 mt-5">
                 <h3 class="text-2xl mt-5 font-small">Añadir un área</h3>
-                <form method="POST">
+                <form method="POST" action="{{route('admin.nuevaArea')}}">
                     @csrf
                     <div class="form-group">
                         <label for="sede">Selecciona una sede</label>
@@ -64,7 +64,7 @@
                     </div>
                     <div class="form-group">
                         <label for="nombreArea">Nombre del área</label>
-                        <input required id="nombreArea" type="text" class="form-control" name="nombreArea" placeholder="Nombre">
+                        <input required id="nombreArea" type="text" class="form-control" name="nombreArea" placeholder="Nombre de área">
                     </div>
                     <button type="submit" class="btn btn-primary mt-3">Crear</button>
                 </form>
@@ -101,6 +101,12 @@
                         sorter: "string",
                         editor: "input",
                         width: 300,
+                        cellEdited: function (cell) {
+                            var row = cell.getRow();
+                            var id = row.getData().id;
+                            var value = cell.getValue();
+                            nuevoNombreSede(id, value);
+                        },
                     },{
                         title: "Nombre Area",
                         field: "nombre_area",
@@ -108,6 +114,12 @@
                         sorter: "string",
                         editor: "input",
                         width: 300,
+                        cellEdited: function (cell) {
+                            var row = cell.getRow();
+                            var id = row.getData().id;
+                            var value = cell.getValue();
+                            nuevoNombreArea(id, value);
+                        },
                     },{
                         title: "Asistentes",
                         field: "total_personal",
@@ -120,8 +132,13 @@
                         formatter: "tickCross",
                         editor: "tickCross",
                         cellClick: function(e, cell) {
-                            cell.setValue(!cell.getValue()); // Cambia el valor al hacer clic
-                            activar()
+
+                            var campo = cell.getField();
+                            var row = cell.getRow();
+                            var id = row.getData().id;
+                            console.log("Nombre del campo:", campo);
+                            activate(id, campo)
+                            cell.setValue(!cell.getValue());
                         },
                     }, {
                         title: "Horario",
@@ -133,7 +150,11 @@
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
-                                    cell.setValue(!cell.getValue()); // Cambia el valor al hacer clic
+                                    var campo = cell.getField();
+                                    var row = cell.getRow();
+                                    var id = row.getData().id;
+                                    activate(id, campo)
+                                    cell.setValue(!cell.getValue());
                                 },
                             }, {
                                 title: "Mediodia",
@@ -142,7 +163,11 @@
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
-                                    cell.setValue(!cell.getValue()); // Cambia el valor al hacer clic
+                                    var campo = cell.getField();
+                                    var row = cell.getRow();
+                                    var id = row.getData().id;
+                                    activate(id, campo)
+                                    cell.setValue(!cell.getValue());
                                 },
                             },{
                                 title: "Vespertino",
@@ -151,7 +176,11 @@
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
-                                    cell.setValue(!cell.getValue()); // Cambia el valor al hacer clic
+                                    var campo = cell.getField();
+                                    var row = cell.getRow();
+                                    var id = row.getData().id;
+                                    activate(id, campo)
+                                    cell.setValue(!cell.getValue());
                                 },
                             },{
                                 title: "Sabatino",
@@ -160,7 +189,11 @@
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
-                                    cell.setValue(!cell.getValue()); // Cambia el valor al hacer clic
+                                    var campo = cell.getField();
+                                    var row = cell.getRow();
+                                    var id = row.getData().id;
+                                    activate(id, campo)
+                                    cell.setValue(!cell.getValue());
                                 },
                             }, {
                                 title: "Tiempo Completo",
@@ -169,7 +202,11 @@
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
-                                    cell.setValue(!cell.getValue()); // Cambia el valor al hacer clic
+                                    var campo = cell.getField();
+                                    var row = cell.getRow();
+                                    var id = row.getData().id;
+                                    activate(id, campo)
+                                    cell.setValue(!cell.getValue());
                                 },
                             }
                         ]
@@ -189,7 +226,11 @@
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
-                                    cell.setValue(!cell.getValue()); // Cambia el valor al hacer clic
+                                    var campo = cell.getField();
+                                    var row = cell.getRow();
+                                    var id = row.getData().id;
+                                    activate(id, campo)
+                                    cell.setValue(!cell.getValue());
                                 },
                             }, {
                                 title: "Visitas",
@@ -198,7 +239,11 @@
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
-                                    cell.setValue(!cell.getValue()); // Cambia el valor al hacer clic
+                                    var campo = cell.getField();
+                                    var row = cell.getRow();
+                                    var id = row.getData().id;
+                                    activate(id, campo)
+                                    cell.setValue(!cell.getValue());
                                 },
                             },{
                                 title: "Solicitudes",
@@ -207,7 +252,11 @@
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
-                                    cell.setValue(!cell.getValue()); // Cambia el valor al hacer clic
+                                    var campo = cell.getField();
+                                    var row = cell.getRow();
+                                    var id = row.getData().id;
+                                    activate(id, campo)
+                                    cell.setValue(!cell.getValue());
                                 },
                             },{
                                 title: "Impresiones",
@@ -216,48 +265,56 @@
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
-                                    cell.setValue(!cell.getValue()); // Cambia el valor al hacer clic
+                                    var campo = cell.getField();
+                                    var row = cell.getRow();
+                                    var id = row.getData().id;
+                                    activate(id, campo)
+                                    cell.setValue(!cell.getValue());
                                 },
                             }, 
                         ]
                     },
                 ],
             });
-    </script>
 
-<script>
-        function modificarCamposSede(){
-            
-            checks= document.querySelectorAll('.form-check-input');
-            
-            if(document.getElementById("sede").value === "null"){
-                 // Restablecer los campos al estado inicial
-                 document.getElementById("nuevoNombre").value = "";
-                 document.getElementById("idSede").value = "";
-                document.getElementById("guardar").disabled = true;
-                for(var check of checks){
-                    check.checked = false;
-                }
-                return;
-            }
-            document.getElementById("guardar").disabled = false;
-            document.getElementById("nuevoNombre").value=datoSede.nombre_sede;
-            document.getElementById("idSede").value = datoSede.id_sede;
-            datoSede = JSON.parse(document.getElementById("sede").value);
+        function activate(id, campo) {
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`activar_area/${id}/${campo}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
 
-            const propiedades = ['activa', 'turnoMatutino', 'turnoMediodia', 'turnoVespertino', 'turnoSabatino', 'turnoTiempoCompleto'];
+                    //window.location.reload(); 
+                })
+                .catch(error => {
+                    console.error('Error en activacion:', error);
+                });
+            } 
 
-            propiedades.forEach((propiedad, index) => {
-                const checkbox = checks[index];
-                checkbox.checked = datoSede[propiedad] == 1;
-            });
-            
-        }
-        setTimeout(function(){
+            function nuevoNombreArea(id, campo) {
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`activar_area/${id}/${campo}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
 
-            document.getElementById("alerta").style.display="none";
+                    //window.location.reload(); 
+                })
+                .catch(error => {
+                    console.error('Error en activacion:', error);
+                });
+            } 
 
-        }, 4000);
     </script>
     
 @endsection

@@ -28,7 +28,7 @@ class RegisterController extends Controller
             case 'voluntariop':
             case 'voluntario':
 
-                $rCodigo = ['required','string','unique:users'];
+                $rCodigo = ['required','integer','unique:users'];
                 $rTelefono = ['required'];
                 $rCentro = ['required','string'];
                 $rCarrera = ['required', 'string', 'max:255'];
@@ -47,7 +47,7 @@ class RegisterController extends Controller
             case 'encargado':
 
                 
-                $rCodigo = ['required','string','unique:users'];
+                $rCodigo = ['required','integer','unique:users'];
                 $rTelefono = ['required'];
                 $rCentro = ['required','string'];
                 $rCarrera = ['required', 'string', 'max:255'];
@@ -61,7 +61,7 @@ class RegisterController extends Controller
 
             case 'maestro':
             case 'alumno':
-                $rCodigo = ['required','string','unique:users'];
+                $rCodigo = ['required','integer','unique:users'];
                 $rTelefono = ['required', 'string', 'max:10'];
                 $rCentro = ['required','string'];
                 $rCarrera = ['required', 'string', 'max:255'];
