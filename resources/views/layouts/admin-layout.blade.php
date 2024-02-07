@@ -120,6 +120,12 @@
                             <div class="side-menu__title">Añadir categorias</div>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{route('admin.premios')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                            <div class="side-menu__title">Premios</div>
+                        </a>
+                    </li>
                 </ul>
             </li>
         @endsection

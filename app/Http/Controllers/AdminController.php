@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use App\Models\FormData;
 
 /*
 use Illuminate\Support\Facades\Hash;
@@ -852,6 +853,33 @@ class AdminController extends Controller
             ->get();
 
         return response()->json($subcateg);
+    }
+
+    // PREMIOS
+    public function premios(){
+        $premios = DB::select("SELECT * FROM premios");
+        $prestadores = DB::select("SELECT * FROM users;");
+        return view("premios", ["prestadores"=>$prestadores, "premios"=>$premios]);
+    }
+
+    public function guardar_premio(Request $request){
+        $request->validate([
+            "nombre" => "required",
+            "descripcion" => "required",  
+            "tipo" => "required",
+            "horas" => "required",
+        ]);
+
+        // insert
+        DB::table("premios")->insert([
+            "nombre" => $request -> input("nombre"),
+            "descripcion" => $request -> input("descripcion"),  
+            "tipo" => $request -> input("tipo"),
+            "horas" => $request -> input("horas"),
+        ]);
+       
+
+        return redirect()->route("login")->with("Exito",);  // cambiar al redireccion a la misma vista premios
     }
     
 //VIEJO CONTROLLER. /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
