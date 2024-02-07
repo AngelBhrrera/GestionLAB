@@ -123,7 +123,7 @@ class RegisterController extends Controller
 
         $vSede = 0;
         $vArea = 0;
-        $vhorario = 0;
+        $vhorario = "No Aplica";
         $vHoras = null;
         $vEncargado = null;
 

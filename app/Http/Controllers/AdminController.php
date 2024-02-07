@@ -412,11 +412,19 @@ class AdminController extends Controller
 
     public function general()
     {
-        $data = DB::table('users')
+        if( auth()->user()->tipo == 'encargado' || auth()->user()->tipo == 'admin'){
+            $data = DB::table('users')
             ->select('users.name', 'users.apellido', 'users.correo', 'users.codigo', 'users.tipo', 'users.telefono', 'areas.nombre_area')
-            ->whereNotIn('users.tipo', ['Admin', 'Superadmin'])
+            ->whereNotIn('users.tipo', ['Superadmin','admin_sede','admin',])
             ->join('areas', 'users.area', '=', 'areas.id')
             ->get();
+        }else{
+            $data = DB::table('users')
+            ->select('users.name', 'users.apellido', 'users.correo', 'users.codigo', 'users.tipo', 'users.telefono', 'areas.nombre_area')
+            ->whereNotIn('users.tipo', ['Superadmin'])
+            ->join('areas', 'users.area', '=', 'areas.id')
+            ->get();
+        }
 
         return view('admin/general_users', ['datos' => json_encode($data)]);
     }

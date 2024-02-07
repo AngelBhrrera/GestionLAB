@@ -222,13 +222,30 @@ class PrestadorController extends Controller
     public function show_imps()
     {
         $data = DB::table('ver_impresiones')
-        ->select('impresora', 'proyecto',  'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
+        ->select('id', 'impresora', 'proyecto',  'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
         ->where('id_Prestador', Auth::user()->id)
         ->orderByDesc('fecha')
         ->get();
 
         return view('prestador/mostrar_mis_impresiones', ['impresiones' => json_encode($data)]);
 
+    }
+
+    public function printstate($id, $state) {
+
+        DB::table('seguimiento_impresiones')
+        ->where('id', $id)
+        ->update(['estado' => $state]);
+
+        return response()->json(['message' => 'Activado exitosamente' . $id]);
+    }
+
+    public function detail_prints($id, $value) {
+
+        $sql=    DB::table('seguimiento_impresiones')
+            ->where('id', $id)
+            ->update(['observaciones' => $value]);
+        return response()->json(['message' => $sql]);
     }
 
 
@@ -238,25 +255,6 @@ class PrestadorController extends Controller
 
         $turno = Auth::user()->horario;
 
-        // $asistencias = DB::table('registros_checkin')
-        //     ->select('fecha')
-        //     ->where('idusuario', $id)
-        //     ->orderBy('fecha_actual', 'desc')
-        //     ->get();
-
-        // $diasAsistenciaMesActual = [];
-
-        // $mesActual = date('m');
-
-        // foreach ($asistencias as $asistencia) {
-
-        //     $mesAsistencia = (int)substr($asistencia->fecha, 0, 1);
-        //     $diaAsistencia = (int)substr($asistencia->fecha, 3, 4);
-
-        //     if ($mesAsistencia == $mesActual) {
-        //         $diasAsistenciaMesActual[] = $diaAsistencia;
-        //     }
-        // }
 
         $asistencias = DB::select("Select fecha from registros_checkin where idusuario = $id");
         $festivos = DB::select("Select * from eventos");
@@ -385,6 +383,89 @@ class PrestadorController extends Controller
         }
     }
 
+    function diferencia($hora, $hora2)
+    {
+        $time1 = new DateTime($hora);
+        $time2 = new DateTime($hora2);
+        $interval = $time1->diff($time2);
+        return $interval->format('%H:%I:%S');
+    }
+
+    function horasC($time)
+    {
+        $horas = new DateTime($time);
+        $tiempo = $horas->format('H.i');
+        if (fmod($tiempo, 1) > 0.30) {
+            $tiempo = $tiempo + 1;
+        }
+        return intval($tiempo);
+    }
+
+    
+    public function cambiarRol()
+    {
+        echo "<script>console.log('Mensaje en consola antes de redirección');</script>";
+        return redirect()->route('admin.home');
+    }
+
+    public function show_reportes(){
+        $user_id = Auth::user()->id;
+        $reportes = DB::select("Select * from reportes_s_s where id_prestador = $user_id");
+        
+        
+        
+        //Validar oficio
+        $oficio = (count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Oficio de comision'"))==0)? true : false;
+        $reporte1 = (!$oficio && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte parcial 1'"))==0)? true : false;
+        $reporte2 = (!$oficio && !$reporte1 && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte parcial 2'"))==0)? true : false;
+        $reporte3 = (!$oficio && !$reporte1 && !$reporte2 && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte parcial 3'"))==0)? true : false;
+        $final = (!$oficio && !$reporte1 && !$reporte2 && !$reporte3 && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte final'"))==0)? true : false;
+        //Validar reportes parciales 
+        return view('prestador.reportes_parciales',['reportes' =>$reportes, 'oficio' => $oficio, 
+        'reporte1'=>$reporte1, 'reporte2'=>$reporte2, 'reporte3'=> $reporte3, 'final'=> $final]);
+    }
+
+    public function subir_reportes_parciales(Request $request){
+        $request->validate([
+            'reporte_parcial' => 'required|mimes:pdf|max:4096', //El archivo debe ser de tipo imagen y tener un tamaño máximo de MB
+            'tipo_reporte'  => 'required',
+        ], [
+            'reporte_parcial.max' => 'El archivo debe pesar menos de 4MB',
+            'reporte_parcial.required'=> 'El campo reporte es obligatorio',
+            'tipo_reporte.required'=> 'El campo tipo es obligatorio'
+        ]);
+
+        
+        // Obtener el usuario autenticado
+        $user_id = Auth::user()->id;
+        $tipo_reporte = $request->tipo_reporte; 
+
+        // Almacenar el archivo
+        $reporte_path = $request->file('reporte_parcial')->store('public/reportes_parciales/');
+
+        $nombre_archivo = basename($reporte_path);
+        $insertar= DB::table('reportes_s_s')->insert(['id_prestador' => $user_id, 'nombre_reporte' => $nombre_archivo, 'tipo'=>$tipo_reporte, 'fecha_subida' => date("Y/m/d")]);
+
+        return redirect()->route('parciales')->with('success', 'Archivo subido con éxito');
+    }
+
+    public function eliminar_reportes_parciales($id){
+        // Obtén el nombre del archivo de la base de datos
+        $archivo = DB::select("Select nombre_reporte from reportes_s_s where id=$id");
+        // Verifica si el archivo existe antes de intentar eliminarlo
+        $file_path = public_path('storage/reportes_parciales/'.$archivo[0]->nombre_reporte);
+        if (file_exists($file_path)) {
+            DB::table('reportes_s_s')->where('id', $id)->delete();
+            unlink($file_path);
+        }
+
+        return redirect()->route('parciales')->with('warning', 'Archivo y registro eliminados con éxito');
+    }
+
+
+    //TERRITORIOS DESCONOCIDOS 
+    /*
+
     public function asignarfirmas(Request $request)
     {
         $id = $request->input('id');
@@ -420,23 +501,6 @@ class PrestadorController extends Controller
         return redirect('/admin/firmas');
     }
 
-    function diferencia($hora, $hora2)
-    {
-        $time1 = new DateTime($hora);
-        $time2 = new DateTime($hora2);
-        $interval = $time1->diff($time2);
-        return $interval->format('%H:%I:%S');
-    }
-
-    function horasC($time)
-    {
-        $horas = new DateTime($time);
-        $tiempo = $horas->format('H.i');
-        if (fmod($tiempo, 1) > 0.30) {
-            $tiempo = $tiempo + 1;
-        }
-        return intval($tiempo);
-    }
 
     public function proyectos()
     {
@@ -1010,53 +1074,6 @@ class PrestadorController extends Controller
     public function faltas(){
         return view('prestador.faltas_prestador');
     }
+    */
 
-    public function cambiarRol()
-    {
-        echo "<script>console.log('Mensaje en consola antes de redirección');</script>";
-        return redirect()->route('admin.home');
-    }
-
-    public function show_reportes(){
-        $user_id = Auth::user()->id;
-        $reportes = DB::select("Select * from reportes_s_s where id_prestador = $user_id");
-        return view('prestador.reportes_parciales',['reportes' =>$reportes]);
-    }
-
-    public function subir_reportes_parciales(Request $request){
-        $request->validate([
-            'reporte_parcial' => 'required|mimes:pdf|max:4096', //El archivo debe ser de tipo imagen y tener un tamaño máximo de MB
-            'tipo_reporte'  => 'required',
-        ], [
-            'reporte_parcial.max' => 'El archivo debe pesar menos de 4MB',
-            'reporte_parcial.required'=> 'El campo reporte es obligatorio',
-            'tipo_reporte.required'=> 'El campo tipo es obligatorio'
-        ]);
-
-        // Obtener el usuario autenticado
-        $user_id = Auth::user()->id;
-        $tipo_reporte = $request->tipo_reporte;
-
-
-        // Almacenar el archivo
-        $reporte_path = $request->file('reporte_parcial')->store('public/reportes_parciales/');
-
-        $nombre_archivo = basename($reporte_path);
-        $insertar= DB::table('reportes_s_s')->insert(['id_prestador' => $user_id, 'nombre_reporte' => $nombre_archivo, 'tipo'=>$tipo_reporte, 'fecha_subida' => date("Y/m/d")]);
-
-        return redirect()->route('parciales')->with('success', 'Archivo subido con éxito');
-    }
-
-    public function eliminar_reportes_parciales($id){
-        // Obtén el nombre del archivo de la base de datos
-        $archivo = DB::select("Select nombre_reporte from reportes_s_s where id=$id");
-        // Verifica si el archivo existe antes de intentar eliminarlo
-        $file_path = public_path('storage/reportes_parciales/'.$archivo[0]->nombre_reporte);
-        if (file_exists($file_path)) {
-            DB::table('reportes_s_s')->where('id', $id)->delete();
-            unlink($file_path);
-        }
-
-        return redirect()->route('parciales')->with('warning', 'Archivo y registro eliminados con éxito');
-    }
 }

@@ -52,17 +52,14 @@
                         sorter: "joiningdate",
                         width: 150,
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Horas",
                         field: "horas",
                         sorter: "number",
-                        hozAlign: "center",
                         width: 100,
                     }, {
                         title: "Estado",
                         field: "estado",
-                        hozAlign: "center",
                         width: 100,
                         headerFilter: true,
                         headerFilterParams: {
@@ -89,19 +86,18 @@
                         title: "Entrada",
                         field: "hora_entrada",
                         sorter: "string",
-                        hozAlign: "center",
+                        width: 200,
                     },
                     {
                         title: "Salida",
                         field: "hora_salida",
                         sorter: "string",
-                        hozAlign: "center",
-                        editor: "select",
+                        width: 200,
                     }, {
                         title: "Tiempo",
                         field: "tiempo",
                         sorter: "number",
-                        hozAlign: "center"
+                        width: 200,
                     },  
                     
                 ],
