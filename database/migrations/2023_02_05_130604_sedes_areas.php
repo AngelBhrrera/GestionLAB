@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
-class sedes_areas extends Migration
+class sedesAreas extends Migration
 {
 
     public function up()
