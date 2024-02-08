@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatController;
 
 //Estimado prestador de servicio que tiene que dar mantenimiento a esta fregadera
 
@@ -338,7 +339,8 @@ Route::get('/bot', function () {
 });
 
 Route::match(['get', 'post'], '/botman', [App\Http\Controllers\BotManController::class, 'handle']);
-
+Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+Route::post('/chat', [ChatController::class, 'store'])->name('chat.store');
 /*
 Route::get('/registroImpresion',[App\Http\Controllers\HomeController::class, 'registroImpresion'])->middleware('guest')->name('registroImpresion');
 Route::post('/crearImpresion', [App\Http\Controllers\HomeController::class, 'crearImpresion'])->name('crearImpresion')->middleware('guest');
