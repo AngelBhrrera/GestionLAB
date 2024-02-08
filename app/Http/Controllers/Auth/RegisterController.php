@@ -28,7 +28,7 @@ class RegisterController extends Controller
             case 'voluntariop':
             case 'voluntario':
 
-                $rCodigo = ['required','string','unique:users'];
+                $rCodigo = ['required','integer','unique:users'];
                 $rTelefono = ['required'];
                 $rCentro = ['required','string'];
                 $rCarrera = ['required', 'string', 'max:255'];
@@ -44,8 +44,10 @@ class RegisterController extends Controller
             case 'practicante':
             case 'prestador':
             case 'prestadorp':
+            case 'encargado':
+
                 
-                $rCodigo = ['required','string','unique:users'];
+                $rCodigo = ['required','integer','unique:users'];
                 $rTelefono = ['required'];
                 $rCentro = ['required','string'];
                 $rCarrera = ['required', 'string', 'max:255'];
@@ -59,7 +61,7 @@ class RegisterController extends Controller
 
             case 'maestro':
             case 'alumno':
-                $rCodigo = ['required','string','unique:users'];
+                $rCodigo = ['required','integer','unique:users'];
                 $rTelefono = ['required', 'string', 'max:10'];
                 $rCentro = ['required','string'];
                 $rCarrera = ['required', 'string', 'max:255'];
@@ -71,19 +73,8 @@ class RegisterController extends Controller
                 break;
 
             case 'admin':
+            case 'admin_sede':
 
-                $rCentro = ['nullable'];
-                $rTelefono = ['nullable'];
-                $rCodigo = ['nullable'];
-                $rCarrera = ['nullable'];
-                $rSede = ['nullable'];
-                $rArea = ['nullable'];
-                $rhorario = ['nullable'];
-                $rHoras =  ['nullable'];
-                $rEncargado = ['nullable'];
-                break;
-
-            case 'encargado':
                 $rCentro = ['nullable'];
                 $rTelefono = ['nullable'];
                 $rCodigo = ['nullable'];
@@ -131,8 +122,8 @@ class RegisterController extends Controller
         $vCarrera = $data['carrera'];
 
         $vSede = 0;
-        $vArea = null;
-        $vhorario = null;
+        $vArea = 0;
+        $vhorario = "No Aplica";
         $vHoras = null;
         $vEncargado = null;
 
@@ -158,6 +149,8 @@ class RegisterController extends Controller
                 $vEncargado = $data['id_encargado'];
                 break;
             case 'admin':
+                $vArea = $data['area'];
+            case 'admin_sede':     
                 $vSede = $data['sede'];
                 break;
         }

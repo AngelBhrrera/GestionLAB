@@ -30,78 +30,139 @@
             var table = new Tabulator("#players", {
                 height: 500,
                 data: printers,
-                layout: "fitColumns",
                 pagination: "local",
                 paginationSize: 24,
                 tooltips: true,
+                resizableColumns:false,
                 columns: [{
+                    title: "ID",
+                        field: "id",
+                        visible: false,
+                        width: 2,
+                    }, {
                         title: "Impresora",
                         field: "impresora",
                         sorter: "string",
-                        width: 150,
+                        width: 100,
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Proyecto",
                         field: "proyecto",
                         sorter: "string",
-                        hozAlign: "center",
+                        width: 100,
                     }, {
                         title: "Fecha",
                         field: "fecha",
                         sorter: "date",
-                        hozAlign: "center",
+                        width: 100,
                     },  {
                         title: "Modelo",
                         field: "nombre_modelo_stl",
                         sorter: "string",
-                        hozAlign: "center",
-                        headerFilter: "input"
+                        headerFilter: "input",
+                        width: 100,
                     }, {
                         title: "Tiempo Impresion",
                         field: "tiempo_impresion",
                         sorter: "number",
-                        hozAlign: "center",
+                        width: 100,
                     },  {
                         title: "Color",
                         field: "color",
                         sorter: "string",
-                        hozAlign: "center",
-                        headerFilter: "input"
+                        headerFilter: "input",
+                        width: 100,
                     },  {
                         title: "Piezas",
                         field: "piezas",
                         sorter: "number",
-                        hozAlign: "center",
+                        width: 50,
                     }, {
                         title: "Estado",
                         field: "estado",
                         sorter: "string",
-                        hozAlign: "center",
                         editor: "select",
+                        width: 130,
                         headerFilter: true,
                         headerFilterParams: {
-                            "autorizado": "autorizado",
-                            "pendiente": "pendiente",
-                            "denegado": "denegado",
+                            "Exitoso": "Exitoso",
+                            "En Proceso": "En Proceso",
+                            "Fallido": "Fallido",
+                        },
+                        editor: "select",
+                        editorParams: {
+                            values: {
+                                "Exitoso": "Exitoso",
+                                "En Proceso": "En Proceso",
+                                "Fallido": "Fallido",
+                            }
+                        },
+                        cellEdited: function (cell) {
+                            var row = cell.getRow();
+                            var id = row.getData().id;
+                            var value = cell.getValue();
+                            cambiarEstadoImpresion(id, value);
                         }
                     },   {
                         title: "Peso",
                         field: "peso",
                         sorter: "number",
-                        hozAlign: "center",
+                        width: 100,
                     },  {
                         title: "Observaciones",
                         field: "observaciones",
-                        sorter: "number",
-                        hozAlign: "center",
-                        editor:"input",
+                        editor: "input",
+                        width: 350,
+                        cellEdited: function (cell) {
+                            var row = cell.getRow();
+                            var id = row.getData().id;
+                            var value = cell.getValue();
+                            agregarObservaciones(id, value);
+                        },
                     },
                 ],
                 //rowClick: function(e, row) {
                 //    alert("Row " + row.getData().playerid + " Clicked!!!!");
                 //},
             });
+
+            function cambiarEstadoImpresion(id, value) {
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`changestate_print/${id}/${value}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+
+                    console.log('Estado de impresion cambiado', data);
+                })
+                .catch(error => {
+                    console.error('Error al cambiar de estado de impresion:', error);
+                });
+            } 
+
+            function agregarObservaciones(id, value) {
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`observaciones_impresion/${id}/${value}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+
+                    console.log('Estado de impresion cambiado', data);
+                })
+                .catch(error => {
+                    console.error('Error al cambiar de estado de impresion:', error);
+                });
+            } 
             
     </script>
 @endsection

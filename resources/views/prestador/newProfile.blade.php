@@ -82,22 +82,24 @@
                                     <div class="modal-body">
                                             <div class="form-group">
                                             <div class="text-center pt-5">
-                                        <label class="form-block-input btn-primary" style="
-                                            border-radius: 15px;
-                                            font-size: 14px;
-                                            font-weight: 600;
-                                            display: inline-block;
-                                            transition: all .5s;
-                                            cursor: pointer;
-                                            padding: 15px 40px !important;
-                                            text-transform: uppercase;
-                                            width: fit-content;
-                                            text-align: center;
-                                            " >
-                                            <div style="display:flex;">
-                                                <i data-lucide="image" height="20" width="20"></i>
-                                                <input type="file"  id="imagen_perfil" name="imagen_perfil" class="form-control-file" style="display: none;"  accept="image/jpg, image/jpeg, image/png"/>
-                                                <span class="form-file-span pl-5">Selecciona una imagen</span>
+                                        <div class="overflow-x-auto sm:w-full">
+                                            <label class="form-block-input btn-primary" style="
+                                                border-radius: 15px;
+                                                font-size: 14px;
+                                                font-weight: 600;
+                                                display: inline-block;
+                                                transition: all .5s;
+                                                cursor: pointer;
+                                                padding: 15px 40px !important;
+                                                text-transform: uppercase;
+                                                width: fit-content;
+                                                text-align: center;
+                                                " >
+                                                <div style="display:flex;">
+                                                    <i data-lucide="image" height="20" width="20"></i>
+                                                    <input type="file"  id="imagen_perfil" name="imagen_perfil" class="form-control-file" style="display: none;"  accept="image/jpg, image/jpeg, image/png"/>
+                                                    <span class="form-file-span pl-5">Selecciona una imagen</span>
+                                                </div>
                                             </div>
                                         </label>
                                     </div>

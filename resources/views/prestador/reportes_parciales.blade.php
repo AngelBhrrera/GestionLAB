@@ -103,32 +103,46 @@
                                     <div class="modal-body">
                                         <div class="form-group">
                                             <div class="text-center pt-5">
-                                                
-                                            <label class="form-block-input btn-primary" style="
-                                            border-radius: 15px;
-                                            font-size: 14px;
-                                            font-weight: 600;
-                                            display: inline-block;
-                                            transition: all .5s;
-                                            cursor: pointer;
-                                            padding: 15px 40px !important;
-                                            text-transform: uppercase;
-                                            width: fit-content;
-                                            text-align: center;
-                                            " >
-                                                <div style="display:flex;">
-                                                    <i data-lucide="image" height="20" width="20"></i>
-                                                    <input type="file"  id="reporte_parcial" name="reporte_parcial" 
-                                                    class="form-control-file" style="display: none;"  accept="application/pdf"/>
-                                                    <span class="form-file-span pl-5">Selecciona un archivo</span>
-                                                </div>
-                                            </label>
+                                            <div class="overflow-x-auto sm:w-full">
+                                                <label class="form-block-input btn-primary" style="
+                                                border-radius: 15px;
+                                                font-size: 14px;
+                                                font-weight: 600;
+                                                display: inline-block;
+                                                transition: all .5s;
+                                                cursor: pointer;
+                                                padding: 15px 40px !important;
+                                                text-transform: uppercase;
+                                                width: fit-content;
+                                                text-align: center;
+                                                " >
+                                                    <div style="display:flex;">
+                                                        <i data-lucide="image" height="20" width="20"></i>
+                                                        <input type="file"  id="reporte_parcial" name="reporte_parcial" 
+                                                        class="form-control-file" style="display: none;"  accept="application/pdf"/>
+                                                        <span class="form-file-span pl-5">Selecciona un archivo</span>
+                                                    </div>
+                                                </label>
+                                            </div>
                                         </div>
                                         <select class="form-select mt-2 sm:mr-2" aria-label="Default select example" name="tipo_reporte" id="tipo_reporte">
                                             <option value="{{null}}">Seleccione un tipo reporte</option>
-                                            <option value="Reporte parcial">Reporte parcial</option>
-                                            <option value="Oficio de comision">Oficio de comisión</option>
-                                            <option value="Reporte final">Reporte final</option>
+                                            @if($oficio)
+                                                <option value="Oficio de comision">Oficio de comisión</option>
+                                            @endif
+                                            @if ($reporte1)
+                                                <option value="Reporte parcial 1">Reporte parcial 1</option>
+                                            @endif
+                                            @if ($reporte2)
+                                                <option value="Reporte parcial 2">Reporte parcial 2</option>
+                                            @endif
+                                            @if ($reporte3)
+                                                <option value="Reporte parcial 3">Reporte parcial 3</option>
+                                            @endif
+
+                                            @if ($final)
+                                                <option value="Reporte final">Reporte final</option>
+                                            @endif
                                         </select>
                                         
                                     </div>
