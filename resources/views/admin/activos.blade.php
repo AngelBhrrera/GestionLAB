@@ -54,8 +54,8 @@
                         editor: "select",
                         editorParams: {
                             values: {
-                                    "Prestador": "prestador",
-                                    "Encargado": "encargado",
+                                    "prestador": "prestador",
+                                    "encargado": "encargado",
                                 }
                         },
                       
@@ -96,6 +96,7 @@
                     },{
                         title: "Modificar",
                         field: "id",
+                        width: 120,
                         formatter: function (cell, formatterParams, onRendered) {
                             var row = cell.getRow();
                             var id = cell.getValue();
@@ -115,6 +116,7 @@
                     }, {
                         title: "Desactivar",
                         field: "id",
+                        width: 135,
                         formatter: function (cell, formatterParams, onRendered) {
                             var value = cell.getValue();
                             var button = document.createElement("button");
@@ -162,7 +164,7 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log('Respuesta del servidor:', data);
-                    window.location.reload(); 
+                    //window.location.reload(); 
                 })
                 .catch(error => {
                     console.error('Error al activar usuario:', error);

@@ -37,7 +37,7 @@ class Soloprestadores extends Migration
             LEFT JOIN `areas` ON `users`.`area` = `areas`.`id`
             LEFT JOIN `sedes` ON `users`.`sede` = `sedes`.`id_sede`
             WHERE
-                `users`.`tipo` IN ('prestador', 'practicante', 'voluntario');
+                `users`.`tipo` IN ('prestador', 'practicante', 'voluntario', 'encargado');
         ");
     }
 

@@ -137,6 +137,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 
             Route::get('/admin/general', 'general')->name('general');
             Route::get('/admin/prestadores', 'prestadores')->name('prestadores');
+            
             Route::get('/admin/prestadoresPendientes', 'prestadoresPendientes')->name('prestadoresPendientes');
             Route::get('/admin/prestadores_inactivos', 'prestadores_inactivos')->name('prestadores_inactivos');
             Route::get('/admin/prestadores_liberados', 'prestadores_liberados')->name('prestadores_liberados');

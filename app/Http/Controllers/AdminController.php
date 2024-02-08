@@ -255,14 +255,14 @@ class AdminController extends Controller
             $n_Turno = "turnoSabatino";
         }
 
-        $sede = DB::table('users')
+        $area = DB::table('users')
         ->where('id', $id)
-        ->value('sede');
+        ->value('area');
        
         DB::table('users')
         ->where('id', $id)
         ->update([
-            'horario' => DB::table('sedes')->where('id_sede', $sede)->value($n_Turno) == 1 ? $horario : DB::raw('horario')]);
+            'horario' => DB::table('areas')->where('id', $area)->value($n_Turno) == 1 ? $horario : DB::raw('horario')]);
 
             return response()->json(['message' => 'Activado exitosamente']);
     }
