@@ -45,11 +45,10 @@
         </div>
     @endif
 
-
         <div class="col-md-6">
             <div class="intro-y box p-5 mt-5">
                 <h3 class="text-2xl mt-5 font-small">Añadir un área</h3>
-                <form method="POST">
+                <form method="POST" action="{{route('admin.nuevaArea')}}">
                     @csrf
                     <div class="form-group">
                         <label for="sede">Selecciona una sede</label>
@@ -64,7 +63,7 @@
                     </div>
                     <div class="form-group">
                         <label for="nombreArea">Nombre del área</label>
-                        <input required id="nombreArea" type="text" class="form-control" name="nombreArea" placeholder="Nombre">
+                        <input required id="nombreArea" type="text" class="form-control" name="nombreArea" placeholder="Nombre de área">
                     </div>
                     <button type="submit" class="btn btn-primary mt-3">Crear</button>
                 </form>

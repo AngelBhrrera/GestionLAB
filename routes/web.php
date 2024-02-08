@@ -91,6 +91,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
                 Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
                 Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
+                Route::post('admin/nuevaArea', 'nuevaArea')->name('nuevaArea');
                     
                 Route::get('/admin/faltas', 'faltas')->name('faltas');
                 Route::get('/admin/horarios', 'horarios')->name('horarios');

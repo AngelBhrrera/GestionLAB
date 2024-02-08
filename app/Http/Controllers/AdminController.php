@@ -682,8 +682,8 @@ class AdminController extends Controller
         $request->validate([
             'nombreSede' => 'required|max:255',
         ]);
-
-        $buscarSede = DB::Select("Select nombre_sede from sedes where nombre_sede = '$request->nombreSede'");
+        $nombre= strtoupper($request->input('nombreSede'));
+        $buscarSede = DB::Select("Select nombre_sede from sedes where nombre_sede = '$nombre'");
         if (count($buscarSede)==0){
             $nombre=$request->input("nombreSede");
             DB::insert("INSERT INTO sedes (nombre_sede) Values('$nombre')");
@@ -695,16 +695,20 @@ class AdminController extends Controller
 
     public function nuevaArea(Request $request){
         $request->validate([
-            'nombreSede' => 'required|max:255',
+            'sede'=> 'required',
+            'nombreArea' => 'required|max:255',
         ]);
-
-        $buscarSede = DB::Select("Select nombre_sede from sedes where nombre_sede = '$request->nombreSede'");
-        if (count($buscarSede)==0){
-            $nombre=$request->input("nombreSede");
-            DB::insert("INSERT INTO sedes (nombre_sede) Values('$nombre')");
+        $nombre= strtoupper($request->input('nombreArea'));
+        $idSede = $request->input('sede');
+        $buscarArea = DB::select("Select nombre_area from areas where nombre_area = '$nombre'");
+        if (count($buscarArea)==0){
+            DB::insert("INSERT INTO areas (nombre_area, id_sede) Values('$nombre', $idSede)");
+            $id = DB::select("Select id from areas where nombre_area = '$nombre'");
+            $id = $id[0]->id;
+            DB::insert("INSERT INTO modulos (id) values($id)");
             return redirect(route('admin.sede'))->with('success', 'Creada correctamente');
         }else{
-            return redirect(route('admin.sede'))->with('warning', "Ya existe una sede con ese nombre");
+            return redirect(route('admin.sede'))->with('warning', "Ya existe una área con ese nombre");
         }
     }
 
