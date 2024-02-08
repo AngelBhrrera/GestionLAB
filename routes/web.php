@@ -30,6 +30,15 @@ Auth::routes([
 Route::get('/foo', function () {
     Artisan::call('storage:link');
 });
+Route::group(['middleware'=>'auth'], function (){
+    Route::controller(App\Http\Controllers\PrestadorController::class)->group(function(){
+        Route::get('/descargar/{nombreArchivo}', 'descargar_reporte')->name('descargar_reporte');
+        Route::get('/visualizar_reporte/{nombreArchivo}', 'visualizar_reporte')->name('visualizar');
+    });
+    
+});
+    
+
 
 Route::get('/spiderw', function(){
     return view('/TEST/spider');
