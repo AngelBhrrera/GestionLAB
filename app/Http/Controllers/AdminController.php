@@ -648,26 +648,39 @@ class AdminController extends Controller
     public function ver_reportes_parciales(){
         $reportes = session('reportes');
         $codigo = session('codigo');
-        return view('admin.ver_reportes_parciales', ['reportes'=>$reportes, 'codigo'=>$codigo]);
+        if(Auth::user()->tipo == "admin"){
+            $prestadores = DB::table('users')
+            ->where('area', Auth::user()->area)
+            ->where('sede', Auth::user()->sede)
+            ->get();
+        }elseif (Auth::user()->tipo == "admin_sede"){
+            $prestadores = DB::table('users')
+            ->where('sede', Auth::user()->sede)
+            ->get();
+        }
+        
+        return view('admin.ver_reportes_parciales', ['reportes'=>$reportes, 'codigo'=>$codigo, 'prestadores'=>$prestadores]);
     }
 
     public function busqueda_reportes_parciales(Request $request){
         if ($request->busqueda==""){
-            return redirect()->route('admin.reportes_parciales')->with(['warning'=>'Debes ingresar un código']);
+            return redirect()->route('admin.reportes_parciales')->with(['warning'=>'Debes ingresar un código/nombre']);
         }
+
         $id_prestador = DB::select("Select id from users where codigo = $request->busqueda");
-        
+    
         if(count($id_prestador) == 0){
             return redirect()->route('admin.reportes_parciales')->with('warning', 'El prestador no existe');
         }
         $id = $id_prestador[0]->id;
         $reportes = DB::select("Select * from reportes_s_s where id_prestador = $id");
 
-       if(count($reportes) != 0){
+        if(count($reportes) != 0){
             return redirect()->route('admin.reportes_parciales')->with(['success'=>'Registro encontrado', 'reportes'=>$reportes, 'codigo'=> $request->busqueda]);
         }else{
             return redirect()->route('admin.reportes_parciales')->with(['warning'=>"No se encontraron registros del prestador", 'reportes'=>$reportes, 'codigo'=> $request->busqueda]);
         }
+        
     }
 
     

@@ -9,7 +9,7 @@
 @section('subcontent')
 
     <div class="intro-y flex flex-col  mt-8 ml-5">
-        <h2 class="text-lg font-medium mr-auto">Reportes parciales</h2>
+        <h2 class="text-lg font-medium mr-auto">Reportes</h2>
         <div class="grid grid-cols-12 gap-6 mt-5 mb-5">
             <div class="intro-y col-span-12 lg:col-span-6" id="alerta">
                 @if (session('success'))
@@ -27,6 +27,7 @@
         </div>
         <form action="{{route('admin.busqueda_reportes_parciales')}}">
             @csrf
+            <input type="hidden" value="porCodigo" name="modo">
             <div class="w-[350px] relative mr-5">
                 <input name="busqueda" type="text" class="form-control pl-10" placeholder="Buscar por código">
                 <i class="w-5 h-5 absolute inset-y-0 left-0 my-auto text-slate-400 ml-3" data-lucide="search"></i>
@@ -45,9 +46,9 @@
         <div class="inbox col-span-12 xl:col-span-8 2xl:col-span-10">
             <div class="flex flex-wrap gap-y-3 items-center px-5 pt-5 border-b border-slate-200/60 dark:border-darkmode-400 mb-4 pb-5">
             @if(isset($reportes))
-                Reportes parciales guardados: {{ count($reportes) }}
+                Reportes guardados: {{ count($reportes) }}
             @else
-                Reportes parciales guardados: -
+                Reportes guardados: -
             @endif
             <br>
             @if(isset($codigo))
@@ -58,7 +59,7 @@
 
             @if(!isset($reportes) || count($reportes)==0)
                 <div class="flex flex-wrap gap-y-3 items-center px-5 pt-5 ">
-                    No hay reportes parciales para mostrar
+                    No hay reportes para mostrar
                 </div>
             @endif
             <div class="px-5 pb-4 grid grid-cols-12 gap-3 sm:gap-6 border-b border-slate-200/60">
@@ -98,15 +99,61 @@
                 @endif
             </div>
         </div>
-        <!-- END: Inbox Content -->
-        
     </div>
+    <!-- END: Inbox Content -->
+
+    <div class="box grid grid-cols-12 mt-5 ml-5 mr-5">
+        <!-- BEGIN: Inbox Content -->
+        <div class="inbox col-span-12 xl:col-span-8 2xl:col-span-10">
+            <div class="flex gap-y-3 items-center px-5 pt-5 border-b border-slate-200/60 dark:border-darkmode-400 mb-4 pb-5">
+                 <h3 class="text-2xl mt-5 font-small">Lista de prestadores</h3>
+            </div>
+            <div class="px-5 pb-4 sm:gap-6 border-b border-slate-200/60">
+                <div class="text-center mx-auto" style="padding-left: 10px" id="prestadores"></div>
+            </div>
+        </div>    
+    </div>
+
 @endsection
 
-<script>
-    setTimeout(function(){
+@section('script')
+    <script type="text/javascript">
 
-    document.getElementById("alerta").style.display="none";
+    var prestadores = {!! $prestadores !!};
 
-    }, 4000);
-</script>
+    var table = new Tabulator("#prestadores", {
+        height:"100%",
+        data: prestadores,
+        layout: "fitColumns",
+        resizableColumns: "false",
+        fitColumns: "true",
+        pagination: "local",
+        paginationSize: 10,
+        tooltips: true,
+        columns: [{
+                title: "ID",
+                field: "id",
+                visible: false,
+                width: 2,
+            }, {
+                title: "Nombre",
+                field: "name",
+                headerFilter: "input",
+                sorter: "string",
+                editor: "input",
+            },{
+                title: "Apellido",
+                field: "apellido",
+                headerFilter: "input",
+                sorter: "string",
+                editor: "input",
+            },{
+                title: "Ver Reportes",
+                field: "total_personal",
+                width: 100,
+                sorter: "string",
+            },
+        ],
+    });
+    </script>
+@endsection

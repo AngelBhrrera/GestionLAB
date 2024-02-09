@@ -39,14 +39,13 @@
         <!-- BEGIN: Inbox Content -->
         <div class="inbox col-span-12 xl:col-span-8 2xl:col-span-10">
             <div class="flex flex-wrap gap-y-3 items-center px-5 pt-5 border-b border-slate-200/60 dark:border-darkmode-400 mb-4 pb-5">
-            Reportes parciales guardados: {{ count($reportes) }}
+            Reportes guardados: {{ count($reportes) }}
             </div>
             @if (count($reportes)==0)
                 <div class="flex flex-wrap gap-y-3 items-center px-5 pt-5 ">
                     No hay reportes parciales para mostrar</div>
             @endif
             <div class="px-5 pb-4 grid grid-cols-12 gap-3 sm:gap-6 border-b border-slate-200/60">
-                <?php $num_reporte = 0?>
                 @foreach ($reportes as $reporte)
                         <div class="intro-y col-span-6 sm:col-span-4 md:col-span-3 2xl:col-span-2">
                             <div class="file box border-slate-200/60 dark:border-darkmode-400 shadow-none rounded-md px-5 pt-8 pb-5 px-3 sm:px-5 relative zoom-in">
@@ -55,7 +54,17 @@
                                     <div class="file__icon__file-name">PDF</div>
                                 </a>
                                 <a href="{{route('visualizar', ['nombreArchivo' => $reporte->nombre_reporte])}}" target="_blank">
-                                    <div class="block font-small mt-4 text-center">{{$reporte->tipo}}<br>{{$reporte->fecha_subida}}<br>{{"Estado: ".$reporte->estado}}</div>
+                                    <div class="block font-small mt-4 text-center">{{$reporte->tipo}}<br>{{$reporte->fecha_subida}}<br>
+                                    <div class="
+                                    @if($reporte->estado == 'pendiente')
+                                        alert alert-warning
+                                    @elseif($reporte->estado == 'autorizado')
+                                        alert alert-success
+                                    @else
+                                        alert alert-danger
+                                    @endif"
+                                    >{{"Estado: ".ucfirst($reporte->estado)}} </div>
+                                </div>
                                     
                                 </a>
                                 
@@ -71,11 +80,14 @@
                                                     <i data-lucide="download" class="w-4 h-4 mr-2"></i> Descagar
                                                 </a>
                                             </li>
+                                            @if ($reporte->estado == "rechazado" || $reporte->estado == "pendiente")
                                             <li>
                                                 <a href="{{route('eliminarReporte', [$reporte->id])}}" onclick="return confirmarEliminar()" class="dropdown-item">
                                                     <i data-lucide="trash" class="w-4 h-4 mr-2"></i> Eliminar
                                                 </a>
                                             </li>
+                                            @endif
+                                            
                                             
                                             
                                         </ul>
