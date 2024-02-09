@@ -11,18 +11,17 @@ class sedeFilter extends Migration
         DB::statement("
         CREATE VIEW filtroSedes AS
             SELECT 
-                S.id_Sede,
-                S.nombre_Sede AS sede_nombre,
-                A.id AS area_id,
-                A.nombre_area AS area_nombre,
-                S.turnoMatutino,
-                S.turnoMediodia,
-                S.turnoVespertino,
-                S.turnoSabatino,
-                S.turnoTiempoCompleto
-            FROM `sedes_areas` AS SA
-            INNER JOIN `sedes` AS S ON SA.id_sede = S.id_Sede
-            INNER JOIN `areas` AS A ON SA.id_area = A.id;
+                S.id_sede,
+                S.nombre_sede,
+                A.id AS id_area,
+                A.nombre_area,
+                A.turnoMatutino,
+                A.turnoMediodia,
+                A.turnoVespertino,
+                A.turnoSabatino,
+                A.turnoTiempoCompleto
+        FROM `areas` AS A
+            INNER JOIN `sedes` AS S ON A.id_sede = S.id_sede
         ");
 
     }

@@ -27,35 +27,36 @@
                 data: users,
                 layout: "fitColumns",
                 pagination: "local",
+                resizableColumns: false,  
                 paginationSize: 8,
                 tooltips: true,
-                groupBy:"nombre_Sede",
+                groupBy:"nombre_area",
                 columns: [{
                         title: "Nombre",
                         field: "name",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
+                       
                     }, {
                         title: "Apellido",
                         field: "apellido",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
+                       
                     }, {
                         title: "Correo",
                         field: "correo",
                         sorter: "string",
-                        hozAlign: "center",
+                       
                     }, {
                         title: "Codigo",
                         field: "codigo",
-                        hozAlign: "center",
+                       
                     },  {
                         title: "Tipo",
                         field: "tipo",
                         sorter: "string",
-                        hozAlign: "center",
+                       
                         headerFilter: true,
                         headerFilterParams: {
                             "": "",
@@ -70,7 +71,7 @@
                         title: "Contacto",
                         field: "telefono",
                         sorter: "number",
-                        hozAlign: "center",
+                       
                     },  {
                         title: "",
                         field: "id",
@@ -84,7 +85,7 @@
                             });
                             return button;
                         }, 
-                        hozAlign: "center",
+                       
                     },  {
                         title: "",
                         field: "id",
@@ -98,7 +99,7 @@
                             });
                             return button;
                         }, 
-                        hozAlign: "center",
+                       
                     },
 
                     

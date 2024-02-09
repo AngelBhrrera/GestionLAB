@@ -20,6 +20,62 @@ class PrestadorController extends Controller
         $this->middleware('auth');
     }
 
+    public function create_act()
+    {
+
+        $categorias = DB::table('categorias')->get();
+        $subcategorias = DB::table('subcategorias')->get();
+    
+        return view('/prestador/registro_nActividad_prestador',
+                ['categorias' => $categorias, 'subcategorias' => $subcategorias,]);
+    }
+
+    public function make_act(Request $request)
+    {
+
+        $categorias = DB::table('categorias')->get();
+        $actividades = DB::table('actividades')->get();
+    
+        $nomact = $request->input('nombre');
+
+        $categoria = $request->input('tipo_categoria');
+        $subcategoria = $request->input('tipo_subcategoria');
+        if($subcategoria == '')
+            $subcategoria = null;
+        $tipo = $request->input('tipo_actividad');
+
+        $desc = $request->input('descripcion');
+        $reso = $request->input('recursos');
+        $obj = $request->input('resultados');
+    
+        $horas = $request->input('horas')*60;
+        $minutos = $request->input('minutos');
+        $tec = $horas + $minutos;
+    
+        DB::table('actividades')->insert([
+            'titulo' => $nomact,
+            'id_categoria' => $categoria,
+            'id_subcategoria' => $subcategoria,
+            'tipo' => $tipo,                
+            'recursos' => $reso,
+            'descripcion' => $desc,
+            'objetivos' => $obj,
+
+            'TEC' => $tec,
+        ]);
+    
+        return view( 'prestador/asignar_actividad_prestador', ['categorias' => $categorias,'actividades' => $actividades]);
+    }
+
+    public function asign_act()
+    {
+
+        $categorias = DB::table('categorias')->get();
+        $actividades = DB::table('actividades')->get();
+    
+        return view( 'prestador/asignar_actividad_prestador', [ 'categorias' => $categorias, 'actividades' => $actividades]);
+    }    
+
     public function index()
     {
 
@@ -137,31 +193,13 @@ class PrestadorController extends Controller
     public function horario()
     {
         $id = Auth::user()->id;
+        $sede=Auth::user()->sede;
+        $area=Auth::user()->area;
 
         $turno = Auth::user()->horario;
 
-        // $asistencias = DB::table('registros_checkin')
-        //     ->select('fecha')
-        //     ->where('idusuario', $id)
-        //     ->orderBy('fecha_actual', 'desc')
-        //     ->get();
-
-        // $diasAsistenciaMesActual = [];
-
-        // $mesActual = date('m');
-
-        // foreach ($asistencias as $asistencia) {
-
-        //     $mesAsistencia = (int)substr($asistencia->fecha, 0, 1);
-        //     $diaAsistencia = (int)substr($asistencia->fecha, 3, 4);
-
-        //     if ($mesAsistencia == $mesActual) {
-        //         $diasAsistenciaMesActual[] = $diaAsistencia;
-        //     }
-        // }
-
         $asistencias = DB::select("Select fecha from registros_checkin where idusuario = $id");
-        $festivos = DB::select("Select * from eventos");
+        $festivos = DB::select("Select * from eventos where sede = $sede and (area = $area or area = 0)");
         
         foreach($asistencias as $valor){
             // Crear un objeto DateTime interpretando la cadena original
@@ -456,14 +494,14 @@ class PrestadorController extends Controller
         );
     }
 
-    public function registro_reporte()
+    public function actividadesPrestador()
     {
         $encargado_id = auth()->user()->encargado_id;
         $prestadores = DB::table('users')->select('id', 'name', 'apellido')->where('id', auth()->user()->id)->get();
         $categorias = DB::table('categorias')->get();
         $actividades = DB::table('actividades')->get();
 
-        return view('/prestador/registro_reporte_prestador', compact('prestadores', 'actividades', 'categorias'));
+        return view('/prestador/crear_actividad_prestador', compact('prestadores', 'actividades', 'categorias'));
     }
 
     public function obtenerActividades(Request $request)
@@ -712,8 +750,8 @@ class PrestadorController extends Controller
         $user = Auth::user();
 
         $sede = DB::table('sedes')
-        ->select('sedes.nombre_Sede', 'sedes.id_Sede')
-        ->where('sedes.id_Sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
+        ->select('sedes.nombre_sede', 'sedes.id_sede')
+        ->where('sedes.id_sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
         ->first();
 
         $nivel = DB::table('niveles')
@@ -935,21 +973,25 @@ class PrestadorController extends Controller
 
     public function cambiarRol()
     {
-        if (Auth::user()->tipo == "encargado") {
-
-                $user = User::find(Auth::user()->id);
-                if($user->tipo == "prestador"){
-                    $user->tipo="encargado";
-                    $user->save();
-                }
-                return redirect('/admin/home');
-        }
+        echo "<script>console.log('Mensaje en consola antes de redirección');</script>";
+        return redirect()->route('admin.home');
     }
 
     public function show_reportes(){
         $user_id = Auth::user()->id;
         $reportes = DB::select("Select * from reportes_s_s where id_prestador = $user_id");
-        return view('prestador.reportes_parciales',['reportes' =>$reportes]);
+        
+        
+        
+        //Validar oficio
+        $oficio = (count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Oficio de comision'"))==0)? true : false;
+        $reporte1 = (!$oficio && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte parcial 1'"))==0)? true : false;
+        $reporte2 = (!$oficio && !$reporte1 && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte parcial 2'"))==0)? true : false;
+        $reporte3 = (!$oficio && !$reporte1 && !$reporte2 && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte parcial 3'"))==0)? true : false;
+        $final = (!$oficio && !$reporte1 && !$reporte2 && !$reporte3 && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte final'"))==0)? true : false;
+        //Validar reportes parciales 
+        return view('prestador.reportes_parciales',['reportes' =>$reportes, 'oficio' => $oficio, 
+        'reporte1'=>$reporte1, 'reporte2'=>$reporte2, 'reporte3'=> $reporte3, 'final'=> $final]);
     }
 
     public function subir_reportes_parciales(Request $request){
@@ -962,10 +1004,10 @@ class PrestadorController extends Controller
             'tipo_reporte.required'=> 'El campo tipo es obligatorio'
         ]);
 
+        
         // Obtener el usuario autenticado
         $user_id = Auth::user()->id;
-        $tipo_reporte = $request->tipo_reporte;
-
+        $tipo_reporte = $request->tipo_reporte; 
 
         // Almacenar el archivo
         $reporte_path = $request->file('reporte_parcial')->store('public/reportes_parciales/');
@@ -980,13 +1022,26 @@ class PrestadorController extends Controller
         // Obtén el nombre del archivo de la base de datos
         $archivo = DB::select("Select nombre_reporte from reportes_s_s where id=$id");
         // Verifica si el archivo existe antes de intentar eliminarlo
-        $file_path = public_path('storage/reportes_parciales/'.$archivo[0]->nombre_reporte);
+        $file_path = storage_path('app/public/reportes_parciales/'.$archivo[0]->nombre_reporte);
         if (file_exists($file_path)) {
             DB::table('reportes_s_s')->where('id', $id)->delete();
             unlink($file_path);
         }
 
         return redirect()->route('parciales')->with('warning', 'Archivo y registro eliminados con éxito');
+    }
+
+    public function descargar_reporte($nombreArchivo){
+        $rutaArchivo = storage_path('app/public/reportes_parciales/' . $nombreArchivo);
+        return response()->download($rutaArchivo);
+    }
+
+    public function visualizar_reporte($nombreArchivo){
+        $rutaArchivo = storage_path('app/public/reportes_parciales/' . $nombreArchivo);
+        // Verificar si el archivo existe
+            // Haz lo que necesites con el contenido del archivo
+            header('content-type: application/pdf');
+            readfile($rutaArchivo);
     }
 }
 

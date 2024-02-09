@@ -44,6 +44,8 @@ class RegisterController extends Controller
             case 'practicante':
             case 'prestador':
             case 'prestadorp':
+            case 'encargado':
+
                 
                 $rCodigo = ['required','string','unique:users'];
                 $rTelefono = ['required'];
@@ -71,19 +73,8 @@ class RegisterController extends Controller
                 break;
 
             case 'admin':
+            case 'admin_sede':
 
-                $rCentro = ['nullable'];
-                $rTelefono = ['nullable'];
-                $rCodigo = ['nullable'];
-                $rCarrera = ['nullable'];
-                $rSede = ['nullable'];
-                $rArea = ['nullable'];
-                $rhorario = ['nullable'];
-                $rHoras =  ['nullable'];
-                $rEncargado = ['nullable'];
-                break;
-
-            case 'encargado':
                 $rCentro = ['nullable'];
                 $rTelefono = ['nullable'];
                 $rCodigo = ['nullable'];
@@ -125,60 +116,42 @@ class RegisterController extends Controller
 
     protected function create(array $data)
     {
+        $vCodigo = $data['codigo'];
+        $vTelefono = $data['telefono'];
+        $vCentro = $data['centro'];
+        $vCarrera = $data['carrera'];
 
-        $vCodigo = null;
-        $vTelefono =  null;
-        $vCentro =  null;
-        $vCarrera = null;
-        $vSede = null;
-        $vArea = null;
-        $vhorario = null;
-        $vHoras =  null;
+        $vSede = 0;
+        $vArea = 0;
+        $vhorario = 0;
+        $vHoras = null;
         $vEncargado = null;
 
-        switch($data['tipo']){
-            case 'admin':
-
-                $vSede = $data['sede'];    
-                break;
-
+        switch($data['tipo']) {
+           
+            
+            case 'prestador':
+            case 'prestadorp':
             case 'practicantep':
             case 'practicante':
-            case 'prestadorp':
-            case 'prestador':
-
-                $vCodigo = $data['codigo'];
-                $vTelefono =  $data['telefono'];
-                $vCentro =  $data['centro'];
-                $vCarrera = $data['carrera'];
-                $vSede = $data['sede'];
                 $vArea = $data['area'];
-                $vhorario = $data['horario'];    
-                $vHoras =  $data['horas'];
                 $vEncargado = $data['id_encargado'];
+            case 'encargado':
+                $vSede = $data['sede'];
+                $vhorario = $data['horario'];
+                $vHoras = $data['horas'];
                 break;
-
             case 'voluntario':
             case 'voluntariop':
-                $vCodigo = $data['codigo'];
-                $vTelefono =  $data['telefono'];
-                $vCentro =  $data['centro'];
-                $vCarrera = $data['carrera'];
                 $vSede = $data['sede'];
                 $vArea = $data['area'];
-                $vhorario = $data['horario'];    
-                $vHoras =  null;
+                $vhorario = $data['horario'];
                 $vEncargado = $data['id_encargado'];
                 break;
-
-            case 'alumno':
-            case 'maestro':
-
-                $vCarrera = $data['carrera'];
-                $vCodigo = $data['codigo'];
-                $vCentro =  $data['centro'];
-                $vTelefono =  $data['telefono'];
-
+            case 'admin':
+                $vArea = $data['area'];
+            case 'admin_sede':     
+                $vSede = $data['sede'];
                 break;
         }
 
@@ -187,20 +160,19 @@ class RegisterController extends Controller
             'apellido' => $data['apellido'],
             'correo' => $data['correo'],
             'tipo' => $data['tipo'],
+            'password' => Hash::make($data['password']),
 
             'codigo' => $vCodigo,
             'telefono' => $vTelefono,
             'centro' => $vCentro,
-
             'carrera' => $vCarrera,
+
             'sede' => $vSede,
             'area' => $vArea,
             'horario' => $vhorario,
-
             'horas' => $vHoras,
             'encargado_id' => $vEncargado,
-            'password' => Hash::make($data['password']),
-
+            
         ]);
     }
 }
