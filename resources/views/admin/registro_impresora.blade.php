@@ -41,6 +41,7 @@
                                 <label for="input-wizard-3" class="form-label">Marca</label>
                                 <input type="text" class="form-control @error('nombre') is-invalid @enderror"
                                     name="mark" id="mark" value="{{old('mark')}}">
+                                <small id="Help" class="form-text text-muted">Ingresa la marca de la impresora</small>
                                 @error('mark')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -57,6 +58,7 @@
                                     <option id=1 value='Filamento'>Filamento</option>
                                     <option id=2 value='Resina'>Resina</option>
                                 </select>
+                                <small id="Help" class="form-text text-muted">Selecciona tipo de impresion(resina o filamento)</small>
                             </div>
                         </div>
                     </div>

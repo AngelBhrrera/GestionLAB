@@ -77,8 +77,8 @@
                         </div>
                         <br>
                         <div class="col-md-6">
-                        <label for="recursos">Recursos necesarios</label>
-                            <textarea id="recursos" type="text" class="form-control" name="recursos"></textarea>
+                        <label for="recursos">Recursos necesarios - entradas</label>
+                            <textarea id="recursos" type="text" class="form-control" name="recursos" placeholder="Ingrese los datos separados por comas (impresora, filamento, papel, agua)"></textarea>
 
                             @error('descripcion')
                             <span class="invalid-feedback" role="alert">
@@ -90,7 +90,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="descripcion" class="col-md-4 col-form-label text-md-right">Descripción</label>
+                        <label for="descripcion" class="col-md-4 col-form-label text-md-right">Descripción del trabajo a realizar - procesos</label>
 
                         <div class="col-md-6">
                             <textarea id="descripcion" type="text" class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" required>@if(isset($actm)){{$actm[0]->descripcion}}@endif</textarea>
@@ -104,10 +104,10 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="resultados" class="col-md-4 col-form-label text-md-right">Objetivos</label>
+                        <label for="resultados" class="col-md-4 col-form-label text-md-right">Objetivos, resultados que se esperan - salidas</label>
 
                         <div class="col-md-6">
-                            <textarea id="resultados" type="text" class="form-control" name="resultados" required></textarea>
+                            <textarea id="resultados" type="text" class="form-control" name="resultados" placeholder="Ingrese los datos separados por comas (imprimir, diseñar, pintar)" required></textarea>
 
                         </div>
                     </div>
@@ -118,11 +118,12 @@
                                     <input name="horas" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
                                     <input name="minutos" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
                             </div>
+                            <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
                     </div>
 
 
                     <div class="col-md-12 text-right">
-                        <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits ">Enviar</button>
+                        <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits ">Crear</button>
                     </div>
                 </form>
             </div>

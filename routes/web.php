@@ -174,10 +174,14 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('admin/activar_impresora/{value}', 'activate_print')->name('activate_print');
             Route::get('admin/changestate_print/{id}/{value}', 'printstate')->name('printstate');
             Route::get('admin/observaciones_impresion/{id}/{value}', 'detail_prints')->name('detail_prints');
+            //PREMIOS
+            Route::get("admin/premios, premios")->name("premios");
+            Route::post('admin/premios', 'guardar_premio')->name('guardar_premio');
             //
             Route::middleware('role:admin,admin_sede,Superadmin')->group(function() {
                 Route::get('admin/liberar_prestador/{value}', 'liberar')->name('liberar');
                 Route::get('admin/changestate/{id}/{value}', 'checkinstate')->name('checkinstate');
+                
                 Route::get('admin/activar_area/{id}/{campo}', 'activate_area')->name('activatearea');
             });
             /*
