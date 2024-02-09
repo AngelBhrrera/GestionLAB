@@ -19,7 +19,6 @@ class CreateReportesSSTable extends Migration
             $table->string('nombre_reporte');
             $table->string('tipo');
             $table->date('fecha_subida');
-            $table->string('estado')->default('pendiente');
             $table->timestamps();
         });
     }

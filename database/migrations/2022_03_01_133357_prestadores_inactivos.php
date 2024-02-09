@@ -13,31 +13,32 @@ class PrestadoresInactivos extends Migration
     public function up()
     {
         DB::statement("
-        CREATE VIEW prestadores_inactivos AS
-        SELECT
-        `users`.`id` AS `id`,
-        `users`.`name` AS `name`,
-        `users`.`apellido` AS `apellido`,
-        `users`.`correo` AS `correo`,
-        `users`.`codigo` AS `codigo`,
-        `users`.`tipo` AS `tipo`,
-        `users`.`carrera` AS `carrera`,
-        `users`.`horas` AS `horas`,
-        `cuenta_horas`.`horas_servicio` AS `horas_cumplidas`,
-        `cuenta_horas`.`horas_restantes` AS `horas_restantes`,
-        `users`.`sede` AS `sede`
-        FROM
-            (
-                `users`
-            LEFT JOIN `cuenta_horas` ON
+            CREATE VIEW prestadores_inactivos AS
+            SELECT
+            `users`.`id` AS `id`,
+            `users`.`name` AS `name`,
+            `users`.`apellido` AS `apellido`,
+            `users`.`correo` AS `correo`,
+            `users`.`codigo` AS `codigo`,
+            `users`.`tipo` AS `tipo`,
+            `users`.`carrera` AS `carrera`,
+            `users`.`horas` AS `horas`,
+            `cuenta_horas`.`horas_servicio` AS `horas_cumplidas`,
+            `cuenta_horas`.`horas_restantes` AS `horas_restantes`,
+            `users`.`sede` AS `sede`,
+            `users`.`area` AS `area`
+            FROM
                 (
+                    `users`
+                LEFT JOIN `cuenta_horas` ON
                     (
-                        `users`.`id` = `cuenta_horas`.`id`
+                        (
+                            `users`.`id` = `cuenta_horas`.`id`
+                        )
                     )
                 )
-            )
-        WHERE
-            (`users`.`tipo` = 'prestador_inactivo' )
+            WHERE
+                (`users`.`tipo` = 'prestador_inactivo' )
         ");
     }
 

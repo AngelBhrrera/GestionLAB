@@ -134,20 +134,12 @@
                         field: "hora_entrada",
                         sorter: "string", 
                         width: 100,
-                        sorterParams: {
-                            format: "HH:mm:ss",
-                        },
                     },
                     {
                         title: "Salida",
                         field: "hora_salida",
                         sorter: "string", 
                         width: 100,
-                        sorterParams: {
-                            format: "HH:mm:ss",
-                        },
-                        hozAlign: "center",
-                        editor: "select",
                     }, {
                         title: "Tiempo",
                         field: "tiempo",
@@ -159,8 +151,13 @@
                     },  {
                         title: "Ubicacion",
                         field: "ubicacion",
-                        sorter: "string", 
                         width: 200,
+                        formatter: "link",
+                        formatterParams: {
+                            labelField: "ubicacion",
+                            urlPrefix: "",
+                            target: "_blank"
+                        }
                     },  
                 ],
             });

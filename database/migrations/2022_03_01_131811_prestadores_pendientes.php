@@ -13,23 +13,19 @@ class Prestadorespendientes extends Migration
     public function up()
     {
         DB::statement("
-        CREATE VIEW prestadores_pendientes AS
-        SELECT
-        `users`.`id` AS `id`,
-        `users`.`name` AS `name`,
-        `users`.`apellido` AS `apellido`,
-        `users`.`correo` AS `correo`,
-        `users`.`codigo` AS `codigo`,
-        `users`.`tipo` AS `tipo`,
-        `users`.`email_verified_at` AS `email_verified_at`,
-        `users`.`password` AS `password`,
-        `users`.`remember_token` AS `remember_token`,
-        `users`.`created_at` AS `created_at`,
-        `users`.`updated_at` AS `updated_at`,
-        `users`.`sede` AS `sede`
-        FROM
-            `users`
-            WHERE `users`.`tipo` IN ('prestadorp', 'voluntariop', 'practicantep')
+            CREATE VIEW prestadores_pendientes AS
+            SELECT
+            `users`.`id` AS `id`,
+            `users`.`name` AS `name`,
+            `users`.`apellido` AS `apellido`,
+            `users`.`correo` AS `correo`,
+            `users`.`codigo` AS `codigo`,
+            `users`.`tipo` AS `tipo`,
+            `users`.`sede` AS `sede`,
+            `users`.`area` AS `area`
+            FROM
+                `users`
+                WHERE `users`.`tipo` IN ('prestadorp', 'voluntariop', 'practicantep')
         ");
     }
 

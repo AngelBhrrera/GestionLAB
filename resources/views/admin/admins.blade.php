@@ -33,41 +33,39 @@
                         field: "name",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Apellido",
                         field: "apellido",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Correo",
                         field: "correo",
                         sorter: "string",
-                        hozAlign: "center",
                     }, {
                         title: "Telefono",
                         field: "contacto",
                         sorter: "number",
-                        hozAlign: "center",
                     }, {
                         title: "Sede",
                         field: "sede",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
-                    }, {
+                    },  {
+                        title: "Area",
+                        field: "area",
+                        sorter: "string",
+                        headerFilter: "input",
+                    },{
                         title: "Tipo",
                         field: "tipo",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Horario",
                         field: "horario",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, 
                 ],
                 //rowClick: function(e, row) {

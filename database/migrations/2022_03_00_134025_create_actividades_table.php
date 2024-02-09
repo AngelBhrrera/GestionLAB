@@ -12,7 +12,7 @@ class CreateActividadesTable extends Migration
         Schema::create('actividades', function (Blueprint $table) {
 
             $table->id();
-            $table->string('titulo', 255)->collation('utf8mb4_unicode_ci');
+            $table->string('titulo', 255);
             $table->unsignedBigInteger('id_categoria');
             $table->foreign('id_categoria')->references('id')->on('categorias')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('id_subcategoria')->nullable();
