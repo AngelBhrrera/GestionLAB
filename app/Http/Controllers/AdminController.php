@@ -646,16 +646,22 @@ class AdminController extends Controller
     //SISTEMA DE REPORTES
 
     public function ver_reportes_parciales(){
+        
         $reportes = session('reportes');
         $codigo = session('codigo');
         if(Auth::user()->tipo == "admin"){
-            $prestadores = DB::table('users')
-            ->where('area', Auth::user()->area)
-            ->where('sede', Auth::user()->sede)
+            $n_Area = DB::table('areas')
+                ->where('id', auth()->user()->area)
+                ->value('nombre_area');
+            $prestadores = DB::table('solo_prestadores')
+                ->where('id_area', Auth::user()->area)
             ->get();
         }elseif (Auth::user()->tipo == "admin_sede"){
-            $prestadores = DB::table('users')
-            ->where('sede', Auth::user()->sede)
+            $prestadores = DB::table('solo_prestadores')
+            ->where('id_sede', Auth::user()->sede)
+            ->get();
+        }else{
+            $prestadores = DB::table('solo_prestadores')
             ->get();
         }
         
@@ -874,6 +880,34 @@ class AdminController extends Controller
 
         return response()->json($subcateg);
     }
+
+    // PREMIOS
+    public function premios(){
+        $premios = DB::select("SELECT * FROM premios");
+        $prestadores = DB::select("SELECT * FROM users;");
+        return view("admin/premios", ["prestadores"=>$prestadores, "premios"=>$premios]);
+    }
+
+    public function guardar_premio(Request $request){
+        $request->validate([
+            "nombre" => "required",
+            "descripcion" => "required",  
+            "tipo" => "required",
+            "horas" => "required",
+        ]);
+
+        // insert
+        DB::table("premios")->insert([
+            "nombre" => $request -> input("nombre"),
+            "descripcion" => $request -> input("descripcion"),  
+            "tipo" => $request -> input("tipo"),
+            "horas" => $request -> input("horas"),
+        ]);
+       
+
+        return redirect()->back()->with("Exito",);  
+    }
+
 
 //VIEJO CONTROLLER. /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*

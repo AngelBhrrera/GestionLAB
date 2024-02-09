@@ -48,6 +48,14 @@ Route::get('/actest', function(){
             );
 })->name('tester');
 
+Route::group(['middleware'=>'auth'], function (){
+    Route::controller(App\Http\Controllers\PrestadorController::class)->group(function(){
+        Route::get('/descargar/{nombreArchivo}', 'descargar_reporte')->name('descargar_reporte');
+        Route::get('/visualizar_reporte/{nombreArchivo}', 'visualizar_reporte')->name('visualizar');
+    });
+    
+});
+
 Route::controller(App\Http\Controllers\LandingController::class)->group(function(){
     Route::get('/inventores', 'index')->name('landing');
     Route::get('/devTeam', 'devTeam')->name('devTeam');
