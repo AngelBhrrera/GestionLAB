@@ -76,8 +76,7 @@
                         <br>
                         <div class="col-md-6">
                         <label for="recursos">Recursos necesarios - entradas </label>
-                            <textarea id="recursos" type="text" class="form-control" name="recursos"></textarea>
-
+                            <textarea id="recursos" type="text" class="form-control" name="recursos" placeholder="Ingrese los datos separados por comas (impresora, filamento, papel, agua)"></textarea>
                             @error('descripcion')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
