@@ -556,9 +556,6 @@ class PrestadorController extends Controller
         return redirect()->route('perfil')->with('success', 'Imagen cambiada correctamente');
     }
 
-
->>>>>>> Stashed changes
-
     //TERRITORIOS DESCONOCIDOS 
     /*
 
