@@ -196,6 +196,12 @@
                                     <div class="side-menu__title">  Mostrar mis impresiones </div>
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{route('show_all_imps')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="sidebar"></i> </div>
+                                    <div class="side-menu__title">  Ver todas las impresiones </div>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 @endif

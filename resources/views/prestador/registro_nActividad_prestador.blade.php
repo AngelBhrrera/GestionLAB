@@ -75,7 +75,7 @@
                         </div>
                         <br>
                         <div class="col-md-6">
-                        <label for="recursos">Recursos necesarios</label>
+                        <label for="recursos">Recursos necesarios - entradas </label>
                             <textarea id="recursos" type="text" class="form-control" name="recursos"></textarea>
 
                             @error('descripcion')
@@ -88,7 +88,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="descripcion" class="col-md-4 col-form-label text-md-right">Descripción</label>
+                        <label for="descripcion" class="col-md-4 col-form-label text-md-right">Descripción del trabajo a realizar - procesos </label>
 
                         <div class="col-md-6">
                             <textarea id="descripcion" type="text" class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" required>@if(isset($actm)){{$actm[0]->descripcion}}@endif</textarea>
@@ -102,7 +102,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="resultados" class="col-md-4 col-form-label text-md-right">Objetivos</label>
+                        <label for="resultados" class="col-md-4 col-form-label text-md-right">Objetivos, resultados que se esperan - salidas </label>
 
                         <div class="col-md-6">
                             <textarea id="resultados" type="text" class="form-control" name="resultados" required></textarea>
@@ -120,7 +120,7 @@
 
 
                     <div class="col-md-12 text-right">
-                        <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits ">Enviar</button>
+                        <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits ">Crear</button>
                     </div>
                 </form>
             </div>

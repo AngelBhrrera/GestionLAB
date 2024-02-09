@@ -258,6 +258,10 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::get('prestador/registro_impresion', 'create_imps')->name('create_imps');
         Route::post('prestador/registrar_impresion', 'register_imps')->name('register_imps');
         Route::get('prestador/mostrar_mis_impresiones', 'show_imps')->name('show_imps');
+<<<<<<< Updated upstream
+=======
+        Route::get('prestador/mostrar_impresiones', 'show_all_imps')->name('show_all_imps');
+>>>>>>> Stashed changes
         Route::get('prestador/changestate_print/{id}/{value}', 'printstate')->name('printstate');
         Route::get('prestador/observaciones_impresion/{id}/{value}', 'detail_prints')->name('detail_prints');
 

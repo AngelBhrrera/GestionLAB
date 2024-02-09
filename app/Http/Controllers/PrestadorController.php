@@ -231,6 +231,20 @@ class PrestadorController extends Controller
 
     }
 
+<<<<<<< Updated upstream
+=======
+    public function show_all_imps()
+    {
+        $data = DB::table('ver_impresiones')
+        ->select('id', 'impresora', 'proyecto',  'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
+        ->orderByDesc('fecha')
+        ->get();
+
+        return view('prestador/mostrar_impresiones', ['impresiones' => json_encode($data)]);
+
+    }
+
+>>>>>>> Stashed changes
     public function printstate($id, $state) {
 
         DB::table('seguimiento_impresiones')
@@ -364,9 +378,24 @@ class PrestadorController extends Controller
 
                     return redirect()->route($dir)->with('success', 'Adios ' . $usuario[0]->name);
                 } else {
+                    $ip = $_SERVER['REMOTE_ADDR'];
+                    $geo = file_get_contents("http://ip-api.com/json/{$ip}");
+                    $geoData = json_decode($geo);
+
+                    if ($geoData && $geoData->status == 'success') {
+                        // Obtiene la latitud y longitud
+                        $latitud = $geoData->lat;
+                        $longitud = $geoData->lon;
+                        // Crea el enlace a Google Maps
+                        $enlaceMaps = "https://www.google.com/maps?q={$latitud},{$longitud}";
+                    } else {
+                        $enlaceMaps = "https://www.google.com/maps?q=20.6568344,-103.3273073";
+                        echo "No se pudo obtener la información de geolocalización.";
+                    }
+
 
                     $inicio = DB::table('registros_checkin')
-                    ->insert([['origen' => $origen, 'idusuario' => $usuario[0]->id, 'fecha' => date("d/m/Y"),
+                    ->insert([['origen' => $origen, 'idusuario' => $usuario[0]->id, 'fecha' => date("d/m/Y"), 'ubicacion' => $enlaceMaps,
                     'hora_entrada' => date('H:i:s'), 'horas' => 0, 'responsable'=> $responsable, 'tipo' => $usuario[0]->tipo,
                     'encargado_id' => Auth::user()->id]]);
 
@@ -462,6 +491,79 @@ class PrestadorController extends Controller
         return redirect()->route('parciales')->with('warning', 'Archivo y registro eliminados con éxito');
     }
 
+<<<<<<< Updated upstream
+=======
+    
+    public function perfil()
+    {
+        $user = Auth::user();
+
+        $sede = DB::table('sedes')
+        ->select('sedes.nombre_sede', 'sedes.id_sede')
+        ->where('sedes.id_sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
+        ->first();
+
+        $nivel = DB::table('niveles')
+            ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
+            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n')
+            ->where('niveles.experiencia_acumulada', '<=', $user->experiencia ?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
+            ->orderByDesc('niveles.experiencia_acumulada')
+            ->first();
+        $todasMedallasUsuario = DB::table('niveles')
+                ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
+                ->select('medallas.ruta', 'medallas.nivel', 'medallas.descripcion')
+                ->where('niveles.experiencia_acumulada', '<=', $user->experiencia ?? 0) // Si la experiencia es null, establece la experiencia acumulada en 0.
+                ->orderBy('niveles.experiencia_acumulada', 'asc')
+                ->get();
+
+        // Convertimos el valor del nivel a una cadena de texto
+        $nivel_str = strval($nivel->nivel);
+
+        $medalla = asset($nivel->ruta);
+        //dd($nivel); // Verificar si la propiedad ruta_n está presente en $nivel
+        // Descripcion de la medalla
+        $descripcion_medalla = $nivel->descripcion;
+
+        return view('prestador.newProfile', compact('user', 'sede', 'nivel_str', 'medalla', 'nivel', 'descripcion_medalla', 'todasMedallasUsuario'));
+    }
+
+    public function cambiarImagenPerfil(Request $request)
+    {
+        $request->validate([
+            'imagen_perfil' => 'required|image|max:4096', // la imagen debe ser de tipo imagen y tener un tamaño máximo de MB
+        ], [
+            'imagen_perfil.max' => 'La imagen debe pesar menos de 4MB',
+        ]);
+
+        // Obtener el usuario autenticado
+        $user = Auth::user();
+
+        // Eliminar la imagen del usuario si es que ya tenia
+        if ($user->imagen_perfil) {
+            // $image_path = public_path('storage/imagen/imagen/' . $user->imagen_perfil);
+            $image_path = public_path('storage/userImg/'.$user->imagen_perfil);
+            if (file_exists($image_path)) {
+                unlink($image_path);
+            }
+        }
+
+
+        // Almacenar la nueva imagen
+        $imagen_path = $request->file('imagen_perfil')->store('public/userImg/');
+
+        $nombre_archivo = basename($imagen_path);
+
+        // Actualizar el campo 'imagen_perfil' del usuario
+        $user->imagen_perfil =  $nombre_archivo;
+
+        $user->save();
+
+        // Redireccionar al perfil del usuario
+        return redirect()->route('perfil')->with('success', 'Imagen cambiada correctamente');
+    }
+
+
+>>>>>>> Stashed changes
 
     //TERRITORIOS DESCONOCIDOS 
     /*
@@ -847,74 +949,6 @@ class PrestadorController extends Controller
         $user = DB::table('users')->find($actividad->creacion_id);
 
         return view('prestador.actividades_prestadores.verActividad', compact('actividad', 'user'));
-    }
-
-    public function perfil()
-    {
-        $user = Auth::user();
-
-        $sede = DB::table('sedes')
-        ->select('sedes.nombre_sede', 'sedes.id_sede')
-        ->where('sedes.id_sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
-        ->first();
-
-        $nivel = DB::table('niveles')
-            ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
-            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n')
-            ->where('niveles.experiencia_acumulada', '<=', $user->experiencia ?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
-            ->orderByDesc('niveles.experiencia_acumulada')
-            ->first();
-        $todasMedallasUsuario = DB::table('niveles')
-                ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
-                ->select('medallas.ruta', 'medallas.nivel', 'medallas.descripcion')
-                ->where('niveles.experiencia_acumulada', '<=', $user->experiencia ?? 0) // Si la experiencia es null, establece la experiencia acumulada en 0.
-                ->orderBy('niveles.experiencia_acumulada', 'asc')
-                ->get();
-
-        // Convertimos el valor del nivel a una cadena de texto
-        $nivel_str = strval($nivel->nivel);
-
-        $medalla = asset($nivel->ruta);
-        //dd($nivel); // Verificar si la propiedad ruta_n está presente en $nivel
-        // Descripcion de la medalla
-        $descripcion_medalla = $nivel->descripcion;
-
-        return view('prestador.newProfile', compact('user', 'sede', 'nivel_str', 'medalla', 'nivel', 'descripcion_medalla', 'todasMedallasUsuario'));
-    }
-
-    public function cambiarImagenPerfil(Request $request)
-    {
-        $request->validate([
-            'imagen_perfil' => 'required|image|max:4096', // la imagen debe ser de tipo imagen y tener un tamaño máximo de MB
-        ], [
-            'imagen_perfil.max' => 'La imagen debe pesar menos de 4MB',
-        ]);
-
-        // Obtener el usuario autenticado
-        $user = Auth::user();
-
-        // Eliminar la imagen del usuario si es que ya tenia
-        if ($user->imagen_perfil) {
-            // $image_path = public_path('storage/imagen/imagen/' . $user->imagen_perfil);
-            $image_path = public_path('storage/userImg/'.$user->imagen_perfil);
-            if (file_exists($image_path)) {
-                unlink($image_path);
-            }
-        }
-
-
-        // Almacenar la nueva imagen
-        $imagen_path = $request->file('imagen_perfil')->store('public/userImg/');
-
-        $nombre_archivo = basename($imagen_path);
-
-        // Actualizar el campo 'imagen_perfil' del usuario
-        $user->imagen_perfil =  $nombre_archivo;
-
-        $user->save();
-
-        // Redireccionar al perfil del usuario
-        return redirect()->route('perfil')->with('success', 'Imagen cambiada correctamente');
     }
 
     function obtenerTodasActividades()

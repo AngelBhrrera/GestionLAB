@@ -9,6 +9,8 @@
         <?php echo $__env->yieldContent('head'); ?>
         <link href="<?php echo e(asset('build/assets/images/inventores.png')); ?>" rel="shortcut icon">
         <!-- BEGIN: CSS Assets-->
+        <link rel="stylesheet" href="<?php echo e(asset('build/assets/css/dual-listbox.css')); ?>">
+
         <link rel="stylesheet" href="<?php echo e(asset('build/assets/css/app.c07cb30e.css')); ?>">
         <link rel="stylesheet" href="<?php echo e(asset('build/assets/css/app.c469cfb8.css')); ?>">
         <link rel="stylesheet" href="<?php echo e(asset('plugins/fontawesome-free/css/all.min.css')); ?>">

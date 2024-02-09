@@ -35,7 +35,7 @@ class AdminController extends Controller
         $idSede = Auth::user()->sede;
 
         $sql = DB::table('registros_checkin as r')
-            ->select('r.id', 'r.responsable', 'r.origen', 'r.fecha', 'r.hora_entrada', 'r.hora_salida', 'r.tiempo', 'r.horas', 'r.tipo', 'r.estado')
+            ->select('r.id', 'r.ubicacion', 'r.responsable', 'r.origen', 'r.fecha', 'r.hora_entrada', 'r.hora_salida', 'r.tiempo', 'r.horas', 'r.tipo', 'r.estado')
             ->join('users as u', 'r.encargado_id', '=', 'u.id')
             ->where('u.sede', $idSede)
             ->orderBy('fecha_actual', 'desc')

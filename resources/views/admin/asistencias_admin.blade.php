@@ -81,11 +81,12 @@
                         title: "Horas",
                         field: "horas",
                         sorter: "number",
-                        width: 100,
+                        width: 70,
                     }, {
                         title: "Estado",
                         field: "estado",
                         editor: "select",
+                        width: 70,
                         editorParams: {
                             values: {
                                 "autorizado": "autorizado",
@@ -155,6 +156,11 @@
                         sorterParams: {
                             format: "HH:mm:ss",
                         },
+                    },  {
+                        title: "Ubicacion",
+                        field: "ubicacion",
+                        sorter: "string", 
+                        width: 200,
                     },  
                 ],
             });
