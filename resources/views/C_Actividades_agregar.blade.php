@@ -87,7 +87,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="descripcion" class="col-md-4 col-form-label text-md-right">Descripcion</label>
+                            <label for="descripcion" class="col-md-4 col-form-label text-md-right">Descripción del trabajo a realizar - procesos</label>
 
                             <div class="col-md-6">
                                 <textarea id="descripcion" type="text" class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" required>@if(isset($actm)){{$actm[0]->descripcion}}@endif</textarea>
@@ -101,7 +101,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="descripcion" class="col-md-4 col-form-label text-md-right">Objetivos</label>
+                            <label for="descripcion" class="col-md-4 col-form-label text-md-right">Objetivos, resultados que se esperan - salidas</label>
 
                             <div class="col-md-6">
                                 <textarea id="objetivo" type="text" class="form-control @error('objetivo') is-invalid @enderror" name="objetivo" required>@if(isset($actm)){{$actm[0]->objetivo}}@endif</textarea>

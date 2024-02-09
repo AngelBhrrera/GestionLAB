@@ -44,6 +44,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
+                                                <small id="Help" class="form-text text-muted">Selecciona a los prestadores para realizar la actividad</small>
                                             </div>
                                             <div class="col-span-6 sm:col-span-4 text-center">
                                                 <div class="form-group row">
@@ -85,6 +86,7 @@
                                                             <input name="horas" type="number" class="form-control" placeholder="Horas" min="0" max="23" step="1" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
                                                             <input name="minutos" type="number" class="form-control" placeholder="Minutos" min="0" max="59" step="1" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
                                                         </div>
+                                                        <small id="Help" class="form-text text-muted">Ingresa el tiempo que conllevara realizar la actividad</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -93,7 +95,7 @@
                                                 <div class="form-group row justify-content-center"> <!-- Alinea el botón horizontalmente -->
                                                     <div class="col-md-4"></div> <!-- Columna vacía para alinear con los otros campos -->
                                                     <div class="col-md-8"> <!-- Ancho ajustado para el botón -->
-                                                        <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits">Enviar</button>
+                                                        <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits">As</button>
                                                     </div>
                                                 </div>
                                             </div>
