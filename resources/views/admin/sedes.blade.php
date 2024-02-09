@@ -100,11 +100,7 @@
                         headerFilter: "input",
                         sorter: "string",
                         editor: "input",
-<<<<<<< Updated upstream
                         width: 300,
-=======
-                        width: 150,
->>>>>>> Stashed changes
                         cellEdited: function (cell) {
                             var row = cell.getRow();
                             var id = row.getData().id;

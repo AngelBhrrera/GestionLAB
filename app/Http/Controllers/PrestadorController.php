@@ -231,8 +231,6 @@ class PrestadorController extends Controller
 
     }
 
-<<<<<<< Updated upstream
-=======
     public function show_all_imps()
     {
         $data = DB::table('ver_impresiones')
@@ -244,7 +242,6 @@ class PrestadorController extends Controller
 
     }
 
->>>>>>> Stashed changes
     public function printstate($id, $state) {
 
         DB::table('seguimiento_impresiones')
@@ -491,9 +488,6 @@ class PrestadorController extends Controller
         return redirect()->route('parciales')->with('warning', 'Archivo y registro eliminados con éxito');
     }
 
-<<<<<<< Updated upstream
-=======
-    
     public function perfil()
     {
         $user = Auth::user();

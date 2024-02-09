@@ -26,10 +26,10 @@ class logsysController extends Controller
         if(Auth::attempt($credentials, $remember)){
 
             $request->session()->regenerate();
-
             return redirect('/');
             
         }else{
+
           return redirect('/login')->with('FAIL', 'Correo o contraseña incorrecta');
         }
 
@@ -42,6 +42,7 @@ class logsysController extends Controller
         switch ($role) {
            
             case 'admin':
+            case 'admin_sede':
             case 'Superadmin':
                 return redirect('/admin/home');
                 break;
@@ -77,31 +78,44 @@ class logsysController extends Controller
     }
 
     public function show(){
-        $sede= DB::select("SELECT * FROM sedes;");
+        $sede = DB::select("SELECT * FROM sedes;");
 
         return view('auth.register', ['sede'=>$sede]);
     }
 
     public function filtroSede($id){
 
-        $area=    DB::table('filtrosede')
-            ->where('id_Sede', $id)
+        $area = DB::table('filtrosedes')
+            ->where('id_sede', $id)
             ->get();
 
         return response()->json($area);
     }
 
-    public function filtroTurno($t, $sede){
+    public function filtroArea($id){
 
-        $turno = DB::table('users')
-        ->where('sede', $sede)
-        ->where('horario', $t)
-        ->where(function ($query) {
-            $query->where('tipo', 'encargado')
-                ->orWhere('tipo', 'admin');
-        })
+        $turno = DB::table('areas')
+        ->where('id', $id)
         ->get();
         return response()->json($turno);
+    }
+
+    public function filtroTurno($t, $area){
+
+        $users = DB::table('users')
+            ->select('id', 'name', 'apellido')
+            ->where('area', $area)
+            ->where(function ($query) use ($t) {
+                $query->where('horario', $t)
+                    ->orWhere('horario', 'No Aplica');
+            }) 
+            ->where(function ($query) {
+                $query->where('tipo', 'encargado')
+                    ->orWhere('tipo', 'admin');
+            })
+            ->get();
+
+        return response()->json($users);
     }
 
 }
