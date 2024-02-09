@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Visitas;
-
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -748,44 +748,67 @@ class AdminController extends Controller
     //CALENDARIO
 
     public function diasfestivos()
-    {   
-        return view('admin.dias_festivos');
+    {      
+        $sede=Auth::user()->sede;
+        $area=Auth::user()->area;
+        $no_laboral = DB::select("Select * from eventos where sede = $sede and (area = $area or area = 0 ) order by inicio;");
+        foreach($no_laboral as $valor){
+            // Crear un objeto DateTime interpretando la cadena original
+            $fechaObjeto = DateTime::createFromFormat('Y-m-d H:i:s', $valor->inicio);
+            // Obtener la nueva cadena de fecha en el formato deseado ("d/m/Y")
+            $valor->inicio = $fechaObjeto->format('d-m-Y');
+
+            $fechaObjeto = DateTime::createFromFormat('Y-m-d H:i:s', $valor->final);
+            // Obtener la nueva cadena de fecha en el formato deseado ("d/m/Y")
+            $valor->final = $fechaObjeto->format('d-m-Y');
+        }
+
+        return view('admin.dias_festivos',['no_laboral' =>json_encode($no_laboral)]);
     }
 
     public function guardarFestivos(Request $request)
     {   
+        
         if($request->input('tipo')=='vacaciones'){
-
+            
+            $evento = ($request->input('descripcion')==null) ? "No laboral" : $request->input('descripcion');
             $modificar = DB::table('eventos')->insert(
-                ['evento'=> $request->input('descripcion'),                   
+                ['evento'=> $evento,                   
                 'inicio' => $request->input('vacacionesInicio'),
                 'final'=> $request->input('vacacionesFin'),
-                'tipo'=>$request->input('tipo')]
+                'tipo'=>$request->input('tipo'),
+                'sede'=>$request->input('sede'),
+                'area'=>$request->input('area')]
             );
+            $mensaje = "Periodo vacacional agregado";
         }else{
+            $festivo = ($request->input('descripcion')==null) ? "Festivo" : $request->input('descripcion');
             $modificar = DB::table('eventos')->insert(
-                ['evento'=> $request->input('descripcion'),                   
+                ['evento'=> $festivo,                   
                 'inicio' => $request->input('diaFestivo'),
                 'final'=> $request->input('diaFestivo'),
-                'tipo'=>$request->input('tipo')]
+                'tipo'=>$request->input('tipo'),
+                'sede'=>$request->input('sede'),
+                'area'=>$request->input('area')]
             );
+            $mensaje = "Día festivo agregado";
         }
         
-        return redirect()->route('admin.diasfestivos');
+        return redirect()->route('admin.diasfestivos')->with('success', $mensaje);
     }
 
-    public function guardarVacaciones(Request $request)
-    {
-        $modificar = DB::table('dias_festivos')->insert(
-            ['fecha' => $request->input('fecha')]
-        );
-        return redirect()->route('admin.dias_no_laborables');
-    }
+    // public function guardarVacaciones(Request $request)
+    // {
+    //     $modificar = DB::table('dias_festivos')->insert(
+    //         ['fecha' => $request->input('fecha')]
+    //     );
+    //     return redirect()->route('admin.dias_no_laborables');
+    // }
 
-    public function eliminardiafestivo(Request $request)
+    public function eliminardiafestivo($id)
     {
-        $modificar = DB::table('dias_festivos')->where('id', $request->input('idEliminar'))->delete();
-        return redirect()->route('admin.diasfestivos');
+        $modificar = DB::table('eventos')->where('id', $id)->delete();
+        return response()->json(['message' => 'Festivo eliminado']);
     }
 
 

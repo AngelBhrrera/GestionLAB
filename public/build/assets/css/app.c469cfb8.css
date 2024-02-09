@@ -1176,3 +1176,16 @@ a.fc-event:hover {
 .fc .fc-list-event.fc-event-forced-url:hover a {
     text-decoration: underline;
 }
+
+.rectangulo {
+    width: 250px; 
+    height: 120px; 
+    background: white;
+    padding: auto;
+    border-radius:20px;
+    box-shadow: 0 3px 5px #0000000b;
+    border-radius: 0.5rem;
+    border-width: 1px;
+    --tw-border-opacity: 1;
+    border-color: rgb(var(--color-slate-200));
+ }

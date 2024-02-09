@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReportesSSTable extends Migration
+class CreateAreaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,9 @@ class CreateReportesSSTable extends Migration
      */
     public function up()
     {
-        Schema::create('reportes_s_s', function (Blueprint $table) {
+        Schema::create('area', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('id_prestador');
-            $table->string('nombre_reporte');
-            $table->string('tipo');
-            $table->date('fecha_subida');
-            $table->string('estado')->default('pendiente');
+            $table->string('nombre_area', 255);
             $table->timestamps();
         });
     }
@@ -31,6 +27,6 @@ class CreateReportesSSTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reportes_s_s');
+        Schema::dropIfExists('area');
     }
 }
