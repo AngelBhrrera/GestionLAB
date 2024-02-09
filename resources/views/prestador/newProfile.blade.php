@@ -34,7 +34,7 @@
                         <div class="col-span-2 md:col-span-1 flex items-center justify-center 2xl:justify-start"> <i data-lucide="clock" class="w-4 h-4 mr-2"></i>Turno: No definido</div>
                     @endif
                     @if(isset($user->sede))
-                        <div class="col-span-2 md:col-span-1 flex items-center justify-center 2xl:justify-start"> <i data-lucide="building" class="w-4 h-4 mr-2"></i>Sede: {{$sede->nombre_Sede}}</div>
+                        <div class="col-span-2 md:col-span-1 flex items-center justify-center 2xl:justify-start"> <i data-lucide="building" class="w-4 h-4 mr-2"></i>Sede: {{$sede->nombre_sede}}</div>
                     @else
                         <div class="col-span-2 md:col-span-1 flex items-center justify-center 2xl:justify-start"> <i data-lucide="building" class="w-4 h-4 mr-2"></i>Sede: No definida</div>
                     @endif
@@ -82,22 +82,24 @@
                                     <div class="modal-body">
                                             <div class="form-group">
                                             <div class="text-center pt-5">
-                                        <label class="form-block-input btn-primary" style="
-                                            border-radius: 15px;
-                                            font-size: 14px;
-                                            font-weight: 600;
-                                            display: inline-block;
-                                            transition: all .5s;
-                                            cursor: pointer;
-                                            padding: 15px 40px !important;
-                                            text-transform: uppercase;
-                                            width: fit-content;
-                                            text-align: center;
-                                            " >
-                                            <div style="display:flex;">
-                                                <i data-lucide="image" height="20" width="20"></i>
-                                                <input type="file"  id="imagen_perfil" name="imagen_perfil" class="form-control-file" style="display: none;"  accept="image/jpg, image/jpeg, image/png"/>
-                                                <span class="form-file-span pl-5">Selecciona una imagen</span>
+                                        <div class="overflow-x-auto sm:w-full">
+                                            <label class="form-block-input btn-primary" style="
+                                                border-radius: 15px;
+                                                font-size: 14px;
+                                                font-weight: 600;
+                                                display: inline-block;
+                                                transition: all .5s;
+                                                cursor: pointer;
+                                                padding: 15px 40px !important;
+                                                text-transform: uppercase;
+                                                width: fit-content;
+                                                text-align: center;
+                                                " >
+                                                <div style="display:flex;">
+                                                    <i data-lucide="image" height="20" width="20"></i>
+                                                    <input type="file"  id="imagen_perfil" name="imagen_perfil" class="form-control-file" style="display: none;"  accept="image/jpg, image/jpeg, image/png"/>
+                                                    <span class="form-file-span pl-5">Selecciona una imagen</span>
+                                                </div>
                                             </div>
                                         </label>
                                     </div>

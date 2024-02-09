@@ -31,9 +31,9 @@
     </style>
 
     <?php   
-        $sede = Auth::user()->sede;
-        $filtro = DB::table('sedes_vistas')
-            ->where('id', $sede)
+        $area = Auth::user()->area;
+        $filtro = DB::table('modulos')
+            ->where('id', $area)
             ->first();
     ?>
 
@@ -42,7 +42,7 @@
 
 @section('scroll-menu')
     <li class="side-nav__devider mb-4">MENU</li>
-    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
         @section('gestion')
             <li>
                 <a href="#" class="side-menu">
@@ -77,7 +77,7 @@
                     </li>
                     {{--
                     <li>
-                        <a href="{{ route('admin.firmasPendientes') }}" class="side-menu">
+                        <a href="{{ route('') }}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="award"></i> </div>
                             <div class="side-menu__title">Registrar recompensas</div>
                         </a>
@@ -109,23 +109,25 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('admin.sedes')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
-                            <div class="side-menu__title">Gestión sedes</div>
-                        </a>
-                    </li>
-                    <li>
                         <a href="{{route('admin.categorias')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
-                            <div class="side-menu__title">Gestión categorias</div>
+                            <div class="side-menu__title">Añadir categorias</div>
                         </a>
                     </li>
+                    @if (Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
+                    <li>
+                        <a href="{{route('admin.sede')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                            <div class="side-menu__title">Modificar sede</div>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
         @endsection
     @endif
 
-    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
         @section('prestadores_admin')
             <li>
                 <a href="#" class="side-menu">
@@ -240,7 +242,7 @@
     @endif
 
 @if ($filtro->visitas == 1)
-    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
         @section('contacto_admin')
             <li>
                 <a href="#" class="side-menu">
@@ -379,9 +381,9 @@
     @endif
 @endif
 
-@if ($filtro->torneo == 1)
-    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "Superadmin")
-        @section('actividades') {{--
+@if ($filtro->gamificacion == 1)
+    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
+        @section('actividades')
             <li>
                 <a href="javascript:;" class="side-menu">
                     <div class="side-menu__icon"> <i data-lucide="edit"></i> </div>
@@ -426,7 +428,7 @@
                     </li>
                 </ul>
             </li>
-        --}} @endsection
+        @endsection
     @endif
 
     @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "Superadmin")
@@ -505,7 +507,7 @@
 @endif
 
 @if ($filtro->impresiones == 1)
-    @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "admin" || Auth::user()->tipo == "Superadmin")
         @section('impresiones')
             <li>
                 <a href="javascript:;" class="side-menu">
@@ -524,7 +526,7 @@
                     </li>
                     <li>
                         <a href="{{route('admin.watch_prints')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                        <div class="side-menu__icon"> <i data-lucide="kanban-square-dashed"></i> </div>
                             <div class="side-menu__title">Gestión Impresiones</div>
                         </a>
                     </li>
@@ -554,39 +556,6 @@
     @endif
 @endif
 
-    @section('asistencias'){{--
-        <li>
-            <a href="#" class="side-menu">
-                <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-check-2">
-                            <path d="M21 14V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8" />
-                            <line x1="16" x2="16" y1="2" y2="6" />
-                            <line x1="8" x2="8" y1="2" y2="6" />
-                            <line x1="3" x2="21" y1="10" y2="10" />
-                            <path d="m16 20 2 2 4-4" />
-                        </svg></i> </div>
-                <div class="side-menu__title">
-                    ASISTENCIAS (TEMPORAL, AUN NO SABEMOS SI SE QUEDARA O NO)
-                    <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
-                </div>
-            </a>
-            <ul class="">
-
-                <li>
-                    <a href="{{ route('admin.firmasPendientes') }}" class="side-menu">
-                        <div class="side-menu__icon"> <i data-lucide="check">!</i> </div>
-                        <div class="side-menu__title">Registro de Asistencia Pendientes</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('admin.faltas') }}" class="side-menu">
-                        <div class="side-menu__icon"> <i data-lucide="x"></i> </div>
-                        <div class="side-menu__title">Faltas</div>
-                    </a>
-                </li>
-            </ul>
-        </li> 
-    --}}@endsection
-
 @endsection
 
 @section('structure')
@@ -610,7 +579,7 @@
                 </div>
                 <div class="intro-x relative ml-auto flex sm:mx-auto"></div>
                 <div class="intro-x relative ml-auto flex sm:mx-auto">
-                    @if (Auth::user()->tipo == "encargado" && Auth::user()->tipo != "Superadmin")
+                    @if (Auth::user()->tipo == "encargado")
                     <a href="{{ route('admin.cambiorol') }}">
                         <div class="container">
                             <img class="imagen-rol" title="Cambiar a Prestador" src="{{asset('build/assets/images/prestico3.svg')}}" width="30" height="30" alt="">

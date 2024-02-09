@@ -20,6 +20,7 @@ class CreateActividadesTable extends Migration
             $table->string('tipo', 10)->default('generica');
             $table->string('recursos', 500);
             $table->string('descripcion', 500);
+            $table->string('objetivos', 500);
             
         });
 

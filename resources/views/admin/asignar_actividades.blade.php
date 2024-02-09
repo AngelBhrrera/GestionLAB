@@ -1,151 +1,172 @@
 @extends('layouts/admin-layout')
 
+@section('subhead')
+
+
+@endsection
+
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Registro</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Actividades</li>
+<li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
+<li class="breadcrumb-item"><a href="{{route('homeP')}}">Registro</a></li>
+<li class="breadcrumb-item active" aria-current="page">Actividades</li>
 @endsection
 
 @section('subcontent')
 
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <div class="card">
-                    <div class="card card-primary">
-                        <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Asignar Actividades </h3>
-                    </div>
+<div style="padding-left: 30px" class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card card-primary">
+                    <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Asignar Actividades </h3>
+                </div>
+                <div class="card-body">
+                    @if (isset($tipo))
+                    <input id="tipo" name="tipo" value={{ $tipo }} type="hidden">
+                    @endif
+                    @csrf
 
-                        <div class="card-body">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-md-8">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5">
+                                            <div class="col-span-12 sm:col-span-8">
+                                                <div class="form-group row justify-content-center"> <!-- Alinea el contenido horizontalmente -->
+                                                    <label for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
+                                                    <div class="col-md-8"> <!-- Ancho ajustado para el contenido -->
+                                                        <select class="select2" multiple>
+                                                            @if (isset($prestadores)) 
+                                                                @foreach ($prestadores as $prestador) 
+                                                                    <option value="{{$prestador->id}}">{{$prestador->name." ".$prestador->apellido}}</option>
+                                                                @endforeach 
+                                                            @endif 
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <small id="Help" class="form-text text-muted">Selecciona a los prestadores para realizar la actividad</small>
+                                            </div>
+                                            <div class="col-span-6 sm:col-span-4 text-center">
+                                                <div class="form-group row">
+                                                    <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Categoría</label>
+                                                    <div class="col-md-20">
+                                                        <select class="form-control" id="tipo_categoria" name="tipo_categoria" required onchange="filtrarCategorias()">
+                                                            <option value="">Selecciona una categoría</option>
+                                                            @foreach ($categorias as $categoria)
+                                                            <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Subcategoría</label>
+                                                    <div class="col-md-20">
+                                                        <select class="form-control" id="tipo_subcategoria" name="tipo_subcategoria">
+                                                            <option value="">Filtrar por subcategoria (Opcional)</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
 
-                                @if (isset($tipo))
-                                <input id="tipo" name="tipo"  value={{ $tipo }} type="hidden">
-                                @endif
-                                @csrf
+                                                <div class="form-group row">
+                                                    <label for="actividades_l" class="col-md-4 col-form-label text-md-right">Actividades</label>
+                                                    <div class="col-md-20">
+                                                        <select class="form-control" id="actividades_l" name="actividades_l" required>
+                                                            <option value="">Asignar actividad</option>
+                                                            @foreach ($actividades as $actividad)
+                                                            <option value="{{ $actividad->id }}">{{ $actividad->titulo }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
 
-                                <div class="form-group row">
-                                    <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Filtro categoria</label>
-                                    <div class="col-md-6">
-                                    <select class="form-control" id="tipo_categoria" name="tipo_categoria" required onchange="filtrarActividades()">    
-                                        <option value="">Selecciona una categoría</option>
-                                        @foreach ($categorias as $categoria)
-                                            <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
-                                        @endforeach
-                                        </select>
-                                    </div>
-                                </div>
+                                                <div class="form-group row">
+                                                    <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Tiempo estimado</label>
+                                                    <div class="col-md-20">
+                                                        <div class="input-group date" id="datetimepicker" data-target-input="nearest">
+                                                            <input name="horas" type="number" class="form-control" placeholder="Horas" min="0" max="23" step="1" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
+                                                            <input name="minutos" type="number" class="form-control" placeholder="Minutos" min="0" max="59" step="1" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
+                                                        </div>
+                                                        <small id="Help" class="form-text text-muted">Ingresa el tiempo que conllevara realizar la actividad</small>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                <div class="form-group row">
-                                    <label for="actividades_l" class="col-md-4 col-form-label text-md-right">Actividades</label>
-                                    <div class="col-md-6">
-                                    <select class="form-control" id="actividades_l" name="actividades_l" required>    
-                                        <option value="">Asignar actividad</option>
-                                        @foreach ($actividades as $actividad)
-                                            <option value="{{ $actividad->id }}">{{ $actividad->nombre }}</option>
-                                        @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
-                                    <div class="col-md-6">
-
-                                        <select class="duallistbox" name="duallistbox_demo1[]" id="opcionPrestadores" multiple="multiple" required >
-                                            @if (isset($prestadores))
-                                            @foreach ($prestadores as $prestador)
-                                                <option value="{{$prestador->id}}" > {{$prestador->name." ".$prestador->apellido}} </option>
-                                             @endforeach
-                                        @endif
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Tiempo estimado</label>
-                                    <div class="col-md-6">
-                                        <div class="input-group date" id="datetimepicker" data-target-input="nearest">
-                                            <input name="horas" type="number" class="form-control" placeholder="Horas" min="0" max="23" step="1" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
-                                            <input name="minutos" type="number" class="form-control" placeholder="Minutos" min="0" max="59" step="1" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
+                                            <div class="col-span-12"> <!-- Columna adicional para el botón -->
+                                                <div class="form-group row justify-content-center"> <!-- Alinea el botón horizontalmente -->
+                                                    <div class="col-md-4"></div> <!-- Columna vacía para alinear con los otros campos -->
+                                                    <div class="col-md-8"> <!-- Ancho ajustado para el botón -->
+                                                        <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits">As</button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                   
-                                
-                            <div class="col-md-12 text-right" >
-                                    <button style="" type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits ">Enviar</button>
-                                </div>
-   
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    <div style="height: 45px;"></div>
+</div>
+
+<div style="height: 45px;"></div>
 
 @endsection
 
 @section('script')
 
-{{-- para que funcione todo, nota: este debe importarse primero si no, todo se chinga xd --}}
-<script src={{asset('plugins/jquery/jquery.min.js')}}></script>
-
-<!-- AdminLTE App -->
-{{-- para que funcionen los componentes de adminlte como los botones laterales xd --}}
-<script src={{asset('dist/js/adminlte.min.js')}}></script>
-
-{{-- componentes necesarios para que funcione el dualistbox --}}
-<script src={{asset('plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}></script>
-<script src="{{asset('plugins/moment/moment.min.js')}}"></script>
-<script src="{{asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
 
 <script type="text/javascript">
-
-    var demo1 = $('select[name="duallistbox_demo1[]"]').bootstrapDualListbox({
-        preserveSelectionOnMove: 'Mover ',
-        moveAllLabel: 'Mover todo',
-       removeAllLabel: 'Borrar todo'
+    let dlb2 = new DualListbox('.select2', {
+        availableTitle: 'Prestadores disponibles',
+        selectedTitle: 'Prestadores seleccionados',
+        addButtonText: '🡺',
+        removeButtonText: '🡸',
+        addAllButtonText: '>>',
+        removeAllButtonText: '<<',
+        searchPlaceholder: 'Buscar prestadores'
+    });
+    dlb2.addEventListener('added', function(event) {
+        console.log(event);
+    });
+    dlb2.addEventListener('removed', function(event) {
+        console.log(event);
     });
 
 
-  $(function () {
+    function filtrarCategorias() {
+        var categoriaSelect = document.getElementById('tipo_categoria');
+        var subcategoriaSelect = document.getElementById('tipo_subcategoria');
+        var actividadSelect = document.getElementById('tipo_actividad');
+        var categoriaId = categoriaSelect.value;
 
-            $('#datetimepicker').datetimepicker({ icons: { time: 'far fa-calendar' },
-                 minDate:new Date(),
-                daysOfWeekDisabled: [0],
-                format: 'DD/MM/YYYY HH:mm',
+        subcategoriaSelect.innerHTML = '<option value="">Filtrar por subcategoria (Opcional)</option>';
+        if (categoriaId === '') {
+            return;
+        }
 
-            });
-        });
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var subc = JSON.parse(xhr.responseText);
 
-</script>
-
-<script>
-    $(function () {
-        $('#timepicker').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm',
-            defaultDate: moment(),
-            icons: {
-                time: 'far fa-clock'
+                    subc.forEach(function(actividad) {
+                        var option = document.createElement('option');
+                        option.value = actividad.id;
+                        option.text = actividad.nombre;
+                        subcategoriaSelect.appendChild(option);
+                    });
+                } else {
+                    console.error('Error al obtener las subcategorias');
+                }
             }
-        });
+        };
+        xhr.open('GET', '{{ route('admin.obtenerSubcategorias') }}?categoriaId=' + categoriaId);
+        xhr.send();
+    }
 
-        // Cuando cambie la hora o los minutos, actualizar el campo time_estimado
-        $('#horas, #minutos').on('change', function () {
-            var horas = $('#horas').val();
-            var minutos = $('#minutos').val();
-            var fecha = moment($('#timepicker').datetimepicker('date'));
-
-            fecha.hours(horas);
-            fecha.minutes(minutos);
-
-            $('input[name="time_estimado"]').val(fecha.format('YYYY-MM-DD HH:mm'));
-        });
-    });
-</script>
-
-
-<script>
     function filtrarActividades() {
         var categoriaSelect = document.getElementById('tipo_categoria');
         var actividadSelect = document.getElementById('tipo_actividad');

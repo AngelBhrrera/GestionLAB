@@ -2,7 +2,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-    <li class="breadcrumb-item" aria-current="page"><a href="{{route('admin.general')}}">Usuarios</a></li>
+    <li class="breadcrumb-item"><a href="{{route('admin.general')}}">Usuarios</a></li>
     <li class="breadcrumb-item active" aria-current="page">Inactivos</li>
 @endsection
 
@@ -23,6 +23,7 @@
                 data: users,
                 layout: "fitColumns",
                 pagination: "local",
+                resizableColumns: false,  
                 paginationSize: 10,
                 tooltips: true,
                 columns: [{
@@ -30,25 +31,25 @@
                         field: "name",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
+                        
                     }, {
                         title: "Apellido",
                         field: "apellido",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
+                        
                     }, {
                         title: "Correo",
                         field: "correo",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
+                        
                     }, {
                         title: "Codigo",
                         field: "codigo",
                         sorter: "number",
                         headerFilter: "input",
-                        hozAlign: "center",
+                        
                     }, {
                         title: "Activar",
                         field: "id",
@@ -63,7 +64,7 @@
                             });
                             return button;
                         }, 
-                        hozAlign: "center",
+                        
                     },
                 ],
             });

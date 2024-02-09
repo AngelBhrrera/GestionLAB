@@ -27,35 +27,37 @@
                 data: users,
                 layout: "fitColumns",
                 pagination: "local",
+                resizableColumns: false,  
                 paginationSize: 8,
                 tooltips: true,
-                groupBy:"nombre_Sede",
+                groupStartOpen: false,
+                groupBy:"nombre_area",
                 columns: [{
                         title: "Nombre",
                         field: "name",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
+                       
                     }, {
                         title: "Apellido",
                         field: "apellido",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
+                       
                     }, {
                         title: "Correo",
                         field: "correo",
                         sorter: "string",
-                        hozAlign: "center",
+                       
                     }, {
                         title: "Codigo",
                         field: "codigo",
-                        hozAlign: "center",
+                       
                     },  {
                         title: "Tipo",
                         field: "tipo",
                         sorter: "string",
-                        hozAlign: "center",
+                       
                         headerFilter: true,
                         headerFilterParams: {
                             "": "",
@@ -70,38 +72,8 @@
                         title: "Contacto",
                         field: "telefono",
                         sorter: "number",
-                        hozAlign: "center",
-                    },  {
-                        title: "",
-                        field: "id",
-                        formatter: function (cell, formatterParams, onRendered) {
-                            var value = cell.getValue();
-                            var button = document.createElement("button");
-                            button.style = "background-color: blue; color: white; border: 1px solid dark-blue; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
-                            button.textContent = "Modificar";
-                            button.addEventListener("click", function() {
-                                modificarPrestador(value);
-                            });
-                            return button;
-                        }, 
-                        hozAlign: "center",
-                    },  {
-                        title: "",
-                        field: "id",
-                        formatter: function (cell, formatterParams, onRendered) {
-                            var value = cell.getValue();
-                            var button = document.createElement("button");
-                            button.style = "background-color: red; color: white; border: 1px solid dark-red; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
-                            button.textContent = "Eliminar";
-                            button.addEventListener("click", function() {
-                                eliminarPrestador(value);
-                            });
-                            return button;
-                        }, 
-                        hozAlign: "center",
+                       
                     },
-
-                    
                 ],
                 //rowClick: function(e, row) {
                 //    alert("Row " + row.getData().playerid + " Clicked!!!!");

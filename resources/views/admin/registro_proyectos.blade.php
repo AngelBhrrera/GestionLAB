@@ -55,7 +55,7 @@
                                     <select class="form-control" id="actividades_l" name="actividades_l" required>
                                         <option value="">Asignar actividad</option>
                                         @foreach ($actividades as $actividad)
-                                        <option value="{{ $actividad->id }}">{{ $actividad->nombre }}</option>
+                                        <option value="{{ $actividad->id }}">{{ $actividad->titulo }}</option>
                                         @endforeach
                                     </select>
                                 </div>

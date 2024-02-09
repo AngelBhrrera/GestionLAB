@@ -18,10 +18,11 @@
             ->first();
         $nivel_str = strval($nivel->nivel);
 
-        $sede = Auth::user()->sede;
-        $filtro = DB::table('sedes_vistas')
-            ->where('id', $sede)
+        $area = Auth::user()->area;
+        $filtro = DB::table('modulos')
+            ->where('id', $area)
             ->first();
+
     ?>
 
 
@@ -42,7 +43,7 @@
             <div class="scrollable">
                 <ul class="scrollable__content">
                     <li class="side-nav__devider mb-4">MENU</li>
-                    <li>
+                        <li>
                             <a href="#" class="side-menu">
                                 <div class="side-menu__icon"> <i ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
                                     viewBox="0 0 24 24" fill="none" 
@@ -76,25 +77,16 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('horario')}}" class="side-menu">
-                                        <div class="side-menu__icon"> <i data-lucide="clock"></i> </div>
-                                        <div class="side-menu__title">Horario prestador</div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="side-menu-light-crud-data-list.html" class="side-menu">
-                                    <div class="side-menu__icon"> <i> <svg xmlns="http://www.w3.org/2000/svg" 
-                                        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-                                        class="lucide lucide-vote"><path d="m9 12 2 2 4-4"/><path d="M5 7c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v12H5V7Z"/><path d="M22 19H2"/></svg></i> </div>
-                                        <div class="side-menu__title">Solicitar permiso</div>
-                                    </a>
-                                </li>                         
+                                <a href="{{route('horario')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="clock"></i> </div>
+                                    <div class="side-menu__title">Horario prestador</div>
+                                </a>
+                                </li>                             
                             </ul>
                         </li>
+                    </li>
                     
-                   
-                @if ($filtro->torneo == 1)
+                @if ($filtro->gamificacion == 1)
                     <li>
                         <a href="javascript:;" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="edit"></i> </div>
@@ -105,21 +97,21 @@
                         </a>
                         <ul class="submenu">
                             <li>
-                                <a href="{{route('registro_reporte')}}" class="side-menu">
+                                <a href="{{route('create_act')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="plus-circle"></i> </div>
                                     <div class="side-menu__title"> Crear nueva actividad </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{route('asign_act')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
+                                    <div class="side-menu__title"> Asignar actividad</div>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{route('obtenerActividades')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
                                     <div class="side-menu__title">Todas las actividades </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{route('actividades_creadas')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
-                                    <div class="side-menu__title"> Actividades creadas</div>
                                 </a>
                             </li>
                             <li>
@@ -151,7 +143,7 @@
 
                     <li>
                         <a href="#" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="calendar"></i> </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trophy"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
                             <div class="side-menu__title">
                                 TORNEO
                                 <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
@@ -202,6 +194,12 @@
                                 <a href="{{route('show_imps')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="sidebar"></i> </div>
                                     <div class="side-menu__title">  Mostrar mis impresiones </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{route('show_all_imps')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="sidebar"></i> </div>
+                                    <div class="side-menu__title">  Ver todas las impresiones </div>
                                 </a>
                             </li>
                         </ul>

@@ -65,18 +65,18 @@
                         field: "apellido",
                         headerFilter: "input",
                         sorter: "string",
-                        hozAlign: "center",
+                       
                     },{
                         title: "Correo",
                         field: "correo",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
+                       
                     },  {
                         title: "Telefono",
                         field: "telefono",
                         sorter: "number",
-                        hozAlign: "center",
+                       
                     }, 
                 ],
             });
