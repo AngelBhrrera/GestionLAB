@@ -105,7 +105,7 @@
                     <li>
                         <a href="{{route('admin.reportes_parciales')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="file"></i> </div>
-                            <div class="side-menu__title">Reportes parciales</div>
+                            <div class="side-menu__title">Reportes</div>
                         </a>
                     </li>
                     <li>
