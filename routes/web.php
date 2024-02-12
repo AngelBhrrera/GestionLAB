@@ -31,6 +31,21 @@ Auth::routes([
 Route::get('/foo', function () {
     Artisan::call('storage:link');
 });
+
+Route::get('/spiderw', function(){
+    return view('/TEST/spider');
+})->name('spider');
+
+Route::get('/dualist', function(){
+    return view('/TEST/dualist');
+})->name('dual');
+
+Route::get('/actest', function(){
+        return view(
+            '/TEST/plus',
+            );
+})->name('tester');
+
 Route::group(['middleware'=>'auth'], function (){
     Route::controller(App\Http\Controllers\PrestadorController::class)->group(function(){
         Route::get('/descargar/{nombreArchivo}', 'descargar_reporte')->name('descargar_reporte');
@@ -50,12 +65,6 @@ Route::group(['middleware'=>'auth'], function (){
     })->name('obtenerImagen');
     
 });
-    
-
-
-Route::get('/spiderw', function(){
-    return view('/TEST/spider');
-})->name('spider');
 
 Route::controller(App\Http\Controllers\LandingController::class)->group(function(){
     Route::get('/inventores', 'index')->name('landing');
@@ -112,8 +121,8 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::get('admin/gestionSede', 'gestionSedes')->name('sede');
 
                 Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
-                Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
                 Route::post('admin/nuevaArea', 'nuevaArea')->name('nuevaArea');
+                Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
                     
                 Route::get('/admin/faltas', 'faltas')->name('faltas');
                 Route::get('/admin/horarios', 'horarios')->name('horarios');
@@ -146,6 +155,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 
             Route::get('/admin/general', 'general')->name('general');
             Route::get('/admin/prestadores', 'prestadores')->name('prestadores');
+            
             Route::get('/admin/prestadoresPendientes', 'prestadoresPendientes')->name('prestadoresPendientes');
             Route::get('/admin/prestadores_inactivos', 'prestadores_inactivos')->name('prestadores_inactivos');
             Route::get('/admin/prestadores_liberados', 'prestadores_liberados')->name('prestadores_liberados');
@@ -158,7 +168,9 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/registrovisitas', 'registroVisitas')->name('registrovisitas');
                 
             Route::get('/admin/obtenerActividades', 'obtenerActividades')->name('obtenerActividades');
-            Route::get('/admin/obtenerSubcategoria', 'obtenerSubcategorias')->name('obtenerSubcategorias');
+            Route::get('/admin/obtenerActividadesB', 'obtenerActividadesB')->name('obtenerActividadesB');
+            Route::get('/admin/obtenerSubcategoria', 'obtenerSubcategoria')->name('obtenerSubcategorias');
+
             Route::get('/admin/newCategoriaYActividad', 'newCategoriaYActividad')->name('newCategoriaYActividad');
 
             Route::get('/admin/firmas', 'firmas')->name('firmas');
@@ -172,6 +184,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             //AJUSTES DE PRESTADOR
           
             Route::get('admin/modificar_horario_prestador/{id}/{value}', 'cambiar_horario')->name('cambiar_horario');
+            Route::get('admin/modificar_tipo_prestador/{id}/{value}', 'cambiar_tipo')->name('cambiar_tipo');
             Route::get('admin/activar_prestador/{value}', 'activar')->name('activar');
             Route::get('admin/eliminar_prestador/{value}', 'eliminar')->name('eliminar');
             Route::get('admin/desactivar_prestador/{value}', 'desactivar')->name('desactivar');
@@ -179,14 +192,15 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('admin/activar_impresora/{value}', 'activate_print')->name('activate_print');
             Route::get('admin/changestate_print/{id}/{value}', 'printstate')->name('printstate');
             Route::get('admin/observaciones_impresion/{id}/{value}', 'detail_prints')->name('detail_prints');
+            //PREMIOS
+            Route::get("admin/premios, premios")->name("premios");
+            Route::post('admin/premios', 'guardar_premio')->name('guardar_premio');
             //
-            Route::middleware('role:admin,Superadmin')->group(function() {
+            Route::middleware('role:admin,admin_sede,Superadmin')->group(function() {
                 Route::get('admin/liberar_prestador/{value}', 'liberar')->name('liberar');
                 Route::get('admin/changestate/{id}/{value}', 'checkinstate')->name('checkinstate');
-            });
-
-            Route::middleware('role:admin,admin_sede')->group(function() {
-                Route::get('admin/eliminarFestivo/{id}', 'eliminardiafestivo')->name('eliminarFestivo');
+                
+                Route::get('admin/activar_area/{id}/{campo}', 'activate_area')->name('activatearea');
             });
             /*
             Route::post('/actualizarcursos1',  'guardarcursos1')->name('actualizarcursos1');
@@ -259,6 +273,9 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
 
         Route::get('prestador/home', 'home')->name('homeP');
 
+        Route::get('prestador/nivel', 'level_progress')->name('level');
+
+
         Route::get('prestador/reportes_parciales', 'show_reportes')->name('parciales');
         Route::post('prestador/subir_reporte_parcial', 'subir_reportes_parciales')->name('subirReporte');
         Route::get('prestador/eliminar_reporte_parcial/{id}', 'eliminar_reportes_parciales')->name('eliminarReporte');
@@ -267,6 +284,10 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::post('prestador/registrar_impresion', 'register_imps')->name('register_imps');
         Route::get('prestador/mostrar_mis_impresiones', 'show_imps')->name('show_imps');
 
+        Route::get('prestador/mostrar_impresiones', 'show_all_imps')->name('show_all_imps');
+        Route::get('prestador/changestate_print/{id}/{value}', 'printstate')->name('printstate');
+        Route::get('prestador/observaciones_impresion/{id}/{value}', 'detail_prints')->name('detail_prints');
+
         Route::get('/prestador/home/perfil', 'perfil')->name('perfil');
         Route::post('/prestador/home/perfil/cambiar-imagen-perfil', 'cambiarImagenPerfil')->name('cambiarImagenPerfil');
 
@@ -274,6 +295,9 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::get('prestador/actividadesPrestador', 'actividadesPrestador')->name('actividadesPrestador');
         Route::get('prestador/horario', 'horario')->name('horario');
         Route::get('/prestador/asistencias', 'asistencias')->name('asistencias');
+        Route::get('prestador/obtenerActividades', 'obtenerActividades')->name('obtenerActividades');
+        Route::get('prestador/obtenerActividadesB', 'obtenerActividadesB')->name('obtenerActividadesB');
+        Route::get('prestador/obtenerSubcategoria', 'obtenerSubcategorias')->name('obtenerSubcategorias');
 
         Route::get('prestador/C_actividades', 'create_act')->name('create_act');
         Route::post('prestador/M_actividades', 'make_act')->name('make_act');
@@ -341,10 +365,6 @@ Route::controller(App\Http\Controllers\VisitanteController::class)->group(functi
             Route::post('/cliente/visitaguardar','guardarVisita')->name('guardarVisita');
             Route::get('/cliente/visitas', 'principal')->name('visitas');
             Route::get('/cliente/reg', 'form')->name('form');
-
-            Route::get('/cliente/solicitud_capacitacion', 'solicitud_capacitacion')->name('solicitud_capacitacion');
-            Route::get('/cliente/solicitud_impresion', 'solicitud_impresion')->name('solicitud_impresion');
-
             Route::post('/cliente/reg', 'registro_impresion_form')->name('formulariof'); // ruta formulario no publica
             
         // Route::get('/visita','visita')->name('visitas');

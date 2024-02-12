@@ -51,6 +51,13 @@
                     }, {
                         title: "Tipo",
                         field: "tipo",
+                        editor: "select",
+                        editorParams: {
+                            values: {
+                                    "prestador": "prestador",
+                                    "encargado": "encargado",
+                                }
+                        },
                       
                     },{
                         title: "Codigo",
@@ -89,6 +96,7 @@
                     },{
                         title: "Modificar",
                         field: "id",
+                        width: 120,
                         formatter: function (cell, formatterParams, onRendered) {
                             var row = cell.getRow();
                             var id = cell.getValue();
@@ -98,7 +106,9 @@
                             button.title = "";
                             button.addEventListener("click", function() {
                                 var value = row.getData().horario;
-                                modificarPrestador(id, value);
+                                var value2 = row.getData().tipo;
+                                modificarHPrestador(id, value);
+                                modificarTPrestador(id, value2);
                             });
                             return button;
                         }, 
@@ -106,6 +116,7 @@
                     }, {
                         title: "Desactivar",
                         field: "id",
+                        width: 135,
                         formatter: function (cell, formatterParams, onRendered) {
                             var value = cell.getValue();
                             var button = document.createElement("button");
@@ -122,7 +133,26 @@
                 ],
             });
 
-            function modificarPrestador(id, value) {
+            function modificarTPrestador(id, value) {
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`modificar_tipo_prestador/${id}/${value}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Respuesta del servidor:', data);
+                    window.location.reload(); 
+                })
+                .catch(error => {
+                    console.error('Error al activar usuario:', error);
+                });
+            } 
+
+            function modificarHPrestador(id, value) {
                 const token = document.head.querySelector('meta[name="csrf-token"]').content;
                 fetch(`modificar_horario_prestador/${id}/${value}`, {
                     method: 'GET',
@@ -134,7 +164,7 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log('Respuesta del servidor:', data);
-                    window.location.reload(); 
+                    //window.location.reload(); 
                 })
                 .catch(error => {
                     console.error('Error al activar usuario:', error);

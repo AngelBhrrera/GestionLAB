@@ -45,6 +45,7 @@
         </div>
     @endif
 
+
         <div class="col-md-6">
             <div class="intro-y box p-5 mt-5">
                 <h3 class="text-2xl mt-5 font-small">Añadir un área</h3>
@@ -99,12 +100,26 @@
                         headerFilter: "input",
                         sorter: "string",
                         editor: "input",
+                        width: 300,
+                        cellEdited: function (cell) {
+                            var row = cell.getRow();
+                            var id = row.getData().id;
+                            var value = cell.getValue();
+                            nuevoNombreSede(id, value);
+                        },
                     },{
                         title: "Nombre Area",
                         field: "nombre_area",
                         headerFilter: "input",
                         sorter: "string",
                         editor: "input",
+                        width: 300,
+                        cellEdited: function (cell) {
+                            var row = cell.getRow();
+                            var id = row.getData().id;
+                            var value = cell.getValue();
+                            nuevoNombreArea(id, value);
+                        },
                     },{
                         title: "Asistentes",
                         field: "total_personal",
@@ -117,7 +132,13 @@
                         formatter: "tickCross",
                         editor: "tickCross",
                         cellClick: function(e, cell) {
-                            cell.setValue(!cell.getValue()); // Cambia el valor al hacer clic
+
+                            var campo = cell.getField();
+                            var row = cell.getRow();
+                            var id = row.getData().id;
+                            console.log("Nombre del campo:", campo);
+                            activate(id, campo)
+                            cell.setValue(!cell.getValue());
                         },
                     }, {
                         title: "Horario",
@@ -126,46 +147,71 @@
                                 title: "Matutino",
                                 field: "turnoMatutino",
                                 width: 100,
+                                headerTooltip: "Horario Matutino de 8 a 12 de la mañana",
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
-                                    cell.setValue(!cell.getValue()); // Cambia el valor al hacer clic
+                                    var campo = cell.getField();
+                                    var row = cell.getRow();
+                                    var id = row.getData().id;
+                                    activate(id, campo)
+                                    cell.setValue(!cell.getValue());
                                 },
                             }, {
                                 title: "Mediodia",
                                 field: "turnoMediodia",
                                 width: 100,
+                                headerTooltip: "Horario Mediodia de 12 a 4 de la tarde",
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
-                                    cell.setValue(!cell.getValue()); // Cambia el valor al hacer clic
+                                    var campo = cell.getField();
+                                    var row = cell.getRow();
+                                    var id = row.getData().id;
+                                    activate(id, campo)
+                                    cell.setValue(!cell.getValue());
                                 },
                             },{
                                 title: "Vespertino",
                                 field: "turnoVespertino",
                                 width: 100,
+                                headerTooltip: "Horario Vespertino de 4 a 8 de la tarde",
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
-                                    cell.setValue(!cell.getValue()); // Cambia el valor al hacer clic
+                                    var campo = cell.getField();
+                                    var row = cell.getRow();
+                                    var id = row.getData().id;
+                                    activate(id, campo)
+                                    cell.setValue(!cell.getValue());
                                 },
                             },{
                                 title: "Sabatino",
                                 field: "turnoSabatino",
                                 width: 100,
+                                headerTooltip: "Horario Sabatino de 8 a 2 de la tarde",
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
-                                    cell.setValue(!cell.getValue()); // Cambia el valor al hacer clic
+                                    var campo = cell.getField();
+                                    var row = cell.getRow();
+                                    var id = row.getData().id;
+                                    activate(id, campo)
+                                    cell.setValue(!cell.getValue());
                                 },
                             }, {
                                 title: "Tiempo Completo",
                                 field: "turnoTiempoCompleto",
                                 width: 100,
+                                headerTooltip: "Horario Especial entre semana para personas sin horario fijo",
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
-                                    cell.setValue(!cell.getValue()); // Cambia el valor al hacer clic
+                                    var campo = cell.getField();
+                                    var row = cell.getRow();
+                                    var id = row.getData().id;
+                                    activate(id, campo)
+                                    cell.setValue(!cell.getValue());
                                 },
                             }
                         ]
@@ -181,79 +227,103 @@
                             {
                                 title: "Gamificacion",
                                 field: "gamificacion",
+                                headerTooltip: "Sistema de experiencia y registro de actividades, leaderboard, categoria, subcategoria y proyectos",
                                 width: 100,
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
-                                    cell.setValue(!cell.getValue()); // Cambia el valor al hacer clic
+                                    var campo = cell.getField();
+                                    var row = cell.getRow();
+                                    var id = row.getData().id;
+                                    activate(id, campo)
+                                    cell.setValue(!cell.getValue());
                                 },
                             }, {
                                 title: "Visitas",
                                 field: "visitas",
+                                headerTooltip: "Incluye check y registro de visitas y contacto de visitantes al area de trabajo",
                                 width: 100,
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
-                                    cell.setValue(!cell.getValue()); // Cambia el valor al hacer clic
+                                    var campo = cell.getField();
+                                    var row = cell.getRow();
+                                    var id = row.getData().id;
+                                    activate(id, campo)
+                                    cell.setValue(!cell.getValue());
                                 },
                             },{
                                 title: "Solicitudes",
                                 field: "solicitudes",
                                 width: 100,
+                                headerTooltip: "Una serie de vistas enfocadas a la administracion de peticiones de solicitudes, capacitaciones, desarrollos e impresiones",
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
-                                    cell.setValue(!cell.getValue()); // Cambia el valor al hacer clic
+                                    var campo = cell.getField();
+                                    var row = cell.getRow();
+                                    var id = row.getData().id;
+                                    activate(id, campo)
+                                    cell.setValue(!cell.getValue());
                                 },
                             },{
                                 title: "Impresiones",
                                 field: "impresiones",
+                                headerTooltip: "Vistas enfocadas al registro y gestion de impresoras e impresiones 3D",
                                 width: 100,
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
-                                    cell.setValue(!cell.getValue()); // Cambia el valor al hacer clic
+                                    var campo = cell.getField();
+                                    var row = cell.getRow();
+                                    var id = row.getData().id;
+                                    activate(id, campo)
+                                    cell.setValue(!cell.getValue());
                                 },
                             }, 
                         ]
                     },
                 ],
             });
-    </script>
 
-<script>
-        function modificarCamposSede(){
-            
-            checks= document.querySelectorAll('.form-check-input');
-            
-            if(document.getElementById("sede").value === "null"){
-                 // Restablecer los campos al estado inicial
-                 document.getElementById("nuevoNombre").value = "";
-                 document.getElementById("idSede").value = "";
-                document.getElementById("guardar").disabled = true;
-                for(var check of checks){
-                    check.checked = false;
-                }
-                return;
-            }
-            document.getElementById("guardar").disabled = false;
-            document.getElementById("nuevoNombre").value=datoSede.nombre_sede;
-            document.getElementById("idSede").value = datoSede.id_sede;
-            datoSede = JSON.parse(document.getElementById("sede").value);
+        function activate(id, campo) {
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`activar_area/${id}/${campo}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
 
-            const propiedades = ['activa', 'turnoMatutino', 'turnoMediodia', 'turnoVespertino', 'turnoSabatino', 'turnoTiempoCompleto'];
+                    //window.location.reload(); 
+                })
+                .catch(error => {
+                    console.error('Error en activacion:', error);
+                });
+            } 
 
-            propiedades.forEach((propiedad, index) => {
-                const checkbox = checks[index];
-                checkbox.checked = datoSede[propiedad] == 1;
-            });
-            
-        }
-        // setTimeout(function(){
+            function nuevoNombreArea(id, campo) {
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`activar_area/${id}/${campo}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
 
-        //     document.getElementById("alerta").style.display="none";
+                    //window.location.reload(); 
+                })
+                .catch(error => {
+                    console.error('Error en activacion:', error);
+                });
+            } 
 
-        // }, 4000);
     </script>
     
 @endsection

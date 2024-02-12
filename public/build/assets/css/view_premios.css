@@ -1,0 +1,93 @@
+@media(min-width:500px){
+    #card_body{
+        margin: 10px;
+        margin-top: 5px;          /* media para el duelist box */
+        margin-bottom: 5px; 
+    }
+}
+
+@media(min-width:760px){
+    #card_body{
+        margin: 15px;
+        margin-top: 10px;       /* media para el duelist box */
+        margin-bottom: 10px;
+    }
+
+}
+
+@media(min-width: 1020px){
+    #card_body{
+        margin: 20px;
+        margin-top: 10px;       /* media para el duelist box */
+        margin-bottom: 20px;
+    }
+}
+
+@media(min-width: 1435px){
+    #card_body{
+        margin: 90px;
+        margin-top: 10px;       /* media para el duelist box */
+        margin-bottom: 10px;
+    }
+}
+
+@media(min-width: 1650px){
+    #card_body{
+        margin: 200px;
+        margin-top: 10px;       /* media para el duelist box */
+        margin-bottom: 10px;
+    }
+}
+
+@media(min-width: 1850px){
+    #card_body{
+        margin: 290px;
+        margin-top: 10px;       /* media para el duelist box */
+        margin-bottom: 10px;
+    }
+}
+
+
+@media(min-width: 1910px){
+    #card_body{
+        margin: 295px;
+        margin-top: 10px;       /* media para el duelist box */
+        margin-bottom: 10px;
+    }
+}
+
+@media(min-width:350px){
+    #form_duelist{
+        margin: 22px;
+        margin-top: 1px;     /* media para el form del duelistbox */
+        margin-bottom: 5px;
+    }
+}
+
+@media(min-width:1020px){
+    #form_duelist{
+        margin: 145px;
+        margin-top: 1px;     /* media para el form del duelistbox */
+        margin-bottom: 5px;
+    }
+}
+
+@media(min-width:350px){
+    #form_premio_register{
+        margin: 22px;
+        margin-top: 1px;     /* media para el form de registro premios */
+        margin-bottom: 1px;
+    }
+}
+
+@media(min-width:1020px){
+    #form_premio_register{
+        margin: 145px;
+        margin-top: 1px;     /* media para el form de registro premios */
+        margin-bottom: 1px;
+    }
+}
+
+#btn-log{
+    margin-bottom: 60px;
+}

@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use DateTime;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
 
 
 class PrestadorController extends Controller
@@ -18,6 +16,17 @@ class PrestadorController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    
+    public function actividadesPrestador()
+    {
+        $encargado_id = auth()->user()->encargado_id;
+        $prestadores = DB::table('users')->select('id', 'name', 'apellido')->where('id', auth()->user()->id)->get();
+        $categorias = DB::table('categorias')->get();
+        $actividades = DB::table('actividades')->get();
+
+        return view('/prestador/crear_actividad_prestador', compact('prestadores', 'actividades', 'categorias'));
     }
 
     public function create_act()
@@ -75,6 +84,39 @@ class PrestadorController extends Controller
     
         return view( 'prestador/asignar_actividad_prestador', [ 'categorias' => $categorias, 'actividades' => $actividades]);
     }    
+
+    public function obtenerActividades(Request $request)
+    {
+        $categoriaId = $request->input('categoriaId');
+
+        $actividades = DB::table('actividades')
+            ->where('id_categoria', $categoriaId)
+            ->get();
+
+        return response()->json($actividades);
+    }
+
+    public function obtenerActividadesB(Request $request)
+    {
+        $subcategoriaId = $request->input('subcategoriaId');
+
+        $actividades = DB::table('actividades')
+            ->where('id_subcategoria', $subcategoriaId)
+            ->get();
+
+        return response()->json($actividades);
+    }
+
+    public function obtenerSubcategorias(Request $request)
+    {
+        $categoriaId = $request->input('categoriaId');
+
+        $subcateg = DB::table('subcategorias')
+            ->where('categoria', $categoriaId)
+            ->get();
+
+        return response()->json($subcateg);
+    }
 
     public function index()
     {
@@ -180,7 +222,7 @@ class PrestadorController extends Controller
     public function show_imps()
     {
         $data = DB::table('ver_impresiones')
-        ->select('impresora', 'proyecto',  'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
+        ->select('id', 'impresora', 'proyecto',  'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
         ->where('id_Prestador', Auth::user()->id)
         ->orderByDesc('fecha')
         ->get();
@@ -189,17 +231,44 @@ class PrestadorController extends Controller
 
     }
 
+    public function show_all_imps()
+    {
+        $data = DB::table('ver_impresiones')
+        ->select('id', 'impresora', 'proyecto',  'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
+        ->orderByDesc('fecha')
+        ->get();
+
+        return view('prestador/mostrar_impresiones', ['impresiones' => json_encode($data)]);
+
+    }
+
+    public function printstate($id, $state) {
+
+        DB::table('seguimiento_impresiones')
+        ->where('id', $id)
+        ->update(['estado' => $state]);
+
+        return response()->json(['message' => 'Activado exitosamente' . $id]);
+    }
+
+    public function detail_prints($id, $value) {
+
+        $sql=    DB::table('seguimiento_impresiones')
+            ->where('id', $id)
+            ->update(['observaciones' => $value]);
+        return response()->json(['message' => $sql]);
+    }
+
 
     public function horario()
     {
         $id = Auth::user()->id;
-        $sede=Auth::user()->sede;
-        $area=Auth::user()->area;
 
         $turno = Auth::user()->horario;
 
+
         $asistencias = DB::select("Select fecha from registros_checkin where idusuario = $id");
-        $festivos = DB::select("Select * from eventos where sede = $sede and (area = $area or area = 0)");
+        $festivos = DB::select("Select * from eventos");
         
         foreach($asistencias as $valor){
             // Crear un objeto DateTime interpretando la cadena original
@@ -306,9 +375,24 @@ class PrestadorController extends Controller
 
                     return redirect()->route($dir)->with('success', 'Adios ' . $usuario[0]->name);
                 } else {
+                    $ip = $_SERVER['REMOTE_ADDR'];
+                    $geo = file_get_contents("http://ip-api.com/json/{$ip}");
+                    $geoData = json_decode($geo);
+
+                    if ($geoData && $geoData->status == 'success') {
+                        // Obtiene la latitud y longitud
+                        $latitud = $geoData->lat;
+                        $longitud = $geoData->lon;
+                        // Crea el enlace a Google Maps
+                        $enlaceMaps = "https://www.google.com/maps?q={$latitud},{$longitud}";
+                    } else {
+                        $enlaceMaps = "https://www.google.com/maps?q=20.6568344,-103.3273073";
+                        echo "No se pudo obtener la información de geolocalización.";
+                    }
+
 
                     $inicio = DB::table('registros_checkin')
-                    ->insert([['origen' => $origen, 'idusuario' => $usuario[0]->id, 'fecha' => date("d/m/Y"),
+                    ->insert([['origen' => $origen, 'idusuario' => $usuario[0]->id, 'fecha' => date("d/m/Y"), 'ubicacion' => $enlaceMaps,
                     'hora_entrada' => date('H:i:s'), 'horas' => 0, 'responsable'=> $responsable, 'tipo' => $usuario[0]->tipo,
                     'encargado_id' => Auth::user()->id]]);
 
@@ -324,6 +408,193 @@ class PrestadorController extends Controller
             return redirect()->route($dir)->with('error', $th->getMessage());
         }
     }
+
+    function diferencia($hora, $hora2)
+    {
+        $time1 = new DateTime($hora);
+        $time2 = new DateTime($hora2);
+        $interval = $time1->diff($time2);
+        return $interval->format('%H:%I:%S');
+    }
+
+    function horasC($time)
+    {
+        $horas = new DateTime($time);
+        $tiempo = $horas->format('H.i');
+        if (fmod($tiempo, 1) > 0.30) {
+            $tiempo = $tiempo + 1;
+        }
+        return intval($tiempo);
+    }
+
+    
+    public function cambiarRol()
+    {
+        echo "<script>console.log('Mensaje en consola antes de redirección');</script>";
+        return redirect()->route('admin.home');
+    }
+
+    public function show_reportes(){
+        $user_id = Auth::user()->id;
+        $reportes = DB::select("Select * from reportes_s_s where id_prestador = $user_id");
+        
+        
+        
+        //Validar oficio
+        $oficio = (count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Oficio de comision'"))==0)? true : false;
+        $reporte1 = (!$oficio && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte parcial 1'"))==0)? true : false;
+        $reporte2 = (!$oficio && !$reporte1 && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte parcial 2'"))==0)? true : false;
+        $reporte3 = (!$oficio && !$reporte1 && !$reporte2 && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte parcial 3'"))==0)? true : false;
+        $final = (!$oficio && !$reporte1 && !$reporte2 && !$reporte3 && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte final'"))==0)? true : false;
+        //Validar reportes parciales 
+        return view('prestador.reportes_parciales',['reportes' =>$reportes, 'oficio' => $oficio, 
+        'reporte1'=>$reporte1, 'reporte2'=>$reporte2, 'reporte3'=> $reporte3, 'final'=> $final]);
+    }
+
+    public function subir_reportes_parciales(Request $request){
+        $request->validate([
+            'reporte_parcial' => 'required|mimes:pdf|max:4096', //El archivo debe ser de tipo imagen y tener un tamaño máximo de MB
+            'tipo_reporte'  => 'required',
+        ], [
+            'reporte_parcial.max' => 'El archivo debe pesar menos de 4MB',
+            'reporte_parcial.required'=> 'El campo reporte es obligatorio',
+            'tipo_reporte.required'=> 'El campo tipo es obligatorio'
+        ]);
+
+        
+        // Obtener el usuario autenticado
+        $user_id = Auth::user()->id;
+        $tipo_reporte = $request->tipo_reporte; 
+
+        // Almacenar el archivo
+        $reporte_path = $request->file('reporte_parcial')->store('public/reportes_parciales/');
+
+        $nombre_archivo = basename($reporte_path);
+        $insertar= DB::table('reportes_s_s')->insert(['id_prestador' => $user_id, 'nombre_reporte' => $nombre_archivo, 'tipo'=>$tipo_reporte, 'fecha_subida' => date("Y/m/d")]);
+
+        return redirect()->route('parciales')->with('success', 'Archivo subido con éxito');
+    }
+
+    public function eliminar_reportes_parciales($id){
+        // Obtén el nombre del archivo de la base de datos
+        $archivo = DB::select("Select nombre_reporte from reportes_s_s where id=$id");
+        // Verifica si el archivo existe antes de intentar eliminarlo
+        $file_path = storage_path('app/public/reportes_parciales/'.$archivo[0]->nombre_reporte);
+        if (file_exists($file_path)) {
+            DB::table('reportes_s_s')->where('id', $id)->delete();
+            unlink($file_path);
+        }
+
+        return redirect()->route('parciales')->with('warning', 'Archivo y registro eliminados con éxito');
+    }
+
+    public function descargar_reporte($nombreArchivo){
+        $rutaArchivo = storage_path('app/public/reportes_parciales/' . $nombreArchivo);
+        return response()->download($rutaArchivo);
+    }
+
+    public function visualizar_reporte($nombreArchivo){
+        $rutaArchivo = storage_path('app/public/reportes_parciales/' . $nombreArchivo);
+        // Verificar si el archivo existe
+            // Haz lo que necesites con el contenido del archivo
+            header('content-type: application/pdf');
+            readfile($rutaArchivo);
+    }
+
+    public function perfil()
+    {
+        $user = Auth::user();
+
+        $sede = DB::table('sedes')
+        ->select('sedes.nombre_sede', 'sedes.id_sede')
+        ->where('sedes.id_sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
+        ->first();
+
+        $nivel = DB::table('niveles')
+            ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
+            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n')
+            ->where('niveles.experiencia_acumulada', '<=', $user->experiencia ?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
+            ->orderByDesc('niveles.experiencia_acumulada')
+            ->first();
+        $todasMedallasUsuario = DB::table('niveles')
+                ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
+                ->select('medallas.ruta', 'medallas.nivel', 'medallas.descripcion')
+                ->where('niveles.experiencia_acumulada', '<=', $user->experiencia ?? 0) // Si la experiencia es null, establece la experiencia acumulada en 0.
+                ->orderBy('niveles.experiencia_acumulada', 'asc')
+                ->get();
+
+        // Convertimos el valor del nivel a una cadena de texto
+        $nivel_str = strval($nivel->nivel);
+
+        $medalla = asset($nivel->ruta);
+        //dd($nivel); // Verificar si la propiedad ruta_n está presente en $nivel
+        // Descripcion de la medalla
+        $descripcion_medalla = $nivel->descripcion;
+
+        return view('prestador.newProfile', compact('user', 'sede', 'nivel_str', 'medalla', 'nivel', 'descripcion_medalla', 'todasMedallasUsuario'));
+    }
+
+    public function cambiarImagenPerfil(Request $request)
+    {
+        $request->validate([
+            'imagen_perfil' => 'required|image|max:4096', // la imagen debe ser de tipo imagen y tener un tamaño máximo de MB
+        ], [
+            'imagen_perfil.max' => 'La imagen debe pesar menos de 4MB',
+        ]);
+
+        // Obtener el usuario autenticado
+        $user = Auth::user();
+
+        // Eliminar la imagen del usuario si es que ya tenia
+        if ($user->imagen_perfil) {
+            // $image_path = public_path('storage/imagen/imagen/' . $user->imagen_perfil);
+            $image_path = public_path('storage/userImg/'.$user->imagen_perfil);
+            if (file_exists($image_path)) {
+                unlink($image_path);
+            }
+        }
+
+
+        // Almacenar la nueva imagen
+        $imagen_path = $request->file('imagen_perfil')->store('public/userImg/');
+
+        $nombre_archivo = basename($imagen_path);
+
+        // Actualizar el campo 'imagen_perfil' del usuario
+        $user->imagen_perfil =  $nombre_archivo;
+
+        $user->save();
+
+        // Redireccionar al perfil del usuario
+        return redirect()->route('perfil')->with('success', 'Imagen cambiada correctamente');
+    }
+
+    public function level_progress()
+    {
+        $user = Auth::user();
+
+        if($user->experiencia >= 2000){
+            $percent = 100;
+        }else{
+            $niveles = DB::table('niveles')
+            ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
+            ->join('ruta_niveles', 'niveles.nivel', '=', 'ruta_niveles.nivel')
+            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'ruta_niveles.exp', 'niveles.experiencia' )
+            ->where('niveles.experiencia_acumulada', '>=', $user->experiencia)
+            ->orderBy('niveles.experiencia_acumulada')
+            ->limit(2)
+            ->get();
+
+            $full = $niveles[1]->experiencia - $niveles[0]->experiencia;
+            $adv = $user->experiencia - $niveles[0]->experiencia;
+            $percent = number_format(($adv * 100) / $full, 2);
+        }
+
+        return view('prestador/prestador_levels',['user' =>$user, 'nivel' => $niveles, 'percent' => $percent ]);
+    }
+
+    //TERRITORIOS DESCONOCIDOS 
+    /*
 
     public function asignarfirmas(Request $request)
     {
@@ -360,23 +631,6 @@ class PrestadorController extends Controller
         return redirect('/admin/firmas');
     }
 
-    function diferencia($hora, $hora2)
-    {
-        $time1 = new DateTime($hora);
-        $time2 = new DateTime($hora2);
-        $interval = $time1->diff($time2);
-        return $interval->format('%H:%I:%S');
-    }
-
-    function horasC($time)
-    {
-        $horas = new DateTime($time);
-        $tiempo = $horas->format('H.i');
-        if (fmod($tiempo, 1) > 0.30) {
-            $tiempo = $tiempo + 1;
-        }
-        return intval($tiempo);
-    }
 
     public function proyectos()
     {
@@ -493,26 +747,6 @@ class PrestadorController extends Controller
             ]
         );
     }
-
-    public function actividadesPrestador()
-    {
-        $encargado_id = auth()->user()->encargado_id;
-        $prestadores = DB::table('users')->select('id', 'name', 'apellido')->where('id', auth()->user()->id)->get();
-        $categorias = DB::table('categorias')->get();
-        $actividades = DB::table('actividades')->get();
-
-        return view('/prestador/crear_actividad_prestador', compact('prestadores', 'actividades', 'categorias'));
-    }
-
-    public function obtenerActividades(Request $request)
-    {
-        $categoriaId = $request->input('categoriaId');
-        $actividades = DB::table('actividades')
-            ->where('id_categoria', $categoriaId)
-            ->get();
-        return response()->json($actividades);
-    }
-
 
     public function registro_reporte_guardar(Request $request)
     {
@@ -745,74 +979,6 @@ class PrestadorController extends Controller
         return view('prestador.actividades_prestadores.verActividad', compact('actividad', 'user'));
     }
 
-    public function perfil()
-    {
-        $user = Auth::user();
-
-        $sede = DB::table('sedes')
-        ->select('sedes.nombre_sede', 'sedes.id_sede')
-        ->where('sedes.id_sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
-        ->first();
-
-        $nivel = DB::table('niveles')
-            ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
-            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n')
-            ->where('niveles.experiencia_acumulada', '<=', $user->experiencia ?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
-            ->orderByDesc('niveles.experiencia_acumulada')
-            ->first();
-        $todasMedallasUsuario = DB::table('niveles')
-                ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
-                ->select('medallas.ruta', 'medallas.nivel', 'medallas.descripcion')
-                ->where('niveles.experiencia_acumulada', '<=', $user->experiencia ?? 0) // Si la experiencia es null, establece la experiencia acumulada en 0.
-                ->orderBy('niveles.experiencia_acumulada', 'asc')
-                ->get();
-
-        // Convertimos el valor del nivel a una cadena de texto
-        $nivel_str = strval($nivel->nivel);
-
-        $medalla = asset($nivel->ruta);
-        //dd($nivel); // Verificar si la propiedad ruta_n está presente en $nivel
-        // Descripcion de la medalla
-        $descripcion_medalla = $nivel->descripcion;
-
-        return view('prestador.newProfile', compact('user', 'sede', 'nivel_str', 'medalla', 'nivel', 'descripcion_medalla', 'todasMedallasUsuario'));
-    }
-
-    public function cambiarImagenPerfil(Request $request)
-    {
-        $request->validate([
-            'imagen_perfil' => 'required|image|max:4096', // la imagen debe ser de tipo imagen y tener un tamaño máximo de MB
-        ], [
-            'imagen_perfil.max' => 'La imagen debe pesar menos de 4MB',
-        ]);
-
-        // Obtener el usuario autenticado
-        $user = Auth::user();
-
-        // Eliminar la imagen del usuario si es que ya tenia
-        if ($user->imagen_perfil) {
-            // $image_path = public_path('storage/imagen/imagen/' . $user->imagen_perfil);
-            $image_path = public_path('storage/userImg/'.$user->imagen_perfil);
-            if (file_exists($image_path)) {
-                unlink($image_path);
-            }
-        }
-
-
-        // Almacenar la nueva imagen
-        $imagen_path = $request->file('imagen_perfil')->store('public/userImg/');
-
-        $nombre_archivo = basename($imagen_path);
-
-        // Actualizar el campo 'imagen_perfil' del usuario
-        $user->imagen_perfil =  $nombre_archivo;
-
-        $user->save();
-
-        // Redireccionar al perfil del usuario
-        return redirect()->route('perfil')->with('success', 'Imagen cambiada correctamente');
-    }
-
     function obtenerTodasActividades()
     {
         // Obtener el ID y el tipo de usuario autenticado
@@ -970,79 +1136,6 @@ class PrestadorController extends Controller
     public function faltas(){
         return view('prestador.faltas_prestador');
     }
+    */
 
-    public function cambiarRol()
-    {
-        echo "<script>console.log('Mensaje en consola antes de redirección');</script>";
-        return redirect()->route('admin.home');
-    }
-
-    public function show_reportes(){
-        $user_id = Auth::user()->id;
-        $reportes = DB::select("Select * from reportes_s_s where id_prestador = $user_id");
-        
-        
-        
-        //Validar oficio
-        $oficio = (count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Oficio de comision'"))==0)? true : false;
-        $reporte1 = (!$oficio && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte parcial 1'"))==0)? true : false;
-        $reporte2 = (!$oficio && !$reporte1 && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte parcial 2'"))==0)? true : false;
-        $reporte3 = (!$oficio && !$reporte1 && !$reporte2 && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte parcial 3'"))==0)? true : false;
-        $final = (!$oficio && !$reporte1 && !$reporte2 && !$reporte3 && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte final'"))==0)? true : false;
-        //Validar reportes parciales 
-        return view('prestador.reportes_parciales',['reportes' =>$reportes, 'oficio' => $oficio, 
-        'reporte1'=>$reporte1, 'reporte2'=>$reporte2, 'reporte3'=> $reporte3, 'final'=> $final]);
-    }
-
-    public function subir_reportes_parciales(Request $request){
-        $request->validate([
-            'reporte_parcial' => 'required|mimes:pdf|max:4096', //El archivo debe ser de tipo imagen y tener un tamaño máximo de MB
-            'tipo_reporte'  => 'required',
-        ], [
-            'reporte_parcial.max' => 'El archivo debe pesar menos de 4MB',
-            'reporte_parcial.required'=> 'El campo reporte es obligatorio',
-            'tipo_reporte.required'=> 'El campo tipo es obligatorio'
-        ]);
-
-        
-        // Obtener el usuario autenticado
-        $user_id = Auth::user()->id;
-        $tipo_reporte = $request->tipo_reporte; 
-
-        // Almacenar el archivo
-        $reporte_path = $request->file('reporte_parcial')->store('public/reportes_parciales/');
-
-        $nombre_archivo = basename($reporte_path);
-        $insertar= DB::table('reportes_s_s')->insert(['id_prestador' => $user_id, 'nombre_reporte' => $nombre_archivo, 'tipo'=>$tipo_reporte, 'fecha_subida' => date("Y/m/d")]);
-
-        return redirect()->route('parciales')->with('success', 'Archivo subido con éxito');
-    }
-
-    public function eliminar_reportes_parciales($id){
-        // Obtén el nombre del archivo de la base de datos
-        $archivo = DB::select("Select nombre_reporte from reportes_s_s where id=$id");
-        // Verifica si el archivo existe antes de intentar eliminarlo
-        $file_path = storage_path('app/public/reportes_parciales/'.$archivo[0]->nombre_reporte);
-        if (file_exists($file_path)) {
-            DB::table('reportes_s_s')->where('id', $id)->delete();
-            unlink($file_path);
-        }
-
-        return redirect()->route('parciales')->with('warning', 'Archivo y registro eliminados con éxito');
-    }
-
-    public function descargar_reporte($nombreArchivo){
-        $rutaArchivo = storage_path('app/public/reportes_parciales/' . $nombreArchivo);
-        return response()->download($rutaArchivo);
-    }
-
-    public function visualizar_reporte($nombreArchivo){
-        $rutaArchivo = storage_path('app/public/reportes_parciales/' . $nombreArchivo);
-        // Verificar si el archivo existe
-            // Haz lo que necesites con el contenido del archivo
-            header('content-type: application/pdf');
-            readfile($rutaArchivo);
-    }
 }
-
-

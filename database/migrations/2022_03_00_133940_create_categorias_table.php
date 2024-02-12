@@ -16,7 +16,7 @@ class CreateCategoriasTable extends Migration
     {
         Schema::create('categorias', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 255)->collation('utf8mb4_unicode_ci');
+            $table->string('nombre', 255);
         });
 
         DB::table('categorias')->insert([

@@ -14,9 +14,10 @@
         <div class="col-md-9">
             <div class="card card-primary">
                 <h3  class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Gestión de Impresoras </h3>
-            </div>   
+            </div>
             <div class="px-5 sm:px-20 pt-5 border-t border-slate-200/60 dark:border-darkmode-400">
-            <form class="from-prevent-multiple-submits" method="POST" action="{{ route('admin.make_print') }}">
+                @if(Auth::user()->tipo != 'Superadmin')  
+                    <form class="from-prevent-multiple-submits" method="POST" action="{{ route('admin.make_print') }}">
                     @csrf
 
                     <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5">
@@ -40,6 +41,7 @@
                                 <label for="input-wizard-3" class="form-label">Marca</label>
                                 <input type="text" class="form-control @error('nombre') is-invalid @enderror"
                                     name="mark" id="mark" value="{{old('mark')}}">
+                                <small id="Help" class="form-text text-muted">Ingresa la marca de la impresora</small>
                                 @error('mark')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -56,16 +58,20 @@
                                     <option id=1 value='Filamento'>Filamento</option>
                                     <option id=2 value='Resina'>Resina</option>
                                 </select>
+                                <small id="Help" class="form-text text-muted">Selecciona tipo de impresion(resina o filamento)</small>
                             </div>
                         </div>
                     </div>
+                    
                     <div class="col-md-12 text-right">
                             <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits">
                                 Enviar
                             </button>
                     </div>
-            </form>
-            <div id="players"></div>
+                    </form>
+                       
+                @endif
+                <div id="players"></div>
             </div>
         </div>
     </div>
@@ -85,6 +91,7 @@
                 pagination: "local",
                 paginationSize: 5,
                 tooltips: true,
+                groupBy: "id:sede",
                 columns: [{
                         title: "Nombre",
                         field: "nombre",
@@ -126,12 +133,7 @@
                             }
                             return icono;
                         },
-<<<<<<< HEAD
-                        hozAlign: "center",
-                        width: 200,
-=======
                         width: 100,
->>>>>>> origin/main
                     }, {
                         title: "",
                         field: "id",
@@ -140,6 +142,8 @@
                             var button = document.createElement("button");
                             var row = cell.getRow();
                             var state = row.getData().estado;
+                            var nombreCampo = cell.getColumn().getField();
+                            console.log(nombreCampo);
                             if(state == 1){
                                 button.style = "background-color: red; color: white; border: 1px solid red; padding: 5px 15px; border-radius: 5px; font-size: 12px;";
                                 button.textContent = "Desctivar";

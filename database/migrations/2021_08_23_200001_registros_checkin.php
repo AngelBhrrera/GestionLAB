@@ -25,6 +25,8 @@ class RegistrosCheckIn extends Migration
             $table->string('tiempo',50)->nullable();
             $table->integer('horas',0,0)->nullable();
 
+            $table->string('ubicacion',450)->nullable();
+
             $table->string('responsable',50)->nullable();
             $table->bigInteger('encargado_id')->unsigned()->nullable()->default(null);
             $table->string('estado',50)->default('pendiente');

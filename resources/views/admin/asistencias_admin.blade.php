@@ -81,11 +81,12 @@
                         title: "Horas",
                         field: "horas",
                         sorter: "number",
-                        width: 100,
+                        width: 70,
                     }, {
                         title: "Estado",
                         field: "estado",
                         editor: "select",
+                        width: 70,
                         editorParams: {
                             values: {
                                 "autorizado": "autorizado",
@@ -133,20 +134,12 @@
                         field: "hora_entrada",
                         sorter: "string", 
                         width: 100,
-                        sorterParams: {
-                            format: "HH:mm:ss",
-                        },
                     },
                     {
                         title: "Salida",
                         field: "hora_salida",
                         sorter: "string", 
                         width: 100,
-                        sorterParams: {
-                            format: "HH:mm:ss",
-                        },
-                        hozAlign: "center",
-                        editor: "select",
                     }, {
                         title: "Tiempo",
                         field: "tiempo",
@@ -155,6 +148,16 @@
                         sorterParams: {
                             format: "HH:mm:ss",
                         },
+                    },  {
+                        title: "Ubicacion",
+                        field: "ubicacion",
+                        width: 200,
+                        formatter: "link",
+                        formatterParams: {
+                            labelField: "ubicacion",
+                            urlPrefix: "",
+                            target: "_blank"
+                        }
                     },  
                 ],
             });

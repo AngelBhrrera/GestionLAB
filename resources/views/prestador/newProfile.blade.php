@@ -76,28 +76,31 @@
                             <form action="{{ route('cambiarImagenPerfil') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                     <div class="modal-body">
-                                            <div class="form-group">
+                                        <div class="form-group">
+                                        <div class="overflow-x-auto sm:w-full">
                                             <div class="text-center pt-5">
-                                        <label class="form-block-input btn-primary" style="
-                                            border-radius: 15px;
-                                            font-size: 14px;
-                                            font-weight: 600;
-                                            display: inline-block;
-                                            transition: all .5s;
-                                            cursor: pointer;
-                                            padding: 15px 40px !important;
-                                            text-transform: uppercase;
-                                            width: fit-content;
-                                            text-align: center;
-                                            " >
-                                            <div style="display:flex;">
-                                                <i data-lucide="image" height="20" width="20"></i>
-                                                <input type="file"  id="imagen_perfil" name="imagen_perfil" class="form-control-file" style="display: none;"  accept="image/jpg, image/jpeg, image/png"/>
-                                                <span class="form-file-span pl-5">Selecciona una imagen</span>
+                                                <div class="overflow-x-auto sm:w-full">
+                                                    <label class="form-block-input btn-primary" style="
+                                                        border-radius: 15px;
+                                                        font-size: 14px;
+                                                        font-weight: 600;
+                                                        display: inline-block;
+                                                        transition: all .5s;
+                                                        cursor: pointer;
+                                                        padding: 15px 40px !important;
+                                                        text-transform: uppercase;
+                                                        width: fit-content;
+                                                        text-align: center;
+                                                        " >
+                                                        <div style="display:flex;">
+                                                            <i data-lucide="image" height="20" width="20"></i>
+                                                            <input type="file"  id="imagen_perfil" name="imagen_perfil" class="form-control-file" style="display: none;"  accept="image/jpg, image/jpeg, image/png"/>
+                                                            <span class="form-file-span pl-5">Selecciona una imagen</span>
+                                                        </div>
+                                                </div>
+                                                    </label>
                                             </div>
-                                        </label>
-                                    </div>
-                                        
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -151,35 +154,35 @@
     <!-- END: Profile Content -->
 
 @endsection
-<script>
-    
-    document.addEventListener('DOMContentLoaded', () => {
-        // Obtener inputs tipo file
-        // Asignar eventos a inputs
-        const fileInputs = document.querySelectorAll('input[type=file]');
-        const fileButtons = document.querySelectorAll('.form-file-button');
-        fileInputs[0].addEventListener('change', fileChange);
-        // Agrega el evento de clic al botón de cancelar
+@section('script')
+    <script>
         
-    });
-
-    // Cambios en inputs
-    function fileChange(e) {
-        let input = e.target;
-        let spanBlock = e.target.closest('label').querySelector('.form-file-span');
-        // Limpiar contenedor
-        spanBlock.innerHTML = '';
-        // Recorrer archivos para agregarlos al contenedor
-        Array.from(input.files).forEach(file => {
-            spanBlock.innerHTML += `<span class="form-files">${file.name}</span>`;
+        document.addEventListener('DOMContentLoaded', () => {
+            // Obtener inputs tipo file
+            // Asignar eventos a inputs
+            const fileInputs = document.querySelectorAll('input[type=file]');
+            const fileButtons = document.querySelectorAll('.form-file-button');
+            fileInputs[0].addEventListener('change', fileChange);
+            // Agrega el evento de clic al botón de cancelar
+            
         });
-    }
-    // Clics en botones
-    function fileClick(e) {
-        // Desde el botón se obtiene el input y se abre la ventana para seleccionar archivos
-        let input = e.target.closest('label').querySelector('input');
-        input.click();
-    }
-    
-    
-</script>
+
+        // Cambios en inputs
+        function fileChange(e) {
+            let input = e.target;
+            let spanBlock = e.target.closest('label').querySelector('.form-file-span');
+            // Limpiar contenedor
+            spanBlock.innerHTML = '';
+            // Recorrer archivos para agregarlos al contenedor
+            Array.from(input.files).forEach(file => {
+                spanBlock.innerHTML += `<span class="form-files">${file.name}</span>`;
+            });
+        }
+        // Clics en botones
+        function fileClick(e) {
+            // Desde el botón se obtiene el input y se abre la ventana para seleccionar archivos
+            let input = e.target.closest('label').querySelector('input');
+            input.click();
+        }
+    </script>
+@endsection

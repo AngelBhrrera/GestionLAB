@@ -13,8 +13,7 @@
         $nivel = DB::table('niveles')
             ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
             ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n')
-            ->where('niveles.experiencia_acumulada', '<=', Auth::user()->experiencia ?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
-            ->orderByDesc('niveles.experiencia_acumulada')
+            ->where('niveles.experiencia', '<=', Auth::user()->experiencia ?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.            ->orderByDesc('niveles.experiencia_acumulada')
             ->first();
         $nivel_str = strval($nivel->nivel);
 
@@ -43,7 +42,7 @@
             <div class="scrollable">
                 <ul class="scrollable__content">
                     <li class="side-nav__devider mb-4">MENU</li>
-                    <li>
+                        <li>
                             <a href="#" class="side-menu">
                                 <div class="side-menu__icon"> <i ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
                                     viewBox="0 0 24 24" fill="none" 
@@ -169,7 +168,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{route('faltas')}}" class="side-menu">
+                                <a href="{{route('level')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="x"></i> </div>
                                     <div class="side-menu__title">Niveles</div>
                                 </a>
@@ -200,6 +199,12 @@
                                 <a href="{{route('show_imps')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="sidebar"></i> </div>
                                     <div class="side-menu__title">  Mostrar mis impresiones </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{route('show_all_imps')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="sidebar"></i> </div>
+                                    <div class="side-menu__title">  Ver todas las impresiones </div>
                                 </a>
                             </li>
                         </ul>
