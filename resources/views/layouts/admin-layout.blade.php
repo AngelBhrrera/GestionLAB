@@ -42,7 +42,7 @@
 
 @section('scroll-menu')
     <li class="side-nav__devider mb-4">MENU</li>
-    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "admin_area" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
         @section('gestion')
             <li>
                 <a href="#" class="side-menu">
@@ -127,7 +127,7 @@
         @endsection
     @endif
 
-    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "admin_area" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
         @section('prestadores_admin')
             <li>
                 <a href="#" class="side-menu">
@@ -182,7 +182,7 @@
             </li>
         @endsection
     @endif
-    @if (Auth::user()->tipo == "encargado")
+    @if (Auth::user()->tipo == "coordinador")
         @section('prestadores')
             <li>
                 <a href="#" class="side-menu">
@@ -242,7 +242,7 @@
     @endif
 
 @if ($filtro->visitas == 1)
-    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "admin_area" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
         @section('contacto_admin')
             <li>
                 <a href="#" class="side-menu">
@@ -304,7 +304,7 @@
             </li>
         @endsection
     @endif
-    @if (Auth::user()->tipo == "encargado")
+    @if (Auth::user()->tipo == "coordinador")
         @section('contacto')
             <li>
                 <a href="#" class="side-menu">
@@ -383,7 +383,7 @@
 @endif
 
 @if ($filtro->gamificacion == 1)
-    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "admin_area" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
         @section('actividades')
             <li>
                 <a href="javascript:;" class="side-menu">
@@ -432,7 +432,7 @@
         @endsection
     @endif
 
-    @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "coordinador" || Auth::user()->tipo == "Superadmin")
         @section('actividades') 
             <li>
                 <a href="javascript:;" class="side-menu">
@@ -508,7 +508,7 @@
 @endif
 
 @if ($filtro->impresiones == 1)
-    @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "admin" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == coordinador" || Auth::user()->tipo == "admin_area" || Auth::user()->tipo == "Superadmin")
         @section('impresiones')
             <li>
                 <a href="javascript:;" class="side-menu">
@@ -580,7 +580,7 @@
                 </div>
                 <div class="intro-x relative ml-auto flex sm:mx-auto"></div>
                 <div class="intro-x relative ml-auto flex sm:mx-auto">
-                    @if (Auth::user()->tipo == "encargado")
+                    @if (Auth::user()->tipo == "coordinador")
                     <a href="{{ route('admin.cambiorol') }}">
                         <div class="container">
                             <img class="imagen-rol" title="Cambiar a Prestador" src="{{asset('build/assets/images/prestico3.svg')}}" width="30" height="30" alt="">

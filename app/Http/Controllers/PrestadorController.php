@@ -548,7 +548,7 @@ class PrestadorController extends Controller
         // Eliminar la imagen del usuario si es que ya tenia
         if ($user->imagen_perfil) {
             // $image_path = public_path('storage/imagen/imagen/' . $user->imagen_perfil);
-            $image_path = public_path('storage/userImg/'.$user->imagen_perfil);
+            $image_path = storage_path('app/public/userImg/'.$user->imagen_perfil);
             if (file_exists($image_path)) {
                 unlink($image_path);
             }
@@ -1137,5 +1137,4 @@ class PrestadorController extends Controller
         return view('prestador.faltas_prestador');
     }
     */
-
 }
