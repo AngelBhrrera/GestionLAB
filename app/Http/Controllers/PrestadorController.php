@@ -569,6 +569,30 @@ class PrestadorController extends Controller
         return redirect()->route('perfil')->with('success', 'Imagen cambiada correctamente');
     }
 
+    public function level_progress()
+    {
+        $user = Auth::user();
+
+        if($user->experiencia >= 2000){
+            $percent = 100;
+        }else{
+            $niveles = DB::table('niveles')
+            ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
+            ->join('ruta_niveles', 'niveles.nivel', '=', 'ruta_niveles.nivel')
+            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'ruta_niveles.exp', 'niveles.experiencia' )
+            ->where('niveles.experiencia_acumulada', '>=', $user->experiencia)
+            ->orderBy('niveles.experiencia_acumulada')
+            ->limit(2)
+            ->get();
+
+            $full = $niveles[1]->experiencia - $niveles[0]->experiencia;
+            $adv = $user->experiencia - $niveles[0]->experiencia;
+            $percent = number_format(($adv * 100) / $full, 2);
+        }
+
+        return view('prestador/prestador_levels',['user' =>$user, 'nivel' => $niveles, 'percent' => $percent ]);
+    }
+
     //TERRITORIOS DESCONOCIDOS 
     /*
 

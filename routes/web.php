@@ -40,11 +40,8 @@ Route::get('/dualist', function(){
 })->name('dual');
 
 Route::get('/actest', function(){
-    $prestadores=DB::table('solo_prestadores')
-                        ->where('tipo','prestador')
-                        ->get();
         return view(
-            '/TEST/actest',
+            '/TEST/plus',
             );
 })->name('tester');
 
@@ -262,6 +259,9 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         });
 
         Route::get('prestador/home', 'home')->name('homeP');
+
+        Route::get('prestador/nivel', 'level_progress')->name('level');
+
 
         Route::get('prestador/reportes_parciales', 'show_reportes')->name('parciales');
         Route::post('prestador/subir_reporte_parcial', 'subir_reportes_parciales')->name('subirReporte');

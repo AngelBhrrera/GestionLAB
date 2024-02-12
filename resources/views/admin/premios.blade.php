@@ -2,6 +2,15 @@
 
 @section('subhead')
 
+    <style>
+        .download-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            margin-right: 10px; /* O ajusta el margen según tus necesidades */
+        }
+    </style>
      <link rel="stylesheet" href="{{ asset('build/assets/css/view_premios.css') }}">
 
 @endsection

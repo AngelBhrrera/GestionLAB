@@ -13,8 +13,7 @@
         $nivel = DB::table('niveles')
             ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
             ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n')
-            ->where('niveles.experiencia_acumulada', '<=', Auth::user()->experiencia ?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
-            ->orderByDesc('niveles.experiencia_acumulada')
+            ->where('niveles.experiencia', '<=', Auth::user()->experiencia ?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.            ->orderByDesc('niveles.experiencia_acumulada')
             ->first();
         $nivel_str = strval($nivel->nivel);
 
@@ -169,7 +168,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{route('faltas')}}" class="side-menu">
+                                <a href="{{route('level')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="x"></i> </div>
                                     <div class="side-menu__title">Niveles</div>
                                 </a>
