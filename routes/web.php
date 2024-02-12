@@ -40,13 +40,18 @@ Route::get('/dualist', function(){
 })->name('dual');
 
 Route::get('/actest', function(){
-    $prestadores=DB::table('solo_prestadores')
-                        ->where('tipo','prestador')
-                        ->get();
         return view(
-            '/TEST/actest',
+            '/TEST/plus',
             );
 })->name('tester');
+
+Route::group(['middleware'=>'auth'], function (){
+    Route::controller(App\Http\Controllers\PrestadorController::class)->group(function(){
+        Route::get('/descargar/{nombreArchivo}', 'descargar_reporte')->name('descargar_reporte');
+        Route::get('/visualizar_reporte/{nombreArchivo}', 'visualizar_reporte')->name('visualizar');
+    });
+    
+});
 
 Route::controller(App\Http\Controllers\LandingController::class)->group(function(){
     Route::get('/inventores', 'index')->name('landing');
@@ -255,6 +260,9 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
 
         Route::get('prestador/home', 'home')->name('homeP');
 
+        Route::get('prestador/nivel', 'level_progress')->name('level');
+
+
         Route::get('prestador/reportes_parciales', 'show_reportes')->name('parciales');
         Route::post('prestador/subir_reporte_parcial', 'subir_reportes_parciales')->name('subirReporte');
         Route::get('prestador/eliminar_reporte_parcial/{id}', 'eliminar_reportes_parciales')->name('eliminarReporte');
@@ -262,10 +270,8 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::get('prestador/registro_impresion', 'create_imps')->name('create_imps');
         Route::post('prestador/registrar_impresion', 'register_imps')->name('register_imps');
         Route::get('prestador/mostrar_mis_impresiones', 'show_imps')->name('show_imps');
-<<<<<<< Updated upstream
-=======
+
         Route::get('prestador/mostrar_impresiones', 'show_all_imps')->name('show_all_imps');
->>>>>>> Stashed changes
         Route::get('prestador/changestate_print/{id}/{value}', 'printstate')->name('printstate');
         Route::get('prestador/observaciones_impresion/{id}/{value}', 'detail_prints')->name('detail_prints');
 

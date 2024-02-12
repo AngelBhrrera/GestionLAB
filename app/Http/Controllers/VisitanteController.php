@@ -150,4 +150,14 @@ class VisitanteController extends Controller
         }
     }
 
+    public function solicitud_capacitacion(){
+        return view('visitante.solicitud_capacitacion');
+    }
+
+    public function solicitud_impresion(){
+        return view('visitante.solicitud_impresion');
+    }
+
+
+
 }

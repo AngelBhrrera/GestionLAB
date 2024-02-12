@@ -231,8 +231,6 @@ class PrestadorController extends Controller
 
     }
 
-<<<<<<< Updated upstream
-=======
     public function show_all_imps()
     {
         $data = DB::table('ver_impresiones')
@@ -244,7 +242,6 @@ class PrestadorController extends Controller
 
     }
 
->>>>>>> Stashed changes
     public function printstate($id, $state) {
 
         DB::table('seguimiento_impresiones')
@@ -482,7 +479,7 @@ class PrestadorController extends Controller
         // Obtén el nombre del archivo de la base de datos
         $archivo = DB::select("Select nombre_reporte from reportes_s_s where id=$id");
         // Verifica si el archivo existe antes de intentar eliminarlo
-        $file_path = public_path('storage/reportes_parciales/'.$archivo[0]->nombre_reporte);
+        $file_path = storage_path('app/public/reportes_parciales/'.$archivo[0]->nombre_reporte);
         if (file_exists($file_path)) {
             DB::table('reportes_s_s')->where('id', $id)->delete();
             unlink($file_path);
@@ -491,9 +488,19 @@ class PrestadorController extends Controller
         return redirect()->route('parciales')->with('warning', 'Archivo y registro eliminados con éxito');
     }
 
-<<<<<<< Updated upstream
-=======
-    
+    public function descargar_reporte($nombreArchivo){
+        $rutaArchivo = storage_path('app/public/reportes_parciales/' . $nombreArchivo);
+        return response()->download($rutaArchivo);
+    }
+
+    public function visualizar_reporte($nombreArchivo){
+        $rutaArchivo = storage_path('app/public/reportes_parciales/' . $nombreArchivo);
+        // Verificar si el archivo existe
+            // Haz lo que necesites con el contenido del archivo
+            header('content-type: application/pdf');
+            readfile($rutaArchivo);
+    }
+
     public function perfil()
     {
         $user = Auth::user();
@@ -562,8 +569,29 @@ class PrestadorController extends Controller
         return redirect()->route('perfil')->with('success', 'Imagen cambiada correctamente');
     }
 
+    public function level_progress()
+    {
+        $user = Auth::user();
 
->>>>>>> Stashed changes
+        if($user->experiencia >= 2000){
+            $percent = 100;
+        }else{
+            $niveles = DB::table('niveles')
+            ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
+            ->join('ruta_niveles', 'niveles.nivel', '=', 'ruta_niveles.nivel')
+            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'ruta_niveles.exp', 'niveles.experiencia' )
+            ->where('niveles.experiencia_acumulada', '>=', $user->experiencia)
+            ->orderBy('niveles.experiencia_acumulada')
+            ->limit(2)
+            ->get();
+
+            $full = $niveles[1]->experiencia - $niveles[0]->experiencia;
+            $adv = $user->experiencia - $niveles[0]->experiencia;
+            $percent = number_format(($adv * 100) / $full, 2);
+        }
+
+        return view('prestador/prestador_levels',['user' =>$user, 'nivel' => $niveles, 'percent' => $percent ]);
+    }
 
     //TERRITORIOS DESCONOCIDOS 
     /*

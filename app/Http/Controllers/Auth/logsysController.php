@@ -78,14 +78,14 @@ class logsysController extends Controller
     }
 
     public function show(){
-        $sede= DB::select("SELECT * FROM sedes;");
+        $sede = DB::select("SELECT * FROM sedes;");
 
         return view('auth.register', ['sede'=>$sede]);
     }
 
     public function filtroSede($id){
 
-        $area=    DB::table('filtrosedes')
+        $area = DB::table('filtrosedes')
             ->where('id_sede', $id)
             ->get();
 
@@ -103,16 +103,17 @@ class logsysController extends Controller
     public function filtroTurno($t, $area){
 
         $users = DB::table('users')
-        ->where('area', $area)
-        ->where(function ($query) use ($t) {
-            $query->where('horario', $t)
-                ->orWhere('horario', 'No Aplica');
-        }) 
-        ->where(function ($query) {
-            $query->where('tipo', 'encargado')
-                ->orWhere('tipo', 'admin');
-        })
-        ->get();
+            ->select('id', 'name', 'apellido')
+            ->where('area', $area)
+            ->where(function ($query) use ($t) {
+                $query->where('horario', $t)
+                    ->orWhere('horario', 'No Aplica');
+            }) 
+            ->where(function ($query) {
+                $query->where('tipo', 'encargado')
+                    ->orWhere('tipo', 'admin');
+            })
+            ->get();
 
         return response()->json($users);
     }

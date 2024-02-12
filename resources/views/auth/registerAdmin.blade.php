@@ -239,7 +239,7 @@
 
         var areaSelect = document.getElementById('area');
         var area = @json($areas);
-        console.log(area);
+        //console.log(area);
         if(area != null){
             areaSelect.disabled = false;
             return;
@@ -296,7 +296,7 @@
                     if (xhr.status === 200) {
                         var horariosArea = JSON.parse(xhr.responseText);
                         horarioSelect.disabled = false;
-                        console.log(horariosArea);
+                        //console.log(horariosArea);
                         if (horariosArea[0].turnoMatutino === 1) {
                             var option1 = document.createElement('option');
                             option1.value = 'Matutino';
