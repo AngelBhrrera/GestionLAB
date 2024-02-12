@@ -56,9 +56,7 @@
                         <a href="{{route('cliente.solicitud_capacitacion')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="laptop"></i> </div>
                             <div class="side-menu__title">
-<<<<<<< HEAD
                                 CAPACITACIÓN
-                                
                             </div>
                         </a>
                     </li>
@@ -70,39 +68,6 @@
                                 SOLICITUDES
                             </div>
                         </a>
-=======
-                                SERVICIOS
-                                <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
-                            </div>
-                        </a>
-                        <ul class="">
-                            <li>
-                                <a href="{{route('prestadoresProyectosCompletados')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="box"></i> </div>
-                                    <div class="side-menu__title">Capacitación </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{route('prestadoresProyectosCompletados')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="codesandbox"></i> </div>
-                                    <div class="side-menu__title">Desarrollo</div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="side-menu-light-crud-data-list.html" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="gamepad-2"></i> </div>
-                                    <div class="side-menu__title">Solicitud</div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{route('cliente.form')}}" class="side-menu">
-                                        <div class="side-menu__icon"> <i data-lucide="codesandbox"></i> </div>
-                                        <div class="side-menu__title">Impresion de Modelos 3D</div>
-                                </a>
-                            </li>
-                            
-                        </ul>
->>>>>>> origin/main
                     </li>
 
                 </ul>
@@ -134,9 +99,9 @@
                         <div class="h-full dropdown-toggle flex items-center" role="button" aria-expanded="false" data-tw-toggle="dropdown">
                             <div class="w-10 h-10 image-fit">
                             @if(Auth::user()->tipo=='alumno')
-                                <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/student-default-profile.jpg')}}">
+                                <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('build/assets/images/student-default-profile.jpg')}}">
                             @else
-                                <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/teacher-default-profile.png')}}">
+                                <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('build/assets/images/teacher-default-profile.png')}}">
                             @endif
                             </div>
                             <div class="hidden md:block ml-3">

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
 
 //Estimado prestador de servicio que tiene que dar mantenimiento a esta fregadera [Abril, 2023]
 
@@ -35,6 +36,18 @@ Route::group(['middleware'=>'auth'], function (){
         Route::get('/descargar/{nombreArchivo}', 'descargar_reporte')->name('descargar_reporte');
         Route::get('/visualizar_reporte/{nombreArchivo}', 'visualizar_reporte')->name('visualizar');
     });
+    Route::get('/obtenerImagen/{nombreArchivo}', function($nombreArchivo){
+        if($nombreArchivo != "false"){
+            $rutaImagen = storage_path('app/public/userImg/' . $nombreArchivo);
+            if (!file_exists($rutaImagen)) {
+                $rutaImagen = storage_path('app/public/userImg/default-profile-image.png');
+            }
+        }else{
+            $rutaImagen = storage_path('app/public/userImg/default-profile-image.png');
+        }
+        
+        readfile($rutaImagen);
+    })->name('obtenerImagen');
     
 });
     

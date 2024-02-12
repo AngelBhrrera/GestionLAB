@@ -14,7 +14,7 @@
             <div class="w-96 intro-y">
                 <div class="text-center" style="margin: 10px 25% 15px 25%;">
                     <div class="box px-5 py-5 mt-10 relative" style="width: 200px; height: 120px;">
-                        <a href="{{route('landing')}}"><img class="mx-auto my-auto" alt="Inventores" width="200px" height="150px" src="{{ asset('build/assets//images/logosinventores/InventoresBannerHDWhiteBorder.png') }}"></a>
+                        <a href="{{route('landing')}}"><img class="mx-auto my-auto" alt="Inventores" width="200px" height="150px" src="{{ asset('build/assets/images/logosInventores/InventoresBannerHDWhiteBorder.png') }}"></a>
                     </div>
                 </div>
                     

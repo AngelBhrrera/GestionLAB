@@ -593,11 +593,8 @@
                 <div class="intro-x dropdown h-10">
                     <div class="h-full dropdown-toggle flex items-center" role="button" aria-expanded="false" data-tw-toggle="dropdown">
                         <div class="w-10 h-10 image-fit">
-                            @if(!isset(Auth::user()->imagen_perfil))
-                            <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/default-profile-image.png')}}">
-                            @else
-                            <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/'.Auth::user()->imagen_perfil)}}">
-                            @endif
+                            <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" 
+                            src="{{route('obtenerImagen', ['nombreArchivo' => (Auth::user()->imagen_perfil != null) ? Auth::user()->imagen_perfil : 'false'])}}">
                         </div>
                         <div class="hidden md:block ml-3">
                             <div class="max-w-[7rem] truncate font-medium">{{$username=Auth::user()->name}}</div>
