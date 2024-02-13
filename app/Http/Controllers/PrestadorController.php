@@ -147,11 +147,12 @@ class PrestadorController extends Controller
         $leaderBoard= DB::select("SELECT * from full_leaderboard limit 10");
         $posicionUsuario = DB::select("SELECT x.experiencia, x.id, x.position, CONCAT(x.name, ' ', x.apellido) AS 'Nombre' FROM (SELECT users.id, users.name, users.apellido, @rownum := @rownum + 1 AS position,
         users.experiencia FROM users JOIN (SELECT @rownum := 0) r ORDER BY users.experiencia DESC) x WHERE x.id = $id;");
+        
         $usuarioMedalla = DB::table('niveles')
             ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
             ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n' )
-            ->where('niveles.experiencia_acumulada', '>=', Auth::user()->experiencia)
-            ->orderBy('niveles.experiencia_acumulada')                
+            ->where('niveles.experiencia', '<=', Auth::user()->experiencia)
+            ->orderByDesc('niveles.experiencia_acumulada')                
             ->first();
 
 
@@ -568,7 +569,16 @@ class PrestadorController extends Controller
         $user = Auth::user();
 
         if($user->experiencia >= 2000){
+            $niveles = DB::table('niveles')
+            ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
+            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'niveles.experiencia')
+            ->where('niveles.experiencia_acumulada', '>=', 1835)
+            ->orderBy('niveles.experiencia_acumulada')
+            ->limit(2)
+            ->get();
+
             $percent = 100;
+
         }else{
             $niveles = DB::table('niveles')
             ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
