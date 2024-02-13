@@ -139,20 +139,20 @@ class PrestadorController extends Controller
     public function home(){
 
         $id = Auth::user()->id;
-        $experiencia = Auth::user()->experiencia;
         $horasAutorizadas = DB::table('registros_checkin')->where('idusuario', $id)->where('estado', 'autorizado')->sum('horas');
         $horasPendientes = DB::table('registros_checkin')->where('idusuario', $id)->where('estado', 'pendiente')->sum('horas');
         $horasTotales = DB::table('users')->where('id', $id)->select('horas')->get();
         $horasRestantes = $horasTotales[0]->horas - $horasAutorizadas;
+        
         $leaderBoard= DB::select("SELECT * from full_leaderboard limit 10");
         $posicionUsuario = DB::select("SELECT x.experiencia, x.id, x.position, CONCAT(x.name, ' ', x.apellido) AS 'Nombre' FROM (SELECT users.id, users.name, users.apellido, @rownum := @rownum + 1 AS position,
         users.experiencia FROM users JOIN (SELECT @rownum := 0) r ORDER BY users.experiencia DESC) x WHERE x.id = $id;");
         $usuarioMedalla = DB::table('niveles')
-        ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
-        ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion')
-        ->where('niveles.experiencia_acumulada', '<=', $experiencia?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
-        ->orderByDesc('niveles.experiencia_acumulada')
-        ->first();
+            ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
+            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n' )
+            ->where('niveles.experiencia_acumulada', '>=', Auth::user()->experiencia)
+            ->orderBy('niveles.experiencia_acumulada')                
+            ->first();
 
 
         return view(
@@ -510,28 +510,22 @@ class PrestadorController extends Controller
         ->where('sedes.id_sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
         ->first();
 
-        $nivel = DB::table('niveles')
-            ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
-            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n')
-            ->where('niveles.experiencia_acumulada', '<=', $user->experiencia ?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
-            ->orderByDesc('niveles.experiencia_acumulada')
-            ->first();
         $todasMedallasUsuario = DB::table('niveles')
                 ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
                 ->select('medallas.ruta', 'medallas.nivel', 'medallas.descripcion')
-                ->where('niveles.experiencia_acumulada', '<=', $user->experiencia ?? 0) // Si la experiencia es null, establece la experiencia acumulada en 0.
-                ->orderBy('niveles.experiencia_acumulada', 'asc')
+                ->where('niveles.experiencia', '<=', $user->experiencia ) 
+                ->orderBy('niveles.experiencia_acumulada')
                 ->get();
 
-        // Convertimos el valor del nivel a una cadena de texto
-        $nivel_str = strval($nivel->nivel);
+        $ultimoElemento = $todasMedallasUsuario->last();
 
-        $medalla = asset($nivel->ruta);
-        //dd($nivel); // Verificar si la propiedad ruta_n está presente en $nivel
-        // Descripcion de la medalla
-        $descripcion_medalla = $nivel->descripcion;
+        $nivel_str = strval($ultimoElemento->nivel);
 
-        return view('prestador.newProfile', compact('user', 'sede', 'nivel_str', 'medalla', 'nivel', 'descripcion_medalla', 'todasMedallasUsuario'));
+        $medalla = $ultimoElemento->ruta;
+
+        $descripcion_medalla = $ultimoElemento->descripcion;
+
+        return view('prestador.newProfile', compact('user', 'sede', 'nivel_str', 'medalla', 'descripcion_medalla', 'todasMedallasUsuario'));
     }
 
     public function cambiarImagenPerfil(Request $request)
