@@ -30,7 +30,7 @@ class Soloadmins extends Migration
         INNER JOIN `sedes` ON `users`.`sede` = `sedes`.`id_sede`
         INNER JOIN `areas` ON `users`.`area` = `areas`.`id`
         WHERE
-            `users`.`tipo` IN ('encargado', 'admin');
+            `users`.`tipo` IN ('coordinador', 'jefe area', 'jefe sede');
         ");
     }
 

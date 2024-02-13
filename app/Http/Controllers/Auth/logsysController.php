@@ -110,7 +110,7 @@ class logsysController extends Controller
                     ->orWhere('horario', 'No Aplica');
             }) 
             ->where(function ($query) {
-                $query->where('tipo', 'encargado')
+                $query->where('tipo', 'coordinador')
                     ->orWhere('tipo', 'jefe area');
             })
             ->get();

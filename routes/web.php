@@ -99,7 +99,7 @@ Route::controller(App\Http\Controllers\Auth\logsysController::class)->group(func
 //Requieres el rol coordinador, admin, jefe sede o superadmin para acceder
 Route::controller(App\Http\Controllers\AdminController::class)->group(function(){
 
-    Route::middleware('role:Superadmin,jefe sede,jefe area, coordinador')->group(function() {
+    Route::middleware('role:Superadmin,jefe sede,jefe area,coordinador')->group(function() {
 
         Route::name('admin.')->group(function () {
 

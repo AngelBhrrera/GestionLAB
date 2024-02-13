@@ -239,7 +239,7 @@
                     <div class="intro-x relative ml-auto flex sm:mx-auto">
                         @if (Auth::user()->tipo == "coordinador")
                             <a href="{{ route('cambiarRol') }}">
-                                <div class="container"><img class="imagen-rol" title="cambiar a Admin"
+                                <div class="container"><img class="imagen-rol" title="Cambiar a vista admin"
                                 src="{{asset('build/assets/images/prestico2.svg')}}" width="30" height="30" alt=""></div>
                             </a> 
                         @endif 

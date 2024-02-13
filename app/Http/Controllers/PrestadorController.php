@@ -344,7 +344,7 @@ class PrestadorController extends Controller
 
                 $usuario = DB::table('users')->where('codigo', $codigo)->where(function ($query) {
                     $query->where('tipo', '=', "prestador")
-                        ->orWhere('tipo', '=', "encargado")
+                        ->orWhere('tipo', '=', "coordinador")
                         ->orWhere('tipo', '=', "voluntario")
                         ->orWhere('tipo', '=', "practicante");
                 })->select('name', 'id', 'apellido', 'tipo', 'encargado_id')->get();
