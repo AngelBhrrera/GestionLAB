@@ -133,6 +133,9 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/C_actividades', 'create_act')->name('create_act');
             Route::post('/admin/M_actividades', 'make_act')->name('make_act');
             Route::get('/admin/A_actividades', 'asign_act')->name('asign_act');
+
+            Route::post('/admin/asign', 'asign')->name('asign');
+
             Route::get('/admin/actividades', 'actividades')->name('actividades');
             Route::get('/admin/C_proyectos', 'create_proy')->name('create_proy');
 

@@ -392,13 +392,16 @@ class AdminController extends Controller
                 ->get();
             }
 
+            $categorias = DB::table('categorias')->get();
             $actividades = DB::table('actividades')->get();
+    
     
             return view(
                 '/admin/registro_proyectos',
                 [
                     'prestadores' => $prestadores,
                     'actividades' => $actividades,
+                    'categorias' => $categorias,
                 ]
             );
         }
@@ -454,23 +457,21 @@ class AdminController extends Controller
         public function asign_act()
         {
 
-            $n_Sede =  DB::table('sedes')
-            ->select('nombre_sede')
-            ->where('id_sede', auth()->user()->sede)
+            $n_area =  DB::table('areas')
+            ->select('nombre_area')
+            ->where('id', auth()->user()->area)
             ->get();
 
-           
-                if (auth()->user()->tipo == "admin") {
+                if (auth()->user()->tipo == "admin" || auth()->user()->tipo == "encargado" ) {
                     $prestadores = DB::table('solo_prestadores')
-                        ->where('nombre_sede', $n_Sede->first()->nombre_sede)
+                        ->where('nombre_area', $n_area->first()->nombre_area)
                         ->get();
                 } else {
                     $prestadores = DB::table('solo_prestadores')
-                        ->where('nombre_sede', $n_Sede->first()->nombre_sede)
+                        ->where('nombre_area', $n_area->first()->nombre_area)
                         ->where('horario', auth()->user()->horario)
                         ->get();
                 }
-
             
             $categorias = DB::table('categorias')->get();
             $actividades = DB::table('actividades')->get();
@@ -480,6 +481,10 @@ class AdminController extends Controller
                 'categorias' => $categorias,
                 'actividades' => $actividades,
             ]);
+        }
+
+        public function asign(Request $request){
+            dd($request);
         }
 
 
