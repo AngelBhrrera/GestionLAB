@@ -11,11 +11,11 @@
 
     <?php   
         $nivel = DB::table('niveles')
-        ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
-        ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n' )
-        ->where('niveles.experiencia_acumulada', '>=', Auth::user()->experiencia)
-        ->orderBy('niveles.experiencia_acumulada')
-        ->first();
+            ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
+            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n' )
+            ->where('niveles.experiencia_acumulada', '>=', Auth::user()->experiencia)
+            ->orderBy('niveles.experiencia_acumulada')
+            ->first();
         $nivel_str = strval($nivel->nivel);
 
         $area = Auth::user()->area;

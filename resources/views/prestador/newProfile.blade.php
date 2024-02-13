@@ -40,8 +40,8 @@
                 <div class="flex 2xl:mr-10 mt-5"></div>
                 <div class="flex 2xl:mr-10 mt-5">
                     <div class="box intro-y p-5 mt-5">
-                        <h2 class="text-2xl  font-medium">{{$nivel->descripcion}}</h2>
-                        <img width="100" heigth="50"src="{{asset('build/assets/'.$nivel->ruta)}}" alt="Medalla">
+                        <h2 class="text-2xl  font-medium">{{$descripcion_medalla}}</h2>
+                        <img width="100" heigth="50"src="{{asset('build/assets/'.$medalla)}}" alt="Medalla">
                         
                         <h2 class="text-2xl  font-medium">
                             Nivel: {{$nivel_str}}
