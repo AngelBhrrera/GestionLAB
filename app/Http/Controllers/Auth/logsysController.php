@@ -41,12 +41,12 @@ class logsysController extends Controller
         $role = Auth::user()->tipo;
         switch ($role) {
            
-            case 'admin':
-            case 'admin_sede':
+            case 'jefe area':
+            case 'jefe sede':
             case 'Superadmin':
                 return redirect('/admin/home');
                 break;
-            case 'encargado':
+            case 'coordinador':
             case 'prestador':
             case 'voluntario':
             case 'practicante':
@@ -111,7 +111,7 @@ class logsysController extends Controller
             }) 
             ->where(function ($query) {
                 $query->where('tipo', 'encargado')
-                    ->orWhere('tipo', 'admin');
+                    ->orWhere('tipo', 'jefe area');
             })
             ->get();
 

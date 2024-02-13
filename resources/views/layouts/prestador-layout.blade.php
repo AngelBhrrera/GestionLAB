@@ -11,10 +11,11 @@
 
     <?php   
         $nivel = DB::table('niveles')
-            ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
-            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n')
-            ->where('niveles.experiencia', '<=', Auth::user()->experiencia ?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.            ->orderByDesc('niveles.experiencia_acumulada')
-            ->first();
+        ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
+        ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n' )
+        ->where('niveles.experiencia_acumulada', '>=', Auth::user()->experiencia)
+        ->orderBy('niveles.experiencia_acumulada')
+        ->first();
         $nivel_str = strval($nivel->nivel);
 
         $area = Auth::user()->area;
@@ -236,7 +237,7 @@
                        
 
                     <div class="intro-x relative ml-auto flex sm:mx-auto">
-                        @if (Auth::user()->tipo == "encargado")
+                        @if (Auth::user()->tipo == "coordinador")
                             <a href="{{ route('cambiarRol') }}">
                                 <div class="container"><img class="imagen-rol" title="cambiar a Admin"
                                 src="{{asset('build/assets/images/prestico2.svg')}}" width="30" height="30" alt=""></div>

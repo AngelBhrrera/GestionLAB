@@ -21,7 +21,7 @@ class PrestadorController extends Controller
     
     public function actividadesPrestador()
     {
-        $encargado_id = auth()->user()->encargado_id;
+        $encargado_id = auth()->user()->encargado_id; //coordinador id
         $prestadores = DB::table('users')->select('id', 'name', 'apellido')->where('id', auth()->user()->id)->get();
         $categorias = DB::table('categorias')->get();
         $actividades = DB::table('actividades')->get();
@@ -319,8 +319,8 @@ class PrestadorController extends Controller
                 case 'Superadmin':
                     $codigo = $request->input('codigo');
                     $sedeVerif =  true;
-                case 'admin':
-                case 'encargado':
+                case 'jefe area':
+                case 'coordinador':
                     $dir = 'admin.checkin';
                     $responsable = Auth::user()->name . ' ' . Auth::user()->apellido;
                     $codigo = $request->input('codigo');
@@ -511,15 +511,15 @@ class PrestadorController extends Controller
         ->first();
 
         $nivel = DB::table('niveles')
-            ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
-            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n')
-            ->where('niveles.experiencia_acumulada', '<=', $user->experiencia ?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
-            ->orderByDesc('niveles.experiencia_acumulada')
-            ->first();
+        ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
+        ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n' )
+        ->where('niveles.experiencia_acumulada', '>=', $user->experiencia)
+        ->orderBy('niveles.experiencia_acumulada')
+        ->first();
         $todasMedallasUsuario = DB::table('niveles')
                 ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
                 ->select('medallas.ruta', 'medallas.nivel', 'medallas.descripcion')
-                ->where('niveles.experiencia_acumulada', '<=', $user->experiencia ?? 0) // Si la experiencia es null, establece la experiencia acumulada en 0.
+                ->where('niveles.experiencia', '<=', $user->experiencia ?? 0) // Si la experiencia es null, establece la experiencia acumulada en 0.
                 ->orderBy('niveles.experiencia_acumulada', 'asc')
                 ->get();
 

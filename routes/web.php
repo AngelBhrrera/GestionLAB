@@ -96,16 +96,16 @@ Route::controller(App\Http\Controllers\Auth\logsysController::class)->group(func
 });
 
 //Rutas de Admin gestionadas desde el AdminController
-//Requieres el rol encargado, admin, admin_sede o superadmin para acceder
+//Requieres el rol coordinador, admin, jefe sede o superadmin para acceder
 Route::controller(App\Http\Controllers\AdminController::class)->group(function(){
 
-    Route::middleware('role:Superadmin,admin_sede,admin,encargado')->group(function() {
+    Route::middleware('role:Superadmin,jefe sede,jefe area, coordinador')->group(function() {
 
         Route::name('admin.')->group(function () {
 
-            Route::middleware('role:admin,admin_sede,Superadmin,encargado')->group(function() {
+            Route::middleware('role:jefe area,jefe sede,Superadmin,coordinador')->group(function() {
 
-                Route::middleware('role:encargado')->group(function() {
+                Route::middleware('role:coordinador')->group(function() {
                     Route::get('admin/cambiarRol', 'cambiarRol')->name('cambiorol');
                 });
 
@@ -196,7 +196,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get("admin/premios, premios")->name("premios");
             Route::post('admin/premios', 'guardar_premio')->name('guardar_premio');
             //
-            Route::middleware('role:admin,admin_sede,Superadmin')->group(function() {
+            Route::middleware('role:jefe area,jefe sede,Superadmin')->group(function() {
                 Route::get('admin/liberar_prestador/{value}', 'liberar')->name('liberar');
                 Route::get('admin/changestate/{id}/{value}', 'checkinstate')->name('checkinstate');
                 
@@ -265,9 +265,9 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 //Rutas Prestador
 Route::controller(App\Http\Controllers\PrestadorController::class)->group(function(){
 
-    Route::middleware('role:prestador,voluntario,practicante,encargado')->group(function() {
+    Route::middleware('role:prestador,voluntario,practicante,coordinador')->group(function() {
         
-        Route::middleware('role:encargado')->group(function() {
+        Route::middleware('role:coordinador')->group(function() {
             Route::get('prestador/cambiarRol', 'cambiarRol')->name('cambiarRol');
         });
 
@@ -328,7 +328,7 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
     });
 
     Route::name('api.')->group(function () {
-        Route::post('/marcar', 'marcar')->middleware('role:admin,checkin,Superadmin,encargado')->name('marcar');
+        Route::post('/marcar', 'marcar')->middleware('role:jefe area,checkin,Superadmin,coordinador')->name('marcar');
         //Route::post('/afirmas', 'asignarfirmas')->name('afirmas');    
     });
 

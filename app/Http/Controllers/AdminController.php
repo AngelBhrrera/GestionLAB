@@ -615,34 +615,6 @@ class AdminController extends Controller
         }
     
     }
-
-   // CAMBIO DE ROL PARA ENCARGADOS
-
-    public function cambiarRol()
-    {
-        if (Auth::user()->tipo == "encargado") {
-
-            try {
-                $user = User::find(Auth::user()->id);
-                switch ($user->tipo) {
-                    case 'prestador':
-                        $user->tipo = 'admin';
-                        $user->save();
-                        Log::info('era prestador');
-                        break;
-                    case 'admin':
-                        $user->tipo = 'prestador';
-                        $user->save();
-                        Log::info('era admin');
-                        break;
-                }
-                return redirect('/');
-            } catch (\Throwable $th) {
-                Log::info($th);
-            }
-        }
-    }
-
     //SISTEMA DE REPORTES
 
     public function ver_reportes_parciales(){

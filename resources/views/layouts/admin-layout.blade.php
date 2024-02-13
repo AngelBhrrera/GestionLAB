@@ -30,7 +30,7 @@
         }
     </style>
 
-    <?php   
+    <?php  
         $area = Auth::user()->area;
         $filtro = DB::table('modulos')
             ->where('id', $area)
@@ -42,7 +42,7 @@
 
 @section('scroll-menu')
     <li class="side-nav__devider mb-4">MENU</li>
-    @if (Auth::user()->tipo == "admin_area" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "jefe area" || Auth::user()->tipo == "jefe sede" || Auth::user()->tipo == "Superadmin")
         @section('gestion')
             <li>
                 <a href="#" class="side-menu">
@@ -114,7 +114,7 @@
                             <div class="side-menu__title">Añadir categorias</div>
                         </a>
                     </li>
-                    @if (Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
+                    @if (Auth::user()->tipo == "jefe sede" || Auth::user()->tipo == "Superadmin")
                     <li>
                         <a href="{{route('admin.sede')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
@@ -127,7 +127,7 @@
         @endsection
     @endif
 
-    @if (Auth::user()->tipo == "admin_area" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "jefe area" || Auth::user()->tipo == "jefe sede" || Auth::user()->tipo == "Superadmin")
         @section('prestadores_admin')
             <li>
                 <a href="#" class="side-menu">
@@ -242,7 +242,7 @@
     @endif
 
 @if ($filtro->visitas == 1)
-    @if (Auth::user()->tipo == "admin_area" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "jefe area" || Auth::user()->tipo == "jefe sede" || Auth::user()->tipo == "Superadmin")
         @section('contacto_admin')
             <li>
                 <a href="#" class="side-menu">
@@ -383,7 +383,7 @@
 @endif
 
 @if ($filtro->gamificacion == 1)
-    @if (Auth::user()->tipo == "admin_area" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "jefe area" || Auth::user()->tipo == "jefe sede" || Auth::user()->tipo == "Superadmin")
         @section('actividades')
             <li>
                 <a href="javascript:;" class="side-menu">
@@ -508,7 +508,7 @@
 @endif
 
 @if ($filtro->impresiones == 1)
-    @if (Auth::user()->tipo == coordinador" || Auth::user()->tipo == "admin_area" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "coordinador" || Auth::user()->tipo == "jefe area" || Auth::user()->tipo == "Superadmin")
         @section('impresiones')
             <li>
                 <a href="javascript:;" class="side-menu">
