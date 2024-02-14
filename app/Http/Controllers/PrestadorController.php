@@ -139,20 +139,21 @@ class PrestadorController extends Controller
     public function home(){
 
         $id = Auth::user()->id;
-        $experiencia = Auth::user()->experiencia;
         $horasAutorizadas = DB::table('registros_checkin')->where('idusuario', $id)->where('estado', 'autorizado')->sum('horas');
         $horasPendientes = DB::table('registros_checkin')->where('idusuario', $id)->where('estado', 'pendiente')->sum('horas');
         $horasTotales = DB::table('users')->where('id', $id)->select('horas')->get();
         $horasRestantes = $horasTotales[0]->horas - $horasAutorizadas;
+        
         $leaderBoard= DB::select("SELECT * from full_leaderboard limit 10");
         $posicionUsuario = DB::select("SELECT x.experiencia, x.id, x.position, CONCAT(x.name, ' ', x.apellido) AS 'Nombre' FROM (SELECT users.id, users.name, users.apellido, @rownum := @rownum + 1 AS position,
         users.experiencia FROM users JOIN (SELECT @rownum := 0) r ORDER BY users.experiencia DESC) x WHERE x.id = $id;");
+        
         $usuarioMedalla = DB::table('niveles')
-        ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
-        ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion')
-        ->where('niveles.experiencia_acumulada', '<=', $experiencia?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
-        ->orderByDesc('niveles.experiencia_acumulada')
-        ->first();
+            ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
+            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n' )
+            ->where('niveles.experiencia', '<=', Auth::user()->experiencia)
+            ->orderByDesc('niveles.experiencia_acumulada')                
+            ->first();
 
 
         return view(
@@ -228,6 +229,17 @@ class PrestadorController extends Controller
         ->get();
 
         return view('prestador/mostrar_mis_impresiones', ['impresiones' => json_encode($data)]);
+
+    }
+
+    public function show_all_imps()
+    {
+        $data = DB::table('ver_impresiones')
+        ->select('id', 'impresora', 'proyecto',  'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
+        ->orderByDesc('fecha')
+        ->get();
+
+        return view('prestador/mostrar_impresiones', ['impresiones' => json_encode($data)]);
 
     }
 
@@ -364,9 +376,24 @@ class PrestadorController extends Controller
 
                     return redirect()->route($dir)->with('success', 'Adios ' . $usuario[0]->name);
                 } else {
+                    $ip = $_SERVER['REMOTE_ADDR'];
+                    $geo = file_get_contents("http://ip-api.com/json/{$ip}");
+                    $geoData = json_decode($geo);
+
+                    if ($geoData && $geoData->status == 'success') {
+                        // Obtiene la latitud y longitud
+                        $latitud = $geoData->lat;
+                        $longitud = $geoData->lon;
+                        // Crea el enlace a Google Maps
+                        $enlaceMaps = "https://www.google.com/maps?q={$latitud},{$longitud}";
+                    } else {
+                        $enlaceMaps = "https://www.google.com/maps?q=20.6568344,-103.3273073";
+                        echo "No se pudo obtener la información de geolocalización.";
+                    }
+
 
                     $inicio = DB::table('registros_checkin')
-                    ->insert([['origen' => $origen, 'idusuario' => $usuario[0]->id, 'fecha' => date("d/m/Y"),
+                    ->insert([['origen' => $origen, 'idusuario' => $usuario[0]->id, 'fecha' => date("d/m/Y"), 'ubicacion' => $enlaceMaps,
                     'hora_entrada' => date('H:i:s'), 'horas' => 0, 'responsable'=> $responsable, 'tipo' => $usuario[0]->tipo,
                     'encargado_id' => Auth::user()->id]]);
 
@@ -453,7 +480,7 @@ class PrestadorController extends Controller
         // Obtén el nombre del archivo de la base de datos
         $archivo = DB::select("Select nombre_reporte from reportes_s_s where id=$id");
         // Verifica si el archivo existe antes de intentar eliminarlo
-        $file_path = public_path('storage/reportes_parciales/'.$archivo[0]->nombre_reporte);
+        $file_path = storage_path('app/public/reportes_parciales/'.$archivo[0]->nombre_reporte);
         if (file_exists($file_path)) {
             DB::table('reportes_s_s')->where('id', $id)->delete();
             unlink($file_path);
@@ -462,6 +489,113 @@ class PrestadorController extends Controller
         return redirect()->route('parciales')->with('warning', 'Archivo y registro eliminados con éxito');
     }
 
+    public function descargar_reporte($nombreArchivo){
+        $rutaArchivo = storage_path('app/public/reportes_parciales/' . $nombreArchivo);
+        return response()->download($rutaArchivo);
+    }
+
+    public function visualizar_reporte($nombreArchivo){
+        $rutaArchivo = storage_path('app/public/reportes_parciales/' . $nombreArchivo);
+        // Verificar si el archivo existe
+            // Haz lo que necesites con el contenido del archivo
+            header('content-type: application/pdf');
+            readfile($rutaArchivo);
+    }
+
+    public function perfil()
+    {
+        $user = Auth::user();
+
+        $sede = DB::table('sedes')
+        ->select('sedes.nombre_sede', 'sedes.id_sede')
+        ->where('sedes.id_sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
+        ->first();
+
+        $todasMedallasUsuario = DB::table('niveles')
+                ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
+                ->select('medallas.ruta', 'medallas.nivel', 'medallas.descripcion')
+                ->where('niveles.experiencia', '<=', $user->experiencia ) 
+                ->orderBy('niveles.experiencia_acumulada')
+                ->get();
+
+        $ultimoElemento = $todasMedallasUsuario->last();
+
+        $nivel_str = strval($ultimoElemento->nivel);
+
+        $medalla = $ultimoElemento->ruta;
+
+        $descripcion_medalla = $ultimoElemento->descripcion;
+
+        return view('prestador.newProfile', compact('user', 'sede', 'nivel_str', 'medalla', 'descripcion_medalla', 'todasMedallasUsuario'));
+    }
+
+    public function cambiarImagenPerfil(Request $request)
+    {
+        $request->validate([
+            'imagen_perfil' => 'required|image|max:4096', // la imagen debe ser de tipo imagen y tener un tamaño máximo de MB
+        ], [
+            'imagen_perfil.max' => 'La imagen debe pesar menos de 4MB',
+        ]);
+
+        // Obtener el usuario autenticado
+        $user = Auth::user();
+
+        // Eliminar la imagen del usuario si es que ya tenia
+        if ($user->imagen_perfil) {
+            // $image_path = public_path('storage/imagen/imagen/' . $user->imagen_perfil);
+            $image_path = public_path('storage/userImg/'.$user->imagen_perfil);
+            if (file_exists($image_path)) {
+                unlink($image_path);
+            }
+        }
+
+
+        // Almacenar la nueva imagen
+        $imagen_path = $request->file('imagen_perfil')->store('public/userImg/');
+
+        $nombre_archivo = basename($imagen_path);
+
+        // Actualizar el campo 'imagen_perfil' del usuario
+        $user->imagen_perfil =  $nombre_archivo;
+
+        $user->save();
+
+        // Redireccionar al perfil del usuario
+        return redirect()->route('perfil')->with('success', 'Imagen cambiada correctamente');
+    }
+
+    public function level_progress()
+    {
+        $user = Auth::user();
+
+        if($user->experiencia >= 2000){
+            $niveles = DB::table('niveles')
+            ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
+            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'niveles.experiencia')
+            ->where('niveles.experiencia_acumulada', '>=', 1835)
+            ->orderBy('niveles.experiencia_acumulada')
+            ->limit(2)
+            ->get();
+
+            $percent = 100;
+
+        }else{
+            $niveles = DB::table('niveles')
+            ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
+            ->join('ruta_niveles', 'niveles.nivel', '=', 'ruta_niveles.nivel')
+            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'ruta_niveles.exp', 'niveles.experiencia' )
+            ->where('niveles.experiencia_acumulada', '>=', $user->experiencia)
+            ->orderBy('niveles.experiencia_acumulada')
+            ->limit(2)
+            ->get();
+
+            $full = $niveles[1]->experiencia - $niveles[0]->experiencia;
+            $adv = $user->experiencia - $niveles[0]->experiencia;
+            $percent = number_format(($adv * 100) / $full, 2);
+        }
+
+        return view('prestador/prestador_levels',['user' =>$user, 'nivel' => $niveles, 'percent' => $percent ]);
+    }
 
     //TERRITORIOS DESCONOCIDOS 
     /*
@@ -847,74 +981,6 @@ class PrestadorController extends Controller
         $user = DB::table('users')->find($actividad->creacion_id);
 
         return view('prestador.actividades_prestadores.verActividad', compact('actividad', 'user'));
-    }
-
-    public function perfil()
-    {
-        $user = Auth::user();
-
-        $sede = DB::table('sedes')
-        ->select('sedes.nombre_sede', 'sedes.id_sede')
-        ->where('sedes.id_sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
-        ->first();
-
-        $nivel = DB::table('niveles')
-            ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
-            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n')
-            ->where('niveles.experiencia_acumulada', '<=', $user->experiencia ?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
-            ->orderByDesc('niveles.experiencia_acumulada')
-            ->first();
-        $todasMedallasUsuario = DB::table('niveles')
-                ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
-                ->select('medallas.ruta', 'medallas.nivel', 'medallas.descripcion')
-                ->where('niveles.experiencia_acumulada', '<=', $user->experiencia ?? 0) // Si la experiencia es null, establece la experiencia acumulada en 0.
-                ->orderBy('niveles.experiencia_acumulada', 'asc')
-                ->get();
-
-        // Convertimos el valor del nivel a una cadena de texto
-        $nivel_str = strval($nivel->nivel);
-
-        $medalla = asset($nivel->ruta);
-        //dd($nivel); // Verificar si la propiedad ruta_n está presente en $nivel
-        // Descripcion de la medalla
-        $descripcion_medalla = $nivel->descripcion;
-
-        return view('prestador.newProfile', compact('user', 'sede', 'nivel_str', 'medalla', 'nivel', 'descripcion_medalla', 'todasMedallasUsuario'));
-    }
-
-    public function cambiarImagenPerfil(Request $request)
-    {
-        $request->validate([
-            'imagen_perfil' => 'required|image|max:4096', // la imagen debe ser de tipo imagen y tener un tamaño máximo de MB
-        ], [
-            'imagen_perfil.max' => 'La imagen debe pesar menos de 4MB',
-        ]);
-
-        // Obtener el usuario autenticado
-        $user = Auth::user();
-
-        // Eliminar la imagen del usuario si es que ya tenia
-        if ($user->imagen_perfil) {
-            // $image_path = public_path('storage/imagen/imagen/' . $user->imagen_perfil);
-            $image_path = public_path('storage/userImg/'.$user->imagen_perfil);
-            if (file_exists($image_path)) {
-                unlink($image_path);
-            }
-        }
-
-
-        // Almacenar la nueva imagen
-        $imagen_path = $request->file('imagen_perfil')->store('public/userImg/');
-
-        $nombre_archivo = basename($imagen_path);
-
-        // Actualizar el campo 'imagen_perfil' del usuario
-        $user->imagen_perfil =  $nombre_archivo;
-
-        $user->save();
-
-        // Redireccionar al perfil del usuario
-        return redirect()->route('perfil')->with('success', 'Imagen cambiada correctamente');
     }
 
     function obtenerTodasActividades()

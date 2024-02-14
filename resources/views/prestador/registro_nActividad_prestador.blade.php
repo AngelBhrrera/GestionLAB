@@ -77,7 +77,6 @@
                         <div class="col-md-6">
                         <label for="recursos">Recursos necesarios - entradas </label>
                             <textarea id="recursos" type="text" class="form-control" name="recursos" placeholder="Ingrese los datos separados por comas (impresora, filamento, papel, agua)"></textarea>
-
                             @error('descripcion')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -105,7 +104,7 @@
                         <label for="resultados" class="col-md-4 col-form-label text-md-right">Objetivos, resultados que se esperan - salidas </label>
 
                         <div class="col-md-6">
-                            <textarea id="resultados" type="text" class="form-control" name="resultados" placeholder="Ingrese los datos separados por comas (Imprimir, diseñar, pintar)" required></textarea>
+                            <textarea id="resultados" type="text" class="form-control" name="resultados" required></textarea>
 
                         </div>
                     </div>
@@ -116,7 +115,6 @@
                                     <input name="horas" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
                                     <input name="minutos" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
                             </div>
-                            <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
                     </div>
 
 

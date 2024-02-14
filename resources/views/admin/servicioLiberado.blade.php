@@ -31,37 +31,33 @@
                         field: "name",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Apellido",
                         field: "apellido",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Correo",
                         field: "correo",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Codigo",
                         field: "codigo",
                         sorter: "number",
                         headerFilter: "input",
-                        hozAlign: "center",
-                    }, 
-                    {
+                    }, {
                         title: "Horas",
                         field: "horas",
                         sorter: "number",
                         headerFilter: "input",
-                        hozAlign: "center",
+                    }, {
+                        title: "Fecha de Salida",
+                        field: "fecha_salida",
+                        sorter: "number",
+                        headerFilter: "input",
                     }, 
                 ],
-                //rowClick: function(e, row) {
-                //    alert("Row " + row.getData().playerid + " Clicked!!!!");
-                //},
             });
             
     </script>

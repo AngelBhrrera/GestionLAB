@@ -147,6 +147,7 @@
                                 title: "Matutino",
                                 field: "turnoMatutino",
                                 width: 100,
+                                headerTooltip: "Horario Matutino de 8 a 12 de la mañana",
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
@@ -160,6 +161,7 @@
                                 title: "Mediodia",
                                 field: "turnoMediodia",
                                 width: 100,
+                                headerTooltip: "Horario Mediodia de 12 a 4 de la tarde",
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
@@ -173,6 +175,7 @@
                                 title: "Vespertino",
                                 field: "turnoVespertino",
                                 width: 100,
+                                headerTooltip: "Horario Vespertino de 4 a 8 de la tarde",
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
@@ -186,6 +189,7 @@
                                 title: "Sabatino",
                                 field: "turnoSabatino",
                                 width: 100,
+                                headerTooltip: "Horario Sabatino de 8 a 2 de la tarde",
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
@@ -199,6 +203,7 @@
                                 title: "Tiempo Completo",
                                 field: "turnoTiempoCompleto",
                                 width: 100,
+                                headerTooltip: "Horario Especial entre semana para personas sin horario fijo",
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
@@ -222,6 +227,7 @@
                             {
                                 title: "Gamificacion",
                                 field: "gamificacion",
+                                headerTooltip: "Sistema de experiencia y registro de actividades, leaderboard, categoria, subcategoria y proyectos",
                                 width: 100,
                                 formatter: "tickCross",
                                 editor: "tickCross",
@@ -235,6 +241,7 @@
                             }, {
                                 title: "Visitas",
                                 field: "visitas",
+                                headerTooltip: "Incluye check y registro de visitas y contacto de visitantes al area de trabajo",
                                 width: 100,
                                 formatter: "tickCross",
                                 editor: "tickCross",
@@ -249,6 +256,7 @@
                                 title: "Solicitudes",
                                 field: "solicitudes",
                                 width: 100,
+                                headerTooltip: "Una serie de vistas enfocadas a la administracion de peticiones de solicitudes, capacitaciones, desarrollos e impresiones",
                                 formatter: "tickCross",
                                 editor: "tickCross",
                                 cellClick: function(e, cell) {
@@ -261,6 +269,7 @@
                             },{
                                 title: "Impresiones",
                                 field: "impresiones",
+                                headerTooltip: "Vistas enfocadas al registro y gestion de impresoras e impresiones 3D",
                                 width: 100,
                                 formatter: "tickCross",
                                 editor: "tickCross",
