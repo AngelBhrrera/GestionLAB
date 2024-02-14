@@ -103,39 +103,27 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{route('asign_act')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
-                                    <div class="side-menu__title"> Asignar actividad</div>
-                                </a>
-                            </li>
-                            <li>
                                 <a href="{{route('obtenerActividades')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
-                                    <div class="side-menu__title">Todas las actividades </div>
+                                    <div class="side-menu__title">Proyecto</div>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{route('actividades_en_proceso')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="file-input"></i> </div>
-                                    <div class="side-menu__title">Actividades en proceso </div>
+                                    <div class="side-menu__title">Actividades asignadas </div>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{route('actividadesTerminadas')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="list-checks"></i> </div>
-                                    <div class="side-menu__title"> Actividades terminadas en revisión </div>
+                                    <div class="side-menu__title"> Registro de actividades </div>
                                 </a>
                             </li>
                             <li>
-                                <a href="{{route('actividades_prestadores_revisadas')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="file-check-2"></i> </div>
-                                    <div class="side-menu__title"> Actividades revisadas </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{route('actividades_canceladas')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="file-x-2"></i> </div>
-                                    <div class="side-menu__title"> Actividades con error </div>
+                                <a href="{{route('asign_act')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
+                                    <div class="side-menu__title"> Asignar actividad</div>
                                 </a>
                             </li>
                         </ul>

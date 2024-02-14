@@ -383,17 +383,18 @@ class AdminController extends Controller
                 
             }else if(auth()->user()->tipo == 'admin'){
                 $prestadores = DB::table('solo_prestadores')
-                ->where('id_sede', auth()->user()->sede)
+                ->where('id_area', auth()->user()->area)
                 ->get();
             }else{
                 $prestadores = DB::table('solo_prestadores')
-                ->where('id_sede', auth()->user()->sede)
+                ->where('id_area', auth()->user()->area)
                 ->where('horario', auth()->user()->horario)
                 ->get();
             }
 
             $categorias = DB::table('categorias')->get();
             $actividades = DB::table('actividades')->get();
+            $proyectos = DB::table('proyectos')->get();
     
     
             return view(
@@ -402,6 +403,7 @@ class AdminController extends Controller
                     'prestadores' => $prestadores,
                     'actividades' => $actividades,
                     'categorias' => $categorias,
+                    'proyectos' => $proyectos,
                 ]
             );
         }
@@ -453,22 +455,36 @@ class AdminController extends Controller
                 'actividades' => $actividades,
             ]);
         }
-    
-        public function asign_act()
-        {
 
-            $n_area =  DB::table('areas')
-            ->select('nombre_area')
-            ->where('id', auth()->user()->area)
-            ->get();
+        public function make_proy(Request $request){
+            DB::table('actividades_prestadores')->insert([
+                'titulo' => $request->t_proyecto,
+            ]);
+
+            $categorias = DB::table('categorias')->get();
+            $actividades = DB::table('actividades')->get();
+            $proyectos = DB::table('proyectos')->get();
+    
+    
+            return view(
+                '/admin/registro_proyectos',
+                [
+                    'actividades' => $actividades,
+                    'categorias' => $categorias,
+                    'proyectos' => $proyectos,
+                ]
+            );
+        }
+    
+        public function asign_act(){
 
                 if (auth()->user()->tipo == "admin" || auth()->user()->tipo == "encargado" ) {
                     $prestadores = DB::table('solo_prestadores')
-                        ->where('nombre_area', $n_area->first()->nombre_area)
+                        ->where('id_area', auth()->user()->area)
                         ->get();
                 } else {
                     $prestadores = DB::table('solo_prestadores')
-                        ->where('nombre_area', $n_area->first()->nombre_area)
+                        ->where('id_area', auth()->user()->area)
                         ->where('horario', auth()->user()->horario)
                         ->get();
                 }
@@ -484,7 +500,24 @@ class AdminController extends Controller
         }
 
         public function asign(Request $request){
-            dd($request);
+
+            $fecha = date('Y-m-d H:i:s'); 
+            $ida = $request->input('tipo_actividad');
+            $prestadoresSeleccionados = $request->input('prestadores_seleccionados');
+            $tamañoArreglo = count($prestadoresSeleccionados);
+
+            for ($i = 0; $i < $tamañoArreglo; $i++) {
+
+                $idp = $prestadoresSeleccionados[$i];
+
+                DB::table('actividades_prestadores')->insert([
+                    'id_prestador' => $idp,
+                    'id_actividad' => $ida,
+                    'fecha' => $fecha,
+                    'id_proyecto' => 0,
+                ]);
+                
+            }
         }
 
 
@@ -901,7 +934,6 @@ class AdminController extends Controller
             "horas" => "required",
         ]);
 
-        // insert
         DB::table("premios")->insert([
             "nombre" => $request -> input("nombre"),
             "descripcion" => $request -> input("descripcion"),  
@@ -909,8 +941,16 @@ class AdminController extends Controller
             "horas" => $request -> input("horas"),
         ]);
        
-
         return redirect()->back()->with("Exito",);  
+    }
+
+    public function asignar_premio(Resquest $request){
+        $users = DB::table("users")
+                    ->where("")
+        
+        DB::table("users")->update([
+            // cambios en las horas de los prestadores asignados. 
+        ]);
     }
 
 

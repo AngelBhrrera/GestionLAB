@@ -135,6 +135,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/A_actividades', 'asign_act')->name('asign_act');
 
             Route::post('/admin/asign', 'asign')->name('asign');
+            Route::post('/admin/M_proyecto', 'make_proy')->name('make_proy');
 
             Route::get('/admin/actividades', 'actividades')->name('actividades');
             Route::get('/admin/C_proyectos', 'create_proy')->name('create_proy');
@@ -185,6 +186,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             //PREMIOS
             Route::get("admin/premios, premios")->name("premios");
             Route::post('admin/premios', 'guardar_premio')->name('guardar_premio');
+            Route::post("admin/premios", "asignar_premio")->name("asignar_premio");
             //
             Route::middleware('role:admin,admin_sede,Superadmin')->group(function() {
                 Route::get('admin/liberar_prestador/{value}', 'liberar')->name('liberar');

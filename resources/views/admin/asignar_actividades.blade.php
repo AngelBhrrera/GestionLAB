@@ -35,7 +35,7 @@
                     <div class="container">
                         <div class="row justify-content-center">
                             <label for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
-                            <div class="col-md-8"> <!-- Ancho ajustado para el contenido -->
+                            <div class="col-md-8"> 
                                 <select class="select2" name="prestadores_seleccionados[]" id="prestadores_seleccionados" multiple>  
                                     @if (isset($prestadores))
                                     @foreach ($prestadores as $prestador)
@@ -60,29 +60,18 @@
                         <div class="form-group">
                             <label for="tipo_subcategoria">Filtro por subcategoría</label>
                             <select class="form-control" id="tipo_subcategoria" name="tipo_subcategoria"onchange="filtrarActividades2()">
-                                <option value="">Filtrar por subcategoría</option>
+                                <option value="">Selecciona una subcategoria (Opcional)</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="actividades_l" class="col-md-4 col-form-label text-md-right">Actividades</label>
+                            <label for="actividades_l" class="col-md-4 col-form-label text-md-right">Actividad</label>
                             <select class="form-control" id="tipo_actividad" name="tipo_actividad" required>
-                                <option value="">Asignar actividad</option>
+                                <option value="">Selecciona una actividad</option>
                                 @foreach ($actividades as $actividad)
                                 <option value="{{ $actividad->id }}">{{ $actividad->titulo }}</option>
                                 @endforeach
                             </select>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Tiempo estimado</label>
-                            <div class="col-md-20">
-                                <div class="input-group date" id="datetimepicker" data-target-input="nearest">
-                                    <input name="horas" type="number" class="form-control" placeholder="Horas" min="0" max="23" step="1" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
-                                    <input name="minutos" type="number" class="form-control" placeholder="Minutos" min="0" max="59" step="1" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
-                                </div>
-                                <small id="Help" class="form-text text-muted">Ingresa el tiempo en que coordinacion espera que se acabe la actividad</small>
-                            </div>
                         </div>
                     </div>
 

@@ -25,78 +25,71 @@
             <div class="card card-primary">
                 <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Crear Nuevo Proyecto </h3>
             </div>
-
             <div class="card-body pl-10 pr-10">
-                <form method="POST" action="{{route('admin.make_act')}}">
+                <form id="btn-proy" method="POST" action="{{route('admin.make_proy')}}">
                     @if (isset($tipo))
                     <input id="tipo" name="tipo" value={{ $tipo }} type="hidden">
                     @endif
 
                     <div class="form-group row">
-                        <label for="nombre" class="col-md-4 col-form-label text-md-right">Nombre del proyecto</label>
+                        <label for="nombre" class="col-md-4 col-form-label text-md-right">Titulo del proyecto</label>
                         <div class="col-md-8">
-                            <textarea id="nombre" type="text" class="form-control @error('nombre') is-invalid @enderror" name="nombre" required>@if(isset($actm)){{$actm[0]->nombre}}@endif</textarea>
-
-                            @error('nombre')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
+                            <textarea id="t_proyecto" name="t_nombre" type="text" class="form-control"  required>Ingresa el titulo del proyecto</textarea>
                         </div>
                     </div>
+
+                    <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits">Crear proyecto</button>
+                </form>
+            </div>
+
+            <div class="card card-primary">
+                <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Asignar actividades a proyecto </h3>
+            </div>
+            <div class="card-body pl-10 pr-10">
+                    <form id="btn-proy" method="POST">
+                    @if (isset($tipo))
+                    <input id="tipo" name="tipo" value="{{ $tipo }}" type="hidden">
+                    @endif
                     <br>
-                    <div class="form-group row">
-                        <label for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
-                        <div class="col-md-8">
-                            <select class="form-control" id="prestador" name="prestador" multiple required>
-                                @if (isset($prestadores))
-                                    @foreach ($prestadores as $prestador)
-                                        <option value="{{$prestador->id}}">{{$prestador->name." ".$prestador->apellido}}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                        </div>
-                    </div>
-                    <small id="Help" class="form-text text-muted">Selecciona a los prestadores para realizar la actividad</small>
-
                     <div class="col-span-6 sm:col-span-4 text-center">
                         <div class="form-group">
-                            <label for="tipo_categoria">Filtro por categoría</label>
-                            <select class="form-control" id="tipo_categoria" name="tipo_categoria" required onchange="filtrarCategorias()">
-                                <option value="">Filtrar por categoría</option>
-                                @foreach ($categorias as $categoria)
-                                <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+                            <label for="tipo_categoria">Seleccionar proyecto</label>
+                            <select class="form-control" id="proyecto" name="proyecto" required>
+                                <option value="">Selecciona un proyecto para asginar actividad/es </option>
+                                @foreach ($proyectos as $proyecto)
+                                <option value="{{ $proyecto->id }}">{{ $proyecto->titulo }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="tipo_subcategoria">Filtro por subcategoría</label>
-                            <select class="form-control" id="tipo_subcategoria" name="tipo_subcategoria" required onchange="filtrarActividades2()">
-                                <option value="">Filtrar por subcategoría</option>
+                            <label for="tipo_categoria">Filtro por categoría</label>
+                            <select class="form-control" id="tipo_categoria" name="tipo_categoria" onchange="filtrarCategorias()">
+                                <option value=null >Filtrar por categoría</option>
                             </select>
                         </div>
-
                         <div class="form-group">
-                            <label for="actividades_l" class="col-md-4 col-form-label text-md-right">Actividades</label>
-                                <div id="module-container">
-                                    <div class="module">
-                                        <select name="module-0" class="form-control">
-                                            <option value="">Asignar actividad</option>
-                                            @foreach ($actividades as $actividad)
-                                                <option value="{{ $actividad->id }}">{{ $actividad->titulo }}</option>
-                                            @endforeach
-                                        </select>
-                                        <button type="button" onclick="removeModule(0)">Eliminar</button>
-                                    </div>
-                                </div>
-                            <button type="button"id="add-module-btn">+</button>
+                            <label for="tipo_subcategoria">Filtro por subcategoría</label>
+                            <select class="form-control" id="tipo_subcategoria" name="tipo_subcategoria" onchange="filtrarActividades2()">
+                                <option value=null >Filtrar por subcategoría</option>
+                            </select>
                         </div>
+                        <br>
+                        <div id="module-container">
+                            <div class="module">
+                            <select name="module-0" class="form-control">
+                                <option value="opcion1">Opción 1</option>
+                                <option value="opcion2">Opción 2</option>
+                                <option value="opcion3">Opción 3</option>
+                            </select>
+                            <button type="button" onclick="removeModule(0)">Eliminar</button>
+                            </div>
+                        </div>
+                        <button type="button" id="add-module-btn">+</button>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-8"> 
-                <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits">Crear proyecto</button>
-                </form>
+                    <div class="col-md-8"> 
+                        <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits">Crear proyecto</button>
+                    </form>
+                    </div>
             </div>
         </div>
     </div>
@@ -111,32 +104,15 @@
 
 <script type="text/javascript">
 
-    const moduleContainer = document.getElementById('module-container');
-  
-    const addModuleBtn = document.getElementById('add-module-btn');
-  
-    let moduleId = 1;
-  
-
-    let dlb2 = new DualListbox('.select2', {
-        availableTitle: 'Prestadores disponibles',
-        selectedTitle: 'Prestadores seleccionados',
-        addButtonText: '🡺',
-        removeButtonText: '🡸',
-        addAllButtonText: '>>',
-        removeAllButtonText: '<<',
-        searchPlaceholder: 'Buscar prestadores'
+    document.getElementById('btn-proy').addEventListener('submit', function(event) {
         
-    });
+        const prestadorSelect = document.getElementById('prestadores_seleccionados');
 
-    dlb2.addEventListener('added', function(event) {
-        console.log(event);
+        if (prestadorSelect.selectedOptions.length === 0) {
+                event.preventDefault();
+                alert('Por favor, selecciona al menos un prestador.');
+            }
     });
-    dlb2.addEventListener('removed', function(event) {
-        console.log(event);
-        
-    });
-
 
     function filtrarCategorias() {
         filtrarActividades()
@@ -250,43 +226,35 @@
         xhr.send();
     }
 
+  const moduleContainer = document.getElementById('module-container');
+  const addModuleBtn = document.getElementById('add-module-btn');
+  let moduleId = 1; 
+  
   function addModule() {
+    // Crear el elemento del módulo
     const module = document.createElement('div');
     module.classList.add('module');
     module.innerHTML = `
-            <select class="form-control" name="module-${moduleId}">
+    <select class="form-control" name="module-${moduleId}">
                 <option value="">Asignar actividad</option>
                     @foreach ($actividades as $actividad)
                         <option value="{{ $actividad->id }}">{{ $actividad->titulo }}</option>
                     @endforeach
             </select>
             <button type="button" onclick="removeModule(${moduleId})">Eliminar</button>
-        `;
-    
+    `;
     moduleContainer.appendChild(module);
-    
     moduleId++;
   }
-
+  
   function removeModule(id) {
-    const moduleToRemove = document.querySelector([name="module-${id}"]);
+
+    const moduleToRemove = document.querySelector(`[name="module-${id}"]`);
     if (moduleToRemove) {
-        moduleContainer.removeChild(moduleToRemove.parentElement);
+      moduleContainer.removeChild(moduleToRemove.parentElement);
     }
   }
   
-  addModuleBtn.addEventListener('click', addModule);
-
-  function obtenerInformacion() {
-    const numElementos = moduleId;
-    const valoresSeleccionados = [];
-    for (let i = 0; i < numElementos; i++) {
-      const select = document.querySelector([name="module-${i}"]);
-      valoresSeleccionados.push(select.value);
-    }
-    console.log("Número de elementos:", numElementos);
-    console.log("Valores seleccionados:", valoresSeleccionados);
-  }
 
 </script>
 
