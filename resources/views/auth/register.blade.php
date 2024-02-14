@@ -208,7 +208,7 @@
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divEncargado" style="display:none">
                                         <label for="input-wizard-4" class="form-label">Encargado *</label>
                                         <select class="form-control @if(old('opc')=='1') @error('id_encargado') is-invalid @enderror @endif" name="id_encargado" id="id_encargado" disabled>
-                                                <option id="0" value="" {{isset($dV[0]->id_encargado) ? $dV[0]->id_encargado == null ? 'selected="selected"' : '' : ''}}>Seleccione un encargado</option>
+                                                <option id="0" value="" {{isset($dV[0]->id_encargado) ? $dV[0]->id_encargado == null ? 'selected="selected"' : '' : ''}}>Seleccione un coordinador</option>
                                         </select>              
                                     </div>
 
@@ -257,7 +257,7 @@
 
 @section('script')
     <script type="text/javascript">
-
+        //Encargado = Coordinador :)
 
     function changeCase($var){
 
@@ -486,7 +486,7 @@
                             encargadoSelect.appendChild(option);
                         });
                     } else {
-                        console.error('Error al obtener encargados');
+                        console.error('Error al obtener coordinadores de turno');
                     }
                 }
             };

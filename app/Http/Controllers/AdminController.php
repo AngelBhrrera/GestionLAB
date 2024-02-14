@@ -100,7 +100,7 @@ class AdminController extends Controller
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $data = DB::table('users')
                 ->select('users.name', 'users.apellido', 'users.correo', 'users.codigo', 'users.tipo', 'users.telefono', 'areas.nombre_area')
-                ->whereNotIn('users.tipo', ['Superadmin','jefe sede','admin'])
+                ->whereNotIn('users.tipo', ['Superadmin','jefe sede','jefe area'])
                 ->where('users.area', auth()->user()->area)
                 ->join('areas', 'users.area', '=', 'areas.id')
                 ->get();

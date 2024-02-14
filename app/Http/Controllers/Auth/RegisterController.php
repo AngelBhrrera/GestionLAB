@@ -44,7 +44,7 @@ class RegisterController extends Controller
             case 'practicante':
             case 'prestador':
             case 'prestadorp':
-            case 'encargado':
+            case 'coordinador':
 
                 
                 $rCodigo = ['required','integer','unique:users'];
@@ -72,8 +72,8 @@ class RegisterController extends Controller
                 $rEncargado = ['nullable'];
                 break;
 
-            case 'admin':
-            case 'admin_sede':
+            case 'jefe area':
+            case 'jefe sede':
 
                 $rCentro = ['nullable'];
                 $rTelefono = ['nullable'];
@@ -136,7 +136,7 @@ class RegisterController extends Controller
             case 'practicante':
                 $vArea = $data['area'];
                 $vEncargado = $data['id_encargado'];
-            case 'encargado':
+            case 'coordinador':
                 $vSede = $data['sede'];
                 $vhorario = $data['horario'];
                 $vHoras = $data['horas'];
@@ -148,9 +148,9 @@ class RegisterController extends Controller
                 $vhorario = $data['horario'];
                 $vEncargado = $data['id_encargado'];
                 break;
-            case 'admin':
+            case 'jefe area':
                 $vArea = $data['area'];
-            case 'admin_sede':     
+            case 'jefe sede':     
                 $vSede = $data['sede'];
                 break;
         }

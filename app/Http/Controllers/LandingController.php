@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\DB;
 class LandingController extends Controller
 {
     public function index(){
-        $matutino =  DB::select("SELECT CONCAT(name, ' ', apellido) AS Nombre , correo, horario from users WHERE fecha_salida is NULL AND sede = 1 AND horario = 'Matutino' AND (tipo = 'admin' OR tipo = 'coordinador')");  
-        $mediodia =  DB::select("SELECT CONCAT(name, ' ', apellido) AS Nombre , correo, horario from users WHERE fecha_salida is NULL AND sede = 1 AND horario = 'Mediodia' AND (tipo = 'admin' OR tipo = 'coordinador')");  
-        $vespertino = DB::select("SELECT CONCAT(name, ' ', apellido) AS Nombre , correo, horario from users WHERE fecha_salida is NULL AND sede = 1 AND horario = 'Vespertino' AND (tipo = 'admin' OR tipo = 'coordinador')");  
-        $sabatino =  DB::select("SELECT CONCAT(name, ' ', apellido) AS Nombre , correo, horario from users WHERE fecha_salida is NULL AND sede = 1 AND horario = 'Sabatino' AND (tipo = 'admin' OR tipo = 'coordinador')");  
+        $matutino =  DB::select("SELECT CONCAT(name, ' ', apellido) AS Nombre , correo, horario from users WHERE fecha_salida is NULL AND sede = 1 AND horario = 'Matutino' AND (tipo = 'jefe area' OR tipo = 'coordinador')");  
+        $mediodia =  DB::select("SELECT CONCAT(name, ' ', apellido) AS Nombre , correo, horario from users WHERE fecha_salida is NULL AND sede = 1 AND horario = 'Mediodia' AND (tipo = 'jefe area' OR tipo = 'coordinador')");  
+        $vespertino = DB::select("SELECT CONCAT(name, ' ', apellido) AS Nombre , correo, horario from users WHERE fecha_salida is NULL AND sede = 1 AND horario = 'Vespertino' AND (tipo = 'jefe area' OR tipo = 'coordinador')");  
+        $sabatino =  DB::select("SELECT CONCAT(name, ' ', apellido) AS Nombre , correo, horario from users WHERE fecha_salida is NULL AND sede = 1 AND horario = 'Sabatino' AND (tipo = 'jefe area' OR tipo = 'coordinador')");  
     
         $leaderBoard= DB::select("SELECT * from full_leaderboard limit 10");  
     

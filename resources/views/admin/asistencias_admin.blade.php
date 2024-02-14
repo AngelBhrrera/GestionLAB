@@ -71,7 +71,7 @@
                         sorter: "string",
                         width: 200,
                     },{
-                        title: "Encargado",
+                        title: "Coordinador",
                         field: "responsable",
                         sorter: "string",
                         headerFilter: "input",

@@ -606,7 +606,7 @@
                                         <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:support@mobileapp.com">{{$mat->correo}}</a>                            
                                     </p>
                                     <p class="mb-2 ml-2">                            
-                                        Encargado del turno {{$mat->horario}}
+                                        Coordinador del turno {{$mat->horario}}
                                     </p>
                                 </td>
                             @endforeach
@@ -622,7 +622,7 @@
                                         <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:support@mobileapp.com">{{$mid->correo}}</a>                            
                                     </p>
                                     <p class="mb-2 ml-2">                            
-                                        Encargado del turno {{$mid->horario}}
+                                        Coordinador del turno {{$mid->horario}}
                                     </p>
                                 </td>
                             @endforeach
@@ -638,7 +638,7 @@
                                         <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:support@mobileapp.com">{{$v->correo}}</a>                            
                                     </p>
                                     <p class="mb-2 ml-2">                            
-                                        Encargado del turno {{$v->horario}}
+                                        Coordinador del turno {{$v->horario}}
                                     </p>
                                 </td>
                             @endforeach
@@ -654,7 +654,7 @@
                                         <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:support@mobileapp.com">{{$s->correo}}</a>                            
                                     </p>
                                     <p class="mb-2 ml-2">                            
-                                        Encargado del turno {{$s->horario}}
+                                        Coordinador del turno {{$s->horario}}
                                     </p>
                                 </td>
                             @endforeach

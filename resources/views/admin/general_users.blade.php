@@ -62,7 +62,7 @@
                         headerFilterParams: {
                             "": "",
                             "prestador": "prestador",
-                            "encargado": "encargado",
+                            "Coordinador": "coordinador",
                             "maestro": "maestro",
                             "alumno": "alumno",
                             "practicante": "practicante",

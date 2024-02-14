@@ -68,7 +68,7 @@
                         hozAlign: "center",
                         width: 200,
                     },{
-                        title: "Encargado",
+                        title: "Coordinador",
                         field: "origen",
                         sorter: "string",
                         headerFilter: "input",

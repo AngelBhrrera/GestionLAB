@@ -22,7 +22,7 @@ class RedirectIfAuthenticated
           $role = Auth::user()->tipo;
 
           switch ($role) {
-            case 'admin':
+            case 'jefe area':
                return redirect('/admin/home');
                break;
             case 'Superadmin':

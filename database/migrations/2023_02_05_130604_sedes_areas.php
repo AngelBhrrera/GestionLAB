@@ -26,7 +26,7 @@ class sedesAreas extends Migration
             JOIN
                 modulos m ON a.id = m.id
             LEFT JOIN
-                users u ON a.id = u.area AND u.tipo IN ('prestador', 'practicante', 'voluntario', 'encargado')
+                users u ON a.id = u.area AND u.tipo IN ('prestador', 'practicante', 'voluntario', 'coodinador')
             GROUP BY
                 a.id, s.id_sede;
         ");
