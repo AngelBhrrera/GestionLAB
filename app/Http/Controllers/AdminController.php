@@ -848,6 +848,15 @@ class AdminController extends Controller
 
         return redirect()->route("login")->with("Exito",);  // cambiar al redireccion a la misma vista premios
     }
+
+    public function asignar_premio(Resquest $request){
+        $users = DB::table("users")
+                    ->where("")
+        
+        DB::table("users")->update([
+            // cambios en las horas de los prestadores asignados. 
+        ]);
+    }
     
 //VIEJO CONTROLLER. /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*

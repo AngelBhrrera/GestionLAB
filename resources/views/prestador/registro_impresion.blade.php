@@ -71,7 +71,7 @@
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
                             <label for="">Piezas</label>
                             <input class="form-control @error('pieces') is-invalid @enderror"
-                                name="pieces" id="pieces" value="{{old('pieces')}}">
+                                name="pieces" id="pieces" value="{{old('pieces')}}" placeholder="Total de piezas de impresion">
                             @error('model')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -82,7 +82,7 @@
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
                             <label for="">Peso</label>
                             <input class="form-control @error('weight') is-invalid @enderror"
-                                name="weight" id="weight" value="{{old('weight')}}">
+                                name="weight" id="weight" value="{{old('weight')}}" placeholder="Peso total de todas las piezas juntas">
                             @error('weight')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>

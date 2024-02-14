@@ -11,6 +11,7 @@
             margin-right: 10px; /* O ajusta el margen según tus necesidades */
         }
     </style>
+     <link rel="stylesheet" href="{{ asset('build/assets/css/view_premios.css') }}">
 
 @endsection
 
@@ -21,14 +22,14 @@
 @endsection
 
 @section('subcontent')
-<form method="POST" action="{{ route('api.guardar_premio') }}">
+<form method="POST" action="{{ route('api.guardar_premio') }}" id="form_premio_register">
     @csrf
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-9">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3  class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;"> Registrar Premios</h3>
+                        <h3  class="text-2xl font-medium leading-none mt-3 px-10 text-center mx-auto" style="padding-top: 20px; padding-bottom: 20px;"> Registrar Premios</h3>
                     </div>
                     @csrf
                     <div class="col-span-12 sm:col-span-4">
@@ -80,17 +81,45 @@
         </div>
     </div>
 </form>
-<form>
+<form method="POST" action="{{ route('api.guardar_premio') }}"  id="form_duelist">
+    @csrf
     <div class="intro-y col-span-12 sm:col-span-6">
-        <label for="tipo" class="form-label">Prestadores</label>
         <div class="container">
+            <div class="container">
+                <div class="card card-primary">
+                    <h3 class="text-2xl font-medium leading-none mt-3 px-10 text-center mx-auto"
+                    style="padding-top: 20px; padding-bottom: 10px;"> Asignar Premios </h3>
+                </div>
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-body"  id="card_body">
+                                    <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5">
+                                        <div class="col-span-12 sm:col-span-8">
+                                            <div class="form-group row justify-content-center"> <!-- Alinea el contenido horizontalmente -->
+                                                <label for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
+                                                <div class="col-md-8"> <!-- Ancho ajustado para el contenido -->
+                                                    <select class="select2" multiple>
+                                                        @if (isset($prestadores)) 
+                                                            @foreach ($prestadores as $prestador) 
+                                                                <option value="{{$prestador->id}}">{{$prestador->name." ".$prestador->apellido}}</option>
+                                                            @endforeach 
+                                                        @endif 
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <small id="Help" class="form-text text-muted">Selecciona a los prestadores para realizar la actividad</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card card-primary">
-                            <h3 class="text-2xl font-medium leading-none mt-3 pl-10"
-                                style="padding-top: 20px; padding-bottom: 10px;"> Asignar Premios </h3>
-                        </div>
                         <div class="card-body">
                             <input id="tipo" name="tipo" value="xx" type="hidden">
                             <div class="form-group row">
@@ -106,38 +135,10 @@
                                     </select>
                                 </div>
                             </div>
-                            <div>
-                                <input type="text" id="busquedaPrestadores" placeholder="Buscar usuarios...">
-                            </div>
-                            <br>
-                            <div class="form-group row">
-                                <label for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
-                                <div class="col-md-6">
-                                    <select class="duallistbox" name="prestadores" id="opcionPrestadores"
-                                        multiple="multiple" required>
-                                        @if(isset($prestadores))
-                                            @foreach ($prestadores as $dato)
-                                                <option id="{{$dato->tipo}}" value="{{$dato->tipo}}">{{$dato->codigo}} - {{$dato->name}} - {{$dato->apellido}} </option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="usuarios_seleccionados" class="col-md-4 col-form-label text-md-right">Prestadores seleccionados</label>
-                                <div class="col-md-6">
-                                    <select class="duallistbox" name="usuarios_seleccionados[]" id="usuarios_seleccionados" multiple="multiple" required>
-                                        <!-- usuarios seleccionados dinámicamente -->
-                                    </select>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div style="height: 45px;"></div>
-        <div class="text-center xl:text-left">
             <button id="btn-log" class="btn btn-outline-secondary w-full mt-3" type="submit">
             Asignar
             </button>
@@ -147,55 +148,24 @@
 @endsection
 
 @section('script')
-<script type="text/javascript">
-    document.getElementById('opcionPrestadores').addEventListener('change', function() {
-    var selectElement = document.getElementById('opcionPrestadores');
-    var selectedUsers = [];
-    var usuariosSeleccionadosElement = document.getElementById('usuarios_seleccionados');
+<script>
 
-    for (var i = 0; i < selectElement.options.length; i++) {
-        if (selectElement.options[i].selected) {
-            var option = document.createElement('option');
-            option.value = selectElement.options[i].value;
-            option.text = selectElement.options[i].text;
-            usuariosSeleccionadosElement.add(option);  //se agregan los prestadores al segundo duelistbox
-            selectedUsers.push(selectElement.options[i]);
-        }
-    }
-});
 
-document.getElementById('usuarios_seleccionados').addEventListener('change', function() {
-    var selectElement = document.getElementById('usuarios_seleccionados');
-    var selectedUsers = [];
-    var opcionPrestadores = document.getElementById('opcionPrestadores');
-
-    for (var i = 0; i < selectElement.options.length; i++) {
-        if (selectElement.options[i].selected) {
-            var option = document.createElement('option');
-            option.value = selectElement.options[i].value;
-            option.text = selectElement.options[i].text;
-            opcionPrestadores.add(option);
-            selectedUsers.push(selectElement.options[i]);
-        }
-    }
-    selectedUsers.forEach(function(user) {
-        selectElement.removeChild(user);
+    let dlb2 = new DualListbox('.select2', {
+        availableTitle: 'Prestadores',
+        selectedTitle: 'Prestadores seleccionados',
+        addButtonText: '🡺',
+        removeButtonText: '🡸',
+        addAllButtonText: '>>',
+        removeAllButtonText: '<<',
+        searchPlaceholder: 'Buscar prestadores'
     });
-});
-
-document.getElementById('busquedaPrestadores').addEventListener('input', function() {
-    var busqueda = this.value.toLowerCase();
-    var opciones = document.getElementById('opcionPrestadores').options;
-
-    for (var i = 0; i < opciones.length; i++) {
-        var textoOpcion = opciones[i].text.toLowerCase();
-        if (textoOpcion.includes(busqueda)) {
-            opciones[i].style.display = '';
-        } else {
-            opciones[i].style.display = 'none';
-        }
-    }
-});
+    dlb2.addEventListener('added', function(event) {
+        console.log(event);
+    });
+    dlb2.addEventListener('removed', function(event) {
+        console.log(event);
+    });
 
 </script>
 @endsection
