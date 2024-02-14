@@ -136,6 +136,7 @@ class RegisterController extends Controller
             case 'practicante':
                 $vEncargado = $data['id_encargado'];
             case 'coordinador':
+                $vArea = $data['area'];
                 $vSede = $data['sede'];
                 $vhorario = $data['horario'];
                 $vHoras = $data['horas'];

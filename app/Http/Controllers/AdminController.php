@@ -354,12 +354,12 @@ class AdminController extends Controller
     
         public function create_act()
         {
-            if( auth()->user()->tipo == 'encargado' || auth()->user()->tipo == 'admin'){
+            if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
                 $prestadores = DB::table('solo_prestadores')
                     ->where('id_area', auth()->user()->area)
                     ->where('horario', auth()->user()->horario)
                     ->get();
-            }else  if( auth()->user()->tipo == 'admin_sede'){
+            }else  if( auth()->user()->tipo == 'jefe sede'){
                 $prestadores = DB::table('solo_prestadores')
                     ->where('id_sede', auth()->user()->sede)
                     ->where('horario', auth()->user()->horario)
@@ -383,11 +383,12 @@ class AdminController extends Controller
         public function create_proy()
         {
 
-            if( auth()->user()->tipo == 'encargado' || auth()->user()->tipo == 'admin'){
+            if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
                 $prestadores = DB::table('solo_prestadores')
-                ->get();
-                
-            }else if(auth()->user()->tipo == 'jefe area'){
+                    ->where('id_area', auth()->user()->area)
+                    ->where('horario', auth()->user()->horario)
+                    ->get();
+            }else  if( auth()->user()->tipo == 'jefe sede'){
                 $prestadores = DB::table('solo_prestadores')
                     ->where('id_sede', auth()->user()->sede)
                     ->where('horario', auth()->user()->horario)
@@ -462,13 +463,7 @@ class AdminController extends Controller
     
         public function asign_act(){
 
-            $n_Sede =  DB::table('sedes')
-            ->select('nombre_sede')
-            ->where('id_sede', auth()->user()->sede)
-            ->get();
-
-           
-                if (auth()->user()->tipo == "jefe area") {
+                if (auth()->user()->tipo == "jefe area" || auth()->user()->tipo == "coordinador" ) {
                     $prestadores = DB::table('solo_prestadores')
                         ->where('id_area', auth()->user()->area)
                         ->get();
@@ -506,10 +501,9 @@ class AdminController extends Controller
                     'id_prestador' => $idp,
                     'id_actividad' => $ida,
                     'id_proyecto' => $idp,
-                ]);
-                
-            }
+        ]);
         }
+    }
 
 
     //OTROS USUARIOS
@@ -892,11 +886,11 @@ class AdminController extends Controller
     public function premios(){
         $premios = DB::select("SELECT * FROM premios");
 
-        if( auth()->user()->tipo == 'admin'){
+        if( auth()->user()->tipo == 'jefe area'){
             $prestadores = DB::table('solo_prestadores')
                 ->where('users.area', auth()->user()->area)
                 ->get();
-        }else  if( auth()->user()->tipo == 'admin_sede'){
+        }else  if( auth()->user()->tipo == 'jefe sede'){
             $prestadores = DB::table('solo_prestadores')
             ->where('users.sede', auth()->user()->sede)
             ->get();
@@ -922,11 +916,7 @@ class AdminController extends Controller
             "horas" => $request -> input("horas"),
         ]);
        
-        return redirect()->back()->with("Exito",);  
-    }
-
-    public function asignar_premio(Request $request){
-
+        return redirect()->back()->with("Exito",);
     }
 
 
