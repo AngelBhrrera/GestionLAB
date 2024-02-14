@@ -365,6 +365,8 @@ class AdminController extends Controller
                     ->where('horario', auth()->user()->horario)
                     ->get();
             }
+
+            dd($prestadores);
       
         
             $categorias = DB::table('categorias')->get();
@@ -466,6 +468,7 @@ class AdminController extends Controller
                 if (auth()->user()->tipo == "jefe area" || auth()->user()->tipo == "coordinador" ) {
                     $prestadores = DB::table('solo_prestadores')
                         ->where('id_area', auth()->user()->area)
+                        ->where('horario', auth()->user()->horario)
                         ->get();
                 } else {
                     $prestadores = DB::table('solo_prestadores')
