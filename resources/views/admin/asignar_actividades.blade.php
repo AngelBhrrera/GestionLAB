@@ -49,6 +49,15 @@
                     </div>
                     <div class="col-span-6 sm:col-span-4 text-center">
                         <div class="form-group">
+                            <label for="actividades_l" class="col-md-4 col-form-label text-md-right">Proyecto</label>
+                            <select class="form-control" id="proyecto" name="proyecto" required>
+                                <option value="">Selecciona una actividad</option>
+                                @foreach ($proyectos as $proyecto)
+                                <option value="{{ $proyecto->id }}">{{ $proyecto->titulo }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="tipo_categoria">Filtro por categoría</label>
                             <select class="form-control" id="tipo_categoria" name="tipo_categoria" onchange="filtrarCategorias()">
                                 <option value="">Filtrar por categoría</option>
@@ -90,15 +99,15 @@
 @section('script')
 <script type="text/javascript">
 
-document.getElementById('asign').addEventListener('submit', function(event) {
-    
-    const prestadorSelect = document.getElementById('prestadores_seleccionados');
+    document.getElementById('asign').addEventListener('submit', function(event) {
+        
+        const prestadorSelect = document.getElementById('prestadores_seleccionados');
 
-    if (prestadorSelect.selectedOptions.length === 0) {
-            event.preventDefault();
-            alert('Por favor, selecciona al menos un prestador.');
-        }
-});
+        if (prestadorSelect.selectedOptions.length === 0) {
+                event.preventDefault();
+                alert('Por favor, selecciona al menos un prestador.');
+            }
+    });
 
     let dlb2 = new DualListbox('.select2', {
         availableTitle: 'Prestadores disponibles',

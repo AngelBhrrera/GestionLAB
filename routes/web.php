@@ -98,7 +98,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
                 
                 Route::get('/admin/registro', 'registro')->name('registro'); //NUEVA RUTA
-                
+
                 Route::get('/admin/premios', 'premios')->name('premios');
                     
                 Route::get('admin/ver_reportes_parciales', 'ver_reportes_parciales')->name('reportes_parciales');
@@ -136,6 +136,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/A_actividades', 'asign_act')->name('asign_act');
 
             Route::post('/admin/asign', 'asign')->name('asign');
+            
             Route::post('/admin/M_proyecto', 'make_proy')->name('make_proy');
 
             Route::get('/admin/actividades', 'actividades')->name('actividades');
