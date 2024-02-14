@@ -377,20 +377,6 @@ class AdminController extends Controller
         public function create_proy()
         {
 
-            if (auth()->user()->tipo == 'Superadmin'){
-                $prestadores = DB::table('solo_prestadores')
-                ->get();
-                
-            }else if(auth()->user()->tipo == 'admin'){
-                $prestadores = DB::table('solo_prestadores')
-                ->where('id_area', auth()->user()->area)
-                ->get();
-            }else{
-                $prestadores = DB::table('solo_prestadores')
-                ->where('id_area', auth()->user()->area)
-                ->where('horario', auth()->user()->horario)
-                ->get();
-            }
 
             $categorias = DB::table('categorias')->get();
             $actividades = DB::table('actividades')->get();
@@ -400,7 +386,6 @@ class AdminController extends Controller
             return view(
                 '/admin/registro_proyectos',
                 [
-                    'prestadores' => $prestadores,
                     'actividades' => $actividades,
                     'categorias' => $categorias,
                     'proyectos' => $proyectos,
@@ -922,7 +907,19 @@ class AdminController extends Controller
     // PREMIOS
     public function premios(){
         $premios = DB::select("SELECT * FROM premios");
-        $prestadores = DB::select("SELECT * FROM users;");
+
+        if( auth()->user()->tipo == 'admin'){
+            $prestadores = DB::table('solo_prestadores')
+                ->where('users.area', auth()->user()->area)
+                ->get();
+        }else  if( auth()->user()->tipo == 'admin_sede'){
+            $prestadores = DB::table('solo_prestadores')
+            ->where('users.sede', auth()->user()->sede)
+            ->get();
+        }else{
+            $prestadores = DB::table('solo_prestadores')
+            ->get();
+        }
         return view("admin.premios", ["prestadores"=>$prestadores, "premios"=>$premios]);
     }
 
