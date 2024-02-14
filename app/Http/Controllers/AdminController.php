@@ -354,13 +354,19 @@ class AdminController extends Controller
     
         public function create_act()
         {
+            if( auth()->user()->tipo == 'encargado' || auth()->user()->tipo == 'admin'){
+                $prestadores = DB::table('solo_prestadores')
+                    ->where('id_area', auth()->user()->area)
+                    ->where('horario', auth()->user()->horario)
+                    ->get();
+            }else  if( auth()->user()->tipo == 'admin_sede'){
+                $prestadores = DB::table('solo_prestadores')
+                    ->where('id_sede', auth()->user()->sede)
+                    ->where('horario', auth()->user()->horario)
+                    ->get();
+            }
       
-            $prestadores = DB::table('solo_prestadores')
-                ->where('id_area', auth()->user()->area)
-                ->where('horario', auth()->user()->horario)
-                ->get();
-    
-    
+        
             $categorias = DB::table('categorias')->get();
             $subcategorias = DB::table('subcategorias')->get();
     
@@ -377,28 +383,26 @@ class AdminController extends Controller
         public function create_proy()
         {
 
-            if (auth()->user()->tipo == 'Superadmin'){
+            if( auth()->user()->tipo == 'encargado' || auth()->user()->tipo == 'admin'){
                 $prestadores = DB::table('solo_prestadores')
                 ->get();
                 
             }else if(auth()->user()->tipo == 'jefe area'){
                 $prestadores = DB::table('solo_prestadores')
-                ->where('id_sede', auth()->user()->sede)
-                ->get();
-            }else{
-                $prestadores = DB::table('solo_prestadores')
-                ->where('id_sede', auth()->user()->sede)
-                ->where('horario', auth()->user()->horario)
-                ->get();
+                    ->where('id_sede', auth()->user()->sede)
+                    ->where('horario', auth()->user()->horario)
+                    ->get();
             }
 
-            $actividades = DB::table('actividades')->get();
-    
+            $categorias = DB::table('categorias')->get();
+            $proyectos = DB::table('proyectos')->get();
+
             return view(
                 '/admin/registro_proyectos',
                 [
+                    'categorias' => $categorias,
+                    'proyectos' => $proyectos,
                     'prestadores' => $prestadores,
-                    'actividades' => $actividades,
                 ]
             );
         }
@@ -444,15 +448,19 @@ class AdminController extends Controller
                 'TEC' => $tec,
             ]);
     
-            return view( 'admin/asignar_actividades', [
-                'prestadores' => $prestadores,
-                'categorias' => $categorias,
-                'actividades' => $actividades,
+            return redirect(route('admin.asign_act'));
+        }
+
+        public function make_proy(Request $request){
+
+            DB::table('proyectos')->insert([
+                'titulo' => $request->t_nombre,
             ]);
+
+            return redirect(route('admin.create_proy'))->with('success', 'Creada correctamente');
         }
     
-        public function asign_act()
-        {
+        public function asign_act(){
 
             $n_Sede =  DB::table('sedes')
             ->select('nombre_sede')
@@ -462,24 +470,45 @@ class AdminController extends Controller
            
                 if (auth()->user()->tipo == "jefe area") {
                     $prestadores = DB::table('solo_prestadores')
-                        ->where('nombre_sede', $n_Sede->first()->nombre_sede)
+                        ->where('id_area', auth()->user()->area)
                         ->get();
                 } else {
                     $prestadores = DB::table('solo_prestadores')
-                        ->where('nombre_sede', $n_Sede->first()->nombre_sede)
+                        ->where('id_area', auth()->user()->area)
                         ->where('horario', auth()->user()->horario)
                         ->get();
                 }
-
             
             $categorias = DB::table('categorias')->get();
             $actividades = DB::table('actividades')->get();
+            $proyectos = DB::table('proyectos')->get();
     
             return view( 'admin/asignar_actividades', [
                 'prestadores' => $prestadores,
                 'categorias' => $categorias,
                 'actividades' => $actividades,
+                'proyectos' => $proyectos,
             ]);
+        }
+
+        public function asign(Request $request){
+
+            $ida = $request->input('tipo_actividad');
+            $idp = $request->input('proyecto');
+            $prestadoresSeleccionados = $request->input('prestadores_seleccionados');
+            $tamañoArreglo = count($prestadoresSeleccionados);
+
+            for ($i = 0; $i < $tamañoArreglo; $i++) {
+
+                $idp = $prestadoresSeleccionados[$i];
+
+                DB::table('actividades_prestadores')->insert([
+                    'id_prestador' => $idp,
+                    'id_actividad' => $ida,
+                    'id_proyecto' => $idp,
+                ]);
+                
+            }
         }
 
 
@@ -862,8 +891,20 @@ class AdminController extends Controller
     // PREMIOS
     public function premios(){
         $premios = DB::select("SELECT * FROM premios");
-        $prestadores = DB::select("SELECT * FROM users;");
-        return view("admin/premios", ["prestadores"=>$prestadores, "premios"=>$premios]);
+
+        if( auth()->user()->tipo == 'admin'){
+            $prestadores = DB::table('solo_prestadores')
+                ->where('users.area', auth()->user()->area)
+                ->get();
+        }else  if( auth()->user()->tipo == 'admin_sede'){
+            $prestadores = DB::table('solo_prestadores')
+            ->where('users.sede', auth()->user()->sede)
+            ->get();
+        }else{
+            $prestadores = DB::table('solo_prestadores')
+            ->get();
+        }
+        return view("admin.premios", ["prestadores"=>$prestadores, "premios"=>$premios]);
     }
 
     public function guardar_premio(Request $request){
@@ -874,7 +915,6 @@ class AdminController extends Controller
             "horas" => "required",
         ]);
 
-        // insert
         DB::table("premios")->insert([
             "nombre" => $request -> input("nombre"),
             "descripcion" => $request -> input("descripcion"),  
@@ -882,8 +922,11 @@ class AdminController extends Controller
             "horas" => $request -> input("horas"),
         ]);
        
-
         return redirect()->back()->with("Exito",);  
+    }
+
+    public function asignar_premio(Request $request){
+
     }
 
 

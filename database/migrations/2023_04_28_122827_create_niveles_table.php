@@ -46,7 +46,7 @@ class CreateNivelesTable extends Migration
         (21, 1445, 1554, 'Cetro de Diamante'),
         (22, 1555, 1684, 'Dragón Azul'),
         (23, 1685, 1839, 'Dragón Rojo'),
-        (24, 1840, 2000, 'Dragón Plateado');");
+        (24, 2000, 2000, 'Dragón Plateado');");
     }
 
     public function down()

@@ -22,7 +22,7 @@
 @endsection
 
 @section('subcontent')
-<form method="POST" action="{{ route('api.guardar_premio') }}" id="form_premio_register">
+<form method="POST" action="{{ route('admin.guardar_premio') }}" id="form_premio_register">
     @csrf
     <div class="container">
         <div class="row justify-content-center">
@@ -81,7 +81,8 @@
         </div>
     </div>
 </form>
-<form method="POST" action="{{ route('api.guardar_premio') }}"  id="form_duelist">
+<form method="POST" action="{{ route('admin.asignar_premio') }}"  id="form_duelist">
+    @csrf
     <div class="intro-y col-span-12 sm:col-span-6">
         <div class="container">
             <div class="container">
@@ -148,6 +149,8 @@
 
 @section('script')
 <script>
+
+
     let dlb2 = new DualListbox('.select2', {
         availableTitle: 'Prestadores',
         selectedTitle: 'Prestadores seleccionados',
