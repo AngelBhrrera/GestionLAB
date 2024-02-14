@@ -923,7 +923,7 @@ class AdminController extends Controller
     public function premios(){
         $premios = DB::select("SELECT * FROM premios");
         $prestadores = DB::select("SELECT * FROM users;");
-        return view("admin/premios", ["prestadores"=>$prestadores, "premios"=>$premios]);
+        return view("admin.premios", ["prestadores"=>$prestadores, "premios"=>$premios]);
     }
 
     public function guardar_premio(Request $request){
@@ -944,13 +944,8 @@ class AdminController extends Controller
         return redirect()->back()->with("Exito",);  
     }
 
-    public function asignar_premio(Resquest $request){
-        $users = DB::table("users")
-                    ->where("")
-        
-        DB::table("users")->update([
-            // cambios en las horas de los prestadores asignados. 
-        ]);
+    public function asignar_premio(Request $request){
+
     }
 
 

@@ -143,6 +143,10 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/ver_impresoras', 'control_print')->name('control_print');
             Route::post('/admin/registrar_impresoras', 'make_print')->name('make_print');
             Route::get('/admin/ver_impresiones', 'watch_prints')->name('watch_prints');
+
+            
+            Route::post('admin/g_premio', 'guardar_premio')->name('guardar_premio');
+            Route::post("admin/a_premio", "asignar_premio")->name("asignar_premio");
                 
             Route::get('/admin/general', 'general')->name('general');
             Route::get('/admin/prestadores', 'prestadores')->name('prestadores');
@@ -184,10 +188,6 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('admin/changestate_print/{id}/{value}', 'printstate')->name('printstate');
             Route::get('admin/observaciones_impresion/{id}/{value}', 'detail_prints')->name('detail_prints');
             //PREMIOS
-            Route::get("admin/premios, premios")->name("premios");
-            Route::post('admin/premios', 'guardar_premio')->name('guardar_premio');
-            Route::post("admin/premios", "asignar_premio")->name("asignar_premio");
-            //
             Route::middleware('role:admin,admin_sede,Superadmin')->group(function() {
                 Route::get('admin/liberar_prestador/{value}', 'liberar')->name('liberar');
                 Route::get('admin/changestate/{id}/{value}', 'checkinstate')->name('checkinstate');
