@@ -352,165 +352,186 @@ class AdminController extends Controller
 
         // ACTIVIDADES Y PROYECTOS
     
-        public function create_act()
-        {
-            if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
-                $prestadores = DB::table('solo_prestadores')
-                    ->where('id_area', auth()->user()->area)
-                    ->where('horario', auth()->user()->horario)
-                    ->get();
-            }else  if( auth()->user()->tipo == 'jefe sede'){
-                $prestadores = DB::table('solo_prestadores')
-                    ->where('id_sede', auth()->user()->sede)
-                    ->where('horario', auth()->user()->horario)
-                    ->get();
-            }
-
-            dd($prestadores);
-      
-        
-            $categorias = DB::table('categorias')->get();
-            $subcategorias = DB::table('subcategorias')->get();
-    
-            return view(
-                '/admin/registro_actividades',
-                [
-                    'prestadores' => $prestadores,
-                    'categorias' => $categorias,
-                    'subcategorias' => $subcategorias,
-                ]
-            );
-        }
-    
-        public function create_proy()
-        {
-
-            if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
-                $prestadores = DB::table('solo_prestadores')
-                    ->where('id_area', auth()->user()->area)
-                    ->where('horario', auth()->user()->horario)
-                    ->get();
-            }else  if( auth()->user()->tipo == 'jefe sede'){
-                $prestadores = DB::table('solo_prestadores')
-                    ->where('id_sede', auth()->user()->sede)
-                    ->where('horario', auth()->user()->horario)
-                    ->get();
-            }
-
-            $categorias = DB::table('categorias')->get();
-            $proyectos = DB::table('proyectos')->get();
-
-            return view(
-                '/admin/registro_proyectos',
-                [
-                    'categorias' => $categorias,
-                    'proyectos' => $proyectos,
-                    'prestadores' => $prestadores,
-                ]
-            );
-        }
-    
-        public function make_act(Request $request)
-        {
-    
+    public function create_act()
+    {
+        if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $prestadores = DB::table('solo_prestadores')
-            ->where('id_sede', auth()->user()->sede)
-            ->where('horario', auth()->user()->horario)
-            ->get();
-    
-            $categorias = DB::table('categorias')->get();
-            $actividades = DB::table('actividades')->get();
-    
-            $nomact = $request->input('nombre');
-
-            $categoria = $request->input('tipo_categoria');
-            $subcategoria = $request->input('tipo_subcategoria');
-            if($subcategoria == '')
-                $subcategoria = null;
-            $tipo = $request->input('tipo_actividad');
-
-            $desc = $request->input('descripcion');
-            $reso = $request->input('recursos');
-            $obj = $request->input('resultados');
-    
-            $horas = $request->input('horas')*60;
-            $minutos = $request->input('minutos');
-            $tec = $horas + $minutos;
-    
-            DB::table('actividades')->insert([
-    
-                'titulo' => $nomact,
-                'id_categoria' => $categoria,
-                'id_subcategoria' => $subcategoria,
-                'tipo' => $tipo,
-                
-                'recursos' => $reso,
-                'descripcion' => $desc,
-                'objetivos' => $obj,
-
-                'TEC' => $tec,
-            ]);
-    
-            return redirect(route('admin.asign_act'));
+                ->where('id_area', auth()->user()->area)
+                ->where('horario', auth()->user()->horario)
+                ->get();
+        }else  if( auth()->user()->tipo == 'jefe sede'){
+            $prestadores = DB::table('solo_prestadores')
+                ->where('id_sede', auth()->user()->sede)
+                ->where('horario', auth()->user()->horario)
+                ->get();
         }
 
-        public function make_proy(Request $request){
-
-            DB::table('proyectos')->insert([
-                'titulo' => $request->t_nombre,
-            ]);
-
-            return redirect(route('admin.create_proy'))->with('success', 'Creada correctamente');
-        }
+        $categorias = DB::table('categorias')->get();
+        $subcategorias = DB::table('subcategorias')->get();
     
-        public function asign_act(){
-
-                if (auth()->user()->tipo == "jefe area" || auth()->user()->tipo == "coordinador" ) {
-                    $prestadores = DB::table('solo_prestadores')
-                        ->where('id_area', auth()->user()->area)
-                        ->where('horario', auth()->user()->horario)
-                        ->get();
-                } else {
-                    $prestadores = DB::table('solo_prestadores')
-                        ->where('id_area', auth()->user()->area)
-                        ->where('horario', auth()->user()->horario)
-                        ->get();
-                }
-            
-            $categorias = DB::table('categorias')->get();
-            $actividades = DB::table('actividades')->get();
-            $proyectos = DB::table('proyectos')->get();
-    
-            return view( 'admin/asignar_actividades', [
-                'prestadores' => $prestadores,
+        return view('/admin/registro_actividades',
+                ['prestadores' => $prestadores,
                 'categorias' => $categorias,
-                'actividades' => $actividades,
-                'proyectos' => $proyectos,
-            ]);
+                'subcategorias' => $subcategorias]);
+    }
+    
+    public function make_act(Request $request) {
+        $nomact = $request->input('nombre');
+
+        $categoria = $request->input('tipo_categoria');
+        $subcategoria = $request->input('tipo_subcategoria');
+        if($subcategoria == '')
+            $subcategoria = null;
+        $tipo = $request->input('tipo_actividad');
+
+        $desc = $request->input('descripcion');
+        $reso = $request->input('recursos');
+        $obj = $request->input('resultados');
+    
+        $horas = $request->input('horas')*60;
+        $minutos = $request->input('minutos');
+        $tec = $horas + $minutos;
+    
+        DB::table('actividades')->insert([
+    
+            'titulo' => $nomact,
+            'id_categoria' => $categoria,
+            'id_subcategoria' => $subcategoria,
+            'tipo' => $tipo,
+            'recursos' => $reso,
+            'descripcion' => $desc,
+            'objetivos' => $obj,
+            'TEC' => $tec,]);
+    
+        return redirect(route('admin.asign_act'));
+    }
+
+    public function asign_act(){
+
+        if (auth()->user()->tipo == "jefe area" || auth()->user()->tipo == "coordinador" ) {
+            $prestadores = DB::table('solo_prestadores')
+                ->where('id_area', auth()->user()->area)
+                ->where('horario', auth()->user()->horario)
+                ->get();
+        } else {
+            $prestadores = DB::table('solo_prestadores')
+                ->where('id_area', auth()->user()->area)
+                ->where('horario', auth()->user()->horario)
+                ->get();
+        }
+            
+        $categorias = DB::table('categorias')->get();
+        $actividades = DB::table('actividades')->get();
+        $proyectos = DB::table('proyectos')->get();
+    
+        return view( 'admin/asignar_actividades', [
+            'prestadores' => $prestadores,
+            'categorias' => $categorias,
+            'actividades' => $actividades,
+            'proyectos' => $proyectos]);
+    }
+
+    public function asign(Request $request){
+
+        $ida = $request->input('tipo_actividad');
+        $idpy = $request->input('proyecto');
+        $prestadoresSeleccionados = $request->input('prestadores_seleccionados');
+        $tamañoArreglo = count($prestadoresSeleccionados);
+
+        for ($i = 0; $i < $tamañoArreglo; $i++) {
+
+            $idp = $prestadoresSeleccionados[$i];
+            DB::table('actividades_prestadores')->insert([
+                'id_prestador' => $idp,
+                'id_actividad' => $ida,
+                'id_proyecto' => $idpy,]);
         }
 
-        public function asign(Request $request){
-
-            $ida = $request->input('tipo_actividad');
-            $idp = $request->input('proyecto');
-            $prestadoresSeleccionados = $request->input('prestadores_seleccionados');
-            $tamañoArreglo = count($prestadoresSeleccionados);
-
-            for ($i = 0; $i < $tamañoArreglo; $i++) {
-
-                $idp = $prestadoresSeleccionados[$i];
-
-                DB::table('actividades_prestadores')->insert([
-                    'id_prestador' => $idp,
-                    'id_actividad' => $ida,
-                    'id_proyecto' => $idp,
-        ]);
-        }
+        return redirect(route('admin.asign_act'))->with('success', 'Creada correctamente');
     }
 
 
-    //OTROS USUARIOS
+    public function create_proy() {
 
+        if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
+            $prestadores = DB::table('solo_prestadores')
+                ->where('id_area', auth()->user()->area)
+                ->where('horario', auth()->user()->horario)
+                ->get();
+        }else  if( auth()->user()->tipo == 'jefe sede'){
+            $prestadores = DB::table('solo_prestadores')
+                ->where('id_sede', auth()->user()->sede)
+                ->where('horario', auth()->user()->horario)
+                ->get();
+        }else{
+            $prestadores = DB::table('solo_prestadores')
+            ->get();
+        }
+
+        $categorias = DB::table('categorias')->get();
+        $proyectos = DB::table('proyectos')->get();
+
+        return view('/admin/registro_proyectos',[
+            'categorias' => $categorias,
+            'proyectos' => $proyectos,
+            'prestadores' => $prestadores,]);
+    }
+
+    public function make_proy(Request $request){
+            
+        $idpy = DB::table('proyectos')->insertGetId([
+            'titulo' => $request->t_nombre,
+        ]);
+
+        $prestadoresSeleccionados = $request->input('prestadores_seleccionados');
+        $tamañoArreglo = count($prestadoresSeleccionados);
+
+        for ($i = 0; $i < $tamañoArreglo; $i++) {
+            $idp = $prestadoresSeleccionados[$i];
+            DB::table('proyectos_prestadores')->insert([
+                'id_prestador' => $idp,
+                'id_proyecto' => $idpy,]);
+        }
+        return redirect(route('admin.create_proy'))->with('success', 'Creada correctamente');
+    }
+    
+
+    public function asign2(Request $request){
+
+        $idp = $request->input('proyecto');
+        $modules = array();
+
+        foreach ($request->all() as $key => $value) {
+            if (strpos($key, 'module-') === 0) {
+                $moduleNumber = substr($key, strlen('module-'));
+                $modules[$moduleNumber] = $value;
+            }
+        }
+
+        $tamañoArreglo = count($modules);
+        for ($i = 0; $i < $tamañoArreglo; $i++) {
+            $ida = $modules[$i];
+            DB::table('actividades_prestadores')->insert([
+                'id_actividad' => $ida,
+                'id_proyecto' => $idp
+            ]);
+        }
+
+        return redirect(route('admin.create_proy'))->with('success', 'Asignaciones realizadas con exito');
+    }
+
+    public function obtenerPrestadores(Request $request)
+    {
+        $id = $request->input('proyectoId');
+
+        $prestadores = DB::table('solo_prestadores')
+        ->select('solo_prestadores.id','solo_prestadores.name', 'solo_prestadores.apellido')
+        ->join('proyectos_prestadores', 'solo_prestadores.id', '=', 'proyectos_prestadores.id_prestador')
+        ->where('proyectos_prestadores.id_proyecto', $id)
+        ->get();
+
+        return response()->json($prestadores);
+    }
 
     //IMPRESORAS
 

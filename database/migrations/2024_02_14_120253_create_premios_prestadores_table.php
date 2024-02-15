@@ -23,6 +23,7 @@ class CreatePremiosPrestadoresTable extends Migration
                 FROM users AS u
                 INNER JOIN premios_prestadores AS pp ON u.id = pp.id_prestador
                 INNER JOIN premios AS p ON p.id = pp.id_premio
+                WHERE p.tipo = 'horas'
                 GROUP BY u.id
         ");
 

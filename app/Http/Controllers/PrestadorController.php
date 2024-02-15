@@ -29,6 +29,20 @@ class PrestadorController extends Controller
         return view('/prestador/crear_actividad_prestador', compact('prestadores', 'actividades', 'categorias'));
     }
 
+    public function proyectoPrestador()
+    {
+        $proys = DB::tabe('proyectos_prestadores')
+            ->where('id_prestador', auth()->user()->id)
+            ->get();
+
+        $prestadores = DB::table('solo_prestadores')
+            ->join('proyectos_prestadores', 'solo_prestadores.id', '=', 'proyectos_prestadores.id_prestador')
+            ->where('proyectos_prestadores.id_proyecto', $proys->first()->id_proyecto)
+            ->get();
+
+        return view('/prestador/crear_actividad_prestador', compact('prestadores', 'actividades', 'categorias'));
+    }
+
     public function create_act()
     {
 
@@ -313,35 +327,40 @@ class PrestadorController extends Controller
 
     public function marcar(Request $request)
     {
+
         try {
             $dir = '';
             switch (Auth::user()->tipo) {
-                
                 case 'Superadmin':
+                    $dir = 'admin.checkin';
+                    $responsable = Auth::user()->name . ' ' . Auth::user()->apellido;
                     $codigo = $request->input('codigo');
-                    $sedeVerif =  true;
+                    $sedeArea =  true;
+                    break;
                 case 'jefe area':
                 case 'coordinador':
                     $dir = 'admin.checkin';
                     $responsable = Auth::user()->name . ' ' . Auth::user()->apellido;
                     $codigo = $request->input('codigo');
-                    $sedeVerif =  DB::table('users')
-                    ->select('sede')
+                    $refArea =  DB::table('users')
+                    ->select('area')
                     ->where('codigo', $codigo)
                     ->get();
+                    $sedeArea = $refArea->first()->area == Auth::user()->area;
                     break;
                 case 'checkin':
                     $dir = 'api.checkin';
                     $origen = 'checkin';
                     $codigo = $request->input('codigo');
-                    $sedeVerif =  DB::table('users')
-                    ->select('sede')
+                    $refArea =  DB::table('users')
+                    ->select('area')
                     ->where('codigo', $codigo)
                     ->get();
+                    $sedeArea = $refArea->first()->area == Auth::user()->area;
                     break;
             };
 
-            if($sedeVerif->first()->sede == Auth::user()->sede){
+            if($sedeArea){
 
                 $usuario = DB::table('users')->where('codigo', $codigo)->where(function ($query) {
                     $query->where('tipo', '=', "prestador")
