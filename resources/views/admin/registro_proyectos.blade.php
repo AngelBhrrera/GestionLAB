@@ -52,6 +52,19 @@
                             <textarea id="t_proyecto" name="t_nombre" type="text" class="form-control"  placeholder="Ingresa el titulo del proyecto" required></textarea>
                         </div>
                     </div>
+                    <div class="form-group">
+                            <label for="tipo_categoria">Seleccionar area</label>
+                            <select class="form-control" id="area" name="area" required>
+                                <option value="">Selecciona el area de trabajo donde estará principalmente el proyecto</option>
+                                @foreach ($areas as $area)
+                                <option value="{{ $area->id }}">{{ $area->nombre_area }}</option>
+                                @endforeach
+                            </select>
+                    </div>
+                    <div class="form-check mt-2">
+                        <input id="checkbox" name="particular" class="form-check-input" type="checkbox" checked>
+                        <label class="form-check-label" for="checkbox-switch-1">Particular</label>
+                    </div>
                     <div class="container">
                         <div class="row justify-content-center">
                             <label for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
@@ -139,13 +152,18 @@
 
 <script type="text/javascript">
 
-document.getElementById('enviar').addEventListener('submit', function(event) {
+    document.getElementById('enviar').addEventListener('submit', function(event) {
 
         const prestadorSelect = document.getElementById('prestadores_seleccionados');
+        const check = document.getElementById('checkbox');
+
         if (prestadorSelect.selectedOptions.length === 0) {
+            
+            if(check.checked){
                 event.preventDefault();
                 alert('Por favor, selecciona al menos un prestador.');
-            }
+            }        
+        }
     });
 
     let dlb2 = new DualListbox('.select2', {

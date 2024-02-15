@@ -408,16 +408,24 @@ class AdminController extends Controller
 
     public function asign_act(){
 
-        if (auth()->user()->tipo == "jefe area" || auth()->user()->tipo == "coordinador" ) {
+        
+        if( auth()->user()->tipo == 'coordinador'){
             $prestadores = DB::table('solo_prestadores')
                 ->where('id_area', auth()->user()->area)
                 ->where('horario', auth()->user()->horario)
                 ->get();
-        } else {
+        }else if(auth()->user()->tipo == 'jefe area'){
             $prestadores = DB::table('solo_prestadores')
-                ->where('id_area', auth()->user()->area)
+            ->where('id_area', auth()->user()->area)
+            ->get();
+        }else  if( auth()->user()->tipo == 'jefe sede'){
+            $prestadores = DB::table('solo_prestadores')
+                ->where('id_sede', auth()->user()->sede)
                 ->where('horario', auth()->user()->horario)
                 ->get();
+        }else{
+            $prestadores = DB::table('solo_prestadores')
+            ->get();
         }
             
         $categorias = DB::table('categorias')->get();
@@ -453,19 +461,41 @@ class AdminController extends Controller
 
     public function create_proy() {
 
-        if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
+        if( auth()->user()->tipo == 'coordinador'){
             $prestadores = DB::table('solo_prestadores')
                 ->where('id_area', auth()->user()->area)
                 ->where('horario', auth()->user()->horario)
+                ->get();
+            $areas = DB::table('areas')
+                ->select('id', 'nombre_area')
+                ->where('id', auth()->user()->area)
+                ->get();
+
+        }else if(auth()->user()->tipo == 'jefe area'){
+
+            $prestadores = DB::table('solo_prestadores')
+            ->where('id_area', auth()->user()->area)
+            ->get();
+
+            $areas = DB::table('areas')
+                ->select('id', 'nombre_area')
+                ->where('id', auth()->user()->area)
                 ->get();
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $prestadores = DB::table('solo_prestadores')
                 ->where('id_sede', auth()->user()->sede)
                 ->where('horario', auth()->user()->horario)
                 ->get();
+                $areas = DB::table('areas')
+                ->select('id', 'nombre_area')
+                ->where('id_sede', auth()->user()->sede)
+                ->get();
         }else{
             $prestadores = DB::table('solo_prestadores')
             ->get();
+            $areas = DB::table('areas')
+                ->select('id', 'nombre_area')
+                ->get();
         }
 
         $categorias = DB::table('categorias')->get();
@@ -474,24 +504,41 @@ class AdminController extends Controller
         return view('/admin/registro_proyectos',[
             'categorias' => $categorias,
             'proyectos' => $proyectos,
+            'areas' => $areas,
             'prestadores' => $prestadores,]);
     }
 
     public function make_proy(Request $request){
             
+        $ida = $request->input('area');
+        if($request->input('particular') === 'on'){
+            $boolp = true;
+        }else{
+            $boolp = false;
+        }
+
         $idpy = DB::table('proyectos')->insertGetId([
             'titulo' => $request->t_nombre,
+            'id_area' => $ida,
+            'particular' => $boolp,
         ]);
 
         $prestadoresSeleccionados = $request->input('prestadores_seleccionados');
-        $tamañoArreglo = count($prestadoresSeleccionados);
+        if ($prestadoresSeleccionados == null){
 
-        for ($i = 0; $i < $tamañoArreglo; $i++) {
-            $idp = $prestadoresSeleccionados[$i];
-            DB::table('proyectos_prestadores')->insert([
-                'id_prestador' => $idp,
-                'id_proyecto' => $idpy,]);
+        }else{
+
+            $tamañoArreglo = count($prestadoresSeleccionados);
+
+                for ($i = 0; $i < $tamañoArreglo; $i++) {
+                    $idp = $prestadoresSeleccionados[$i];
+                    DB::table('proyectos_prestadores')->insert([
+                        'id_prestador' => $idp,
+                        'id_proyecto' => $idpy,]);
+                }
         }
+
+        
         return redirect(route('admin.create_proy'))->with('success', 'Creada correctamente');
     }
     

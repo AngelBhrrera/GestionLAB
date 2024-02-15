@@ -166,7 +166,7 @@
                 }
             }
         };
-        xhr.open('GET', '{{ route('obtenerSubcategorias') }}?categoriaId=' + categoriaId);
+        xhr.open('GET', '{{ route('admin.obtenerSubcategorias') }}?categoriaId=' + categoriaId);
         xhr.send();
     }
 
@@ -203,7 +203,7 @@
             }
         };
 
-        xhr.open('GET', '{{ route('obtenerActividades') }}?categoriaId=' + categoriaId);
+        xhr.open('GET', '{{ route('admin.obtenerActividades') }}?categoriaId=' + categoriaId);
         xhr.send();
     }
 
@@ -242,7 +242,7 @@
         };
 
         // xhr.open('GET', '/obtenerActividades?categoriaId=' + categoriaId);
-        xhr.open('GET', '{{ route('obtenerActividadesB') }}?subcategoriaId=' + subcategoriaId);
+        xhr.open('GET', '{{ route('admin.obtenerActividadesB') }}?subcategoriaId=' + subcategoriaId);
 
         xhr.send();
     }
