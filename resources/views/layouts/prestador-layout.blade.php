@@ -43,7 +43,7 @@
             <div class="scrollable">
                 <ul class="scrollable__content">
                     <li class="side-nav__devider mb-4">MENU</li>
-                    <li>
+                        <li>
                             <a href="#" class="side-menu">
                                 <div class="side-menu__icon"> <i ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
                                     viewBox="0 0 24 24" fill="none" 
@@ -225,9 +225,9 @@
                        
 
                     <div class="intro-x relative ml-auto flex sm:mx-auto">
-                        @if (Auth::user()->tipo == "encargado")
+                        @if (Auth::user()->tipo == "coordinador")
                             <a href="{{ route('cambiarRol') }}">
-                                <div class="container"><img class="imagen-rol" title="cambiar a Admin"
+                                <div class="container"><img class="imagen-rol" title="Cambiar a vista admin"
                                 src="{{asset('build/assets/images/prestico2.svg')}}" width="30" height="30" alt=""></div>
                             </a> 
                         @endif 
@@ -243,11 +243,8 @@
                         
                         <div class="h-full dropdown-toggle flex items-center" role="button" aria-expanded="false" data-tw-toggle="dropdown">
                             <div class="w-10 h-10 image-fit">
-                                @if(!isset(Auth::user()->imagen_perfil))
-                                    <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/default-profile-image.png')}}">
-                                @else
-                                    <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/'.Auth::user()->imagen_perfil)}}">
-                                @endif
+                                <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" 
+                                src="{{route('obtenerImagen', ['nombreArchivo' => (Auth::user()->imagen_perfil != null) ? Auth::user()->imagen_perfil : 'false'])}}">
                             </div>
                             
                             <div class="hidden md:block ml-3">

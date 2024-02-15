@@ -97,8 +97,8 @@ class VisitanteController extends Controller
         try {
             $dir = '';
             switch (Auth::user()->tipo) {
-                case 'admin':
-                case 'encargado':
+                case 'jefe area':
+                case 'coordinador':
                 case 'Superadmin':
                     $dir = 'admin.visitas_reg';
                     $origen = Auth::user()->name . ' ' . Auth::user()->apellido;

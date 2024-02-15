@@ -21,7 +21,7 @@ class PrestadorController extends Controller
     
     public function actividadesPrestador()
     {
-        $encargado_id = auth()->user()->encargado_id;
+        $encargado_id = auth()->user()->encargado_id; //coordinador id
         $prestadores = DB::table('users')->select('id', 'name', 'apellido')->where('id', auth()->user()->id)->get();
         $categorias = DB::table('categorias')->get();
         $actividades = DB::table('actividades')->get();
@@ -320,8 +320,8 @@ class PrestadorController extends Controller
                 case 'Superadmin':
                     $codigo = $request->input('codigo');
                     $sedeVerif =  true;
-                case 'admin':
-                case 'encargado':
+                case 'jefe area':
+                case 'coordinador':
                     $dir = 'admin.checkin';
                     $responsable = Auth::user()->name . ' ' . Auth::user()->apellido;
                     $codigo = $request->input('codigo');
@@ -345,7 +345,7 @@ class PrestadorController extends Controller
 
                 $usuario = DB::table('users')->where('codigo', $codigo)->where(function ($query) {
                     $query->where('tipo', '=', "prestador")
-                        ->orWhere('tipo', '=', "encargado")
+                        ->orWhere('tipo', '=', "coordinador")
                         ->orWhere('tipo', '=', "voluntario")
                         ->orWhere('tipo', '=', "practicante");
                 })->select('name', 'id', 'apellido', 'tipo', 'encargado_id')->get();
@@ -543,7 +543,7 @@ class PrestadorController extends Controller
         // Eliminar la imagen del usuario si es que ya tenia
         if ($user->imagen_perfil) {
             // $image_path = public_path('storage/imagen/imagen/' . $user->imagen_perfil);
-            $image_path = public_path('storage/userImg/'.$user->imagen_perfil);
+            $image_path = storage_path('app/public/userImg/'.$user->imagen_perfil);
             if (file_exists($image_path)) {
                 unlink($image_path);
             }
@@ -1141,5 +1141,4 @@ class PrestadorController extends Controller
         return view('prestador.faltas_prestador');
     }
     */
-
 }

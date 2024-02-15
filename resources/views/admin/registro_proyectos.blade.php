@@ -22,11 +22,26 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-9">
+            <div class="grid grid-cols-12 gap-6 mt-5">
+                <div class="intro-y ml-5 col-span-12 lg:col-span-6 flex justify-center" id="alerta">
+                    @if (session('success'))
+                        <div class="alert alert-success w-full px-4">{{session('success')}}</div>
+                    @endif
+                    @if(session('warning'))
+                        <div class="alert alert-warning w-full px-4">{{session('warning')}}</div>
+                    @endif
+                    @error('nombre')
+                        <div class="alert alert-danger w-full px-4">{{$message}}</div>
+                    @enderror
+                        </div>
+                </div>
+            </div>
             <div class="card card-primary">
                 <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Crear Nuevo Proyecto </h3>
             </div>
             <div class="card-body pl-10 pr-10">
                 <form id="btn-proy" method="POST" action="{{route('admin.make_proy')}}">
+                    @csrf
                     @if (isset($tipo))
                     <input id="tipo" name="tipo" value={{ $tipo }} type="hidden">
                     @endif
@@ -34,10 +49,25 @@
                     <div class="form-group row">
                         <label for="nombre" class="col-md-4 col-form-label text-md-right">Titulo del proyecto</label>
                         <div class="col-md-8">
-                            <textarea id="t_proyecto" name="t_nombre" type="text" class="form-control"  required>Ingresa el titulo del proyecto</textarea>
+                            <textarea id="t_proyecto" name="t_nombre" type="text" class="form-control"  placeholder="Ingresa el titulo del proyecto" required></textarea>
                         </div>
                     </div>
-
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <label for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
+                            <div class="col-md-8"> 
+                                <select class="select2" name="prestadores_seleccionados[]" id="prestadores_seleccionados" multiple>  
+                                    @if (isset($prestadores))
+                                    @foreach ($prestadores as $prestador)
+                                    <option value="{{$prestador->id}}">{{$prestador->name." ".$prestador->apellido}}</option>
+                                    @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                        </div>
+                        <small id="Help" class="form-text text-muted">Selecciona a los prestadores para realizar la actividad</small>
+                    </div>
+                    <br>
                     <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits">Crear proyecto</button>
                 </form>
             </div>
@@ -64,7 +94,10 @@
                         <div class="form-group">
                             <label for="tipo_categoria">Filtro por categoría</label>
                             <select class="form-control" id="tipo_categoria" name="tipo_categoria" onchange="filtrarCategorias()">
-                                <option value=null >Filtrar por categoría</option>
+                                <option value="">Filtrar por categoría</option>
+                                @foreach ($categorias as $categoria)
+                                <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="form-group">
@@ -74,20 +107,21 @@
                             </select>
                         </div>
                         <br>
-                        <div id="module-container">
-                            <div class="module">
-                            <select name="module-0" class="form-control">
-                                <option value="opcion1">Opción 1</option>
-                                <option value="opcion2">Opción 2</option>
-                                <option value="opcion3">Opción 3</option>
-                            </select>
-                            <button type="button" onclick="removeModule(0)">Eliminar</button>
+                        <div class="form-group">
+                            <label for="actividades_l" class="col-md-4 col-form-label text-md-right">Actividades</label>
+                            <div id="module-container">
+                                <div class="module">
+                                    <select class="form-control" id="tipo_actividad" name="module-0" required>
+                                        <option value="" >Asignar actividad</option>
+                                    </select>
+                                    <button type="button" onclick="removeModule(0)">Eliminar</button>
+                                </div>
                             </div>
+                            <button type="button" id="add-module-btn">+</button>
                         </div>
-                        <button type="button" id="add-module-btn">+</button>
                     </div>
                     <div class="col-md-8"> 
-                        <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits">Crear proyecto</button>
+                        <button type="submit" id='asignar' class="btn btn-primary from-prevent-multiple-submits">Agregar a proyecto</button>
                     </form>
                     </div>
             </div>
@@ -104,7 +138,7 @@
 
 <script type="text/javascript">
 
-    document.getElementById('btn-proy').addEventListener('submit', function(event) {
+document.getElementById('enviar').addEventListener('submit', function(event) {
         
         const prestadorSelect = document.getElementById('prestadores_seleccionados');
 
@@ -112,6 +146,26 @@
                 event.preventDefault();
                 alert('Por favor, selecciona al menos un prestador.');
             }
+    });
+
+    let dlb2 = new DualListbox('.select2', {
+        availableTitle: 'Prestadores disponibles',
+        selectedTitle: 'Prestadores seleccionados',
+        addButtonText: '🡺',
+        removeButtonText: '🡸',
+        addAllButtonText: '>>',
+        removeAllButtonText: '<<',
+        searchPlaceholder: 'Buscar prestadores'
+    });
+    dlb2.addEventListener('added', function(event) {
+        const prestadorSelect = document.getElementById('prestadores_seleccionados');
+        console.log(prestadorSelect.value);
+    });
+    dlb2.addEventListener('removed', function(event) {
+        const prestadorSelect = document.getElementById('prestadores_seleccionados');
+        if (prestadorSelect.selectedOptions.length === 0) {
+            console.log(prestadorSelect.value);
+        }
     });
 
     function filtrarCategorias() {
@@ -122,7 +176,6 @@
         var categoriaId = categoriaSelect.value;
 
         subcategoriaSelect.innerHTML = '<option value="">Selecciona una subcategoria (Opcional)</option>';
-        //actividadSelect.innerHTML = '<option value="">Selecciona una actividad</option>';
         if (categoriaId === '') {
             return;
         }
@@ -153,7 +206,10 @@
         var actividadSelects = document.querySelectorAll('#tipo_actividad');
         var categoriaId = categoriaSelect.value;
         actividadSelects.forEach(function(actividadSelect) {
-            actividadSelect.innerHTML = '<option value="">Selecciona una actividad</option>';
+            var selectedValue = actividadSelect.value;
+            if (selectedValue === "") {
+                actividadSelect.innerHTML = '<option value="">Selecciona una actividad</option>';
+            }
         });
         if (categoriaId === '') {
             return;
@@ -192,7 +248,10 @@
 
         var subcategoriaId = subcategoriaSelect.value;
         actividadSelects.forEach(function(actividadSelect) {
-            actividadSelect.innerHTML = '<option value="">Selecciona una actividad</option>';
+            var selectedValue = actividadSelect.value;
+            if (selectedValue === "") {
+                actividadSelect.innerHTML = '<option value="">Selecciona una actividad</option>';
+            }
         });
         if (subcategoriaId === '') {
             filtrarActividades();
@@ -225,37 +284,64 @@
 
         xhr.send();
     }
+</script>
 
+<script>
+  // Obtener el contenedor donde se agregarán los módulos
   const moduleContainer = document.getElementById('module-container');
-  const addModuleBtn = document.getElementById('add-module-btn');
-  let moduleId = 1; 
   
+  // Obtener el botón para agregar un nuevo módulo
+  const addModuleBtn = document.getElementById('add-module-btn');
+  
+  // Contador para asignar IDs únicos a los módulos
+  let moduleId = 1; // Comienza en 1 porque ya hay un módulo inicial
+  
+  // Función para agregar un nuevo módulo de select
   function addModule() {
-    // Crear el elemento del módulo
+
     const module = document.createElement('div');
     module.classList.add('module');
     module.innerHTML = `
-    <select class="form-control" name="module-${moduleId}">
-                <option value="">Asignar actividad</option>
-                    @foreach ($actividades as $actividad)
-                        <option value="{{ $actividad->id }}">{{ $actividad->titulo }}</option>
-                    @endforeach
-            </select>
-            <button type="button" onclick="removeModule(${moduleId})">Eliminar</button>
+        <select class="form-control" id="tipo_actividad"  name="module-${moduleId}" required>
+            <option value="" >Asignar actividad</option>
+        </select>
+        <button type="button" onclick="removeModule(${moduleId})"">Eliminar</button>
     `;
+    
+    // Agregar el módulo al contenedor
     moduleContainer.appendChild(module);
+    
+    // Incrementar el ID para el próximo módulo
     moduleId++;
   }
   
+  // Función para eliminar un módulo
   function removeModule(id) {
+
+        console.log(id);
 
     const moduleToRemove = document.querySelector(`[name="module-${id}"]`);
     if (moduleToRemove) {
+      // Eliminar el módulo del contenedor
       moduleContainer.removeChild(moduleToRemove.parentElement);
     }
   }
   
+  // Escuchar eventos de clic en el botón de agregar módulo
+  addModuleBtn.addEventListener('click', addModule);
 
+  // Obtener información del número de elementos y contenido seleccionado
+  function obtenerInformacion() {
+    const numElementos = moduleId;
+    const valoresSeleccionados = [];
+    for (let i = 0; i < numElementos; i++) {
+      const select = document.querySelector(`[name="module-${i}"]`);
+      valoresSeleccionados.push(select.value);
+    }
+    console.log("Número de elementos:", numElementos);
+    console.log("Valores seleccionados:", valoresSeleccionados);
+    // Aquí puedes enviar los datos a tu backend para la inserción en la BD
+  }
 </script>
 
 @endsection

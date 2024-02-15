@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
 
 //Estimado prestador de servicio que tiene que dar mantenimiento a esta fregadera [Abril, 2023]
 
@@ -50,6 +51,18 @@ Route::group(['middleware'=>'auth'], function (){
         Route::get('/descargar/{nombreArchivo}', 'descargar_reporte')->name('descargar_reporte');
         Route::get('/visualizar_reporte/{nombreArchivo}', 'visualizar_reporte')->name('visualizar');
     });
+    Route::get('/obtenerImagen/{nombreArchivo}', function($nombreArchivo){
+        if($nombreArchivo != "false"){
+            $rutaImagen = storage_path('app/public/userImg/' . $nombreArchivo);
+            if (!file_exists($rutaImagen)) {
+                $rutaImagen = storage_path('app/public/userImg/default-profile-image.png');
+            }
+        }else{
+            $rutaImagen = storage_path('app/public/userImg/default-profile-image.png');
+        }
+        
+        readfile($rutaImagen);
+    })->name('obtenerImagen');
     
 });
 
@@ -83,21 +96,22 @@ Route::controller(App\Http\Controllers\Auth\logsysController::class)->group(func
 });
 
 //Rutas de Admin gestionadas desde el AdminController
-//Requieres el rol encargado, admin, admin_sede o superadmin para acceder
+//Requieres el rol coordinador, admin, jefe sede o superadmin para acceder
 Route::controller(App\Http\Controllers\AdminController::class)->group(function(){
 
-    Route::middleware('role:Superadmin,admin_sede,admin,encargado')->group(function() {
+    Route::middleware('role:Superadmin,jefe sede,jefe area,coordinador')->group(function() {
 
         Route::name('admin.')->group(function () {
 
-            Route::middleware('role:admin,admin_sede,Superadmin,encargado')->group(function() {
+            Route::middleware('role:jefe area,jefe sede,Superadmin,coordinador')->group(function() {
 
-                Route::middleware('role:encargado')->group(function() {
+                Route::middleware('role:coordinador')->group(function() {
                     Route::get('admin/cambiarRol', 'cambiarRol')->name('cambiorol');
                 });
 
                 
                 Route::get('/admin/registro', 'registro')->name('registro'); //NUEVA RUTA
+
                 Route::get('/admin/premios', 'premios')->name('premios');
                     
                 Route::get('admin/ver_reportes_parciales', 'ver_reportes_parciales')->name('reportes_parciales');
@@ -135,6 +149,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/A_actividades', 'asign_act')->name('asign_act');
 
             Route::post('/admin/asign', 'asign')->name('asign');
+            
             Route::post('/admin/M_proyecto', 'make_proy')->name('make_proy');
 
             Route::get('/admin/actividades', 'actividades')->name('actividades');
@@ -143,6 +158,10 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/ver_impresoras', 'control_print')->name('control_print');
             Route::post('/admin/registrar_impresoras', 'make_print')->name('make_print');
             Route::get('/admin/ver_impresiones', 'watch_prints')->name('watch_prints');
+
+            
+            Route::post('admin/g_premio', 'guardar_premio')->name('guardar_premio');
+            Route::post("admin/a_premio", "asignar_premio")->name("asignar_premio");
                 
             Route::get('/admin/general', 'general')->name('general');
             Route::get('/admin/prestadores', 'prestadores')->name('prestadores');
@@ -183,12 +202,8 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('admin/activar_impresora/{value}', 'activate_print')->name('activate_print');
             Route::get('admin/changestate_print/{id}/{value}', 'printstate')->name('printstate');
             Route::get('admin/observaciones_impresion/{id}/{value}', 'detail_prints')->name('detail_prints');
-            //PREMIOS
-            Route::get("admin/premios, premios")->name("premios");
-            Route::post('admin/premios', 'guardar_premio')->name('guardar_premio');
-            Route::post("admin/premios", "asignar_premio")->name("asignar_premio");
             //
-            Route::middleware('role:admin,admin_sede,Superadmin')->group(function() {
+            Route::middleware('role:jefe area,jefe sede,Superadmin')->group(function() {
                 Route::get('admin/liberar_prestador/{value}', 'liberar')->name('liberar');
                 Route::get('admin/changestate/{id}/{value}', 'checkinstate')->name('checkinstate');
                 
@@ -257,9 +272,9 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 //Rutas Prestador
 Route::controller(App\Http\Controllers\PrestadorController::class)->group(function(){
 
-    Route::middleware('role:prestador,voluntario,practicante,encargado')->group(function() {
+    Route::middleware('role:prestador,voluntario,practicante,coordinador')->group(function() {
         
-        Route::middleware('role:encargado')->group(function() {
+        Route::middleware('role:coordinador')->group(function() {
             Route::get('prestador/cambiarRol', 'cambiarRol')->name('cambiarRol');
         });
 
@@ -320,7 +335,7 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
     });
 
     Route::name('api.')->group(function () {
-        Route::post('/marcar', 'marcar')->middleware('role:admin,checkin,Superadmin,encargado')->name('marcar');
+        Route::post('/marcar', 'marcar')->middleware('role:jefe area,checkin,Superadmin,coordinador')->name('marcar');
         //Route::post('/afirmas', 'asignarfirmas')->name('afirmas');    
     });
 

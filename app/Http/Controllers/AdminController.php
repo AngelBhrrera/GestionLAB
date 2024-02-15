@@ -41,7 +41,7 @@ class AdminController extends Controller
             ->orderBy('fecha_actual', 'desc')
             ->get();
 
-        if(Auth::user()->tipo == "encargado"){
+        if(Auth::user()->tipo == "coordinador"){
             return view("admin.asistencias_encargado", ['datos' => json_encode($sql)]);
         }else{
             return view("admin.asistencias_admin", ['datos' => json_encode($sql)]);
@@ -72,18 +72,18 @@ class AdminController extends Controller
         $users[] = ['id' => "RBvoluntario", 'value' => 'voluntario', 'name' => 'Voluntario'];
         $users[] = ['id' => "RBpracticante", 'value' => 'practicante', 'name' => 'Practicas Profesionales'];
         $users[] = ['id' => "RBprestador", 'value' => 'prestador', 'name' => 'Prestador Servicio Social'];
-        $users[] = ['id' => "RBencargado", 'value' => 'encargado', 'name' => 'Encargado'];
+        $users[] = ['id' => "RBencargado", 'value' => 'coordinador', 'name' => 'Coordinador'];
 
-        if(in_array(Auth::user()->tipo, ['encargado', 'admin'])) {
+        if(in_array(Auth::user()->tipo, ['coordinador', 'jefe area'])) {
             $sedes = DB::select("SELECT * FROM sedes WHERE id_sede = $id_S;"); 
             $areas =  DB::select("SELECT * FROM areas WHERE id = $id_A;");
-        }else if (Auth::user()->tipo == 'admin_sede'){
+        }else if (Auth::user()->tipo == 'jefe sede'){
             $sedes = DB::select("SELECT * FROM sedes WHERE id_sede = $id_S;"); 
-            $users[] = ['id' => "RBadmin", 'value' => 'admin', 'name' => 'Admin'];
+            $users[] = ['id' => "RBadmin", 'value' => 'jefe area', 'name' => 'Jefe de area'];
         }else if (Auth::user()->tipo == 'Superadmin'){
             $sedes = DB::select("SELECT * FROM sedes;");
-            $users[] = ['id' => "RBadmin", 'value' => 'admin', 'name' => 'Admin'];
-            $users[] = ['id' => "RBadminsede", 'value' => 'admin_sede', 'name' => 'Admin de Sede'];
+            $users[] = ['id' => "RBadmin", 'value' => 'jefe area', 'name' => 'Jefe de area'];
+            $users[] = ['id' => "RBadminsede", 'value' => 'jefe sede', 'name' => 'Jefe de Sede'];
         }
         
         return view('auth/registerAdmin', [ 'sedes'=>$sedes, 'areas'=>$areas, 'users'=>$users ]);
@@ -97,14 +97,14 @@ class AdminController extends Controller
     
     public function general()
     {
-        if( auth()->user()->tipo == 'encargado' || auth()->user()->tipo == 'admin'){
+        if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $data = DB::table('users')
                 ->select('users.name', 'users.apellido', 'users.correo', 'users.codigo', 'users.tipo', 'users.telefono', 'areas.nombre_area')
-                ->whereNotIn('users.tipo', ['Superadmin','admin_sede','admin'])
+                ->whereNotIn('users.tipo', ['Superadmin','jefe sede','jefe area'])
                 ->where('users.area', auth()->user()->area)
                 ->join('areas', 'users.area', '=', 'areas.id')
                 ->get();
-        }else  if( auth()->user()->tipo == 'admin_sede'){
+        }else  if( auth()->user()->tipo == 'jefe sede'){
             $data = DB::table('users')
             ->select('users.name', 'users.apellido', 'users.correo', 'users.codigo', 'users.tipo', 'users.telefono', 'areas.nombre_area')
             ->whereNotIn('users.tipo', ['Superadmin'])
@@ -124,14 +124,14 @@ class AdminController extends Controller
 
     public function administradores()
     {   
-        if( auth()->user()->tipo == 'encargado' || auth()->user()->tipo == 'admin'){
+        if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $n_Area = DB::table('areas')
                 ->where('id', auth()->user()->area)
                 ->value('nombre_area');
             $data = DB::table('solo_admins')
                 ->where('solo_admins.area',$n_Area)
                 ->get();
-        }else  if( auth()->user()->tipo == 'admin_sede'){
+        }else  if( auth()->user()->tipo == 'jefe sede'){
             $n_Sede = DB::table('sedes')
                 ->where('id_sede', auth()->user()->sede)
                 ->value('nombre_sede');
@@ -156,14 +156,14 @@ class AdminController extends Controller
 
     public function prestadores() #YA
     {
-        if( auth()->user()->tipo == 'encargado' || auth()->user()->tipo == 'admin'){
+        if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $n_area = DB::table('areas')
             ->where('id', Auth::user()->area)
             ->value('nombre_area');
             $data = DB::table('solo_prestadores')
                 ->where('nombre_area', $n_area)
                 ->get();
-        }else  if( auth()->user()->tipo == 'admin_sede'){
+        }else  if( auth()->user()->tipo == 'jefe sede'){
             $n_sede = DB::table('sedes')
             ->where('id_sede', Auth::user()->sede)
             ->value('nombre_sede');
@@ -180,11 +180,11 @@ class AdminController extends Controller
 
     public function prestadoresPendientes() #YA
     {
-        if( auth()->user()->tipo == 'encargado' || auth()->user()->tipo == 'admin'){
+        if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $data = DB::table('prestadores_pendientes')
                 ->where('area', Auth::user()->area)
                 ->get();
-        }else  if( auth()->user()->tipo == 'admin_sede'){
+        }else  if( auth()->user()->tipo == 'jefe sede'){
             $data = DB::table('prestadores_pendientes')
                 ->where('sede',  Auth::user()->sede)
                 ->get();
@@ -213,11 +213,11 @@ class AdminController extends Controller
 
     public function prestadores_liberados() #YA
     {
-        if( auth()->user()->tipo == 'encargado' || auth()->user()->tipo == 'admin'){
+        if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $data = DB::table('prestadores_servicio_liberado')
                 ->where('area', Auth::user()->area)
                 ->get();
-        }else  if( auth()->user()->tipo == 'admin_sede'){
+        }else  if( auth()->user()->tipo == 'jefe sede'){
             $data = DB::table('prestadores_servicio_liberado')
                 ->where('sede',  Auth::user()->sede)
                 ->get();
@@ -235,11 +235,11 @@ class AdminController extends Controller
         ->where('area', Auth::user()->area)
         ->get();
 
-        if( auth()->user()->tipo == 'encargado'){
+        if( auth()->user()->tipo == 'coordinador'){
            
             return view('admin/prestadoresInactivos', ['datos' => json_encode($data)]);
-        }else  if( auth()->user()->tipo == 'admin'){
-        }else  if( auth()->user()->tipo == 'admin_sede'){
+        }else  if( auth()->user()->tipo == 'jefe area'){
+        }else  if( auth()->user()->tipo == 'jefe sede'){
             $data = DB::table('prestadores_inactivos')
                 ->where('sede',  Auth::user()->sede)
                 ->get();
@@ -354,13 +354,19 @@ class AdminController extends Controller
     
         public function create_act()
         {
+            if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
+                $prestadores = DB::table('solo_prestadores')
+                    ->where('id_area', auth()->user()->area)
+                    ->where('horario', auth()->user()->horario)
+                    ->get();
+            }else  if( auth()->user()->tipo == 'jefe sede'){
+                $prestadores = DB::table('solo_prestadores')
+                    ->where('id_sede', auth()->user()->sede)
+                    ->where('horario', auth()->user()->horario)
+                    ->get();
+            }
       
-            $prestadores = DB::table('solo_prestadores')
-                ->where('id_area', auth()->user()->area)
-                ->where('horario', auth()->user()->horario)
-                ->get();
-    
-    
+        
             $categorias = DB::table('categorias')->get();
             $subcategorias = DB::table('subcategorias')->get();
     
@@ -377,33 +383,27 @@ class AdminController extends Controller
         public function create_proy()
         {
 
-            if (auth()->user()->tipo == 'Superadmin'){
+            if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
                 $prestadores = DB::table('solo_prestadores')
-                ->get();
-                
-            }else if(auth()->user()->tipo == 'admin'){
+                    ->where('id_area', auth()->user()->area)
+                    ->where('horario', auth()->user()->horario)
+                    ->get();
+            }else  if( auth()->user()->tipo == 'jefe sede'){
                 $prestadores = DB::table('solo_prestadores')
-                ->where('id_area', auth()->user()->area)
-                ->get();
-            }else{
-                $prestadores = DB::table('solo_prestadores')
-                ->where('id_area', auth()->user()->area)
-                ->where('horario', auth()->user()->horario)
-                ->get();
+                    ->where('id_sede', auth()->user()->sede)
+                    ->where('horario', auth()->user()->horario)
+                    ->get();
             }
 
             $categorias = DB::table('categorias')->get();
-            $actividades = DB::table('actividades')->get();
             $proyectos = DB::table('proyectos')->get();
-    
-    
+
             return view(
                 '/admin/registro_proyectos',
                 [
-                    'prestadores' => $prestadores,
-                    'actividades' => $actividades,
                     'categorias' => $categorias,
                     'proyectos' => $proyectos,
+                    'prestadores' => $prestadores,
                 ]
             );
         }
@@ -449,36 +449,21 @@ class AdminController extends Controller
                 'TEC' => $tec,
             ]);
     
-            return view( 'admin/asignar_actividades', [
-                'prestadores' => $prestadores,
-                'categorias' => $categorias,
-                'actividades' => $actividades,
-            ]);
+            return redirect(route('admin.asign_act'));
         }
 
         public function make_proy(Request $request){
-            DB::table('actividades_prestadores')->insert([
-                'titulo' => $request->t_proyecto,
+
+            DB::table('proyectos')->insert([
+                'titulo' => $request->t_nombre,
             ]);
 
-            $categorias = DB::table('categorias')->get();
-            $actividades = DB::table('actividades')->get();
-            $proyectos = DB::table('proyectos')->get();
-    
-    
-            return view(
-                '/admin/registro_proyectos',
-                [
-                    'actividades' => $actividades,
-                    'categorias' => $categorias,
-                    'proyectos' => $proyectos,
-                ]
-            );
+            return redirect(route('admin.create_proy'))->with('success', 'Creada correctamente');
         }
     
         public function asign_act(){
 
-                if (auth()->user()->tipo == "admin" || auth()->user()->tipo == "encargado" ) {
+                if (auth()->user()->tipo == "jefe area" || auth()->user()->tipo == "coordinador" ) {
                     $prestadores = DB::table('solo_prestadores')
                         ->where('id_area', auth()->user()->area)
                         ->get();
@@ -491,18 +476,20 @@ class AdminController extends Controller
             
             $categorias = DB::table('categorias')->get();
             $actividades = DB::table('actividades')->get();
+            $proyectos = DB::table('proyectos')->get();
     
             return view( 'admin/asignar_actividades', [
                 'prestadores' => $prestadores,
                 'categorias' => $categorias,
                 'actividades' => $actividades,
+                'proyectos' => $proyectos,
             ]);
         }
 
         public function asign(Request $request){
 
-            $fecha = date('Y-m-d H:i:s'); 
             $ida = $request->input('tipo_actividad');
+            $idp = $request->input('proyecto');
             $prestadoresSeleccionados = $request->input('prestadores_seleccionados');
             $tamañoArreglo = count($prestadoresSeleccionados);
 
@@ -513,12 +500,10 @@ class AdminController extends Controller
                 DB::table('actividades_prestadores')->insert([
                     'id_prestador' => $idp,
                     'id_actividad' => $ida,
-                    'fecha' => $fecha,
-                    'id_proyecto' => 0,
-                ]);
-                
-            }
+                    'id_proyecto' => $idp,
+        ]);
         }
+    }
 
 
     //OTROS USUARIOS
@@ -654,30 +639,13 @@ class AdminController extends Controller
     
     }
 
-   // CAMBIO DE ROL PARA ENCARGADOS
+   // CAMBIO DE ROL PARA coordinador
 
     public function cambiarRol()
     {
-        if (Auth::user()->tipo == "encargado") {
-
-            try {
-                $user = User::find(Auth::user()->id);
-                switch ($user->tipo) {
-                    case 'prestador':
-                        $user->tipo = 'admin';
-                        $user->save();
-                        Log::info('era prestador');
-                        break;
-                    case 'admin':
-                        $user->tipo = 'prestador';
-                        $user->save();
-                        Log::info('era admin');
-                        break;
-                }
+        if (Auth::user()->tipo == "coordinador") {
                 return redirect('/');
-            } catch (\Throwable $th) {
-                Log::info($th);
-            }
+            
         }
     }
 
@@ -687,19 +655,14 @@ class AdminController extends Controller
         
         $reportes = session('reportes');
         $codigo = session('codigo');
-        if(Auth::user()->tipo == "admin"){
-            $n_Area = DB::table('areas')
-                ->where('id', auth()->user()->area)
-                ->value('nombre_area');
-            $prestadores = DB::table('solo_prestadores')
-                ->where('id_area', Auth::user()->area)
+        if(Auth::user()->tipo == "jefe area"){
+            $prestadores = DB::table('users')
+            ->where('area', Auth::user()->area)
+            ->where('sede', Auth::user()->sede)
             ->get();
-        }elseif (Auth::user()->tipo == "admin_sede"){
-            $prestadores = DB::table('solo_prestadores')
-            ->where('id_sede', Auth::user()->sede)
-            ->get();
-        }else{
-            $prestadores = DB::table('solo_prestadores')
+        }elseif (Auth::user()->tipo == "jefe sede"){
+            $prestadores = DB::table('users')
+            ->where('sede', Auth::user()->sede)
             ->get();
         }
         
@@ -922,8 +885,20 @@ class AdminController extends Controller
     // PREMIOS
     public function premios(){
         $premios = DB::select("SELECT * FROM premios");
-        $prestadores = DB::select("SELECT * FROM users;");
-        return view("admin/premios", ["prestadores"=>$prestadores, "premios"=>$premios]);
+
+        if( auth()->user()->tipo == 'jefe area'){
+            $prestadores = DB::table('solo_prestadores')
+                ->where('users.area', auth()->user()->area)
+                ->get();
+        }else  if( auth()->user()->tipo == 'jefe sede'){
+            $prestadores = DB::table('solo_prestadores')
+            ->where('users.sede', auth()->user()->sede)
+            ->get();
+        }else{
+            $prestadores = DB::table('solo_prestadores')
+            ->get();
+        }
+        return view("admin.premios", ["prestadores"=>$prestadores, "premios"=>$premios]);
     }
 
     public function guardar_premio(Request $request){
@@ -941,16 +916,7 @@ class AdminController extends Controller
             "horas" => $request -> input("horas"),
         ]);
        
-        return redirect()->back()->with("Exito",);  
-    }
-
-    public function asignar_premio(Resquest $request){
-        $users = DB::table("users")
-                    ->where("")
-        
-        DB::table("users")->update([
-            // cambios en las horas de los prestadores asignados. 
-        ]);
+        return redirect()->back()->with("Exito",);
     }
 
 
@@ -1222,7 +1188,7 @@ class AdminController extends Controller
                     'objetivo' => $obj,
                     'status' => 'creado',
                     'fecha' => $fecha,
-                    'encargado_id' => $usuarioActual,
+                    'coordinador_id' => $usuarioActual,
                     'creacion_id' => $usuarioActual,
                     'estimacion_tiempo' => $tiempo_estimado,
                     'asignado_a' => $prestador
@@ -1554,7 +1520,7 @@ class AdminController extends Controller
         $actividad2 = DB::table('actividades_prestadores')->where('llave_Actividad', $id)->get();
         $prestadores = DB::table('soloprestadores')
             ->where('tipo', 'prestador')
-            ->where('encargado_id', auth()->user()->id)
+            ->where('coordinador_id', auth()->user()->id)
             ->get();
         $actividades = DB::table('actividades')->get(); // obtener las actividades de la tabla
         $categorias = DB::table('categorias')->get();
@@ -1582,7 +1548,7 @@ class AdminController extends Controller
         $actividad2 = DB::table('actividades_prestadores')->where('llave_Actividad', $id)->get();
         $prestadores = DB::table('soloprestadores')
             ->where('tipo', 'prestador')
-            ->where('encargado_id', auth()->user()->id)
+            ->where('coordinador_id', auth()->user()->id)
             ->get();
         $actividades = DB::table('actividades')->get(); // obtener las actividades de la tabla
         $categorias = DB::table('categorias')->get();
@@ -2452,7 +2418,7 @@ class AdminController extends Controller
             // Si no es "Superadmin", filtrar por el ID del usuario autenticado
             $cantidad = DB::table('c_actividad')
                 ->where('status', 'creado')
-                ->where('encargado_id', $userId)
+                ->where('coordinador_id', $userId)
                 ->count();
         }
 
@@ -2475,7 +2441,7 @@ class AdminController extends Controller
             // Si no es "Superadmin", filtrar por el ID del usuario autenticado
             $cantidad = DB::table('c_actividad')
                 ->where('status', 'en_proceso')
-                ->where('encargado_id', $userId)
+                ->where('coordinador_id', $userId)
                 ->count();
         }
 
@@ -2496,7 +2462,7 @@ class AdminController extends Controller
         } else {
             // Si no es "Superadmin", filtrar por el ID del usuario autenticado
             $cantidad = DB::table('actividad_completada_2')
-                ->where('encargado_id', $userId)
+                ->where('coordinador_id', $userId)
                 ->count();
         }
 
@@ -2517,7 +2483,7 @@ class AdminController extends Controller
         } else {
             // Si no es "Superadmin", filtrar por el ID del usuario autenticado
             $cantidad = DB::table('actividad_terminada_2')
-                ->where('encargado_id', $userId)
+                ->where('coordinador_id', $userId)
                 ->count();
         }
 
@@ -2539,7 +2505,7 @@ class AdminController extends Controller
             // Si no es "Superadmin", filtrar por el ID del usuario autenticado
             $cantidad = DB::table('c_actividad')
                 ->where('status', 'cancelacion_prestador')
-                ->where('encargado_id', $userId)
+                ->where('coordinador_id', $userId)
                 ->count();
         }
 
@@ -2559,20 +2525,20 @@ class AdminController extends Controller
              'cursos'=>false]);
     }
 
-    public function registro($centros = null, $encargado = null)
+    public function registro($centros = null, $coordinador = null)
     {
          if (is_null($centros)) {
              $centros = DB::table('centros')->get();
          }
 
-         if (is_null($encargado)) {
-             $encargado = DB::table('users')->where('tipo', 'admin')->get();
+         if (is_null($coordinador)) {
+             $coordinador = DB::table('users')->where('tipo', 'admin')->get();
          }
 
          return view('//admin/homeA', [
              'opcion' => 'auth.registerAdmin',
              'centros' => $centros,
-             'encargado' => $encargado,
+             'coordinador' => $coordinador,
              'nombre' => 'Registro',
              'ruta' => 'registrar'
          ]);
@@ -2594,7 +2560,7 @@ class AdminController extends Controller
         $id = $request->input('id');
         $tUser = Auth::user()->tipo;
         $uModificar = User::findOrFail($id);
-        $encargados = User::where('can_admin', true)->get();
+        $coordinadors = User::where('can_admin', true)->get();
 
         return view ('/auth/registerAdmin');
         if (($tUser == "Superadmin") || ($tUser == "admin" && ($uModificar->tipo != "admin" && $uModificar->tipo != "checkin" && $uModificar->tipo != "Superadmin"))) {
@@ -2607,7 +2573,7 @@ class AdminController extends Controller
                                   'nombre' => 'Edicion', 
                                   'dV' => $user, 
                                   'ruta' => 'admin.update', 
-                                  'encargado' => $encargados]);
+                                  'coordinador' => $coordinadors]);
         } else {
             return redirect('/');
         }

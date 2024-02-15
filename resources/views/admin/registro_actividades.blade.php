@@ -130,6 +130,9 @@
         </div>
     </div>
 </div>
+
+<div style="height: 45px;"></div>
+
 @endsection
 
 @section('script')

@@ -30,7 +30,7 @@
         }
     </style>
 
-    <?php   
+    <?php  
         $area = Auth::user()->area;
         $filtro = DB::table('modulos')
             ->where('id', $area)
@@ -42,7 +42,7 @@
 
 @section('scroll-menu')
     <li class="side-nav__devider mb-4">MENU</li>
-    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "jefe area" || Auth::user()->tipo == "jefe sede" || Auth::user()->tipo == "Superadmin")
         @section('gestion')
             <li>
                 <a href="#" class="side-menu">
@@ -114,7 +114,7 @@
                             <div class="side-menu__title">Añadir categorias</div>
                         </a>
                     </li>
-                    @if (Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
+                    @if (Auth::user()->tipo == "jefe sede" || Auth::user()->tipo == "Superadmin")
                     <li>
                         <a href="{{route('admin.sede')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
@@ -133,7 +133,7 @@
         @endsection
     @endif
 
-    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "jefe area" || Auth::user()->tipo == "jefe sede" || Auth::user()->tipo == "Superadmin")
         @section('prestadores_admin')
             <li>
                 <a href="#" class="side-menu">
@@ -188,7 +188,7 @@
             </li>
         @endsection
     @endif
-    @if (Auth::user()->tipo == "encargado")
+    @if (Auth::user()->tipo == "coordinador")
         @section('prestadores')
             <li>
                 <a href="#" class="side-menu">
@@ -248,7 +248,7 @@
     @endif
 
 @if ($filtro->visitas == 1)
-    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "jefe area" || Auth::user()->tipo == "jefe sede" || Auth::user()->tipo == "Superadmin")
         @section('contacto_admin')
             <li>
                 <a href="#" class="side-menu">
@@ -310,7 +310,7 @@
             </li>
         @endsection
     @endif
-    @if (Auth::user()->tipo == "encargado")
+    @if (Auth::user()->tipo == "coordinador")
         @section('contacto')
             <li>
                 <a href="#" class="side-menu">
@@ -389,7 +389,7 @@
 @endif
 
 @if ($filtro->gamificacion == 1)
-    @if (Auth::user()->tipo == "admin" || Auth::user()->tipo == "admin_sede" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "jefe area" || Auth::user()->tipo == "jefe sede" || Auth::user()->tipo == "Superadmin")
         @section('actividades')
             <li>
                 <a href="javascript:;" class="side-menu">
@@ -438,7 +438,7 @@
         @endsection
     @endif
 
-    @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "coordinador" || Auth::user()->tipo == "Superadmin")
         @section('actividades') 
             <li>
                 <a href="javascript:;" class="side-menu">
@@ -514,7 +514,7 @@
 @endif
 
 @if ($filtro->impresiones == 1)
-    @if (Auth::user()->tipo == "encargado" || Auth::user()->tipo == "admin" || Auth::user()->tipo == "Superadmin")
+    @if (Auth::user()->tipo == "coordinador" || Auth::user()->tipo == "jefe area" || Auth::user()->tipo == "Superadmin")
         @section('impresiones')
             <li>
                 <a href="javascript:;" class="side-menu">
@@ -586,7 +586,7 @@
                 </div>
                 <div class="intro-x relative ml-auto flex sm:mx-auto"></div>
                 <div class="intro-x relative ml-auto flex sm:mx-auto">
-                    @if (Auth::user()->tipo == "encargado")
+                    @if (Auth::user()->tipo == "coordinador")
                     <a href="{{ route('admin.cambiorol') }}">
                         <div class="container">
                             <img class="imagen-rol" title="Cambiar a Prestador" src="{{asset('build/assets/images/prestico3.svg')}}" width="30" height="30" alt="">
@@ -599,11 +599,8 @@
                 <div class="intro-x dropdown h-10">
                     <div class="h-full dropdown-toggle flex items-center" role="button" aria-expanded="false" data-tw-toggle="dropdown">
                         <div class="w-10 h-10 image-fit">
-                            @if(!isset(Auth::user()->imagen_perfil))
-                            <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/default-profile-image.png')}}">
-                            @else
-                            <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/'.Auth::user()->imagen_perfil)}}">
-                            @endif
+                            <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" 
+                            src="{{route('obtenerImagen', ['nombreArchivo' => (Auth::user()->imagen_perfil != null) ? Auth::user()->imagen_perfil : 'false'])}}">
                         </div>
                         <div class="hidden md:block ml-3">
                             <div class="max-w-[7rem] truncate font-medium">{{$username=Auth::user()->name}}</div>

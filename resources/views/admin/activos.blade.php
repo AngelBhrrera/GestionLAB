@@ -55,7 +55,7 @@
                         editorParams: {
                             values: {
                                     "prestador": "prestador",
-                                    "encargado": "encargado",
+                                    "coordinador": "coordinador",
                                 }
                         },
                       
