@@ -64,17 +64,17 @@ class PrestadorController extends Controller
         return response()->json(['message' => $sql]);
     }
 
-    public function detallesActividad()
+    public function detallesActividad($value)
     {
 
         $detalles = DB::table('actividades')
-            ->select('actividades.*', 'categorias.nombre', 'subcategorias.nombre')
+            ->select('actividades.*', 'categorias.nombre AS nombre_categoria', 'subcategorias.nombre AS nombre_subcategoria')
             ->join('categorias', 'actividades.id_categoria', '=', 'categorias.id')
-            ->join('subcategorias', 'actividades.id_subcategoria', '=', 'categorias.id')
-            ->where('actividades_prestadores.id_prestador', auth()->user()->id)
-            ->get();
+            ->join('subcategorias', 'actividades.id_subcategoria', '=', 'subcategorias.id')
+            ->where('actividades.id', $value)
+            ->first();
 
-        return view('/prestador/detalles_actividad', [ 'impresiones' => $detalles]);
+        return view('/prestador/detalles_actividad', [ 'detalle' => $detalles]);
     }
 
 

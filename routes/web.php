@@ -311,6 +311,7 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::get('prestador/A_actividades', 'asign_act')->name('asign_act');
 
         Route::get('prestador/misActividades','misActividades')->name('misActividades');
+        Route::get('prestador/detalles_actividad/{val}','detallesActividad')->name('detallesActividad');
         Route::get('prestador/observaciones_actividad/{id}/{val}', 'detail_act')->middleware('role:prestador,practicante,voluntario,coordinador,jefe area,jefe sede')->name('detail_act');
 
         Route::post('prestador/completar_impresion','completar_impresion')->name('completar_impresion');
