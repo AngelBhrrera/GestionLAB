@@ -19,6 +19,7 @@ class Premios extends Migration
             $table->string('descripcion',255)->nullable();
             $table->string('tipo',50);
             $table->integer('horas',0,0)->nullable()->unsigned();
+            $table->string('ref',255);
            
         });
     }

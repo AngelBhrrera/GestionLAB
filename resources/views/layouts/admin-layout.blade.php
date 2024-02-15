@@ -109,9 +109,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('admin.categorias')}}" class="side-menu">
+                        <a href="{{route('admin.premios')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
-                            <div class="side-menu__title">Añadir categorias</div>
+                            <div class="side-menu__title">Premios</div>
                         </a>
                     </li>
                     @if (Auth::user()->tipo == "jefe sede" || Auth::user()->tipo == "Superadmin")
@@ -425,6 +425,12 @@
                         <a href="{{ route('admin.create_proy') }}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="package-plus"></i> </div>
                             <div class="side-menu__title">Proyectos</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.categorias')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                            <div class="side-menu__title">Añadir categorias</div>
                         </a>
                     </li>
                 </ul>

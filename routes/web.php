@@ -147,8 +147,8 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/C_actividades', 'create_act')->name('create_act');
             Route::post('/admin/M_actividades', 'make_act')->name('make_act');
             Route::get('/admin/A_actividades', 'asign_act')->name('asign_act');
-
             Route::post('/admin/asign', 'asign')->name('asign');
+            Route::post('/admin/asign2', 'asign2')->name('asign2');
             
             Route::post('/admin/M_proyecto', 'make_proy')->name('make_proy');
 
@@ -180,6 +180,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/obtenerActividades', 'obtenerActividades')->name('obtenerActividades');
             Route::get('/admin/obtenerActividadesB', 'obtenerActividadesB')->name('obtenerActividadesB');
             Route::get('/admin/obtenerSubcategoria', 'obtenerSubcategoria')->name('obtenerSubcategorias');
+            Route::get('/admin/obtenerPrestadores', 'obtenerPrestadores')->name('obtenerPrestadoresProyecto');
 
             Route::get('/admin/newCategoriaYActividad', 'newCategoriaYActividad')->name('newCategoriaYActividad');
 
@@ -206,7 +207,6 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::middleware('role:jefe area,jefe sede,Superadmin')->group(function() {
                 Route::get('admin/liberar_prestador/{value}', 'liberar')->name('liberar');
                 Route::get('admin/changestate/{id}/{value}', 'checkinstate')->name('checkinstate');
-                
                 Route::get('admin/activar_area/{id}/{campo}', 'activate_area')->name('activatearea');
             });
             /*

@@ -40,7 +40,7 @@
                 <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Crear Nuevo Proyecto </h3>
             </div>
             <div class="card-body pl-10 pr-10">
-                <form id="btn-proy" method="POST" action="{{route('admin.make_proy')}}">
+                <form id="enviar" method="POST" action="{{route('admin.make_proy')}}">
                     @csrf
                     @if (isset($tipo))
                     <input id="tipo" name="tipo" value={{ $tipo }} type="hidden">
@@ -51,6 +51,19 @@
                         <div class="col-md-8">
                             <textarea id="t_proyecto" name="t_nombre" type="text" class="form-control"  placeholder="Ingresa el titulo del proyecto" required></textarea>
                         </div>
+                    </div>
+                    <div class="form-group">
+                            <label for="tipo_categoria">Seleccionar area</label>
+                            <select class="form-control" id="area" name="area" required>
+                                <option value="">Selecciona el area de trabajo donde estará principalmente el proyecto</option>
+                                @foreach ($areas as $area)
+                                <option value="{{ $area->id }}">{{ $area->nombre_area }}</option>
+                                @endforeach
+                            </select>
+                    </div>
+                    <div class="form-check mt-2">
+                        <input id="checkbox" name="particular" class="form-check-input" type="checkbox" checked>
+                        <label class="form-check-label" for="checkbox-switch-1">Particular</label>
                     </div>
                     <div class="container">
                         <div class="row justify-content-center">
@@ -68,7 +81,7 @@
                         <small id="Help" class="form-text text-muted">Selecciona a los prestadores para realizar la actividad</small>
                     </div>
                     <br>
-                    <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits">Crear proyecto</button>
+                    <button type="submit" class="btn btn-primary from-prevent-multiple-submits">Crear proyecto</button>
                 </form>
             </div>
 
@@ -76,7 +89,8 @@
                 <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Asignar actividades a proyecto </h3>
             </div>
             <div class="card-body pl-10 pr-10">
-                    <form id="btn-proy" method="POST">
+                    <form id="btn-proy" method="POST"  action="{{route('admin.asign2')}}">
+                    @csrf
                     @if (isset($tipo))
                     <input id="tipo" name="tipo" value="{{ $tipo }}" type="hidden">
                     @endif
@@ -138,14 +152,18 @@
 
 <script type="text/javascript">
 
-document.getElementById('enviar').addEventListener('submit', function(event) {
-        
+    document.getElementById('enviar').addEventListener('submit', function(event) {
+
         const prestadorSelect = document.getElementById('prestadores_seleccionados');
+        const check = document.getElementById('checkbox');
 
         if (prestadorSelect.selectedOptions.length === 0) {
+            
+            if(check.checked){
                 event.preventDefault();
                 alert('Por favor, selecciona al menos un prestador.');
-            }
+            }        
+        }
     });
 
     let dlb2 = new DualListbox('.select2', {
@@ -158,14 +176,10 @@ document.getElementById('enviar').addEventListener('submit', function(event) {
         searchPlaceholder: 'Buscar prestadores'
     });
     dlb2.addEventListener('added', function(event) {
-        const prestadorSelect = document.getElementById('prestadores_seleccionados');
-        console.log(prestadorSelect.value);
+
     });
     dlb2.addEventListener('removed', function(event) {
-        const prestadorSelect = document.getElementById('prestadores_seleccionados');
-        if (prestadorSelect.selectedOptions.length === 0) {
-            console.log(prestadorSelect.value);
-        }
+
     });
 
     function filtrarCategorias() {
@@ -197,7 +211,7 @@ document.getElementById('enviar').addEventListener('submit', function(event) {
                 }
             }
         };
-        xhr.open('GET', '{{ route('obtenerSubcategorias') }}?categoriaId=' + categoriaId);
+        xhr.open('GET', '{{ route('admin.obtenerSubcategorias') }}?categoriaId=' + categoriaId);
         xhr.send();
     }
 
@@ -237,7 +251,7 @@ document.getElementById('enviar').addEventListener('submit', function(event) {
         };
 
         // xhr.open('GET', '/obtenerActividades?categoriaId=' + categoriaId);
-        xhr.open('GET', '{{ route('obtenerActividades') }}?categoriaId=' + categoriaId);
+        xhr.open('GET', '{{ route('admin.obtenerActividades') }}?categoriaId=' + categoriaId);
 
         xhr.send();
     }
@@ -280,7 +294,7 @@ document.getElementById('enviar').addEventListener('submit', function(event) {
         };
 
         // xhr.open('GET', '/obtenerActividades?categoriaId=' + categoriaId);
-        xhr.open('GET', '{{ route('obtenerActividadesB') }}?subcategoriaId=' + subcategoriaId);
+        xhr.open('GET', '{{ route('admin.obtenerActividadesB') }}?subcategoriaId=' + subcategoriaId);
 
         xhr.send();
     }
