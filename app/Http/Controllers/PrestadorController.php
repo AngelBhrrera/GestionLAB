@@ -43,6 +43,41 @@ class PrestadorController extends Controller
         return view('/prestador/crear_actividad_prestador', compact('prestadores', 'actividades', 'categorias'));
     }
 
+    public function misActividades()
+    {
+
+        $actividades = DB::table('actividades_prestadores')
+            ->select('actividades_prestadores.*', 'actividades.tec', 'actividades.titulo')
+            ->join('actividades', 'actividades.id', '=', 'actividades_prestadores.id_actividad')
+            ->where('actividades_prestadores.id_prestador', auth()->user()->id)
+            ->get();
+
+        return view('/prestador/actividades_prestador', [ 'impresiones' =>json_encode($actividades)]);
+    }
+
+    public function detail_act($id, $value) {
+
+        $sql=    DB::table('actividades_prestadores')
+            ->where('id', $id)
+            ->update(['detalles' => $value]);
+
+        return response()->json(['message' => $sql]);
+    }
+
+    public function detallesActividad()
+    {
+
+        $detalles = DB::table('actividades')
+            ->select('actividades.*', 'categorias.nombre', 'subcategorias.nombre')
+            ->join('categorias', 'actividades.id_categoria', '=', 'categorias.id')
+            ->join('subcategorias', 'actividades.id_subcategoria', '=', 'categorias.id')
+            ->where('actividades_prestadores.id_prestador', auth()->user()->id)
+            ->get();
+
+        return view('/prestador/detalles_actividad', [ 'impresiones' => $detalles]);
+    }
+
+
     public function create_act()
     {
 

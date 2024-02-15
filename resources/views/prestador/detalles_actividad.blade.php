@@ -86,7 +86,7 @@
                         },
                     }, {
                         title: "",
-                        field: "id",
+                        field: "id_actividad",
                         width: 120,
                         formatter: function (cell, formatterParams, onRendered) {
                             var value = cell.getValue();
@@ -116,7 +116,7 @@
                 .then(response => response.json())
                 .then(data => {
 
-                    console.log('Observaciones de actividad cambiada', data);
+                    console.log('Estado de impresion cambiado', data);
                 })
                 .catch(error => {
                     console.error('Error al cambiar de estado de impresion:', error);

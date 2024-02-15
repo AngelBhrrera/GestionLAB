@@ -22,8 +22,7 @@
 @endsection
 
 @section('subcontent')
-<form method="POST" action="{{ route('admin.guardar_premio') }}" id="form_premio_register">
-    @csrf
+
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-9">
@@ -31,9 +30,10 @@
                     <div class="card-header">
                         <h3  class="text-2xl font-medium leading-none mt-3 px-10 text-center mx-auto" style="padding-top: 20px; padding-bottom: 20px;"> Registrar Premios</h3>
                     </div>
+                    <form method="POST" action="{{ route('admin.guardar_premio') }}" id="form_premio_register">
                     @csrf
                     <div class="col-span-12 sm:col-span-4">
-                        @csrf
+
                         <div class="intro-y col-span-12 sm:col-span-6">
                             <label for="name" class="form-label">Nombre *</label>
                             <input id="name" type="text" class="form-control @if(old('opc')=='1') @error('name') is-invalid @enderror @endif" name="nombre" required autocomplete="off" placeholder="Nombre">
@@ -74,18 +74,19 @@
                         <button id="btn-log" class="btn btn-outline-secondary w-full mt-3" type="submit">
                             Registrar
                         </button>
+                    </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</form>
-<form method="POST" action="{{ route('admin.asignar_premio') }}"  id="form_duelist">
-    @csrf
+
     <div class="intro-y col-span-12 sm:col-span-6">
         <div class="container">
             <div class="container">
+            <form method="POST" action="{{ route('admin.asignar_premio') }}"  id="form_duelist">
+            @csrf
                 <div class="card card-primary">
                     <h3 class="text-2xl font-medium leading-none mt-3 px-10 text-center mx-auto"
                     style="padding-top: 20px; padding-bottom: 10px;"> Asignar Premios </h3>
@@ -99,7 +100,7 @@
                                             <div class="form-group row justify-content-center"> <!-- Alinea el contenido horizontalmente -->
                                                 <label for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
                                                 <div class="col-md-8"> <!-- Ancho ajustado para el contenido -->
-                                                    <select class="select2" multiple>
+                                                    <select class="select2" name="prestadores_seleccionados[]" id="prestadores_seleccionados" multiple>  
                                                         @if (isset($prestadores)) 
                                                             @foreach ($prestadores as $prestador) 
                                                                 <option value="{{$prestador->id}}">{{$prestador->name." ".$prestador->apellido}}</option>
@@ -121,7 +122,6 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-body">
-                            <input id="tipo" name="tipo" value="xx" type="hidden">
                             <div class="form-group row">
                                 <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Premios</label>
                                 <div class="col-md-6">
@@ -129,7 +129,7 @@
                                         @if (isset($premios))
                                             <option value="">Selecciona un premio</option>
                                             @foreach ($premios as $dato)
-                                                <option id="{{$dato->nombre}}"value="{{$dato->horas}}">{{$dato->nombre}}</option>
+                                                <option id="{{$dato->nombre}}"value="{{$dato->id}}">{{$dato->nombre}}</option>
                                             @endforeach
                                         @endif
                                     </select>
@@ -139,17 +139,28 @@
                     </div>
                 </div>
             </div>
-            <button id="btn-log" class="btn btn-outline-secondary w-full mt-3" type="submit">
+            <button id="asign" class="btn btn-outline-secondary w-full mt-3" type="submit">
             Asignar
             </button>
+            </form>
         </div>
     </div>
-</form>
+
 @endsection
 
 @section('script')
 <script>
 
+    
+    document.getElementById('asign').addEventListener('submit', function(event) {
+        
+        const prestadorSelect = document.getElementById('prestadores_seleccionados');
+
+        if (prestadorSelect.selectedOptions.length === 0) {
+                event.preventDefault();
+                alert('Por favor, selecciona al menos un prestador.');
+            }
+    });
 
     let dlb2 = new DualListbox('.select2', {
         availableTitle: 'Prestadores',
