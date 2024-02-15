@@ -105,7 +105,7 @@
                             <li>
                                 <a href="{{route('obtenerActividades')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
-                                    <div class="side-menu__title">Proyecto</div>
+                                    <div class="side-menu__title">Mi proyecto</div>
                                 </a>
                             </li>
                             <li>
@@ -115,15 +115,9 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{route('actividadesTerminadas')}}" class="side-menu">
+                                <a href="{{route('misActividades')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="list-checks"></i> </div>
                                     <div class="side-menu__title"> Registro de actividades </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{route('asign_act')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
-                                    <div class="side-menu__title"> Asignar actividad</div>
                                 </a>
                             </li>
                         </ul>

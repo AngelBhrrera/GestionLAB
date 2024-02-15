@@ -959,11 +959,11 @@ class AdminController extends Controller
 
         if( auth()->user()->tipo == 'jefe area'){
             $prestadores = DB::table('solo_prestadores')
-                ->where('users.area', auth()->user()->area)
+                ->where('id_area', auth()->user()->area)
                 ->get();
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $prestadores = DB::table('solo_prestadores')
-            ->where('users.sede', auth()->user()->sede)
+            ->where('id_sede', auth()->user()->sede)
             ->get();
         }else{
             $prestadores = DB::table('solo_prestadores')
@@ -985,11 +985,33 @@ class AdminController extends Controller
             "descripcion" => $request -> input("descripcion"),  
             "tipo" => $request -> input("tipo"),
             "horas" => $request -> input("horas"),
+            "ref" => "ref",
         ]);
        
         return redirect()->back()->with("Exito",);
     }
 
+    public function asignar_premio(Request $request){
+        dd($request);
+
+        $fecha = date('d/m/Y H:m');
+
+        $prestadoresSeleccionados = $request->input('prestadores_seleccionados');
+        $tamañoArreglo = count($prestadoresSeleccionados);
+
+        for ($i = 0; $i < $tamañoArreglo; $i++) {
+
+            $idp = $prestadoresSeleccionados[$i];
+            DB::table("premios_prestadores")->insert([
+                "id_premio" => $request -> input("premios"),
+                "id_prestador" => $idp,  
+                "fecha" => $fecha,
+            ]);
+           
+        }
+        
+        return redirect()->back()->with("Exito",);
+    }
 
 //VIEJO CONTROLLER. /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*

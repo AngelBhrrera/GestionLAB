@@ -310,6 +310,9 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::post('prestador/M_actividades', 'make_act')->name('make_act');
         Route::get('prestador/A_actividades', 'asign_act')->name('asign_act');
 
+        Route::get('prestador/misActividades','misActividades')->name('misActividades');
+        Route::get('prestador/observaciones_actividad/{id}/{val}', 'detail_act')->middleware('role:prestador,practicante,voluntario,coordinador,jefe area,jefe sede')->name('detail_act');
+
         Route::post('prestador/completar_impresion','completar_impresion')->name('completar_impresion');
         Route::post('prestador/completar_actividad', 'completar_actividad')->name('completar_actividad');
         Route::get('prestador/completar_impresion_tabla', 'prestadoresProyectosCompletados')->name('prestadoresProyectosCompletados');
@@ -336,7 +339,7 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
 
     Route::name('api.')->group(function () {
         Route::post('/marcar', 'marcar')->middleware('role:jefe area,checkin,Superadmin,coordinador')->name('marcar');
-        //Route::post('/afirmas', 'asignarfirmas')->name('afirmas');    
+                //Route::post('/afirmas', 'asignarfirmas')->name('afirmas');    
     });
 
 });
