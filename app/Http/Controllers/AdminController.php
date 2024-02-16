@@ -570,6 +570,17 @@ class AdminController extends Controller
         
         return redirect(route('admin.create_proy'))->with('success', 'Creada correctamente');
     }
+
+    public function view_proy(){
+        $tabla_proy = DB::table('seguimiento_proyecto')
+        ->get();
+        
+        return view('admin.ver_proyectos', ['tabla_proy' => $tabla_proy]);
+    }
+    public function view_details_proy($id){
+        
+        return $id;
+    }
     
 
     public function asign2(Request $request){
