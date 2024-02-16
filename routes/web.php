@@ -120,7 +120,10 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::post('/admin/M_proyecto', 'make_proy')->name('make_proy');
             Route::post('/admin/asign', 'asign')->name('asign');
             Route::post('/admin/asign2', 'asign2')->name('asign2');
+            Route::get('/admin/ver_proyectos', 'view_proy')->name('view_proy');
+            Route::get('/admin/ver_detalles_proyecto/{id}', 'view_details_proy')->name('view_details_proy');
             //MODULO IMPRESIONES
+
             Route::get('/admin/ver_impresoras', 'control_print')->name('control_print');
             Route::post('/admin/registrar_impresoras', 'make_print')->name('make_print');
             Route::get('/admin/ver_impresiones', 'watch_prints')->name('watch_prints');
