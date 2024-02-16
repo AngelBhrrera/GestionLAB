@@ -62,14 +62,14 @@
                         width: 2,
                     }, {
                         title: "Prestador",
-                        field: "responsable",
+                        field: "origen",
                         headerFilter: "input",
                         sorter: "string",
                         hozAlign: "center",
                         width: 200,
                     },{
                         title: "Coordinador",
-                        field: "origen",
+                        field: "responsable",
                         sorter: "string",
                         headerFilter: "input",
                         hozAlign: "center",

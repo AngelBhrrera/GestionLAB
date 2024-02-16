@@ -178,7 +178,7 @@ class AdminController extends Controller
         return view('admin/activos', ['datos' => json_encode($data)]);
     }
 
-    public function prestadoresPendientes() #YA
+    public function prestadores_pendientes() #YA
     {
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $data = DB::table('prestadores_pendientes')
@@ -1230,20 +1230,6 @@ class AdminController extends Controller
         );
     }
 
-    public function newCategoriaYActividad()
-    {
-        $actividades = DB::table('actividades')->get();
-        $categorias = DB::table('categorias')->get();
-        return view(
-            '//admin/homeA',
-            [
-                'tipo' => 'agregar',
-                'categorias' => $categorias,
-                'actividades' => $actividades,
-                'opcion' => 'newCategoriaYActividad'
-            ]
-        );
-    }
     public function actividad_asignada(Request $request)
     {
         $nomact = $request->input('nombre');
