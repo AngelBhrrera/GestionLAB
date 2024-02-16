@@ -919,6 +919,29 @@ class AdminController extends Controller
         return redirect()->back()->with("Exito",);
     }
 
+    public function asignar_premio(Request $request){
+        
+        $prestadoresSeleccionados = $request->input("prestadores_seleccionados");
+        $premio_asignar = $request ->input("premios");
+        $tamañoArreglo = count($prestadoresSeleccionados);
+        
+        for ($i = 0; $i < $tamañoArreglo; $i++){
+
+            $idp = $prestadoresSeleccionados[$i];
+            
+            DB::table("premios_prestadores")->insert([
+                "id_prestador" => $idp,
+                "id_premio" => $premio_asignar,
+        ]);
+        }
+        return redirect(route("admin.premios"));
+    }
+
+    public function gestor_premios(){
+        $datos = DB::select("SELECT * FROM seguimiento_premios");
+
+        return view("admin.Premios_tabulador");
+    }
 
 //VIEJO CONTROLLER. /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*

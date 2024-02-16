@@ -113,6 +113,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::get('/admin/registro', 'registro')->name('registro'); //NUEVA RUTA
 
                 Route::get('/admin/premios', 'premios')->name('premios');
+                Route::get('/admin/premios-tabulador', 'gestor_premios')->name('gestor_premios');
                     
                 Route::get('admin/ver_reportes_parciales', 'ver_reportes_parciales')->name('reportes_parciales');
                 Route::get('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
