@@ -29,18 +29,40 @@ class CreatePremiosPrestadoresTable extends Migration
 
         DB::statement("
             CREATE VIEW seguimiento_horas_completo AS
-                SELECT u.id, u.name, (the.horas+ch.horas_servicio) AS horas_servicio, (ch.horas_restantes-the.horas) as horas_restantes 
-                FROM users AS u 
-                INNER JOIN cuenta_horas AS ch ON ch.id = u.id 
-                INNER JOIN total_horas_extra AS the ON the.id = u.id 
-                GROUP BY u.id 
+                SELECT 
+                    u.id, 
+                    u.name, 
+                    (COALESCE(the.horas, 0) + COALESCE(ch.horas_servicio, 0)) AS horas_servicio, 
+                    (COALESCE(ch.horas_restantes, 0) - COALESCE(the.horas, 0)) AS horas_restantes 
+                FROM 
+                    cuenta_horas AS ch 
+                LEFT JOIN 
+                    users AS u ON ch.id = u.id 
+                LEFT JOIN 
+                    total_horas_extra AS the ON the.id = u.id;
         ");
+
+        DB::statement("
+        CREATE VIEW seguimiento_premios AS
+            SELECT CONCAT(u.name, ' ', u.apellido) AS nombre_prestador, 
+                p.nombre, 
+                p.descripcion, 
+                p.tipo, 
+                p.horas, 
+                premios_prestadores.fecha
+            FROM premios_prestadores
+            INNER JOIN users u ON u.id = premios_prestadores.id_prestador
+            INNER JOIN premios p ON p.id = premios_prestadores.id_premio
+            GROUP BY premios_prestadores.id;
+        ");    
     }
+
 
     public function down()
     {
         Schema::dropIfExists('premios_prestadores');
         DB::statement("DROP VIEW total_horas_extra");
         DB::statement("DROP VIEW seguimiento_horas_completo");
+        DB::statement("DROP VIEW seguimiento_premios");
     }
 }

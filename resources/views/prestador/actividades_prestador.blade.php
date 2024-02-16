@@ -95,7 +95,7 @@
                             button.textContent = "Más Info.";
                             button.title = "";
                             button.addEventListener("click", function() {
-                                
+                                window.location.href = "detalles_actividad/" + value;
                             });
                             return button;
                         }, 

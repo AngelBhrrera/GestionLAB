@@ -64,17 +64,17 @@ class PrestadorController extends Controller
         return response()->json(['message' => $sql]);
     }
 
-    public function detallesActividad()
+    public function detallesActividad($value)
     {
 
         $detalles = DB::table('actividades')
-            ->select('actividades.*', 'categorias.nombre', 'subcategorias.nombre')
+            ->select('actividades.*', 'categorias.nombre AS nombre_categoria', 'subcategorias.nombre AS nombre_subcategoria')
             ->join('categorias', 'actividades.id_categoria', '=', 'categorias.id')
-            ->join('subcategorias', 'actividades.id_subcategoria', '=', 'categorias.id')
-            ->where('actividades_prestadores.id_prestador', auth()->user()->id)
-            ->get();
+            ->join('subcategorias', 'actividades.id_subcategoria', '=', 'subcategorias.id')
+            ->where('actividades.id', $value)
+            ->first();
 
-        return view('/prestador/detalles_actividad', [ 'impresiones' => $detalles]);
+        return view('/prestador/detalles_actividad', [ 'detalle' => $detalles]);
     }
 
 
@@ -188,11 +188,12 @@ class PrestadorController extends Controller
     public function home(){
 
         $id = Auth::user()->id;
-        $horasAutorizadas = DB::table('registros_checkin')->where('idusuario', $id)->where('estado', 'autorizado')->sum('horas');
+
+        $horasAutorizadas = DB::table('seguimiento_horas_completo')->where('id', $id)->value('horas_servicio');
+        $horasRestantes = DB::table('seguimiento_horas_completo')->where('id', $id)->value('horas_restantes');
         $horasPendientes = DB::table('registros_checkin')->where('idusuario', $id)->where('estado', 'pendiente')->sum('horas');
         $horasTotales = DB::table('users')->where('id', $id)->select('horas')->get();
-        $horasRestantes = $horasTotales[0]->horas - $horasAutorizadas;
-        
+
         $leaderBoard= DB::select("SELECT * from full_leaderboard limit 10");
         $posicionUsuario = DB::select("SELECT x.experiencia, x.id, x.position, CONCAT(x.name, ' ', x.apellido) AS 'Nombre' FROM (SELECT users.id, users.name, users.apellido, @rownum := @rownum + 1 AS position,
         users.experiencia FROM users JOIN (SELECT @rownum := 0) r ORDER BY users.experiencia DESC) x WHERE x.id = $id;");

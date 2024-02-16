@@ -298,7 +298,7 @@ function modelId(id) {
         show:false,
     })
     document.getElementById("idvalidar").value = id;
-    document.getElementById("tipoEliminar").value = "admin.prestadoresPendientes";
+    document.getElementById("tipoEliminar").value = "admin.prestadores_pendientes";
 
   }
 
