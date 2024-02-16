@@ -77,5 +77,7 @@ class Seguimiento extends Migration
         DB::statement("DROP VIEW detalles_proyecto");
         DB::statement("DROP VIEW seguimiento_actividades");
         DB::statement("DROP VIEW seguimiento_proyecto");
+        DB::statement("DROP VIEW seguimiento_proyecto2");
+        DB::statement("DROP VIEW seguimiento_proyecto3");
     }
 }

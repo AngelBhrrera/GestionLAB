@@ -955,6 +955,7 @@ class AdminController extends Controller
 
     // PREMIOS
     public function premios(){
+
         $premios = DB::select("SELECT * FROM premios");
 
         if( auth()->user()->tipo == 'jefe area'){
@@ -992,9 +993,6 @@ class AdminController extends Controller
     }
 
     public function asignar_premio(Request $request){
-        dd($request);
-
-        $fecha = date('d/m/Y H:m');
 
         $prestadoresSeleccionados = $request->input('prestadores_seleccionados');
         $tamañoArreglo = count($prestadoresSeleccionados);
@@ -1005,7 +1003,6 @@ class AdminController extends Controller
             DB::table("premios_prestadores")->insert([
                 "id_premio" => $request -> input("premios"),
                 "id_prestador" => $idp,  
-                "fecha" => $fecha,
             ]);
            
         }
