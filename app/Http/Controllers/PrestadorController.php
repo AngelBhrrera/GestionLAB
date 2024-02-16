@@ -29,6 +29,55 @@ class PrestadorController extends Controller
         return view('/prestador/crear_actividad_prestador', compact('prestadores', 'actividades', 'categorias'));
     }
 
+    public function proyectoPrestador()
+    {
+        $proys = DB::tabe('proyectos_prestadores')
+            ->where('id_prestador', auth()->user()->id)
+            ->get();
+
+        $prestadores = DB::table('solo_prestadores')
+            ->join('proyectos_prestadores', 'solo_prestadores.id', '=', 'proyectos_prestadores.id_prestador')
+            ->where('proyectos_prestadores.id_proyecto', $proys->first()->id_proyecto)
+            ->get();
+
+        return view('/prestador/crear_actividad_prestador', compact('prestadores', 'actividades', 'categorias'));
+    }
+
+    public function misActividades()
+    {
+
+        $actividades = DB::table('actividades_prestadores')
+            ->select('actividades_prestadores.*', 'actividades.tec', 'actividades.titulo')
+            ->join('actividades', 'actividades.id', '=', 'actividades_prestadores.id_actividad')
+            ->where('actividades_prestadores.id_prestador', auth()->user()->id)
+            ->get();
+
+        return view('/prestador/actividades_prestador', [ 'impresiones' =>json_encode($actividades)]);
+    }
+
+    public function detail_act($id, $value) {
+
+        $sql=    DB::table('actividades_prestadores')
+            ->where('id', $id)
+            ->update(['detalles' => $value]);
+
+        return response()->json(['message' => $sql]);
+    }
+
+    public function detallesActividad($value)
+    {
+
+        $detalles = DB::table('actividades')
+            ->select('actividades.*', 'categorias.nombre AS nombre_categoria', 'subcategorias.nombre AS nombre_subcategoria')
+            ->join('categorias', 'actividades.id_categoria', '=', 'categorias.id')
+            ->join('subcategorias', 'actividades.id_subcategoria', '=', 'subcategorias.id')
+            ->where('actividades.id', $value)
+            ->first();
+
+        return view('/prestador/detalles_actividad', [ 'detalle' => $detalles]);
+    }
+
+
     public function create_act()
     {
 
@@ -139,11 +188,12 @@ class PrestadorController extends Controller
     public function home(){
 
         $id = Auth::user()->id;
-        $horasAutorizadas = DB::table('registros_checkin')->where('idusuario', $id)->where('estado', 'autorizado')->sum('horas');
+
+        $horasAutorizadas = DB::table('seguimiento_horas_completo')->where('id', $id)->value('horas_servicio');
+        $horasRestantes = DB::table('seguimiento_horas_completo')->where('id', $id)->value('horas_restantes');
         $horasPendientes = DB::table('registros_checkin')->where('idusuario', $id)->where('estado', 'pendiente')->sum('horas');
         $horasTotales = DB::table('users')->where('id', $id)->select('horas')->get();
-        $horasRestantes = $horasTotales[0]->horas - $horasAutorizadas;
-        
+
         $leaderBoard= DB::select("SELECT * from full_leaderboard limit 10");
         $posicionUsuario = DB::select("SELECT x.experiencia, x.id, x.position, CONCAT(x.name, ' ', x.apellido) AS 'Nombre' FROM (SELECT users.id, users.name, users.apellido, @rownum := @rownum + 1 AS position,
         users.experiencia FROM users JOIN (SELECT @rownum := 0) r ORDER BY users.experiencia DESC) x WHERE x.id = $id;");
@@ -313,35 +363,40 @@ class PrestadorController extends Controller
 
     public function marcar(Request $request)
     {
+
         try {
             $dir = '';
             switch (Auth::user()->tipo) {
-                
                 case 'Superadmin':
+                    $dir = 'admin.checkin';
+                    $responsable = Auth::user()->name . ' ' . Auth::user()->apellido;
                     $codigo = $request->input('codigo');
-                    $sedeVerif =  true;
+                    $sedeArea =  true;
+                    break;
                 case 'jefe area':
                 case 'coordinador':
                     $dir = 'admin.checkin';
                     $responsable = Auth::user()->name . ' ' . Auth::user()->apellido;
                     $codigo = $request->input('codigo');
-                    $sedeVerif =  DB::table('users')
-                    ->select('sede')
+                    $refArea =  DB::table('users')
+                    ->select('area')
                     ->where('codigo', $codigo)
                     ->get();
+                    $sedeArea = $refArea->first()->area == Auth::user()->area;
                     break;
                 case 'checkin':
                     $dir = 'api.checkin';
                     $origen = 'checkin';
                     $codigo = $request->input('codigo');
-                    $sedeVerif =  DB::table('users')
-                    ->select('sede')
+                    $refArea =  DB::table('users')
+                    ->select('area')
                     ->where('codigo', $codigo)
                     ->get();
+                    $sedeArea = $refArea->first()->area == Auth::user()->area;
                     break;
             };
 
-            if($sedeVerif->first()->sede == Auth::user()->sede){
+            if($sedeArea){
 
                 $usuario = DB::table('users')->where('codigo', $codigo)->where(function ($query) {
                     $query->where('tipo', '=', "prestador")

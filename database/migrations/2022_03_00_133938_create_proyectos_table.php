@@ -18,13 +18,11 @@ class CreateProyectosTable extends Migration
             $table->id();
             $table->string('titulo', 250);
             $table->string('estado', 150)->default("Creado");
-            //$table->unsignedBigInteger('id_encargado');
-            //$table->foreign('id_encargado')->references('id')->on('users')->onUpdate('cascade');
             $table->timestamp('fecha_inicio')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('fecha_final')->nullable()->default(null);
-            //$table->string('recursos')->nullable()->default(null);
-            //$table->integer('duracion')->nullable()->default(null);
-            $table->integer('id_Cliente')->nullable()->default(null);
+            $table->boolean('particular')->default(1);
+            $table->integer('id_area');
+            $table->integer('id_cliente')->nullable()->default(null);
            
         });
     }

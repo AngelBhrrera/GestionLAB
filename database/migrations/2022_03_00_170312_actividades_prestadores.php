@@ -19,10 +19,9 @@ class ActividadesPrestadores extends Migration
 
             $table->id('id');
             $table->unsignedBigInteger('id_proyecto');
-            $table->unsignedBigInteger('id_prestador');
+            $table->unsignedBigInteger('id_prestador')->default(0);
             $table->unsignedBigInteger('id_actividad');
-            $table->foreign('id_proyecto')->references('id')->on('proyectos')->onUpdate('cascade')->default(0);
-            $table->foreign('id_prestador')->references('id')->on('users')->onUpdate('cascade');
+            $table->foreign('id_proyecto')->references('id')->on('proyectos')->onUpdate('cascade');
             $table->foreign('id_actividad')->references('id')->on('actividades')->onUpdate('cascade');
             $table->timestamp('fecha')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('TEU')->nullable();

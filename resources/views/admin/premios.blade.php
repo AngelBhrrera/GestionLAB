@@ -26,6 +26,18 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-9">
+                <div class="intro-y ml-5 col-span-12 lg:col-span-6 flex justify-center" id="alerta">
+                    @if (session('success'))
+                        <div class="alert alert-success w-full px-4">{{session('success')}}</div>
+                    @endif
+                    @if(session('warning'))
+                        <div class="alert alert-warning w-full px-4">{{session('warning')}}</div>
+                    @endif
+                    @error('nombre')
+                        <div class="alert alert-danger w-full px-4">{{$message}}</div>
+                    @enderror
+                        </div>
+                </div>
                 <div class="card card-primary">
                     <div class="card-header">
                         <h3  class="text-2xl font-medium leading-none mt-3 px-10 text-center mx-auto" style="padding-top: 20px; padding-bottom: 20px;"> Registrar Premios</h3>
@@ -89,7 +101,27 @@
             @csrf
                 <div class="card card-primary">
                     <h3 class="text-2xl font-medium leading-none mt-3 px-10 text-center mx-auto"
-                    style="padding-top: 20px; padding-bottom: 10px;"> AsiFDSFgnar Premios </h3>
+                    style="padding-top: 20px; padding-bottom: 10px;"> Asignar Premios </h3>
+                </div>
+                <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Premios</label>
+                                <div class="col-md-6">
+                                    <select class="form-control" id="premios" name="premios">
+                                        @if (isset($premios))
+                                            <option value="">Selecciona un premio</option>
+                                            @foreach ($premios as $dato)
+                                                <option id="{{$dato->nombre}}"value="{{$dato->id}}">{{$dato->nombre}}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                     <div class="row justify-content-center">
                         <div class="col-md-8">
@@ -118,34 +150,14 @@
                     </div>
                 </div>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Premios</label>
-                                <div class="col-md-6">
-                                    <select class="form-control" id="premios" name="premios">
-                                        @if (isset($premios))
-                                            <option value="">Selecciona un premio</option>
-                                            @foreach ($premios as $dato)
-                                                <option id="{{$dato->nombre}}"value="{{$dato->id}}">{{$dato->nombre}}</option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
             <button id="asign" class="btn btn-outline-secondary w-full mt-3" type="submit">
             Asignar
             </button>
             </form>
         </div>
+    <div style="height: 65px;"></div>
     </div>
-
 @endsection
 
 @section('script')

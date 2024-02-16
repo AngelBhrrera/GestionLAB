@@ -21,6 +21,19 @@
 
 <div style="padding-left: 30px" class="row justify-content-center">
     <div class="col-md-8">
+        <div class="grid grid-cols-12 gap-6 mt-5">
+            <div class="intro-y ml-5 col-span-12 lg:col-span-6 flex justify-center" id="alerta">
+                @if (session('success'))
+                    <div class="alert alert-success w-full px-4">{{session('success')}}</div>
+                @endif
+                @if(session('warning'))
+                    <div class="alert alert-warning w-full px-4">{{session('warning')}}</div>
+                @endif
+                @error('nombre')
+                    <div class="alert alert-danger w-full px-4">{{$message}}</div>
+                @enderror
+            </div>
+        </div>
         <div class="card">
             <div class="card card-primary">
                 <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Asignar Actividades </h3>
@@ -31,31 +44,26 @@
                     @if (isset($tipo))
                     <input id="tipo" name="tipo" value={{ $tipo }} type="hidden">
                     @endif
-
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <label for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
-                            <div class="col-md-8"> 
-                                <select class="select2" name="prestadores_seleccionados[]" id="prestadores_seleccionados" multiple>  
-                                    @if (isset($prestadores))
-                                    @foreach ($prestadores as $prestador)
-                                    <option value="{{$prestador->id}}">{{$prestador->name." ".$prestador->apellido}}</option>
-                                    @endforeach
-                                    @endif
-                                </select>
-                            </div>
-                        </div>
-                        <small id="Help" class="form-text text-muted">Selecciona a los prestadores para realizar la actividad</small>
-                    </div>
                     <div class="col-span-6 sm:col-span-4 text-center">
                         <div class="form-group">
                             <label for="actividades_l" class="col-md-4 col-form-label text-md-right">Proyecto</label>
-                            <select class="form-control" id="proyecto" name="proyecto" required>
-                                <option value="">Selecciona una actividad</option>
+                            <select class="form-control" id="proyecto" name="proyecto" onchange="filtrarPrestadores()">
+                                <option value="">Selecciona un proyecto para asignar la actividad</option>
                                 @foreach ($proyectos as $proyecto)
                                 <option value="{{ $proyecto->id }}">{{ $proyecto->titulo }}</option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div class="form-group">
+                        <label for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
+                            <select class="select2" name="prestadores_seleccionados[]" id="prestadores_seleccionados" multiple>  
+                                @if (isset($prestadores))
+                                @foreach ($prestadores as $prestador)
+                                    <option value="{{$prestador->id}}">{{$prestador->name." ".$prestador->apellido}}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                        <small id="Help" class="form-text text-muted">Selecciona a los prestadores para realizar la actividad</small>
                         </div>
                         <div class="form-group">
                             <label for="tipo_categoria">Filtro por categoría</label>
@@ -68,7 +76,7 @@
                         </div>
                         <div class="form-group">
                             <label for="tipo_subcategoria">Filtro por subcategoría</label>
-                            <select class="form-control" id="tipo_subcategoria" name="tipo_subcategoria"onchange="filtrarActividades2()">
+                            <select class="form-control" id="tipo_subcategoria" name="tipo_subcategoria" onchange="filtrarActividades2()">
                                 <option value="">Selecciona una subcategoria (Opcional)</option>
                             </select>
                         </div>
@@ -158,7 +166,7 @@
                 }
             }
         };
-        xhr.open('GET', '{{ route('obtenerSubcategorias') }}?categoriaId=' + categoriaId);
+        xhr.open('GET', '{{ route('admin.obtenerSubcategorias') }}?categoriaId=' + categoriaId);
         xhr.send();
     }
 
@@ -195,9 +203,7 @@
             }
         };
 
-        // xhr.open('GET', '/obtenerActividades?categoriaId=' + categoriaId);
-        xhr.open('GET', '{{ route('obtenerActividades') }}?categoriaId=' + categoriaId);
-
+        xhr.open('GET', '{{ route('admin.obtenerActividades') }}?categoriaId=' + categoriaId);
         xhr.send();
     }
 
@@ -236,8 +242,39 @@
         };
 
         // xhr.open('GET', '/obtenerActividades?categoriaId=' + categoriaId);
-        xhr.open('GET', '{{ route('obtenerActividadesB') }}?subcategoriaId=' + subcategoriaId);
+        xhr.open('GET', '{{ route('admin.obtenerActividadesB') }}?subcategoriaId=' + subcategoriaId);
 
+        xhr.send();
+    }
+
+    function filtrarPrestadores() {
+
+        var proySelect = document.getElementById('proyecto');
+        var preSelect = document.getElementById('prestadores_seleccionados');
+        var proyId = proySelect.value;
+
+        if (proyId === '') {
+            return;
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var prestadores = JSON.parse(xhr.responseText);
+
+                    prestadores.forEach(prestador => {
+
+                    });
+
+                    dlb2.refresh();
+
+                } else {
+                    console.error('Error al obtener los prestadores');
+                }
+            }
+        };
+        xhr.open('GET', '{{ route('admin.obtenerPrestadoresProyecto') }}?proyectoId=' + proyId);
         xhr.send();
     }
 
