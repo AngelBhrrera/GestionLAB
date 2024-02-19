@@ -1010,6 +1010,19 @@ class AdminController extends Controller
         return redirect()->back()->with("Exito",);
     }
 
+    public function gestor_premios(){
+        $datos = DB::select("SELECT * FROM seguimiento_premios");
+        $datosJson = json_encode($datos);
+
+        return view("admin.Premios_tabulador", ["datosJson" => $datosJson]);
+    }
+
+    public function eliminar_premio($id){
+            
+        $datos = DB::table("premios_prestadores")->where("id", $id)->delete();
+
+        return response()->json(['message' => 'Premio Eliminado']);
+    }
 //VIEJO CONTROLLER. /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     //Guardar Estado
