@@ -312,12 +312,13 @@ class PrestadorController extends Controller
 
 
     public function horario()
-    {
+    {   
         $id = Auth::user()->id;
-
+        $sede=Auth::user()->sede;
+        $area=Auth::user()->area;
         $turno = Auth::user()->horario;
 
-
+        $festivos = DB::select("Select * from eventos where sede = $sede and (area = $area or area = 0)");
         $asistencias = DB::select("Select fecha from registros_checkin where idusuario = $id");
         $festivos = DB::select("Select * from eventos");
         
