@@ -97,7 +97,46 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
         
         Route::name('admin.')->group(function () {
 
-            //HORAS Y CHECKIN
+            Route::middleware('role:jefe area,jefe sede,Superadmin,coordinador')->group(function() {
+
+                Route::middleware('role:coordinador')->group(function() {
+                    Route::get('admin/cambiarRol', 'cambiarRol')->name('cambiorol');
+                });
+
+                
+                Route::get('/admin/registro', 'registro')->name('registro'); //NUEVA RUTA
+
+                Route::get('/admin/premios', 'premios')->name('premios');
+                Route::get('/admin/premios_tabulador', 'gestor_premios')->name('gestor_premios');
+                Route::get('admin/eliminar_premio/{value}', 'eliminar_premio')->name('eliminar_premio');
+
+                Route::get('admin/ver_reportes_parciales', 'ver_reportes_parciales')->name('reportes_parciales');
+                Route::get('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
+
+                Route::get('/admin/administradores', 'administradores')->name('administradores');
+
+                Route::get('admin/gestionSede', 'gestionSedes')->name('sede');
+
+                Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
+                Route::post('admin/nuevaArea', 'nuevaArea')->name('nuevaArea');
+                Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
+                    
+                Route::get('/admin/faltas', 'faltas')->name('faltas');
+                Route::get('/admin/horarios', 'horarios')->name('horarios');
+                Route::get('/admin/Dias_no_laborables', 'diasfestivos')->name('diasfestivos');
+                Route::post('/admin/agregar_festivos', 'guardarFestivos')->name('agregar_festivos');
+
+                Route::get('/admin/categorias', 'categorias')->name('categorias');
+                Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
+                Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg');
+
+                Route::middleware('role:Superadmin')->group(function() {
+                    Route::get('/superadmin/gestion', 'gestionViews')->name('gestionViews');
+                });
+                    
+            });
+
+
             Route::get('/admin/home', 'firmas')->name('home');
             Route::get('/admin/firmas', 'firmas')->name('firmas');
             Route::get('admin/check-in', 'checkin')->name('checkin');
