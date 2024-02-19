@@ -549,8 +549,20 @@ class AdminController extends Controller
         return view('admin.ver_proyectos', ['tabla_proy' => $tabla_proy]);
     }
     public function view_details_proy($id){
-        $prestadores = DB::table('');
-        return view('admin.ver_detalles_proyecto');
+        $proyecto = DB::table('Proyectos')->select('titulo')->where('id',$id)->get();
+        $prestadores = DB::table('proyectos_prestadores')
+        ->select('id_prestador', 'name', 'apellido', 'correo', 'telefono')
+        ->where('id_proyecto', $id)
+        ->join('users', 'id_prestador','=','users.id')->get();
+        $actividades = DB::table('seguimiento_actividades')->select('actividad_id','actividad', 'estado', 'prestador')->get();
+        
+        //dd($prestadores);
+        return view('admin.ver_detalles_proyecto', compact('proyecto','prestadores', 'actividades'));
+    }
+
+    public function view_details_act($id){
+        
+        return view('admin.ver_detalles_actividad');
     }
     
 

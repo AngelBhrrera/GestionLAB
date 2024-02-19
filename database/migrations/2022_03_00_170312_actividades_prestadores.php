@@ -29,6 +29,7 @@ class ActividadesPrestadores extends Migration
             $table->integer('Tiempo_Real')->nullable();
             $table->integer('exp')->nullable();
             $table->string('detalles', 500)->nullable();
+            $table->string('estado', 50)->default("Asignada");
         });
     }
 
