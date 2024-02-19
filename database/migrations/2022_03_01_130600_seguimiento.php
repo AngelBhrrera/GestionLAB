@@ -20,7 +20,7 @@ class Seguimiento extends Migration
         DB::statement("
         CREATE VIEW seguimiento_actividades AS 
             SELECT  
-                u.name + ' ' + u.apellido AS prestador, u.id AS id_prestador, a.id AS actividad_id, a.titulo AS actividad, d.nombre AS categoria, p.id AS id_proyecto, p.titulo AS proyecto_origen, Tiempo_Real AS duracion, fecha, detalles,
+                CONCAT(u.name, ' ', u.apellido) AS prestador, u.id AS id_prestador, a.id AS actividad_id, a.titulo AS actividad, actividades_prestadores.estado AS estado, d.nombre AS categoria, p.id AS id_proyecto, p.titulo AS proyecto_origen, Tiempo_Real AS duracion, fecha, detalles,
                 CASE 
                     WHEN Tiempo_Real <= (CASE WHEN a.TEC > TEU THEN TEU ELSE a.TEC END) THEN 10
                     WHEN Tiempo_Real <= (a.TEC + TEU) THEN 8
@@ -66,7 +66,7 @@ class Seguimiento extends Migration
 
         DB::statement("
         CREATE VIEW seguimiento_proyecto3 AS 
-            SELECT sp.*, sp2.*
+            SELECT sp.*, sp2.duracion, sp2.conteo_terminado
             FROM seguimiento_proyecto sp 
             INNER JOIN seguimiento_proyecto2 sp2 ON sp.id = sp2.id
         ");

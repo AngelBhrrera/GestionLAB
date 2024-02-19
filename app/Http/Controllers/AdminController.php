@@ -154,7 +154,7 @@ class AdminController extends Controller
         return view('admin/lista_clientes', ['datos' => json_encode($data)]);
     }
 
-    public function prestadores() #YA
+    public function prestadores()
     {
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $n_area = DB::table('areas')
@@ -178,7 +178,7 @@ class AdminController extends Controller
         return view('admin/activos', ['datos' => json_encode($data)]);
     }
 
-    public function prestadores_pendientes() #YA
+    public function prestadores_pendientes()
     {
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $data = DB::table('prestadores_pendientes')
@@ -211,7 +211,7 @@ class AdminController extends Controller
         }
     }
 
-    public function prestadores_liberados() #YA
+    public function prestadores_liberados()
     {
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $data = DB::table('prestadores_servicio_liberado')
@@ -238,7 +238,6 @@ class AdminController extends Controller
         if( auth()->user()->tipo == 'coordinador'){
            
             return view('admin/prestadoresInactivos', ['datos' => json_encode($data)]);
-        }else  if( auth()->user()->tipo == 'jefe area'){
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $data = DB::table('prestadores_inactivos')
                 ->where('sede',  Auth::user()->sede)
@@ -350,7 +349,38 @@ class AdminController extends Controller
         return response()->json(['message' => 'Modificado exitosamente']);
     }
 
-        // ACTIVIDADES Y PROYECTOS
+    // ACTIVIDADES Y PROYECTOS
+
+    public function actividades(){
+
+        if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
+            $data = DB::table('seguimiento_actividades')
+            ->whereIn('id_proyecto', function ($query) {
+                $query->select('id')
+                    ->from('proyectos')
+                    ->where('id_area', auth()->user()->area);
+            })
+            ->get();
+        }else  if( auth()->user()->tipo == 'jefe sede'){
+            $data = DB::table('seguimiento_actividades')
+            ->whereIn('id_proyecto', function ($query) {
+                $query->select('id')
+                      ->from('proyectos')
+                      ->whereIn('id_area', function ($subquery) {
+                          $subquery->select('id_sede')
+                                   ->from('areas')
+                                   ->where('id_sede', auth()->user()->sede);
+                      });
+            })
+            ->get();
+        }else{
+            $data = DB::table('seguimiento_actividades')
+            ->get();
+        }
+
+        return view( 'admin/ver_todasActividades', [ 'data' =>json_encode($data)]);
+    }
+    
     
     public function create_act()
     {
@@ -421,7 +451,6 @@ class AdminController extends Controller
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $prestadores = DB::table('solo_prestadores')
                 ->where('id_sede', auth()->user()->sede)
-                ->where('horario', auth()->user()->horario)
                 ->get();
         }else{
             $prestadores = DB::table('solo_prestadores')
@@ -862,13 +891,19 @@ class AdminController extends Controller
             'sede'=> 'required',
             'nombreArea' => 'required|max:255',
         ]);
+
         $nombre= strtoupper($request->input('nombreArea'));
         $idSede = $request->input('sede');
-        $buscarArea = DB::select("Select nombre_area from areas where nombre_area = '$nombre'");
-        if (count($buscarArea)==0){
-            DB::insert("INSERT INTO areas (nombre_area, id_sede) Values('$nombre', $idSede)");
-            $id = DB::select("Select id from areas where nombre_area = '$nombre'");
-            $id = $id[0]->id;
+
+        $buscarArea = DB::table('areas')
+            ->where('nombre_area', $nombre)
+            ->where('id_sede', $idSede)
+            ->exists(); echo $buscarArea;
+        if (!$buscarArea){
+            $id = DB::table('areas')->insertGetId([
+                'nombre_area' => $nombre,
+                'id_sede' => $idSede
+            ]);
             DB::insert("INSERT INTO modulos (id) values($id)");
             return redirect(route('admin.sede'))->with('success', 'Creada correctamente');
         }else{

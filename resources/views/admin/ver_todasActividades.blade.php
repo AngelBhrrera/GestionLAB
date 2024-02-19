@@ -8,16 +8,15 @@
 
 @section('subcontent')
 <h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
-  Registro de Visitas en {{ $sede }}
+    Todas las actividades.
 </h2>
-
 <div id="players"></div>
 @endsection
 
 @section('script')
     <script type="text/javascript">
 
-            var visits = {!! $datos !!};
+            var visits = {!! $data !!};
 
             var table = new Tabulator("#players", {
                 height: "100%",
@@ -33,45 +32,44 @@
                         visible: false,
                         width: 2,
                     },{
+                        title: "Prestador",
+                        field: "prestador",
+                        sorter: "string",
+                        width: 170,
+                    }, {
+                        title: "Titulo Act",
+                        field: "actividad",
+                        sorter: "string",
+                        headerFilter: "input",
+                    }, {
+                        title: "Estado",
+                        field: "estado",
+                        sorter: "string",
+                        headerFilter: "select",
+                        headerFilterParams: {
+                            "Asignada": "Asignada",
+                            "En proceso": "En proceso",
+                            "En revision": "En revision",
+                            "Bloqueada": "Bloqueada",
+                            "Error": "Error",
+                            "Finalizada": "Finalizada",
+                        },
+                    }, {
+                        title: "Proyecto",
+                        field: "proyecto_origen",
+                        sorter: "string",
+                        headerFilter: "input",
+                    }, {
                         title: "Fecha",
                         field: "fecha",
                         sorter: "string",
-                        width: 110,
-                    }, {
-                        title: "Nombre",
-                        field: "name",
-                        sorter: "string",
                         headerFilter: "input",
                     }, {
-                        title: "Apellido",
-                        field: "apellido",
-                        sorter: "string",
-                        editor: "input",
-                        headerFilter: "input",
+                        title: "Duracion",
+                        field: "duracion",
                     }, {
-                        title: "Responsable",
-                        field: "responsable",
-                        sorter: "string",
-                        headerFilter: "input",
-                    }, {
-                        title: "Correo",
-                        field: "correo",
-                        sorter: "string",
-                        headerFilter: "input",
-                    }, {
-                        title: "Contacto",
-                        field: "numero",
-                    }, {
-                        title: "Entrada",
-                        field: "hora_llegada",
-                        sorter: "string",
-                    }, {
-                        title: "Salida",
-                        field: "hora_salida",
-                        sorter: "string",
-                    },{
-                        title: "Motivo",
-                        field: "motivo",
+                        title: "Detalles",
+                        field: "detalles",
                         editor: "input",
                         cellEdited: function (cell) {
                             var row = cell.getRow();

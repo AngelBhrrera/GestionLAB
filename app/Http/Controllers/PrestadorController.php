@@ -167,24 +167,6 @@ class PrestadorController extends Controller
         return response()->json($subcateg);
     }
 
-    public function index()
-    {
-
-        $code = Auth::user()->codigo;
-        if(request()->ajax()) {
-            $data = DB::table('registros_checkin')
-            ->select('SELECT `fecha`, `hora_entrada`, `hora_salida`, `tiempo`, `horas`, `estado` FROM `registros_checkin` WHERE `codigo` =' + $code )
-            ->get();
-
-            return datatables()->of($data)
-        //->addColumn('action', 'employee-action')
-          //  ->rawColumns(['action'])
-            ->addIndexColumn()
-            ->make(true);
-        }
-        return view('prestador/registro_horas');
-    }
-
     public function home(){
 
         $id = Auth::user()->id;
@@ -654,6 +636,25 @@ class PrestadorController extends Controller
 
     //TERRITORIOS DESCONOCIDOS 
     /*
+
+        public function index()
+    {
+
+        $code = Auth::user()->codigo;
+        if(request()->ajax()) {
+            $data = DB::table('registros_checkin')
+            ->select('SELECT `fecha`, `hora_entrada`, `hora_salida`, `tiempo`, `horas`, `estado` FROM `registros_checkin` WHERE `codigo` =' + $code )
+            ->get();
+
+            return datatables()->of($data)
+        //->addColumn('action', 'employee-action')
+          //  ->rawColumns(['action'])
+            ->addIndexColumn()
+            ->make(true);
+        }
+        return view('prestador/registro_horas');
+    }
+
 
     public function asignarfirmas(Request $request)
     {
