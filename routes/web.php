@@ -202,6 +202,10 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::get('admin/activar_area/{id}/{campo}', 'activate_area')->name('activatearea');
                
             });
+
+            Route::middleware('role:jefe area,jefe sede')->group(function() {
+                Route::get('admin/eliminarFestivo/{id}', 'eliminardiafestivo')->name('eliminarFestivo');
+            });
             /*
             Route::post('/actualizarcursos1',  'guardarcursos1')->name('actualizarcursos1');
             Route::post('/actualizarcursos2', 'guardarcursos2')->name('actualizarcursos2');
