@@ -24,12 +24,11 @@ class PrestadorController extends Controller
         ->where('id_prestador', auth()->user()->id)
         ->pluck('id_proyecto');
 
-
-
         $acts = DB::table('seguimiento_actividades')
         ->where('id_prestador', auth()->user()->id)
         ->orWhere(function($query) use ($proys) {
-            $query->whereIn('id_proyecto', $proys);
+            $query->whereIn('id_proyecto', $proys)
+                    ->where('id_prestador', 0);
         })
         ->orderByDesc('fecha')
         ->get();
@@ -65,7 +64,7 @@ class PrestadorController extends Controller
 
     public function detail_act($id, $value) {
 
-        $sql=    DB::table('actividades_prestadores')
+        $sql= DB::table('actividades_prestadores')
             ->where('id', $id)
             ->update(['detalles' => $value]);
 
@@ -78,56 +77,97 @@ class PrestadorController extends Controller
         $detalles = DB::table('actividades')
             ->select('actividades.*', 'categorias.nombre AS nombre_categoria', 'subcategorias.nombre AS nombre_subcategoria')
             ->join('categorias', 'actividades.id_categoria', '=', 'categorias.id')
-            ->join('subcategorias', 'actividades.id_subcategoria', '=', 'subcategorias.id')
+            ->leftJoin('subcategorias', 'actividades.id_subcategoria', '=', 'subcategorias.id') 
             ->where('actividades.id', $value)
             ->first();
 
         return view('/prestador/detalles_actividad', [ 'detalle' => $detalles]);
     }
 
-    public function startAct($id, $mode)
-    {
-
+    public function checkAct(){
+        //Busca si el prestador ya tenia una actividad en proceso
         $actual = DB::table('actividades_prestadores')
-            ->where('id_prestador', auth()->user()->id)
-            ->where('estado', 'En proceso')
-            ->exists();
+        ->where('id_prestador', auth()->user()->id)
+        ->where('estado', 'En proceso')
+        ->exists();
 
-        if($mode == 1 || $mode == 3){
+        return $actual;
+    }
 
-            //si mode == 1 ocupa recibir el TEU y agregarlo tambien en actividades_prestadores
+    public function startAct($id, $teu){
 
-            if($actual){
-                $found = DB::table('actividades_prestadores')
-                ->where('id_prestador',  auth()->user()->id)
-                ->where('estado', 'En proceso')
-                ->value('id');
-                DB::table('actividades_prestadores')
-                ->where('id', $found)
-                ->update([
-                    'estado' => 'Bloqueada'
-                ]);
-            }
+        $hor = date('H:i:s');
 
-            //comienza a contar el tiempo
+        $disponible = DB::table('actividades_prestadores')
+        ->where('id_prestador', auth()->user()->id)
+        ->orWhere('id_prestador', 0)
+        ->where('id', $id)
+        ->exists();
 
+        if($disponible){
             DB::table('actividades_prestadores')
             ->where('id', $id)
             ->update([
                 'id_prestador' => auth()->user()->id,
-                'estado' => 'En Proceso'
+                'estado' => 'En Proceso',
+                'horas_ref' => $hor,
+                'TEU' => $teu
             ]);
+        }
 
-        }else if($mode == 2){
+        return response()->json(['mensaje' => 'Actividad iniciada correctamente para la actividad con ID ' . $id]);
+    }
 
-            //termina el tiempo, hace el calculo de minutos transcurridos y lo agrega a lo que este actualmente
-            //en tiempo Invertido
+    public function statusAct($id, $mode)
+    {
+        
+        if($this->checkAct()){
+            $found = DB::table('actividades_prestadores')
+                ->where('id_prestador',  auth()->user()->id)
+                ->where('estado', 'En proceso')
+                ->value('id');
+
+            DB::table('actividades_prestadores')
+                ->where('id', $found)
+                ->update([
+                'estado' => 'Bloqueada'
+            ]);
+        }
+
+        if($mode == 1){
+            $hor = date('H:i:s');
+
             DB::table('actividades_prestadores')
             ->where('id', $id)
             ->update([
-                'estado' => 'Bloqueada'
+                'estado' => 'En Proceso',
+                'horas_ref' => $hor
             ]);
-        }else if($mode == 4){
+            return response()->json(['mensaje' => 'Actividad iniciada correctamente para la actividad con ID ' . $id]);
+
+        }else if($mode == 2){
+
+            $hor2 = date('H:i:s');
+            $ref = DB::table('actividades_prestadores')
+                ->where('id', $id)
+                ->value('horas_ref');
+            $inv = DB::table('actividades_prestadores')
+                ->where('id', $id)
+                ->value('Tiempo_Invertido');
+
+            $moreMins = $this->minutosC($ref, $hor2);
+            $c = $inv + $moreMins;
+
+            DB::table('actividades_prestadores')
+            ->where('id', $id)
+            ->update([
+                'estado' => 'Bloqueada',
+                'Tiempo_Invertido' => $c
+            ]);
+
+            return response()->json(['mensaje' => 'Actividad pausada con ID. ' . $id . 'Tiempo agregado' . $moreMins]);
+
+        }else if($mode == 3){
 
             //AGREGAR EN ACTIVIDADES PRESTADORES EL TIEMPO REAL FINAL.
             DB::table('actividades_prestadores')
@@ -135,9 +175,11 @@ class PrestadorController extends Controller
             ->update([
                 'estado' => 'Finalizada'
             ]);
+
+            return response()->json(['mensaje' => 'Actividad finalizada con ID ' . $id]);
         }
         
-        return response()->json(['mensaje' => 'Actividad iniciada correctamente para la actividad con ID ' . $id]);
+        return response()->json(['mensaje' => 'OK']);
     }
 
 
@@ -184,8 +226,8 @@ class PrestadorController extends Controller
 
             'TEC' => $tec,
         ]);
-    
-        return view( 'prestador/asignar_actividad_prestador', ['categorias' => $categorias,'actividades' => $actividades]);
+
+        return redirect()->route('misActividades');
     }
 
     public function asign_act()
@@ -527,6 +569,15 @@ class PrestadorController extends Controller
             $tiempo = $tiempo + 1;
         }
         return intval($tiempo);
+    }
+
+    function minutosC($hora,$hora2)
+    { 
+        $time1 = new DateTime($hora);
+        $time2 = new DateTime($hora2);
+        $interval = $time1->diff($time2);
+        $totalMinutos = ($interval->days * 24 * 60) + ($interval->h * 60) + $interval->i; 
+        return $totalMinutos;
     }
 
     

@@ -19,31 +19,29 @@
                 <div class="card-body">
 
                     <form class="from-prevent-multiple-submits" method="POST" action="{{ route('register_imps') }}">
-
                     @csrf
-
-                        <input type="hidden" name="selected_id" id="selected_id" value="">
-
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
                             <label for="from-group" class="form-label">Impresora</label>
-                            <select class="form-control @if(old('opc')=='1') @error('name') is-invalid @enderror @endif" name="name" id="name">
+                            <select class="form-control" name="name" id="name">
                             @if (isset($imps))
-                                <option id="" value="{{null}}" {{isset($dV[0]->imps) ? $dV[0]->imps == null ? 'selected="selected"' : '' : ''}}>Selecciona la impresora</option>
-                                @foreach ($imps as $dato )
-                                    <option id="{{$dato->id}}" value="{{$dato->id}}" {{old('imps') == $dato->id ? 'selected="selected"' : '' }}>{{$dato->nombre }} </option>
+                                <option id="" value="{{null}}" >Selecciona la impresora</option>
+                                @foreach ($imps as $dato)
+                                    <option id="{{$dato->id}}" value="{{$dato->id}}" >{{$dato->nombre }} </option>
                                 @endforeach
-                            @endif                 
+                            @endif       
+                            </select>          
                         </div>
 
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
-                            <label for="from-group" class="form-label">Impresora</label>
-                            <select class="form-control @if(old('opc')=='1') @error('proyect') is-invalid @enderror @endif" name="proyect" id="proyect">
-                            @if (isset($proys))
-                                <option id="null_proyect" value="{{null}}" {{isset($dV[0]->proys) ? $dV[0]->proys == null ? 'selected="selected"' : '' : ''}}>Selecciona el proyecto (omitir en caso de interno) </option>
-                                @foreach ($proys as $dato )
-                                    <option id="{{$dato->id}}" value="{{$dato->nombre}}" {{old('proys') == $dato->id ? 'selected="selected"' : '' }}>{{$dato->nombre }} </option>
-                                @endforeach
-                            @endif                 
+                            <label for="from-group" class="form-label">Proyecto</label>
+                            <select class="form-control" name="proyect" id="proyect">
+                                <option id="null_proyect" value="{{null}}" >Selecciona el proyecto (omitir en caso de interno) </option>
+                                @if (isset($proys))
+                                    @foreach ($proys as $dato )
+                                        <option id="{{$dato->id}}" value="{{$dato->titulo}}">{{$dato->titulo }} </option>
+                                    @endforeach
+                                @endif                 
+                            </select>
                         </div>
 
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
@@ -59,35 +57,20 @@
 
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
                             <label for="">Color</label>
-                            <input type="text"  class="form-control @error('color') is-invalid @enderror"
-                                name="color" id="model" value="{{old('color')}}">
-                            @error('color')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
+                            <input type="text"  class="form-control"
+                                name="color" id="color" value="{{old('color')}}">
                         </div>
 
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
                             <label for="">Piezas</label>
-                            <input class="form-control @error('pieces') is-invalid @enderror"
+                            <input  type="text" class="form-control"
                                 name="pieces" id="pieces" value="{{old('pieces')}}">
-                            @error('model')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
                         </div>
 
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
                             <label for="">Peso</label>
-                            <input class="form-control @error('weight') is-invalid @enderror"
+                            <input  type="text" class="form-control"
                                 name="weight" id="weight" value="{{old('weight')}}">
-                            @error('weight')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
                         </div>
 
                         <div class="form-group row">
@@ -99,6 +82,8 @@
                                     </div>
                                 </div>
                         </div>
+
+                        <br>
 
                         <div class="col-md-12 text-right">
                             <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits">

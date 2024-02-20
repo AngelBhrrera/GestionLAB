@@ -38,7 +38,7 @@ class Seguimiento extends Migration
             sc.nombre AS subcategoria,
             p.id AS id_proyecto, 
             p.titulo AS proyecto_origen, 
-            Tiempo_Real AS duracion, 
+            Tiempo_Invertido AS duracion, 
             fecha, 
             detalles,
             exp

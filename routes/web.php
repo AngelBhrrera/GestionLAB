@@ -150,6 +150,8 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::post('/admin/M_actividades', 'make_act')->name('make_act');
             Route::get('/admin/A_actividades', 'asign_act')->name('asign_act');
 
+            Route::get('admin/ver_detalles_proyecto/detalles_actividad/{val}','detallesActividad')->name('detallesActividad');
+
             Route::get('/admin/ver_actividades', 'actividades')->name('actividades');
             Route::get('/admin/actividades_en_progreso','actividades_en_progreso')->name('actividades_en_progreso');
             Route::get('/admin/actividades_revision', 'actividades_revision')->name('actividades_revision');
@@ -340,7 +342,9 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::get('prestador/obtenerSubcategoria', 'obtenerSubcategorias')->name('obtenerSubcategorias');
 
         Route::get('prestador/actividadesAsignadas', 'actividadesAsignadas')->name('actividadesAsignadas');
-        Route::get('prestador/actividadStatus/{id}/{mode}', 'startAct')->name('startAct');
+
+        Route::get('prestador/startAct/{id}/{teu}', 'startAct')->name('startAct');
+        Route::get('prestador/actividadStatus/{id}/{mode}', 'statusAct')->name('statusAct');
         //RUTAS ACTIVIDADES
         Route::get('prestador/C_actividades', 'create_act')->name('create_act');
         Route::post('prestador/M_actividades', 'make_act')->name('make_act');
