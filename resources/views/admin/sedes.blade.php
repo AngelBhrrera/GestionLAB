@@ -83,7 +83,6 @@
             var table = new Tabulator("#sedes", {
                 height:"100%",
                 data: sedes,
-                layout: "fitColumns",
                 resizableColumns: "false",
                 fitColumns: "true",
                 pagination: "local",
@@ -113,7 +112,7 @@
                         headerFilter: "input",
                         sorter: "string",
                         editor: "input",
-                        width: 300,
+                        width: 160,
                         cellEdited: function (cell) {
                             var row = cell.getRow();
                             var id = row.getData().id;

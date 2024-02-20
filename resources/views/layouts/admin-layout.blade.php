@@ -114,6 +114,13 @@
                             <div class="side-menu__title">Premios</div>
                         </a>
                     </li>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.gestor_premios')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                            <div class="side-menu__title">Ver premios</div>
+                        </a>
+                    </li>
                     @if (Auth::user()->tipo == "jefe sede" || Auth::user()->tipo == "Superadmin")
                     <li>
                         <a href="{{route('admin.sede')}}" class="side-menu">
@@ -407,6 +414,12 @@
                 </a>
                 <ul class="">
                     <li>
+                        <a href="{{ route('admin.create_proy') }}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="package-plus"></i> </div>
+                            <div class="side-menu__title">Crear proyecto</div>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('admin.create_act')}}" class="side-menu">
                             <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-edit">
                                         <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
@@ -418,9 +431,21 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('actividades_prestadores_revisadas')}}" class="side-menu">
+                        <a href="{{ route('admin.view_proy') }}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="package"></i> </div>
+                            <div class="side-menu__title">Ver proyectos</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.asign_act') }}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
+                            <div class="side-menu__title"> Asignar a prestadores </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.actividades')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="list-checks"></i> </div>
-                            <div class="side-menu__title"> Actividades aprobadas </div>
+                            <div class="side-menu__title"> Ver todas las actividades </div>
                         </a>
                     </li>
                     <li>
@@ -431,12 +456,6 @@
                                         <path d="M12 17h.01" />
                                     </svg></i> </div>
                             <div class="side-menu__title"> Actividades con error </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.create_proy') }}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="package-plus"></i> </div>
-                            <div class="side-menu__title">Proyectos</div>
                         </a>
                     </li>
                     <li>
@@ -462,6 +481,18 @@
                 </a>
                 <ul class="">
                     <li>
+                        <a href="{{ route('admin.create_proy') }}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="package-plus"></i> </div>
+                            <div class="side-menu__title">Crear proyecto</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.view_proy') }}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="package"></i> </div>
+                            <div class="side-menu__title">Ver proyectos</div>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('admin.create_act')}}" class="side-menu">
                             <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-edit">
                                         <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
@@ -475,32 +506,13 @@
                     <li>
                         <a href="{{ route('admin.asign_act') }}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
-                            <div class="side-menu__title"> Asignar a prestadores </div>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="{{ route('admin.actividades_en_progreso') }}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="file-input"></i> </div>
-                            <div class="side-menu__title">Actividades en Proceso </div>
+                            <div class="side-menu__title"> Asignar actividades</div>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.actividades_revision') }}" class="side-menu">
-                            <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-clock">
-                                        <path d="M16 22h2c.5 0 1-.2 1.4-.6.4-.4.6-.9.6-1.4V7.5L14.5 2H6c-.5 0-1 .2-1.4.6C4.2 3 4 3.5 4 4v3" />
-                                        <polyline points="14 2 14 8 20 8" />
-                                        <circle cx="8" cy="16" r="6" />
-                                        <path d="M9.5 17.5 8 16.25V14" />
-                                    </svg></i> </div>
-                            <div class="side-menu__title">Activdades en Revisión</div>
-                        </a>
-                    </li>
-                    </li>
-                    <li>
-                        <a href="{{route('actividades_prestadores_revisadas')}}" class="side-menu">
+                        <a href="{{route('admin.actividades')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="list-checks"></i> </div>
-                            <div class="side-menu__title"> Actividades aprobadas </div>
+                            <div class="side-menu__title"> Ver todas las actividades </div>
                         </a>
                     </li>
                     <li>
@@ -511,12 +523,6 @@
                                         <path d="M12 17h.01" />
                                     </svg></i> </div>
                             <div class="side-menu__title"> Actividades con error </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.create_proy') }}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="package-plus"></i> </div>
-                            <div class="side-menu__title">Proyectos</div>
                         </a>
                     </li>
                 </ul>

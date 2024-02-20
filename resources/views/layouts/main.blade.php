@@ -4,13 +4,6 @@
     <body class="main">
         @yield('content')
 
-        {{-- ESTILOS --}}
-
-        <link rel="modulepreload" href="{{ asset('build/assets/js/app.6c589841.js') }}">
-        <link rel="modulepreload" href="{{ asset('build/assets/js/_commonjsHelpers.712cc82f.js') }}">
-        
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-
         {{-- SCRIPTS --}}
         <script type="module" src="{{ asset('/build/assets/js/app.6c589841.js')}}"></script>
         
