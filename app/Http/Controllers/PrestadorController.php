@@ -18,20 +18,28 @@ class PrestadorController extends Controller
         $this->middleware('auth');
     }
 
-    
-    public function actividadesPrestador()
+    public function actividadesAsignadas()
     {
-        $encargado_id = auth()->user()->encargado_id; //coordinador id
-        $prestadores = DB::table('users')->select('id', 'name', 'apellido')->where('id', auth()->user()->id)->get();
-        $categorias = DB::table('categorias')->get();
-        $actividades = DB::table('actividades')->get();
+        $proys = DB::table('proyectos_prestadores')
+        ->where('id_prestador', auth()->user()->id)
+        ->pluck('id_proyecto');
 
-        return view('/prestador/crear_actividad_prestador', compact('prestadores', 'actividades', 'categorias'));
+
+
+        $acts = DB::table('seguimiento_actividades')
+        ->where('id_prestador', auth()->user()->id)
+        ->orWhere(function($query) use ($proys) {
+            $query->whereIn('id_proyecto', $proys);
+        })
+        ->orderByDesc('fecha')
+        ->get();
+
+        return view('/prestador/actividades_asignadas', ['actividades' =>$acts]);
     }
 
     public function proyectoPrestador()
     {
-        $proys = DB::tabe('proyectos_prestadores')
+        $proys = DB::table('proyectos_prestadores')
             ->where('id_prestador', auth()->user()->id)
             ->get();
 
@@ -75,6 +83,61 @@ class PrestadorController extends Controller
             ->first();
 
         return view('/prestador/detalles_actividad', [ 'detalle' => $detalles]);
+    }
+
+    public function startAct($id, $mode)
+    {
+
+        $actual = DB::table('actividades_prestadores')
+            ->where('id_prestador', auth()->user()->id)
+            ->where('estado', 'En proceso')
+            ->exists();
+
+        if($mode == 1 || $mode == 3){
+
+            //si mode == 1 ocupa recibir el TEU y agregarlo tambien en actividades_prestadores
+
+            if($actual){
+                $found = DB::table('actividades_prestadores')
+                ->where('id_prestador',  auth()->user()->id)
+                ->where('estado', 'En proceso')
+                ->value('id');
+                DB::table('actividades_prestadores')
+                ->where('id', $found)
+                ->update([
+                    'estado' => 'Bloqueada'
+                ]);
+            }
+
+            //comienza a contar el tiempo
+
+            DB::table('actividades_prestadores')
+            ->where('id', $id)
+            ->update([
+                'id_prestador' => auth()->user()->id,
+                'estado' => 'En Proceso'
+            ]);
+
+        }else if($mode == 2){
+
+            //termina el tiempo, hace el calculo de minutos transcurridos y lo agrega a lo que este actualmente
+            //en tiempo Invertido
+            DB::table('actividades_prestadores')
+            ->where('id', $id)
+            ->update([
+                'estado' => 'Bloqueada'
+            ]);
+        }else if($mode == 4){
+
+            //AGREGAR EN ACTIVIDADES PRESTADORES EL TIEMPO REAL FINAL.
+            DB::table('actividades_prestadores')
+            ->where('id', $id)
+            ->update([
+                'estado' => 'Finalizada'
+            ]);
+        }
+        
+        return response()->json(['mensaje' => 'Actividad iniciada correctamente para la actividad con ID ' . $id]);
     }
 
 
@@ -165,24 +228,6 @@ class PrestadorController extends Controller
             ->get();
 
         return response()->json($subcateg);
-    }
-
-    public function index()
-    {
-
-        $code = Auth::user()->codigo;
-        if(request()->ajax()) {
-            $data = DB::table('registros_checkin')
-            ->select('SELECT `fecha`, `hora_entrada`, `hora_salida`, `tiempo`, `horas`, `estado` FROM `registros_checkin` WHERE `codigo` =' + $code )
-            ->get();
-
-            return datatables()->of($data)
-        //->addColumn('action', 'employee-action')
-          //  ->rawColumns(['action'])
-            ->addIndexColumn()
-            ->make(true);
-        }
-        return view('prestador/registro_horas');
     }
 
     public function home(){
@@ -655,6 +700,25 @@ class PrestadorController extends Controller
 
     //TERRITORIOS DESCONOCIDOS 
     /*
+
+        public function index()
+    {
+
+        $code = Auth::user()->codigo;
+        if(request()->ajax()) {
+            $data = DB::table('registros_checkin')
+            ->select('SELECT `fecha`, `hora_entrada`, `hora_salida`, `tiempo`, `horas`, `estado` FROM `registros_checkin` WHERE `codigo` =' + $code )
+            ->get();
+
+            return datatables()->of($data)
+        //->addColumn('action', 'employee-action')
+          //  ->rawColumns(['action'])
+            ->addIndexColumn()
+            ->make(true);
+        }
+        return view('prestador/registro_horas');
+    }
+
 
     public function asignarfirmas(Request $request)
     {

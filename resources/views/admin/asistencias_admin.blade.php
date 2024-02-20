@@ -85,8 +85,8 @@
                     }, {
                         title: "Estado",
                         field: "estado",
-                        editor: "select",
                         width: 70,
+                        editor: "select",
                         editorParams: {
                             values: {
                                 "autorizado": "autorizado",

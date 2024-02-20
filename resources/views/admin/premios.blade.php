@@ -65,13 +65,12 @@
                             @enderror
                         </div>
                         <div class="intro-y col-span-12 sm:col-span-6">
-                            <label for="tipo" class="form-label"> Tipo *</label>
-                            <input id="tipo" type="text" class="form-control @if(old('opc')=='1') @error('tipo') is-invalid @enderror @endif" name="tipo" required autocomplete="off" placeholder="tipo">
-                            @error('tipo')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
+                            <label for="tipo" class="form-label">Tipo *</label>
+                                <select class="form-control" name="tipo" id="tipo">
+                                    <option id="1" value='horas'>Horas</option>
+                                    <option id="2" value='insignias'>Insignia</option>
+                                    <option id="3" value='otro'>Otro</option>
+                                </select>
                         </div>
                         <div class="intro-y col-span-12 sm:col-span-6">
                             <label for="horas" class="form-label"> Horas *</label>

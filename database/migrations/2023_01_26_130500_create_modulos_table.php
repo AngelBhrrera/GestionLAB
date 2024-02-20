@@ -26,10 +26,11 @@ class CreateModulosTable extends Migration
             ['id' => 2, 'gamificacion' => 0, 'impresiones' => 0, 'visitas' => 0, 'solicitudes' => 1],
             ['id' => 3, 'gamificacion' => 0, 'impresiones' => 0, 'visitas' => 1, 'solicitudes' => 1],
             ['id' => 4, 'gamificacion' => 1, 'impresiones' => 0, 'visitas' => 1, 'solicitudes' => 1],
-            ['id' => 5,'gamificacion' => 1, 'impresiones' => 1, 'visitas' => 1, 'solicitudes' => 1],
+            ['id' => 5,'gamificacion' => 1, 'impresiones' => 0, 'visitas' => 0, 'solicitudes' => 0],
+            ['id' => 6,'gamificacion' => 1, 'impresiones' => 1, 'visitas' => 1, 'solicitudes' => 1],
         ]);
 
-        DB::statement('UPDATE modulos SET id = 0 WHERE id = 5;');
+        DB::statement('UPDATE modulos SET id = 0 WHERE id = 6;');
     }
 
     public function down()
