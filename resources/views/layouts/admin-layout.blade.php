@@ -469,18 +469,6 @@
                 </a>
                 <ul class="">
                     <li>
-                        <a href="{{ route('admin.create_proy') }}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="package-plus"></i> </div>
-                            <div class="side-menu__title">Crear proyecto</div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.view_proy') }}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="package"></i> </div>
-                            <div class="side-menu__title">Ver proyectos</div>
-                        </a>
-                    </li>
-                    <li>
                         <a href="{{ route('admin.create_act')}}" class="side-menu">
                             <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-edit">
                                         <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />

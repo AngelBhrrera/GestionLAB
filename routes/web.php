@@ -162,6 +162,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::post('/admin/asign2', 'asign2')->name('asign2');
             Route::get('/admin/ver_proyectos', 'view_proy')->name('view_proy');
             Route::get('/admin/ver_detalles_proyecto/{id}', 'view_details_proy')->name('view_details_proy');
+            Route::get('/admin/ver_detalles_actividad/{proyecto_origen}/{id}', 'view_details_act')->name('view_details_act');
             //MODULO IMPRESIONES
             Route::get('/admin/ver_impresoras', 'control_print')->name('control_print');
             Route::post('/admin/registrar_impresoras', 'make_print')->name('make_print');

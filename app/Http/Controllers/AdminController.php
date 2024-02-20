@@ -591,7 +591,7 @@ class AdminController extends Controller
         ->select('id_prestador', 'name', 'apellido', 'correo', 'telefono')
         ->where('id_proyecto', $id)
         ->join('users', 'id_prestador','=','users.id')->get();
-        $actividades = DB::table('seguimiento_actividades')->select('actividad_id','actividad', 'estado', 'prestador')->get();
+        $actividades = DB::table('seguimiento_actividades')->select('actividad_id','actividad', 'estado', 'prestador')->where('id_proyecto', $id)->get();
         
         //dd($prestadores);
         return view('admin.ver_detalles_proyecto', compact('proyecto','prestadores', 'actividades'));
