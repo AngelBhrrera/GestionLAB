@@ -26,9 +26,9 @@
             var printers = {!! $impresiones !!};
 
             var table = new Tabulator("#players", {
-                height: 750,
                 data: printers,
                 pagination: "local",
+                layout: "fitColumns",
                 paginationSize: 24,
                 tooltips: true,
                 resizableColumns:false,
@@ -41,13 +41,17 @@
                         title: "Nombre de la actividad",
                         field: "titulo",
                         sorter: "string",
-                        width: 250,
+                        headerFilter: "input",
+                    },  {
+                        title: "Estado",
+                        field: "estado",
+                        sorter: "string",
                         headerFilter: "input",
                     },{
                         title: "Fecha",
                         field: "fecha",
                         sorter: "date",
-                        width: 175,
+                        width: 120,
                     }, {
                         title: "TEC",
                         field: "TEC",

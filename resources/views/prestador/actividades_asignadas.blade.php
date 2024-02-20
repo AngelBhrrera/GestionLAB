@@ -39,12 +39,6 @@
     align-items: center;
   }
 
-  .categoria {
-    padding: 5px 10px;
-    border-radius: 5px;
-    color: white;
-    margin-right: 10px;
-  }
 
   .botones {
     display: flex;
@@ -74,6 +68,19 @@
   gap: 20px; /* Espacio entre las actividades */
 }
 
+.boton-azul {
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.boton-azul:hover {
+    background-color: darkblue;
+}
+
 </style>
 @endsection
 
@@ -90,34 +97,16 @@
         @foreach ($actividades as $actividad)
 
         <div class="actividad">
-            <div class="titulo">{{ $actividad->actividad }}</div>
+            <div class="titulo">{{ $actividad->actividad }}
+            <button class="boton-azul"  onclick="verDetalles({{ $actividad->actividad_id }})">+</button>
+            </div>
             <div class="detalle">
                 <span class="proyecto">Proyecto:</span> {{ $actividad->proyecto_origen }}
                 <br>
                 <span class="categoria">Categoría:</span>{{ $actividad->categoria }}<br>
-                @if(isset($actividad->TEU))
-                    <span class="Subcategoria">Subcategoría:</span> {{ $actividad->subcategoria }}
+                @if(isset($actividad->subcategoria))
+                    <span class="Subcategoria">Subcategoría:</span> {{ $actividad->subcategoria }}<br>
                 @endif
-                @if(isset($actividad->TEU))
-                    @php
-                        $tiempo_en_minutos = $actividad->TEU;
-                        $horas = floor($tiempo_en_minutos / 60);
-                        $minutos = $tiempo_en_minutos % 60;
-
-                    @endphp
-                    <div class="col-md-6">
-                        <input name="horas"  style="width: 125px;"  class="form-control sm:w-56" value="{{ $horas . ' h '}}"> 
-                        <input name="minutos"  style="width: 125px;" class="form-control sm:w-56" value= "{{ $minutos . ' m '}}" >
-                    </div>
-                @else
-                    <div class="col-md-6">
-                        <input name="horas"  style="width: 125px;" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
-                        <input name="minutos"  style="width: 125px;" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
-                    </div>
-                    <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
-                @endif
-            </div>
-            <div class="detalle">
                 <span class="subtitulo">Fecha:</span> {{ $actividad->fecha }}<br>
                 <span class="tec">Tiempo Esperado:</span>  
                 @php
@@ -127,7 +116,34 @@
                     echo $horas . " h " . $minutos . " m";
                 @endphp
                 <br>
-                <span class="tr">Tiempo Invertido:</span> {{ $actividad->duracion }}
+                <span class="tr">Tiempo Invertido:</span>  
+                @php
+                    $tiempo_en_minutos = $actividad->duracion;
+                    $horas = floor($tiempo_en_minutos / 60);
+                    $minutos = $tiempo_en_minutos % 60;
+                    echo $horas . " h " . $minutos . " m";
+                @endphp
+            </div>
+            <div class="detalle">
+                @if(isset($actividad->TEU))
+                    @php
+                        $tiempo_en_minutos = $actividad->TEU;
+                        $horas = floor($tiempo_en_minutos / 60);
+                        $minutos = $tiempo_en_minutos % 60;
+
+                    @endphp
+                    <div class="col-md-6">
+                        <input name="horas"  style="width: 125px;"  type="text"  class="form-control sm:w-56" disabled value="{{ $horas . ' h '}}"> 
+                        <input name="minutos"  style="width: 125px;" type="text"  class="form-control sm:w-56" disabled value= "{{ $minutos . ' m '}}" >
+                    </div>
+                    <small id="Help" class="form-text text-muted"></small>
+                @else
+                    <div class="col-md-6">
+                        <input name="horas"  style="width: 125px;" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1">
+                        <input name="minutos"  style="width: 125px;" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1">
+                    </div>
+                    <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
+                @endif
             </div>
             <div class="detalle botones">
                 @if($actividad->estado == 'Asignada')
@@ -156,22 +172,31 @@
     <script type="text/javascript">
         function comenzarActividad(idActividad) {
 
-            const token = document.head.querySelector('meta[name="csrf-token"]').content;
-            fetch(`actividadStatus/${idActividad}/${1}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': token,
-                    },
-            })
-            .then(response => response.json())
-            .then(data => {
+            const horasInput = document.querySelector('input[name="horas"]').value;
+            const minutosInput = document.querySelector('input[name="minutos"]').value;
 
-                window.location.reload(); 
-            })
-            .catch(error => {
-                console.error('Error en activacion:', error);
-            });
+            if (horasInput && minutosInput) {
+                const minutos = parseInt(horasInput) * 60 + parseInt(minutosInput);
+
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`startAct/${idActividad}/${minutos}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': token,
+                        },
+                })
+                .then(response => response.json())
+                .then(data => {
+
+                    window.location.reload(); 
+                })
+                .catch(error => {
+                    console.error('Error en activacion:', error);
+                });
+            } else {
+                alert('Por favor, ingrese las horas y los minutos.');
+            }
         } 
 
         function pausarActividad(idActividad) {
@@ -195,7 +220,7 @@
 
         function continuarActividad(idActividad) {
             const token = document.head.querySelector('meta[name="csrf-token"]').content;
-            fetch(`actividadStatus/${idActividad}/${3}`, {
+            fetch(`actividadStatus/${idActividad}/${1}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -214,7 +239,7 @@
 
         function terminarActividad(idActividad) {
             const token = document.head.querySelector('meta[name="csrf-token"]').content;
-            fetch(`actividadStatus/${idActividad}/${4}`, {
+            fetch(`actividadStatus/${idActividad}/${3}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -230,6 +255,11 @@
                 console.error('Error en activacion:', error);
             });
         } 
+
+        function verDetalles(idActividad) {
+                window.location.href = "detalles_actividad/" + idActividad;
+        }
+        
     </script>
 
 @endsection

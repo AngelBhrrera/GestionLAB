@@ -25,7 +25,6 @@ use PhpParser\Node\Stmt\TryCatch;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\MailController;*/
-
 class AdminController extends Controller
 {
 
@@ -352,6 +351,19 @@ class AdminController extends Controller
 
     // ACTIVIDADES Y PROYECTOS
 
+    public function detallesActividad($value)
+    {
+
+        $detalles = DB::table('actividades')
+            ->select('actividades.*', 'categorias.nombre AS nombre_categoria', 'subcategorias.nombre AS nombre_subcategoria')
+            ->join('categorias', 'actividades.id_categoria', '=', 'categorias.id')
+            ->leftJoin('subcategorias', 'actividades.id_subcategoria', '=', 'subcategorias.id') 
+            ->where('actividades.id', $value)
+            ->first();
+
+        return view('/admin/admin_detalles_actividad', [ 'detalle' => $detalles]);
+    }
+
     public function actividades(){
 
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
@@ -378,10 +390,8 @@ class AdminController extends Controller
             $data = DB::table('seguimiento_actividades')
             ->get();
         }
-
         return view( 'admin/ver_todasActividades', [ 'data' =>json_encode($data)]);
     }
-    
     
     public function create_act()
     {
@@ -438,8 +448,7 @@ class AdminController extends Controller
     }
 
     public function asign_act(){
-
-        
+    
         if( auth()->user()->tipo == 'coordinador'){
             $prestadores = DB::table('solo_prestadores')
                 ->where('id_area', auth()->user()->area)
@@ -495,6 +504,7 @@ class AdminController extends Controller
             $prestadores = DB::table('solo_prestadores')
                 ->where('id_area', auth()->user()->area)
                 ->where('horario', auth()->user()->horario)
+                ->where('tipo', '!=', 'coordinador')
                 ->get();
             $areas = DB::table('areas')
                 ->select('id', 'nombre_area')
@@ -554,10 +564,7 @@ class AdminController extends Controller
         ]);
 
         $prestadoresSeleccionados = $request->input('prestadores_seleccionados');
-        if ($prestadoresSeleccionados == null){
-
-        }else{
-
+        if ($prestadoresSeleccionados != null){
             $tamañoArreglo = count($prestadoresSeleccionados);
 
                 for ($i = 0; $i < $tamañoArreglo; $i++) {
@@ -568,7 +575,6 @@ class AdminController extends Controller
                 }
         }
 
-        
         return redirect(route('admin.create_proy'))->with('success', 'Creada correctamente');
     }
 
@@ -579,6 +585,7 @@ class AdminController extends Controller
         return view('admin.ver_proyectos', ['tabla_proy' => $tabla_proy]);
     }
     public function view_details_proy($id){
+
         $proyecto = DB::table('Proyectos')->select('titulo')->where('id',$id)->get();
         $prestadores = DB::table('proyectos_prestadores')
         ->select('id_prestador', 'name', 'apellido', 'correo', 'telefono')
@@ -982,13 +989,6 @@ class AdminController extends Controller
         return redirect()->route('admin.diasfestivos');
     }
 
-    // public function guardarVacaciones(Request $request)
-    // {
-    //     $modificar = DB::table('dias_festivos')->insert(
-    //         ['fecha' => $request->input('fecha')]
-    //     );
-    //     return redirect()->route('admin.dias_no_laborables');
-    // }
 
     public function eliminardiafestivo($id)
     {
