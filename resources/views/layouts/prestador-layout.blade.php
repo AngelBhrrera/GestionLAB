@@ -108,16 +108,17 @@
                                     <div class="side-menu__title">Mi proyecto</div>
                                 </a>
                             </li>
-                            <li>
-                                <a href="{{route('actividades_en_proceso')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="file-input"></i> </div>
-                                    <div class="side-menu__title">Actividades asignadas </div>
-                                </a>
                             </li>
                             <li>
                                 <a href="{{route('misActividades')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="list-checks"></i> </div>
                                     <div class="side-menu__title"> Registro de actividades </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{route('actividadesAsignadas')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="list-checks"></i> </div>
+                                    <div class="side-menu__title"> Actividades asignadas </div>
                                 </a>
                             </li>
                         </ul>

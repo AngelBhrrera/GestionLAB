@@ -161,7 +161,6 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/ver_proyectos', 'view_proy')->name('view_proy');
             Route::get('/admin/ver_detalles_proyecto/{id}', 'view_details_proy')->name('view_details_proy');
             //MODULO IMPRESIONES
-
             Route::get('/admin/ver_impresoras', 'control_print')->name('control_print');
             Route::post('/admin/registrar_impresoras', 'make_print')->name('make_print');
             Route::get('/admin/ver_impresiones', 'watch_prints')->name('watch_prints');
@@ -196,7 +195,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::get('/admin/premios', 'premios')->name('premios');
                 Route::post('admin/g_premio', 'guardar_premio')->name('guardar_premio');
                 Route::post("admin/a_premio", "asignar_premio")->name("asignar_premio");
-                Route::get('/admin/premios-tabulador', 'gestor_premios')->name('gestor_premios');
+                Route::get('/admin/verpremios', 'gestor_premios')->name('gestor_premios');
                 //MODULO REPORTES
                 Route::get('admin/ver_reportes_parciales', 'ver_reportes_parciales')->name('reportes_parciales');
                 Route::get('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
@@ -333,13 +332,15 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::get('prestador/observaciones_impresion/{id}/{value}', 'detail_prints')->name('detail_prints');
         //MODULO HORARIO
         Route::get('prestador/horas', 'horas')->name('horas');
-        Route::get('prestador/actividadesPrestador', 'actividadesPrestador')->name('actividadesPrestador');
         Route::get('prestador/horario', 'horario')->name('horario');
         Route::get('/prestador/asistencias', 'asistencias')->name('asistencias');
         //FILTROS RUTAS ACTIVIDADES
         Route::get('prestador/obtenerActividades', 'obtenerActividades')->name('obtenerActividades');
         Route::get('prestador/obtenerActividadesB', 'obtenerActividadesB')->name('obtenerActividadesB');
         Route::get('prestador/obtenerSubcategoria', 'obtenerSubcategorias')->name('obtenerSubcategorias');
+
+        Route::get('prestador/actividadesAsignadas', 'actividadesAsignadas')->name('actividadesAsignadas');
+        Route::get('prestador/actividadStatus/{id}/{mode}', 'startAct')->name('startAct');
         //RUTAS ACTIVIDADES
         Route::get('prestador/C_actividades', 'create_act')->name('create_act');
         Route::post('prestador/M_actividades', 'make_act')->name('make_act');

@@ -114,6 +114,13 @@
                             <div class="side-menu__title">Premios</div>
                         </a>
                     </li>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.gestor_premios')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                            <div class="side-menu__title">Ver premios</div>
+                        </a>
+                    </li>
                     @if (Auth::user()->tipo == "jefe sede" || Auth::user()->tipo == "Superadmin")
                     <li>
                         <a href="{{route('admin.sede')}}" class="side-menu">
@@ -412,6 +419,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('admin.view_proy') }}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="package"></i> </div>
+                            <div class="side-menu__title">Ver proyectos</div>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('admin.asign_act') }}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
                             <div class="side-menu__title"> Asignar a prestadores </div>
@@ -459,6 +472,12 @@
                         <a href="{{ route('admin.create_proy') }}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="package-plus"></i> </div>
                             <div class="side-menu__title">Crear proyecto</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.view_proy') }}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="package"></i> </div>
+                            <div class="side-menu__title">Ver proyectos</div>
                         </a>
                     </li>
                     <li>

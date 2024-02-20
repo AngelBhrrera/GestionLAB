@@ -8,7 +8,6 @@ use App\Models\Visitas;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
 
@@ -17,6 +16,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\cita_cliente;
 use App\Models\premio;
+
+use Illuminate\Support\Facades\Log;
 
 use ProyectosPrestadores;
 use PhpParser\Node\Stmt\Switch_;
@@ -297,7 +298,7 @@ class AdminController extends Controller
     }
 
     public function eliminar($id) {
-
+        
         User::where('id', $id)
         ->delete();
     
@@ -938,9 +939,7 @@ class AdminController extends Controller
 
     public function diasfestivos()
     {   
-        $sede=Auth::user()->sede;
-        $area=Auth::user()->area;
-        $no_laboral = DB::select("Select * from eventos where sede = $sede and (area = $area or area = 0 ) order by inicio;");
+        $no_laboral = DB::select("Select * from eventos order by inicio;");
         foreach($no_laboral as $valor){
             // Crear un objeto DateTime interpretando la cadena original
             $fechaObjeto = DateTime::createFromFormat('Y-m-d H:i:s', $valor->inicio);
@@ -964,8 +963,8 @@ class AdminController extends Controller
                 'inicio' => $request->input('vacacionesInicio'),
                 'final'=> $request->input('vacacionesFin'),
                 'tipo'=>$request->input('tipo'),
-                'sede'=>$request->input('sede'),
-                'area'=>$request->input('area')]
+                'sede'=>auth()->user()->sede,
+                'area'=>auth()->user()->area]
             );
         }else{
             $modificar = DB::table('eventos')->insert(
@@ -973,8 +972,8 @@ class AdminController extends Controller
                 'inicio' => $request->input('diaFestivo'),
                 'final'=> $request->input('diaFestivo'),
                 'tipo'=>$request->input('tipo'),
-                'sede'=>$request->input('sede'),
-                'area'=>$request->input('area')]
+                'sede'=>auth()->user()->sede,
+                'area'=>auth()->user()->area]
             );
         }
         

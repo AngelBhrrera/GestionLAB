@@ -49,6 +49,7 @@ class CreatePremiosPrestadoresTable extends Migration
                 p.descripcion, 
                 p.tipo, 
                 p.horas, 
+                premios_prestadores.id,
                 premios_prestadores.fecha
             FROM premios_prestadores
             INNER JOIN users u ON u.id = premios_prestadores.id_prestador
