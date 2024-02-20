@@ -3,14 +3,7 @@
 
 
 @section('subhead')
-<style>
-  .fc-event-title {
-      color: white;
-      font-style: normal;
-      background: black;
-      border-radius: 5px;
-    }
-</style>
+
   
 @endsection
 
@@ -28,11 +21,21 @@
 
 
     <div id='container'>
-        <div id='calendar'  style='width: 800px; height: 1150px;'></div>
+        <div id='calendar' style='width: auto; height: auto;'></div>
     </div>
+
+    <style>
+  .fc-event-title {
+      color: white;
+      font-style: normal;
+      background: black;
+      border-radius: 5px;
+    }
+
+    
+</style>
     <div id="asistencias" data-asistencias="{{json_encode($asistencias)}}"></div>
     <div id="festivos" data-festivos="{{json_encode($festivos)}}"></div>
-
 
 @endsection
 
@@ -48,14 +51,14 @@
     var arrayFest = JSON.parse(festivos);
     var a=[];
     var fest=[];
-    
+    var faltasCalendario=[];
+        
     //Asistencias
     arrayAsist.forEach(function(elemento) {
           a.push({
           start: elemento.fecha,
           end: elemento.fecha,
           backgroundColor: "#00FFF0",
-
           display: "background"
         });
     });
@@ -71,12 +74,72 @@
         });
     });
 
+    //Faltas
+    const mesActual = new Date().getMonth(); 
+    const añoActual = new Date().getFullYear(); 
+    const fechaActual = new Date();
+    function obtenerDiasLaborablesDelMes(mes, año) {
+        const diasLaborables = [];
+        const primerDiaMes = new Date(año, mes, 1);
+        const ultimoDiaMes = new Date(año, mes + 1, 0);
+
+        for (let dia = 1; dia <= ultimoDiaMes.getDate(); dia++) {
+            const fecha = new Date(año, mes, dia);
+            const diaSemana = fecha.getDay();
+
+            if (diaSemana >= 1 && diaSemana <= 5) { // Si es de lunes a viernes
+                diasLaborables.push(fecha.toISOString().slice(0,10)); // Formato YYYY-MM-DD
+            }
+        }
+        return diasLaborables;
+      }
+
+        function contarFaltas() {
+          var asistencias = document.getElementById("asistencias").getAttribute('data-asistencias');
+      var festivos = document.getElementById("festivos").getAttribute('data-festivos');
+      var arrayAsist = JSON.parse(asistencias);
+      var arrayFest = JSON.parse(festivos);
+
+            const diasLaborables = obtenerDiasLaborablesDelMes(mesActual, añoActual);
+
+            console.log(diasLaborables);
+
+            const diasLaborablesNoFestivos = diasLaborables.filter(dia => !arrayFest.includes(dia) && new Date(dia) <= fechaActual);
+
+            console.log(diasLaborablesNoFestivos);
+
+            let faltas = 0;
+
+            diasLaborablesNoFestivos.forEach(diaLaborable => {
+                const asistenciaEnDia = arrayAsist.find(asistencia => asistencia.fecha === diaLaborable);
+                if (!asistenciaEnDia) {
+                    console.log(diaLaborable);
+                    faltasCalendario.push({
+                    start: diaLaborable,
+                    end: diaLaborable,
+                    backgroundColor: "red",
+                    display: "background"
+                  });
+                    faltas++;
+                }
+            });
+
+            console.log(faltas);
+            return faltas;
+        }
+        faltas = contarFaltas();
+        console.log(faltas);
+        console.log(faltasCalendario);
+
+
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
+      eventOverlap: false,
       initialDate: Date.now(),
       events: [
           ...a,
-          ...fest
+          ...fest,
+          ...faltasCalendario
         ],
 
     });
@@ -88,7 +151,22 @@
         colorStyle[i].style.fontStyle = 'normal';
     }
     calendar.render();
+
+    
+    // const dias = document.querySelectorAll(".fc-daygrid-day")
+    
+
+      var margin = 0;
+      const eventos = document.querySelectorAll(".fc-event-title");
+      eventos.forEach(function(evento) {
+        evento.style.marginTop= margin;
+        margin+=20;
+      });
+    console.log(eventos.length);
   });
+    
+
+  
 
   
 </script>
