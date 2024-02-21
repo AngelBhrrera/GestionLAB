@@ -160,7 +160,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::post('/admin/M_proyecto', 'make_proy')->name('make_proy');
             Route::post('/admin/asign', 'asign')->name('asign');
             Route::post('/admin/asign2', 'asign2')->name('asign2');
-            Route::get('/admin/ver_proyectos', 'view_proy')->name('view_proy');
+            Route::get('/admin/ver_proyectos', 'view_proys')->name('view_proys');
             Route::get('/admin/ver_detalles_proyecto/{id}', 'view_details_proy')->name('view_details_proy');
             Route::get('/admin/ver_detalles_actividad/{proyecto_origen}/{id}', 'view_details_act')->name('view_details_act');
             //MODULO IMPRESIONES

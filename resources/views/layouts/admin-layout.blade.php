@@ -419,7 +419,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.view_proy') }}" class="side-menu">
+                        <a href="{{ route('admin.view_proys') }}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="package"></i> </div>
                             <div class="side-menu__title">Ver proyectos</div>
                         </a>
