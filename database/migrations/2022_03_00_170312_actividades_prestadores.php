@@ -30,6 +30,7 @@ class ActividadesPrestadores extends Migration
             $table->integer('exp')->nullable();
             $table->string('detalles', 500)->nullable();
             $table->string('estado', 50)->default("Asignada");
+            $table->string('hora_refs',50);
         });
     }
 

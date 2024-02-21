@@ -96,14 +96,12 @@
                         field: "actividad_id",
                         formatter: function (cell, formatterParams, onRendered) {
                             var value = cell.getValue();
-                            var proyecto_origen = document.getElementById('nombre').value;
                             var button = document.createElement("button");
                             button.style = "background-color: blue; color: white; border: 1px solid white; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
-                            button.textContent = "Detalles";
+                            button.textContent = "Más Info.";
                             button.title = "";
                             button.addEventListener("click", function() {
-                                // Modificar la URL de redirección según la ruta deseada
-                                window.location.href = '/admin/ver_detalles_actividad/'+ proyecto_origen + '/' + value;
+                                window.location.href = "detalles_actividad/" + value;
                             });
                             return button;
                         }, 

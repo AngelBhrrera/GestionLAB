@@ -40,7 +40,6 @@
             var assist = {!! $datos !!};
 
             var table = new Tabulator("#players", {
-                height: 525,
                 data: assist,
                 layout: "fitColumns",
                 pagination: "local",
@@ -50,17 +49,14 @@
                         title: "Fecha",
                         field: "fecha",
                         sorter: "joiningdate",
-                        width: 150,
                         headerFilter: "input",
                     }, {
                         title: "Horas",
                         field: "horas",
                         sorter: "number",
-                        width: 100,
                     }, {
                         title: "Estado",
                         field: "estado",
-                        width: 100,
                         headerFilter: true,
                         headerFilterParams: {
                             "autorizado": "autorizado",
@@ -86,18 +82,15 @@
                         title: "Entrada",
                         field: "hora_entrada",
                         sorter: "string",
-                        width: 200,
                     },
                     {
                         title: "Salida",
                         field: "hora_salida",
                         sorter: "string",
-                        width: 200,
                     }, {
                         title: "Tiempo",
                         field: "tiempo",
                         sorter: "number",
-                        width: 200,
                     },  
                     
                 ],

@@ -91,7 +91,6 @@
                 pagination: "local",
                 paginationSize: 5,
                 tooltips: true,
-                groupBy: "id:sede",
                 columns: [{
                         title: "Nombre",
                         field: "nombre",
