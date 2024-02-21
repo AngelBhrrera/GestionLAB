@@ -344,6 +344,8 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
 
         Route::get('prestador/actividadesAsignadas', 'actividadesAsignadas')->name('actividadesAsignadas');
 
+        Route::get('prestador/actividadesAbiertas', 'actPull')->name('actPull');
+
         Route::get('prestador/startAct/{id}/{teu}', 'startAct')->name('startAct');
         Route::get('prestador/actividadStatus/{id}/{mode}', 'statusAct')->name('statusAct');
         //RUTAS ACTIVIDADES

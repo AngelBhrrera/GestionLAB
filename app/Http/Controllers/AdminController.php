@@ -58,7 +58,6 @@ class AdminController extends Controller
 
     public function registro()
     {
-
         $users = [
             ['id' => 'ext', 'value' => 'externo', 'name' => 'Visitante Externo'],
             ['id' => 'clientM', 'value' => 'maestro', 'name' => 'Visitante Maestro'],
@@ -489,16 +488,10 @@ class AdminController extends Controller
 
     public function make_proy(Request $request){
             
-        $ida = $request->input('area');
-        if($request->input('particular') === 'on'){
-            $boolp = true;
-        }else{
-            $boolp = false;
-        }
-
+        $boolp = boolval($request->input('particular'));
         $idpy = DB::table('proyectos')->insertGetId([
             'titulo' => $request->t_nombre,
-            'id_area' => $ida,
+            'id_area' => $request->input('area'),
             'particular' => $boolp,
         ]);
 

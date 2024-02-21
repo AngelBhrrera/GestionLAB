@@ -8,7 +8,7 @@
 @section('breadcrumb')
         <li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
         <li class="breadcrumb-item"><a href="">Actividades</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Asignadas</li>
+        <li class="breadcrumb-item active" aria-current="page">Abiertas</li>
 @endsection
 
 @section('subcontent')
@@ -19,15 +19,15 @@
 
         <div class="actividad">
             <div class="titulo">{{ $actividad->actividad }}
-            <button class="boton-azul"  onclick="verDetalles({{ $actividad->actividad_id }})">+</button>
+                <button class="boton-azul"  onclick="verDetalles({{ $actividad->actividad_id }})">+</button>
             </div>
             <div class="detalle">
-            <span class="subtitulo">Proyecto:</span> {{ $actividad->proyecto_origen }}
+                <span class="subtitulo">Proyecto:</span> {{ $actividad->proyecto_origen }}
                 <br>{{ $actividad->categoria }} | </span>
+
                 @if(isset($actividad->subcategoria))
-                    <span class="Subcategoria"> {{ $actividad->subcategoria }}</span>
+                    <span class="Subcategoria"> {{ $actividad->subcategoria }}</span><br>
                 @endif
-                <br>
                 <span class="subtitulo">Fecha:</span> {{ $actividad->fecha }} 
             </div>
             <div class="detalle">
@@ -49,31 +49,20 @@
 
                     @endphp
                     <div class="col-md-6">
-                        <input id= "horas_{{ $actividad->id }}" name="horas_{{ $actividad->id }}"  style="width: 125px;"  type="text" disabled class="form-control sm:w-56" value="{{ $horas . ' h '}}"> 
-                        <input id= "minutos_{{ $actividad->id }}" name="minutos_{{ $actividad->id }}"  style="width: 125px;" type="text" disabled class="form-control sm:w-56" value= "{{ $minutos . ' m '}}" >
+                        <input name="horas"  style="width: 125px;"  class="form-control sm:w-56" value="{{ $horas . ' h '}}"> 
+                        <input name="minutos"  style="width: 125px;" class="form-control sm:w-56" value= "{{ $minutos . ' m '}}" >
                     </div>
                 @else
                     <div class="col-md-6">
-                        <input id = "horas_{{ $actividad->id }}" name="horas_{{ $actividad->id }}"  style="width: 125px;" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" >
-                        <input id= "minutos_{{ $actividad->id }}" name="minutos_{{ $actividad->id }}"  style="width: 125px;" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" >
+                        <input name="horas"  style="width: 125px;" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
+                        <input name="minutos"  style="width: 125px;" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
                     </div>
                     <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
                 @endif
             </div>
             <div class="detalle botones">
                 @if($actividad->estado == 'Asignada')
-                    <button class="boton"  onclick="comenzarActividad({{ $actividad->id }})" >Comenzar Actividad</button>
-                    <button class="boton boton-inactivo" data-id="{{ $actividad->id }}" disabled>Terminar Actividad</button>
-                @elseif($actividad->estado == 'En Proceso')
-
-                    <button class="boton" onclick="pausarActividad({{ $actividad->id }})" >Pausar Actividad</button>
-                    <button class="boton" onclick="terminarActividad({{ $actividad->id }})" >Terminar Actividad</button>
-                @elseif($actividad->estado == 'Bloqueada')
-                    <button class="boton" onclick="continuarActividad({{ $actividad->id }})">Reaunudar Actividad</button>
-                    <button class="boton boton-inactivo" data-id="{{ $actividad->id }}" disabled>Terminar Actividad</button>
-                @else
-                    <button class="boton" data-id="{{ $actividad->id }}" disabled>{{ $actividad->estado }}</button>
-                    <button class="boton boton-inactivo" data-id="{{ $actividad->id }}"  disabled>Terminar Actividad</button>
+                    <button class="boton"  onclick="tomarActividad({{ $actividad->id }})" >Tomar Actividad</button>
                 @endif
             </div>
         </div>
@@ -88,28 +77,12 @@
     <script type="text/javascript">
         function comenzarActividad(idActividad) {
 
-        var id = idActividad;
+            const horasInput = document.querySelector('input[name="horas"]').value;
+            const minutosInput = document.querySelector('input[name="minutos"]').value;
 
-        var nH = "horas_"+id;
-        var nM = "minutos_"+id;
-        const horasInput = document.getElementById(nH);
-        const minutosInput = document.getElementById(nM);
+            if (horasInput && minutosInput) {
+                const minutos = parseInt(horasInput) * 60 + parseInt(minutosInput);
 
-            if (horasInput.value || minutosInput.value) {
-
-                if(!horasInput.value){
-                    fixedHoras = 0;
-                    var minutos = parseInt(minutosInput.value);
-                }
-                if(!minutosInput.value){
-                    fixedMinutos = 0;
-                    var minutos = parseInt(horasInput.value) * 60;
-                }else{
-                    var minutos = parseInt(horasInput.value) * 60 + parseInt(minutosInput.value);
-                }
-
-                console.log(minutos);
-                
                 const token = document.head.querySelector('meta[name="csrf-token"]').content;
                 fetch(`startAct/${idActividad}/${minutos}`, {
                         method: 'GET',
@@ -131,7 +104,7 @@
             }
         } 
 
-        function continuarActividad(idActividad) {
+        function pausarActividad(idActividad) {
             const token = document.head.querySelector('meta[name="csrf-token"]').content;
             fetch(`actividadStatus/${idActividad}/${1}`, {
                     method: 'GET',
@@ -150,7 +123,7 @@
             });
         } 
 
-        function pausarActividad(idActividad) {
+        function continuarActividad(idActividad) {
             const token = document.head.querySelector('meta[name="csrf-token"]').content;
             fetch(`actividadStatus/${idActividad}/${2}`, {
                     method: 'GET',
