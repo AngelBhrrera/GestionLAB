@@ -101,7 +101,8 @@
                             button.textContent = "Más Info.";
                             button.title = "";
                             button.addEventListener("click", function() {
-                                window.location.href = "detalles_actividad/" + value;
+                                // Modificar la URL de redirección según la ruta deseada
+                                window.location.href = 'detalles-actividad/' +value//'/admin/ver_detalles_actividad/'+ proyecto_origen + '/' + value;
                             });
                             return button;
                         }, 

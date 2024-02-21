@@ -855,28 +855,48 @@ class AdminController extends Controller
         return view('admin.dias_festivos',['no_laboral' =>json_encode($no_laboral)]);
     }
 
-    public function guardarFestivos(Request $request){   
+    public function guardarFestivos(Request $request)
+    {   
+        if($request->input('tipo')=='vacaciones'){
 
-        if ($request->input('tipo') == 'vacaciones') {
-            $inicio = $request->input('vacacionesInicio');
-            $final = $request->input('vacacionesFin');
-        } else {
-            $inicio = $request->input('diaFestivo');
-            $final = $request->input('diaFestivo');
+            $modificar = DB::table('eventos')->insert(
+                ['evento'=> $request->input('descripcion'),                   
+                'inicio' => $request->input('vacacionesInicio'),
+                'final'=> $request->input('vacacionesFin'),
+                'tipo'=>$request->input('tipo'),
+                'sede'=>$request->input('sede'),
+                'area'=>$request->input('area')]
+            );
+        }else{
+            $modificar = DB::table('eventos')->insert(
+                ['evento'=> $request->input('descripcion'),                   
+                'inicio' => $request->input('diaFestivo'),
+                'final'=> $request->input('diaFestivo'),
+                'tipo'=>$request->input('tipo'),
+                'sede'=>$request->input('sede'),
+                'area'=>$request->input('area')]
+            );
         }
-
-        DB::table('eventos')->insert([
-            'evento' => $request->input('descripcion'),
-            'inicio' => $inicio,
-            'final' => $final,
-            'tipo' =>$request->input('tipo'),
-            'sede' =>auth()->user()->sede,
-            'area' =>auth()->user()->area
-        ]);
         
-        return redirect()->route('admin.diasfestivos');
+        return redirect()->route('admin.diasfestivos')->with('success','Agregado correctamente');
     }
 
+    public function editardiafestivo(Request $request)
+    {   
+        $id_festivo = $request->id_festivo;
+        $tipo = $request->tipo;
+        $inicio = $request->inicio;
+        $fin = $request->fin;
+        $descripcion = $request->descripcion;
+
+        if($tipo == 'festivo'){
+            $fin = $inicio;
+        }
+
+        $actualizar = DB::table('eventos')->where('id', $id_festivo)->update(['evento'=>$descripcion, 'inicio'=>$inicio, 'final'=>$fin]);
+
+        return redirect()->route('admin.diasfestivos')->with('success', 'Modificado correctamente');
+    }
 
     public function eliminardiafestivo($id)
     {
