@@ -125,6 +125,8 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::get('/admin/horarios', 'horarios')->name('horarios');
                 Route::get('/admin/Dias_no_laborables', 'diasfestivos')->name('diasfestivos');
                 Route::post('/admin/agregar_festivos', 'guardarFestivos')->name('agregar_festivos');
+                Route::get('admin/eliminarFestivo/{id}', 'eliminardiafestivo')->name('eliminarFestivo');
+                Route::post('admin/editarFestivo', 'editardiafestivo')->name('editarFestivo');
 
                 Route::get('/admin/categorias', 'categorias')->name('categorias');
                 Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
@@ -243,10 +245,6 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 //API SEDES
                 Route::get('admin/activar_area/{id}/{campo}', 'activate_area')->name('activatearea');
                
-            });
-
-            Route::middleware('role:jefe area,jefe sede')->group(function() {
-                Route::get('admin/eliminarFestivo/{id}', 'eliminardiafestivo')->name('eliminarFestivo');
             });
             /*
             Route::post('/actualizarcursos1',  'guardarcursos1')->name('actualizarcursos1');

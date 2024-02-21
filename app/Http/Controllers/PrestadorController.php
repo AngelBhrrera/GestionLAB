@@ -661,7 +661,7 @@ class PrestadorController extends Controller
         $sede = DB::table('sedes')
             ->select('nombre_sede', 'id_sede')
             ->where('sedes.id_sede', $user->sede) 
-            ->get();
+            ->first();
 
         $todasMedallasUsuario = DB::table('niveles')
                 ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
