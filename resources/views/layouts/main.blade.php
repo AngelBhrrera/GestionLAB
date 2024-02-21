@@ -18,6 +18,8 @@
 
         <script src="{{ asset('build/assets/js/dual-listbox.min.js')}}"></script>
         @yield('script')
+
+        @include('layouts.components.quitarAlerta')
         
     </body>
 @endsection
