@@ -70,7 +70,7 @@
             </div>
             <!-- END: Reporte 1 -->
 
-            <!-- BEGIN: Leaderboard -->
+            <!-- BEGIN: leaderboard -->
             <div class="xl:px-6 mt-2.5">
                 <div class="intro-y flex items-center mt-8">
                     <h2 class="text-lg font-medium mr-auto">
@@ -96,7 +96,7 @@
 
                             <?php $bandera = false;?>
                                 
-                            @foreach ( $leaderBoard as $top)
+                            @foreach ( $leaderboard as $top)
                                 <?php $imagen = DB::select("select imagen_perfil from users where codigo=$top->codigo")?>
                                 <tr>
                                     @if ($top->codigo == Auth::user()->codigo)
@@ -129,14 +129,14 @@
                             @endforeach
                             @if (!$bandera)
                                 <tr>
-                                    <td> <p style="color: #0023FF"><strong>{{$posicionUsuario[0]->position}} </strong> </p></td>
+                                    <td> <p style="color: #0023FF"><strong>{{$pos}} </strong> </p></td>
                                     <td>
                                     <div class="w-10 h-10 image-fit">
                                         <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" width="40" height="40" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" 
                                         src="{{route('obtenerImagen', ['nombreArchivo' => (Auth::user()->imagen_perfil != null) ? Auth::user()->imagen_perfil : 'false'])}}">
                                     </div>    
-                                    <p style="color: #0023FF"><strong> {{$posicionUsuario[0]->Nombre}}</strong></p> </td>
-                                    <td> <p style="color: #0023FF"><strong>{{$posicionUsuario[0]->experiencia}}</strong></p> </td>
+                                    <p style="color: #0023FF"><strong> {{Auth::user()->name}}</strong></p> </td>
+                                    <td> <p style="color: #0023FF"><strong>{{Auth::user()->experiencia}}</strong></p> </td>
                                     <td><img src="{{asset('build/assets/'.$usuarioMedalla->ruta)}}" width="40" height="80"alt=""></td>
                                 </tr>
                             @endif
@@ -145,7 +145,7 @@
                 </div>
             </div>
         </div>
-        <!-- END: Leaderboard-->
+        <!-- END: leaderboard-->
     </div>
 
 @endsection

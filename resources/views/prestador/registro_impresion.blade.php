@@ -22,7 +22,7 @@
                     @csrf
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
                             <label for="from-group" class="form-label">Impresora</label>
-                            <select class="form-control" name="name" id="name">
+                            <select class="form-control" name="imp_id" id="imp_id">
                             @if (isset($imps))
                                 <option id="" value="{{null}}" >Selecciona la impresora</option>
                                 @foreach ($imps as $dato)
