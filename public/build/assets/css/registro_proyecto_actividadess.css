@@ -1,0 +1,414 @@
+.bootstrap-duallistbox-container .box1,
+.bootstrap-duallistbox-container .box2 {
+    width: 48%;
+    /* Ajusta el ancho según tus necesidades */
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 2%;
+}
+
+#btnproy{
+    margin: 22px;
+    margin-top: 1px;     /* media para el form del asignar actividades a proyectos */
+    margin-bottom: 5px;
+}
+
+#cardbody{
+    margin: 145px;
+    margin-top: 10px;       /* media para la card de la asignacion de actividades a proyectos*/
+    margin-bottom: 10px;
+}
+
+#titulo{
+    display: flex;
+    justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+    align-items: center;
+    height: 10vh; 
+}
+
+#card_duelist_box{
+    margin: 280px;
+    margin-top: 10px;       /* media para el container */
+    margin-bottom: 1px;
+    
+}
+
+#crear_proyecto{
+    display: flex;
+    justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+    align-items: center;        
+    height: 10vh; 
+}
+
+#crear_proyecto_2{
+    margin: 145px;
+    margin-top: 1px;       /* asignacion de actividades al proyecto */
+    margin-bottom: 1px;
+}
+
+#boton_crear{
+    margin-top: 30px;
+    align-items: center;  /* boton de crear proyecto */
+    display: flex;
+    margin-left: 265px;
+}
+
+@media(min-width: 320px){
+
+    #titulo{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;
+        height: 10vh; 
+    }
+
+    #crear_proyecto{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;        
+        height: 10vh; 
+    }
+
+    #btnproy{
+        margin: 5px;
+        margin-top: 1px;     /* media para el form del asignar actividades a proyectos */
+        margin-bottom: 5px;
+    }
+
+    #cardbody{
+        margin: 0px;
+        margin-top: 10px;       /* media para la card de la asignacion de actividades a proyectos*/
+        margin-bottom: 10px;
+    }
+
+    #card_duelist_box{
+        margin: 0px;
+        margin-top: 10px;       /* media para el container */
+        margin-bottom: 1px;
+        
+    }
+    #crear_proyecto_2{
+        margin: 0px;
+        margin-top: 1px;       /* asignacion de actividades al proyecto */
+        margin-bottom: 1px;
+    }
+    
+    #boton_crear{
+        margin-top: 30px;
+        align-items: center;  /* boton de crear proyecto */
+        display: flex;
+        margin-left: 90px;
+    }
+
+    #agregar_actividades{
+        margin-top: 20px;
+        margin-left: 55px;
+    }
+        
+}
+
+@media(min-width: 410px){
+
+    #titulo{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;
+        height: 10vh; 
+    }
+
+    #crear_proyecto{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;        
+        height: 10vh; 
+    }
+
+    #btnproy{
+        margin: 5px;
+        margin-top: 1px;     /* media para el form del asignar actividades a proyectos */
+        margin-bottom: 5px;
+    }
+
+    #cardbody{
+        margin: 0px;
+        margin-top: 10px;       /* media para la card de la asignacion de actividades a proyectos*/
+        margin-bottom: 10px;
+    }
+
+    #card_duelist_box{
+        margin: 20px;
+        margin-top: 10px;       /* media para el container */
+        margin-bottom: 1px;
+        
+    }
+    #crear_proyecto_2{
+        margin: 0px;
+        margin-top: 1px;       /* asignacion de actividades al proyecto */
+        margin-bottom: 1px;
+    }
+    
+    #boton_crear{
+        margin-top: 30px;
+        align-items: center;  /* boton de crear proyecto */
+        display: flex;
+        margin-left: 90px;
+    }
+
+    #agregar_actividades{
+        margin-top: 20px;
+        margin-left: 80px;
+    }
+        
+}
+
+@media(min-width: 768px){
+
+    #titulo{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;
+        height: 10vh; 
+    }
+
+    #crear_proyecto{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;        
+        height: 10vh; 
+    }
+
+    #btnproy{
+        margin: 5px;
+        margin-top: 1px;     /* media para el form del asignar actividades a proyectos */
+        margin-bottom: 5px;
+    }
+
+    #cardbody{
+        margin: 0px;
+        margin-top: 10px;       /* media para la card de la asignacion de actividades a proyectos*/
+        margin-bottom: 10px;
+    }
+
+    #card_duelist_box{
+        margin: 10px;
+        margin-top: 10px;       /* media para el container */
+        margin-bottom: 1px;
+        
+    }
+    #crear_proyecto_2{
+        margin: 0px;
+        margin-top: 1px;       /* asignacion de actividades al proyecto */
+        margin-bottom: 1px;
+    }
+    
+    #boton_crear{
+        margin-top: 30px;
+        align-items: center;  /* boton de crear proyecto */
+        display: flex;
+        margin-left: 270px;
+    }
+        
+}
+
+
+@media(min-width: 1024px){
+
+    #titulo{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;
+        height: 10vh; 
+    }
+
+    #crear_proyecto{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;        
+        height: 10vh; 
+    }
+
+    #btnproy{
+        margin: 5px;
+        margin-top: 1px;     /* media para el form del asignar actividades a proyectos */
+        margin-bottom: 5px;
+    }
+
+    #cardbody{
+        margin: 20px;
+        margin-top: 10px;       /* media para la card de la asignacion de actividades a proyectos*/
+        margin-bottom: 10px;
+    }
+
+    #card_duelist_box{
+        margin: 120px;
+        margin-top: 10px;       /* media para el container */
+        margin-bottom: 1px;
+        
+    }
+    #crear_proyecto_2{
+        margin: 20px;
+        margin-top: 1px;       /* asignacion de actividades al proyecto */
+        margin-bottom: 1px;
+    }
+    
+    #boton_crear{
+        margin-top: 30px;
+        align-items: center;  /* boton de crear proyecto */
+        display: flex;
+        margin-left: 270px;
+    }
+
+    #agregar_actividades{
+        margin-top: 0px;
+        margin-left: 0px;
+    }
+        
+}
+
+
+@media(min-width: 1420px){
+
+    #titulo{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;
+        height: 10vh; 
+    }
+
+    #crear_proyecto{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;        
+        height: 10vh; 
+    }
+
+    #btnproy{
+        margin: 5px;
+        margin-top: 1px;     /* media para el form del asignar actividades a proyectos */
+        margin-bottom: 5px;
+    }
+
+    #cardbody{
+        margin: 80px;
+        margin-top: 10px;       /* media para la card de la asignacion de actividades a proyectos*/
+        margin-bottom: 10px;
+    }
+
+    #card_duelist_box{
+        margin: 135px;
+        margin-top: 10px;       /* media para el container */
+        margin-bottom: 1px;
+        
+    }
+    #crear_proyecto_2{
+        margin: 80px;
+        margin-top: 1px;       /* asignacion de actividades al proyecto */
+        margin-bottom: 1px;
+    }
+    
+    #boton_crear{
+        margin-top: 30px;
+        align-items: center;  /* boton de crear proyecto */
+        display: flex;
+        margin-left: 270px;
+    }
+        
+}
+
+@media(min-width: 1800px){
+
+    #titulo{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;
+        height: 10vh; 
+    }
+
+    #crear_proyecto{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;        
+        height: 10vh; 
+    }
+
+    #btnproy{
+        margin: 5px;
+        margin-top: 1px;     /* media para el form del asignar actividades a proyectos */
+        margin-bottom: 5px;
+    }
+
+    #cardbody{
+        margin: 120px;
+        margin-top: 10px;       /* media para la card de la asignacion de actividades a proyectos*/
+        margin-bottom: 10px;
+    }
+
+    #card_duelist_box{
+        margin: 290px;
+        margin-top: 10px;       /* media para el container */
+        margin-bottom: 1px;
+        
+    }
+    #crear_proyecto_2{
+        margin: 120px;
+        margin-top: 1px;       /* asignacion de actividades al proyecto */
+        margin-bottom: 1px;
+    }
+    
+    #boton_crear{
+        margin-top: 30px;
+        align-items: center;  /* boton de crear proyecto */
+        display: flex;
+        margin-left: 270px;
+    }
+        
+}
+
+@media(min-width: 1920px){
+
+    #titulo{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;
+        height: 10vh; 
+    }
+
+    #crear_proyecto{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;        
+        height: 10vh; 
+    }
+
+    #btnproy{
+        margin: 5px;
+        margin-top: 1px;     /* media para el form del asignar actividades a proyectos */
+        margin-bottom: 5px;
+    }
+
+    #cardbody{
+        margin: 160px;
+        margin-top: 10px;       /* media para la card de la asignacion de actividades a proyectos*/
+        margin-bottom: 10px;
+    }
+
+    #card_duelist_box{
+        margin: 260px;
+        margin-top: 10px;       /* media para el container */
+        margin-bottom: 1px;
+        
+    }
+    #crear_proyecto_2{
+        margin: 160px;
+        margin-top: 1px;       /* asignacion de actividades al proyecto */
+        margin-bottom: 1px;
+    }
+    
+    #boton_crear{
+        margin-top: 30px;
+        align-items: center;  /* boton de crear proyecto */
+        display: flex;
+        margin-left: 270px;
+    }
+        
+}

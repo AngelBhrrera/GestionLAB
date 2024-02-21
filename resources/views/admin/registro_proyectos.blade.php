@@ -1,15 +1,7 @@
 @extends('layouts/admin-layout')
 @section('subhead')
-<style>
-    .bootstrap-duallistbox-container .box1,
-    .bootstrap-duallistbox-container .box2 {
-        width: 48%;
-        /* Ajusta el ancho según tus necesidades */
-        display: inline-block;
-        vertical-align: top;
-        margin-right: 2%;
-    }
-</style>
+
+<link rel="stylesheet" href="{{asset('build/assets/css/registro_proyecto_actividadess.css')}}">
 @endsection
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
@@ -36,17 +28,17 @@
                         </div>
                 </div>
             </div>
-            <div class="card card-primary">
+            <div class="card card-primary" id="crear_proyecto">
                 <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Crear Nuevo Proyecto </h3>
             </div>
-            <div class="card-body pl-10 pr-10">
+            <div class="card-body pl-10 pr-10" id="crear_proyecto_2">
                 <form id="enviar" method="POST" action="{{route('admin.make_proy')}}">
                     @csrf
                     @if (isset($tipo))
                     <input id="tipo" name="tipo" value={{ $tipo }} type="hidden">
                     @endif
 
-                    <div class="form-group row">
+                    <div class="form-group row" >
                         <label for="nombre" class="col-md-4 col-form-label text-md-right">Titulo del proyecto</label>
                         <div class="col-md-8">
                             <textarea id="t_proyecto" name="t_nombre" type="text" class="form-control"  placeholder="Ingresa el titulo del proyecto" required></textarea>
@@ -61,11 +53,11 @@
                                 @endforeach
                             </select>
                     </div>
-                    <div class="form-check mt-2">
+                    <div class="form-check mt-2" >
                         <input id="checkbox" name="particular" class="form-check-input" type="checkbox" checked>
                         <label class="form-check-label" for="checkbox-switch-1">Particular</label>
                     </div>
-                    <div class="container">
+                    <div class="container" id="card_duelist_box">
                         <div class="row justify-content-center">
                             <label for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
                             <div class="col-md-8"> 
@@ -77,19 +69,19 @@
                                     @endif
                                 </select>
                             </div>
+                            <small id="Help" class="form-text text-muted">Selecciona a los prestadores para realizar la actividad</small>
                         </div>
-                        <small id="Help" class="form-text text-muted">Selecciona a los prestadores para realizar la actividad</small>
+                        <button id="boton_crear" type="submit" class="btn btn-primary from-prevent-multiple-submits">Crear proyecto</button>
                     </div>
                     <br>
-                    <button type="submit" class="btn btn-primary from-prevent-multiple-submits">Crear proyecto</button>
                 </form>
             </div>
 
-            <div class="card card-primary">
+            <div class="card card-primary" id="titulo">
                 <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Asignar actividades a proyecto </h3>
             </div>
-            <div class="card-body pl-10 pr-10">
-                    <form id="btn-proy" method="POST"  action="{{route('admin.asign2')}}">
+            <div class="card-body pl-10 pr-10" id="cardbody">
+                    <form id="btnproy" method="POST"  action="{{route('admin.asign2')}}">
                     @csrf
                     @if (isset($tipo))
                     <input id="tipo" name="tipo" value="{{ $tipo }}" type="hidden">
@@ -131,10 +123,10 @@
                                     <button type="button" onclick="removeModule(0)">Eliminar</button>
                                 </div>
                             </div>
-                            <button type="button" id="add-module-btn">+</button>
+                            <button type="submit"  class="btn btn-primary from-prevent-multiple-submits" id="add-module-btn">+</button>
                         </div>
                     </div>
-                    <div class="col-md-8"> 
+                    <div class="col-md-8" id="agregar_actividades"> 
                         <button type="submit" id='asignar' class="btn btn-primary from-prevent-multiple-submits">Agregar a proyecto</button>
                     </form>
                     </div>

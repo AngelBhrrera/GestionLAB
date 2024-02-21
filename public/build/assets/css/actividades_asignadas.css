@@ -1,0 +1,193 @@
+.actividad {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.237);
+  }
+  .titulo {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .detalle {
+    margin-bottom: 10px;
+  }
+
+  .input-tiempo {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+
+  .subtitulo {
+    font-weight: bold;
+  }
+
+  .categoria-subcategoria {
+    display: flex;
+    align-items: center;
+  }
+
+  .categoria {
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    margin-right: 10px;
+  }
+
+  .botones {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .boton {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+
+  .boton-inactivo {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+  }
+
+  .contenedor-actividades {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Tres columnas de igual tamaño */
+  gap: 20px; /* Espacio entre las actividades */
+}
+
+@media (min-width: 320px){
+    .contenedor-actividades {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr); /* Tres columnas de igual tamaño */
+        gap: 20px; /* Espacio entre las actividades */
+      }
+
+      .actividad {
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        width: 300px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.237);
+      }
+}
+
+@media (min-width: 375px){
+    .contenedor-actividades {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr); /* Tres columnas de igual tamaño */
+        gap: 20px; /* Espacio entre las actividades */
+      }
+
+      .actividad {
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        width: 300px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.237);
+        margin-left: 15px;
+      }
+}
+
+@media (min-width: 400px){
+    .contenedor-actividades {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr); /* Tres columnas de igual tamaño */
+        gap: 20px; /* Espacio entre las actividades */
+      }
+
+      .actividad {
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        width: 300px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.237);
+        margin-left: 45px;
+      }
+}
+
+@media (min-width: 768px){
+    .contenedor-actividades {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Tres columnas de igual tamaño */
+        gap: 20px; /* Espacio entre las actividades */
+      }
+
+      .actividad {
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        width: 300px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.237);
+        margin-left: 25px;
+      }
+}
+
+@media (min-width: 1024px){
+    .contenedor-actividades {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Tres columnas de igual tamaño */
+        gap: 20px; /* Espacio entre las actividades */
+      }
+
+      .actividad {
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        width: 300px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.237);
+        margin-left: 85px;
+      }
+}
+
+@media (min-width: 1440px){
+    .contenedor-actividades {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* Tres columnas de igual tamaño */
+        gap: 20px; /* Espacio entre las actividades */
+      }
+
+      .actividad {
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        width: 300px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.237);
+        margin-left: 25px;
+      }
+}
+
+@media (min-width: 1919px){
+    .contenedor-actividades {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* Tres columnas de igual tamaño */
+        gap: 20px; /* Espacio entre las actividades */
+      }
+
+      .actividad {
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        width: 300px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.237);
+        margin-left: 75px;
+      }
+}
