@@ -91,14 +91,13 @@
         var table = new Tabulator("#categs", {
             height: "10%",
             data: c,
-            layout: "fitColumns",
-            resizableColumns: false, // Puedes usar false en lugar de "false"
-            fitColumns: true, // Aquí fitColumns no necesita ser una cadena
+            resizableColumns: false, 
+            fitColumns: true,
             pagination: "local",
             paginationSize: 10,
             tooltips: true,
             groupBy: "categoria",
-            groupHeader:function(value, count, data, group){ // Función para personalizar el encabezado de la agrupación
+            groupHeader:function(value, count, data, group){ 
                 return "<span style='font-weight:bold; font-size:14px;'>" + value + " (" + count + " items)</span>";
             },
             columns: [

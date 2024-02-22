@@ -24,12 +24,12 @@ class PrestadorController extends Controller
         $horasTotales = DB::table('users')->where('id',Auth::user()->id)->value('horas');
 
         $leaderboard= DB::table('full_leaderboard')
-        ->limit(10)
-        ->get();
+            ->limit(10)
+            ->get();
 
         $posicionUsuario= DB::table('full_leaderboard')
-        ->where('codigo',  Auth::user()->codigo)
-        ->value('Posicion');
+            ->where('codigo',  Auth::user()->codigo)
+            ->value('Posicion');
 
         $usuarioMedalla = $this->prestador_level();
 
@@ -102,9 +102,9 @@ class PrestadorController extends Controller
 
         $ubicacion = $this->obtenerUbicacion();
         DB::table('registros_checkin')
-        ->insert([['origen' => $origen, 'idusuario' => $user->id, 'fecha' => date("d/m/Y"), 'ubicacion' => $ubicacion,
-        'hora_entrada' => date('H:i:s'), 'horas' => 0, 'responsable'=>  $fuenteCheckin['responsable'], 'tipo' => $user->tipo,
-        'encargado_id' => Auth::user()->id]]);
+            ->insert([['origen' => $origen, 'idusuario' => $user->id, 'fecha' => date("d/m/Y"), 'ubicacion' => $ubicacion,
+            'hora_entrada' => date('H:i:s'), 'horas' => 0, 'responsable'=>  $fuenteCheckin['responsable'], 'tipo' => $user->tipo,
+            'encargado_id' => Auth::user()->id]]);
 
         return 0;
     }
@@ -150,8 +150,8 @@ class PrestadorController extends Controller
     {
         $codigo = $request->input('codigo');
         $refArea =  DB::table('users')
-        ->where('codigo', $codigo)
-        ->value('area');
+            ->where('codigo', $codigo)
+            ->value('area');
         $fuenteCheckin = $this->checkinOrigin($refArea);
 
         try {

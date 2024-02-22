@@ -124,7 +124,6 @@
     var table = new Tabulator("#prestadores", {
         height:"100%",
         data: prestadores,
-        layout: "fitColumns",
         resizableColumns: "false",
         fitColumns: "true",
         pagination: "local",

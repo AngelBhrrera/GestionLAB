@@ -21,17 +21,16 @@
             var table = new Tabulator("#players", {
                 height: "100%",
                 data: users,
-                layout: "fitColumns",
+                fitColumns: true,
                 pagination: "local",
                 resizableColumns: false,  
-                paginationSize: 10,
+                paginationSize: 20,
                 tooltips: true,
                 columns: [{
                         title: "Nombre",
                         field: "name",
                         sorter: "string",
                         headerFilter: "input",
-                        
                     }, {
                         title: "Apellido",
                         field: "apellido",

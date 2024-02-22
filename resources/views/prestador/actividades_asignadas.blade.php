@@ -39,14 +39,19 @@
                     echo $horas . " h " . $minutos . " m";
                 @endphp
                 <br>
-                <span class="tr">Tiempo Invertido:</span> {{ $actividad->duracion }}
+                <span class="tr">Tiempo Invertido:</span> 
+                @php
+                    $tiempo_en_minutos = $actividad->duracion;
+                    $horas = floor($tiempo_en_minutos / 60);
+                    $minutos = $tiempo_en_minutos % 60;
+                    echo $horas . " h " . $minutos . " m";
+                @endphp
                 <br>
                 @if(isset($actividad->TEU))
                     @php
                         $tiempo_en_minutos = $actividad->TEU;
                         $horas = floor($tiempo_en_minutos / 60);
                         $minutos = $tiempo_en_minutos % 60;
-
                     @endphp
                     <div class="col-md-6">
                         <input id= "horas_{{ $actividad->id }}" name="horas_{{ $actividad->id }}"  style="width: 125px;"  type="text" disabled class="form-control sm:w-56" value="{{ $horas . ' h '}}"> 
