@@ -42,7 +42,7 @@
             var table = new Tabulator("#players", {
                 height: "100%",
                 data: assist,
-                fitColumns: true,
+                layout: "fitColumns",
                 pagination: "local",
                 paginationSize: 25,
                 tooltips: true,

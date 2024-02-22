@@ -21,7 +21,7 @@
             var table = new Tabulator("#players", {
                 height: "100%",
                 data: visits,
-                fitColumns: "true",
+                layout: "fitColumns",
                 pagination: "local",
                 resizableColumns: "false",
                 paginationSize: 20,

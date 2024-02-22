@@ -114,6 +114,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::get('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
 
                 Route::get('/admin/administradores', 'administradores')->name('administradores');
+                Route::get('/admin/admin_prestadores_terminados','admin_prestadores_terminados')->name('admin_prestadores_terminados');
 
                 Route::get('admin/gestionSede', 'gestionSedes')->name('sede');
 
@@ -351,6 +352,8 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::post('prestador/M_actividades', 'make_act')->name('make_act');
         Route::get('prestador/A_actividades', 'asign_act')->name('asign_act');
         Route::get('prestador/misActividades','misActividades')->name('misActividades');
+
+        Route::get('prestador/miProyecto','myProject')->name('myProject');
         Route::get('prestador/detalles_actividad/{val}','detallesActividad')->name('detallesActividad');
         Route::get('prestador/observaciones_actividad/{id}/{val}', 'detail_act')->middleware('role:prestador,practicante,voluntario,coordinador,jefe area,jefe sede')->name('detail_act');
         //MODULO GAMIFICACION

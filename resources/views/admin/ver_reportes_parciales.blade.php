@@ -125,7 +125,7 @@
         height:"100%",
         data: prestadores,
         resizableColumns: "false",
-        fitColumns: "true",
+        layout: "fitColumns",
         pagination: "local",
         paginationSize: 10,
         tooltips: true,

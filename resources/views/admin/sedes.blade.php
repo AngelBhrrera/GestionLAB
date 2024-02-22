@@ -84,7 +84,7 @@
                 height:"100%",
                 data: sedes,
                 resizableColumns: "false",
-                fitColumns: true,
+                layout: "fitColumns",
                 pagination: "local",
                 paginationSize: 15,
                 tooltips: true,

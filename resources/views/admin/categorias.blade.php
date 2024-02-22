@@ -92,7 +92,7 @@
             height: "10%",
             data: c,
             resizableColumns: false, 
-            fitColumns: true,
+            layout: "fitColumns",
             pagination: "local",
             paginationSize: 10,
             tooltips: true,

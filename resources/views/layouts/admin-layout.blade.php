@@ -439,52 +439,15 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('admin.categorias')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
-                            stroke-linejoin="round" class="lucide lucide-between-horizontal-start"><rect width="13" 
-                            height="7" x="8" y="3" rx="1"/><path d="m2 9 3 3-3 3"/><rect width="13" height="7" 
-                            x="8" y="14" rx="1"/></svg></i> </div>
-                            <div class="side-menu__title">Añadir categorias</div>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-        @endsection
-    @endif
-
-    @if (Auth::user()->tipo == "coordinador" || Auth::user()->tipo == "Superadmin")
-        @section('actividades') 
-            <li>
-                <a href="javascript:;" class="side-menu">
-                    <div class="side-menu__icon"> <i data-lucide="edit"></i> </div>
-                    <div class="side-menu__title">
-                        ACTIVIDADES
-                        <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
-                    </div>
-                </a>
-                <ul class="">
-                    <li>
-                        <a href="{{ route('admin.create_act')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-edit">
-                                        <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
-                                        <path d="M10.42 12.61a2.1 2.1 0 1 1 2.97 2.97L7.95 21 4 22l.99-3.95 5.43-5.44Z" />
-                                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5.5" />
-                                        <path d="M4 13.5V6a2 2 0 0 1 2-2h2" />
-                                    </svg></i> </div>
-                            <div class="side-menu__title">Crear actividades</div>
+                        <a href="{{route('admin.actividades')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="list-checks"></i> </div>
+                            <div class="side-menu__title"> Ver todas las actividades </div>
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('admin.asign_act') }}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
                             <div class="side-menu__title"> Asignar actividades</div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.create_proy') }}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="package-plus"></i> </div>
-                            <div class="side-menu__title">Crear proyectos</div>
                         </a>
                     </li>
                     <li>
@@ -495,16 +458,21 @@
                     </li>
                     @if (Auth::user()->tipo == "jefe area" || Auth::user()->tipo == "jefe sede" || Auth::user()->tipo == "Superadmin")
                     <li>
-                        <a href="{{ route('admin.view_proys') }}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="package"></i> </div>
-                            <div class="side-menu__title">Ver proyectos</div>
+                        <a href="{{route('admin.categorias')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                            stroke-linejoin="round" class="lucide lucide-between-horizontal-start"><rect width="13" 
+                            height="7" x="8" y="3" rx="1"/><path d="m2 9 3 3-3 3"/><rect width="13" height="7" 
+                            x="8" y="14" rx="1"/></svg></i> </div>
+                            <div class="side-menu__title">Añadir categorias</div>
                         </a>
                     </li>
                     @endif
                 </ul>
             </li>
         @endsection
-@endif
+    @endif
+
 
 @if ($filtro->impresiones == 1)
     @if (Auth::user()->tipo == "coordinador" || Auth::user()->tipo == "jefe area")

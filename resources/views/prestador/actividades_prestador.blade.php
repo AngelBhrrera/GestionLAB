@@ -29,7 +29,7 @@
                 height: "100%",
                 data: printers,
                 pagination: "local",
-                fitColumns: "true",
+                layout: "fitColumns",
                 paginationSize: 24,
                 tooltips: true,
                 resizableColumns:false,
@@ -43,11 +43,13 @@
                         field: "titulo",
                         sorter: "string",
                         headerFilter: "input",
+                        width: 120,
                     },  {
                         title: "Estado",
                         field: "estado",
                         sorter: "string",
                         headerFilter: "input",
+                        width: 100
                     },{
                         title: "Fecha",
                         field: "fecha",

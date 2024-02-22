@@ -49,7 +49,7 @@
                 height:"100%",
                 data: assist,
                 resizableColumns: "false",
-                fitColumns: true,
+                layout: "fitColumns",
                 pagination: "local",
                 paginationSize: 20,
                 tooltips: true,

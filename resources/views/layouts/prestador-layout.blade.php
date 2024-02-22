@@ -107,7 +107,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{route('obtenerActividades')}}" class="side-menu">
+                                <a href="{{route('myProject')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="package"></i> </div>
                                     <div class="side-menu__title">Mi proyecto</div>
                                 </a>

@@ -54,7 +54,7 @@
                 height: "100%",
                 data: printers,
                 resizableColumns: "false",
-                fitColumns: true,
+                layout: "fitColumns",
                 pagination: "local",
                 paginationSize: 15,
                 tooltips: true,

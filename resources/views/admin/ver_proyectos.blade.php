@@ -24,7 +24,7 @@
                 height:"100%",
                 data: proyectos,
                 resizableColumns: "false",
-                fitColumns: "true",
+                layout: "fitColumns",
                 pagination: "local",
                 paginationSize: 10,
                 tooltips: true,

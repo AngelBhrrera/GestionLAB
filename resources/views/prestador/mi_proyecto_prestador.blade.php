@@ -1,4 +1,4 @@
-@extends('layouts/admin-layout')
+@extends('layouts/prestador-layout')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
@@ -102,7 +102,7 @@
                             button.title = "";
                             button.addEventListener("click", function() {
 
-                                window.location.href = 'ver_detalles_actividad/' + value;
+                                window.location.href = 'detalles_actividad/' + value;
                             });
                             return button;
                         }, 

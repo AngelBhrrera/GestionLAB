@@ -1,0 +1,39 @@
+#actividad {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 700px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.237);
+    margin: 0 auto;
+}
+
+#titulo_actividad {
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#categorias, #recursos {
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+#recursos {
+    display: inline-block;
+    margin-left: 20px; 
+}
+
+#detalle_titulo {
+    font-size: 34px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#contenedor_recursos {
+    background-color: aqua;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+}

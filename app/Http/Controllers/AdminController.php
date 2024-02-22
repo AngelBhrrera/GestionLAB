@@ -162,7 +162,7 @@ class AdminController extends Controller
         $data = DB::table('prestadores_pendientes');
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $data->where('area', Auth::user()->area);
-        }else  if( auth()->user()->tipo == 'jefe sede'){
+        }else{
             $data->where('sede',  Auth::user()->sede);
         }
         $data = $data->get();
@@ -172,14 +172,15 @@ class AdminController extends Controller
 
     public function prestadores_terminados()
     {
-        $data = DB::table('prestadores_servicio_concluido')
-            ->get();
-        if(Auth::user()->tipo == 'Superadmin')
+        $data = DB::table('prestadores_servicio_concluido');
+            
+        if(Auth::user()->tipo == 'coordinador' )
         {
-            return view('admin/administrar_servicioConcluido', ['datos' => json_encode($data)]);
-        }else{
-            $data->where('sede', Auth::user()->sede);
+            $data = $data->where('sede', Auth::user()->sede)->get();
             return view('admin/servicioConcluido', ['datos' => json_encode($data)]);
+        }else{
+            $data = $data->get();
+            return view('admin/administrar_servicioConcluido', ['datos' => json_encode($data)]);
         }
     }
 
@@ -200,6 +201,7 @@ class AdminController extends Controller
         $data = DB::table('prestadores_inactivos');
         if( auth()->user()->tipo == 'coordinador'){
             $data->where('area', Auth::user()->area);
+            $data = $data->get();
             return view('admin/prestadoresInactivos', ['datos' => json_encode($data)]);
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $data->where('sede',  Auth::user()->sede);
@@ -240,24 +242,26 @@ class AdminController extends Controller
     public function desactivar($id) {
 
         $typeMappings = [
-            'prestador' => 'prestadorp',
-            'voluntario' => 'voluntariop',
-            'practicante' => 'practicantep',
+            'prestador' => 'prestador_inactivo',
+            'coordinador' => 'prestador_inactivo',
+            'voluntario' => 'voluntario_inactivo',
+            'practicante' => 'practicante_inactivo',
         ];
+
 
         $type = DB::table('users')
             ->where('id', $id)
             ->value('tipo');
         $newType = $typeMappings[$type] ?? null;
-        
-        if ($newType) {
+        if($type == 'coordinador' && auth()->user()->tipo != 'coordinador'){
             User::where('id', $id)
                 ->update(['tipo' => $newType]);
-        
             return response()->json(['message' => 'Desactivado exitosamente']);
-        } else {
-            return response()->json(['message' => 'No se encontró un nuevo tipo para actualizar']);
         }
+        User::where('id', $id)
+            ->update(['tipo' => $newType]);
+        
+        return response()->json(['message' => 'Desactivado exitosamente']);
     }
 
     public function eliminar($id) {
@@ -304,7 +308,7 @@ class AdminController extends Controller
     public function cambiar_tipo($id, $value){
 
         User::where('id', $id)
-        ->update(['tipo' => $value]);
+            ->update(['tipo' => $value]);
 
         return response()->json(['message' => 'Modificado exitosamente']);
     }
