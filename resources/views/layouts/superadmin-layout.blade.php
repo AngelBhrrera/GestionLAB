@@ -25,9 +25,7 @@
                     @yield('prestadores')
                     @yield('contacto_admin')
                     @yield('contacto')
-                    @yield('actividades_admin')
                     @yield('actividades')
-                    @yield('proyectos')
                     @yield('impresiones')
                 </ul>
             </div>

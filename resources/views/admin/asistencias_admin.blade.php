@@ -27,23 +27,19 @@
             <div class="card card-primary">
                 <div class="card-header">
                     <h3  class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;"> Registros de Check - in  </h3>
+                    <div class="table-controls pl-10">
+                        <button class="download-button" id="download-json">Download JSON</button>
+                        <button class="download-button" id="download-csv">Download CSV</button>
+                        <button class="download-button" id="download-xlsx">Download XLSX</button>
+                    </div>
                 </div>
-
-                <br>
-
-                <div class="table-controls pl-10">
-                    <button class="download-button" id="download-json">Download JSON</button>
-                    <button class="download-button" id="download-csv">Download CSV</button>
-                    <button class="download-button" id="download-xlsx">Download XLSX</button>
-                </div>
-
-                <br>
 
                 <div class="text-center mx-auto" style="padding-left: 1.5px;" id="players"></div>
             </div>
         </div>
     </div>
-    @endsection
+</div>
+@endsection
 
     @section('script')
     <script type="text/javascript">
@@ -57,7 +53,7 @@
                 resizableColumns: "false",
                 fitColumns: "true",
                 pagination: "local",
-                paginationSize: 20,
+                paginationSize: 12,
                 tooltips: true,
                 columns: [{
                         title: "ID",
