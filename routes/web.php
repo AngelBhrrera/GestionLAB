@@ -164,7 +164,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::post('/admin/asign2', 'asign2')->name('asign2');
             Route::get('/admin/ver_proyectos', 'view_proys')->name('view_proys');
             Route::get('/admin/ver_detalles_proyecto/{id}', 'view_details_proy')->name('view_details_proy');
-            Route::get('/admin/ver_detalles_actividad/{proyecto_origen}/{id}', 'view_details_act')->name('view_details_act');
+            Route::get('/admin/ver_detalles_proyecto/ver_detalles_actividad/{id}', 'view_details_act')->name('view_details_act');
             //MODULO IMPRESIONES
             Route::get('/admin/ver_impresoras', 'control_print')->name('control_print');
             Route::post('/admin/registrar_impresoras', 'make_print')->name('make_print');
@@ -341,10 +341,9 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::get('prestador/obtenerSubcategoria', 'obtenerSubcategorias')->name('obtenerSubcategorias');
 
         Route::get('prestador/actividadesAsignadas', 'actividadesAsignadas')->name('actividadesAsignadas');
-
         Route::get('prestador/actividadesAbiertas', 'actPull')->name('actPull');
-
-        Route::get('prestador/startAct/{id}/{teu}', 'startAct')->name('startAct');
+        Route::get('prestador/tomarActividad/{id}/{teu}', 'takeAct')->name('takeAct');
+        Route::get('prestador/comenzarActividad/{id}/{teu}', 'startAct')->name('startAct');
         Route::get('prestador/actividadStatus/{id}/{mode}', 'statusAct')->name('statusAct');
         //RUTAS ACTIVIDADES
         Route::get('prestador/C_actividades', 'create_act')->name('create_act');

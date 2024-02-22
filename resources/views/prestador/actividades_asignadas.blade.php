@@ -13,6 +13,16 @@
 
 @section('subcontent')
 
+<div>
+
+    <div class="grid grid-cols-12 gap-6 mt-5" id="alerta">
+        <div class="intro-y col-span-12 lg:col-span-6">
+            @if(session('warning'))
+                <h6 class="alert alert-danger">{{session('warning')}}</h6>  
+            @endif
+        </div>
+    </div>
+    
     <div class="contenedor-actividades">
     @if(isset($actividades))
         @foreach ($actividades as $actividad)
@@ -85,7 +95,7 @@
         @endforeach
     @endif
     </div>
-
+</div>
 @endsection
 
 @section('script')
@@ -112,11 +122,9 @@
                 }else{
                     var minutos = parseInt(horasInput.value) * 60 + parseInt(minutosInput.value);
                 }
-
-                console.log(minutos);
                 
                 const token = document.head.querySelector('meta[name="csrf-token"]').content;
-                fetch(`startAct/${idActividad}/${minutos}`, {
+                fetch(`comenzarActividad/${idActividad}/${minutos}`, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
@@ -125,7 +133,6 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-
                     window.location.reload(); 
                 })
                 .catch(error => {
@@ -189,6 +196,7 @@
                 window.location.reload(); 
             })
             .catch(error => {
+                $('#alerta').html('<div class="intro-y col-span-12 lg:col-span-6"><h6 class="alert alert-danger">' + errorMessage + '</h6></div>');
                 console.error('Error en activacion:', error);
             });
         } 
@@ -197,7 +205,6 @@
         function verDetalles(idActividad) {
                 window.location.href = "detalles_actividad/" + idActividad;
         }
-
 
     </script>
 

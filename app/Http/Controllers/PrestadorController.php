@@ -171,9 +171,8 @@ class PrestadorController extends Controller
 
                     //CHECK DE SALIDA
                     if ($verificar) {
-
-                        $this->marcarSalida($user);
                         $this->pauseAct();
+                        $this->marcarSalida($user);
                         return redirect()->route( $fuenteCheckin['dir'])->with('success', 'Adios ' . $user->name);
 
                     //CHECK DE ENTRADA
@@ -241,7 +240,7 @@ class PrestadorController extends Controller
     {
 
         $actividades = DB::table('actividades_prestadores')
-            ->select('actividades_prestadores.*', 'actividades.tec', 'actividades.titulo')
+            ->select('actividades_prestadores.*', 'actividades.TEC', 'actividades.titulo')
             ->join('actividades', 'actividades.id', '=', 'actividades_prestadores.id_actividad')
             ->where('actividades_prestadores.id_prestador', auth()->user()->id)
             ->get();
@@ -295,7 +294,7 @@ class PrestadorController extends Controller
             ->where('id_prestador', auth()->user()->id)
             ->pluck('id_proyecto');
 
-        $acts = DB::table('seguimiento_actividades')
+        $actividades = DB::table('seguimiento_actividades')
             ->where('id_prestador', auth()->user()->id)
             ->orWhere(function($query) use ($proys) {
                 $query->whereIn('id_proyecto', $proys)
@@ -304,7 +303,7 @@ class PrestadorController extends Controller
             ->orderByDesc('fecha')
             ->get();
 
-        return view('/prestador/actividades_asignadas', ['actividades' =>$acts]);
+        return view('/prestador/actividades_asignadas',compact('actividades'));
     }
 
     public function actPull()
@@ -329,10 +328,44 @@ class PrestadorController extends Controller
         $verificar = $this->checkEntrada(auth()->user()->id);
 
         $disponible = DB::table('actividades_prestadores')
-        ->where('id_prestador', auth()->user()->id)
-        ->orWhere('id_prestador', 0)
-        ->where('id', $id)
-        ->exists();
+            ->where('id_prestador', auth()->user()->id)
+            ->orWhere('id_prestador', 0)
+            ->where('id', $id)
+            ->exists();
+
+        if($disponible && $verificar){
+
+            if($this->checkAct()){
+                $this->pauseAct();
+            }
+            
+            DB::table('actividades_prestadores')
+            ->where('id', $id)
+            ->update([
+                'id_prestador' => auth()->user()->id,
+                'estado' => 'En Proceso',
+                'horas_ref' => $hor,
+                'TEU' => $teu
+            ]);
+
+        }else{
+            return response()->json(['message' => 'NO has realizado check de entrada']);
+        }
+
+        return response()->json(['mensaje' => 'Actividad iniciada correctamente para la actividad con ID ' . $id]);
+    }
+
+    public function takeAct($id, $teu){
+
+        $hor = date('H:i:s');
+
+        $verificar = $this->checkEntrada(auth()->user()->id);
+
+        $disponible = DB::table('actividades_prestadores')
+            ->where('id_prestador', auth()->user()->id)
+            ->orWhere('id_prestador', 0)
+            ->where('id', $id)
+            ->exists();
 
         if($disponible && $verificar){
             DB::table('actividades_prestadores')
@@ -343,6 +376,10 @@ class PrestadorController extends Controller
                 'horas_ref' => $hor,
                 'TEU' => $teu
             ]);
+
+            if($this->checkAct()){
+                $this->pauseAct();
+            }
         }else{
             return redirect()->route('actividadesAsignadas')->with('error', 'No has hecho Check de entrada');
         }
@@ -353,9 +390,9 @@ class PrestadorController extends Controller
     public function checkAct(){
         //Busca si el prestador ya tenia una actividad en proceso
         $actual = DB::table('actividades_prestadores')
-        ->where('id_prestador', auth()->user()->id)
-        ->where('estado', 'En proceso')
-        ->exists();
+            ->where('id_prestador', auth()->user()->id)
+            ->where('estado', 'En proceso')
+            ->exists();
 
         return $actual;
     }
@@ -367,11 +404,13 @@ class PrestadorController extends Controller
             ->where('estado', 'En proceso')
             ->value('id');
 
-        return DB::table('actividades_prestadores')
+        DB::table('actividades_prestadores')
             ->where('id', $found)
             ->update([
             'estado' => 'Bloqueada'
         ]);
+
+        return 0;
     }
 
     public function statusAct($id, $mode)

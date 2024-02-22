@@ -91,7 +91,7 @@
                         },
                     }, {
                         title: "",
-                        field: "id",
+                        field: "id_actividad",
                         width: 120,
                         formatter: function (cell, formatterParams, onRendered) {
                             var value = cell.getValue();

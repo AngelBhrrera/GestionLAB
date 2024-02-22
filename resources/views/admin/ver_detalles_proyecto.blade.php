@@ -60,7 +60,7 @@
                 fitColumns: true,
                 pagination: "local",
                 paginationSize: 20,
-                tooltips: true,
+
                 columns: [{
                         title: "ID",
                         field: "actividad_id",
@@ -101,8 +101,8 @@
                             button.textContent = "Más Info.";
                             button.title = "";
                             button.addEventListener("click", function() {
-                                // Modificar la URL de redirección según la ruta deseada
-                                window.location.href = 'detalles-actividad/' +value//'/admin/ver_detalles_actividad/'+ proyecto_origen + '/' + value;
+
+                                window.location.href = '/ver_detalles_actividad/' + value;
                             });
                             return button;
                         }, 
