@@ -57,9 +57,9 @@
                 height:"100%",
                 data: actividades,
                 resizableColumns: "false",
-                fitColumns: "true",
+                fitColumns: true,
                 pagination: "local",
-                paginationSize: 10,
+                paginationSize: 20,
                 tooltips: true,
                 columns: [{
                         title: "ID",

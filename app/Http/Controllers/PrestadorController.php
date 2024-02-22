@@ -24,12 +24,12 @@ class PrestadorController extends Controller
         $horasTotales = DB::table('users')->where('id',Auth::user()->id)->value('horas');
 
         $leaderboard= DB::table('full_leaderboard')
-        ->limit(10)
-        ->get();
+            ->limit(10)
+            ->get();
 
         $posicionUsuario= DB::table('full_leaderboard')
-        ->where('codigo',  Auth::user()->codigo)
-        ->value('Posicion');
+            ->where('codigo',  Auth::user()->codigo)
+            ->value('Posicion');
 
         $usuarioMedalla = $this->prestador_level();
 
@@ -102,9 +102,11 @@ class PrestadorController extends Controller
 
         $ubicacion = $this->obtenerUbicacion();
         DB::table('registros_checkin')
-        ->insert([['origen' => $origen, 'idusuario' => $user->id, 'fecha' => date("d/m/Y"), 'ubicacion' => $ubicacion,
-        'hora_entrada' => date('H:i:s'), 'horas' => 0, 'responsable'=>  $fuenteCheckin['responsable'], 'tipo' => $user->tipo,
-        'encargado_id' => Auth::user()->id]]);
+            ->insert([['origen' => $origen, 'idusuario' => $user->id, 'fecha' => date("d/m/Y"), 'ubicacion' => $ubicacion,
+            'hora_entrada' => date('H:i:s'), 'horas' => 0, 'responsable'=>  $fuenteCheckin['responsable'], 'tipo' => $user->tipo,
+            'encargado_id' => Auth::user()->id]]);
+
+        return 0;
     }
 
     public function marcarSalida($user){
@@ -148,8 +150,8 @@ class PrestadorController extends Controller
     {
         $codigo = $request->input('codigo');
         $refArea =  DB::table('users')
-        ->where('codigo', $codigo)
-        ->value('area');
+            ->where('codigo', $codigo)
+            ->value('area');
         $fuenteCheckin = $this->checkinOrigin($refArea);
 
         try {
@@ -176,8 +178,10 @@ class PrestadorController extends Controller
 
                     //CHECK DE ENTRADA
                     }else{
+
                         $this->marcarEntrada($user, $fuenteCheckin);
-                        return redirect()->route( $fuenteCheckin['dir'])->with('success', 'Bienvenido/a ' . $user . '!');
+                        return redirect()->route( $fuenteCheckin['dir'])->with('success', 'Bienvenido/a ' . $user->name);
+                        
                         if($this->checkTurno($user->horario)){
                             $this->marcarEntrada($user, $fuenteCheckin);
                             return redirect()->route( $fuenteCheckin['dir'])->with('success', 'Bienvenido/a ' . $user . '!');
@@ -303,6 +307,21 @@ class PrestadorController extends Controller
         return view('/prestador/actividades_asignadas', ['actividades' =>$acts]);
     }
 
+    public function actPull()
+    {
+        $proys = DB::table('proyectos')
+            ->leftJoin('proyectos_prestadores', 'proyectos.id', '=', 'proyectos_prestadores.id_proyecto')
+            ->whereNull('proyectos_prestadores.id_proyecto')
+            ->pluck('proyectos.id');
+
+        $acts = DB::table('seguimiento_actividades')
+            ->where('id_prestador', 0)
+            ->whereIn('id_proyecto', $proys)
+            ->get();
+
+        return view('/prestador/actividades_abiertas', ['actividades' =>$acts]);
+    }
+
     public function startAct($id, $teu){
 
         $hor = date('H:i:s');
@@ -370,6 +389,8 @@ class PrestadorController extends Controller
                 'estado' => 'En Proceso',
                 'horas_ref' => $hor
             ]);
+
+            return response()->json(['mensaje' => 'AOK']);
             
         }else if($mode == 2){
 
@@ -382,7 +403,7 @@ class PrestadorController extends Controller
                 ->where('id', $id)
                 ->value('Tiempo_Invertido');
 
-            $intervalCalc = $this->calculoIntervalosM($timeRef, $timeRef2);
+            $intervalCalc = $this->calculoIntervaloM($timeRef, $timeRef2);
             $tiempoInvertido += $intervalCalc;
 
             DB::table('actividades_prestadores')
@@ -392,6 +413,8 @@ class PrestadorController extends Controller
                 'Tiempo_Invertido' => $tiempoInvertido
             ]);
 
+            return response()->json(['mensaje' => 'BOK']);
+
         }else if($mode == 3){
 
             //AGREGAR EN ACTIVIDADES PRESTADORES EL TIEMPO REAL FINAL.
@@ -400,6 +423,8 @@ class PrestadorController extends Controller
             ->update([
                 'estado' => 'Finalizada'
             ]);
+
+            return response()->json(['mensaje' => 'COK']);
         }
         
         return response()->json(['mensaje' => 'OK']);
@@ -661,7 +686,7 @@ class PrestadorController extends Controller
         $sede = DB::table('sedes')
             ->select('nombre_sede', 'id_sede')
             ->where('sedes.id_sede', $user->sede) 
-            ->get();
+            ->first();
 
         $todasMedallasUsuario = DB::table('niveles')
                 ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
@@ -671,14 +696,11 @@ class PrestadorController extends Controller
                 ->get();
 
         $ultimoElemento = $todasMedallasUsuario->last();
-
         $nivel_str = strval($ultimoElemento->nivel);
-
         $medalla = $ultimoElemento->ruta;
-
         $descripcion_medalla = $ultimoElemento->descripcion;
 
-        return view('prestador.newProfile', compact('user', 'sede', 'nivel_str', 'medalla', 'descripcion_medalla', 'todasMedallasUsuario'));
+        return view('prestador.prestador_perfil', compact('user', 'sede', 'nivel_str', 'medalla', 'descripcion_medalla', 'todasMedallasUsuario'));
     }
 
     public function cambiarImagenPerfil(Request $request)

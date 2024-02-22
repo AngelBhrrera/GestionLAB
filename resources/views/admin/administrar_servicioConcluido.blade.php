@@ -19,11 +19,11 @@
             var users = {!! $datos !!};
 
             var table = new Tabulator("#players", {
-                height: 500,
+                height: "100%",
                 data: users,
                 layout: "fitColumns",
                 pagination: "local",
-                paginationSize: 24,
+                paginationSize: 20,
                 tooltips: true,
                 columns: [{
                         title: "Nombre",

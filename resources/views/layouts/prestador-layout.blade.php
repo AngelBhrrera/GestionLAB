@@ -112,13 +112,19 @@
                             <li>
                                 <a href="{{route('misActividades')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="list-checks"></i> </div>
-                                    <div class="side-menu__title"> Registro de actividades </div>
+                                    <div class="side-menu__title"> Mis actividades </div>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{route('actividadesAsignadas')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="list-checks"></i> </div>
                                     <div class="side-menu__title"> Actividades asignadas </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{route('actPull')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="list-checks"></i> </div>
+                                    <div class="side-menu__title"> Pull de actividades abiertas </div>
                                 </a>
                             </li>
                         </ul>

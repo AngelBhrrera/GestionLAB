@@ -35,7 +35,6 @@
   .categoria {
     padding: 5px 10px;
     border-radius: 5px;
-    color: white;
     margin-right: 10px;
   }
 
@@ -61,10 +60,24 @@
     cursor: not-allowed;
   }
 
+  .boton-azul {
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+  .boton-azul:hover {
+      background-color: darkblue;
+  }
+
   .contenedor-actividades {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* Tres columnas de igual tamaño */
   gap: 20px; /* Espacio entre las actividades */
+
 }
 
 @media (min-width: 320px){

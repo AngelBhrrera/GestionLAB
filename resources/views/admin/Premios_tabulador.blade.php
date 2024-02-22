@@ -20,9 +20,9 @@
 
 
     var table = new Tabulator("#players_premios", {
-        height: 500,
+        height: "100%",
         data: premios,
-        layout: "fitColumns",
+        fitColumns: true,
         pagination: "local",
         resizableColumns: false,  
         paginationSize: 24,

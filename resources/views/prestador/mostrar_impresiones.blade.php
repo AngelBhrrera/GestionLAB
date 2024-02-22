@@ -28,11 +28,12 @@
             var printers = {!! $impresiones !!};
 
             var table = new Tabulator("#players", {
-                height: 500,
+                height: "100%",
                 data: printers,
                 pagination: "local",
                 paginationSize: 24,
                 tooltips: true,
+                fitColumns: true,
                 resizableColumns:false,
                 columns: [{
                     title: "ID",

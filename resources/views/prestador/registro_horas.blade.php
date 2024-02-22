@@ -40,10 +40,11 @@
             var assist = {!! $datos !!};
 
             var table = new Tabulator("#players", {
+                height: "100%",
                 data: assist,
-                layout: "fitColumns",
+                fitColumns: true,
                 pagination: "local",
-                paginationSize: 8,
+                paginationSize: 25,
                 tooltips: true,
                 columns: [{
                         title: "Fecha",

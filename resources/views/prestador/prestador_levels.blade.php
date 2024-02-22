@@ -12,7 +12,6 @@
     text-align: center;
     border: 1px solid #ccc; /* Puedes ajustar el estilo del borde */
 }
-
 .square-box img {
     max-width: 100%; /* Asegura que la imagen se ajuste al contenedor */
     max-height: 100%; /* Asegura que la imagen se ajuste al contenedor */

@@ -21,10 +21,10 @@
             var table = new Tabulator("#players", {
                 height: "100%",
                 data: visits,
-                layout: "fitColumns",
+                fitColumns: "true",
                 pagination: "local",
                 resizableColumns: "false",
-                paginationSize: 7,
+                paginationSize: 20,
                 tooltips: true,
                 columns: [{
                     title: "ID",
