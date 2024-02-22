@@ -1,0 +1,343 @@
+.module {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+#titulo_asignar{
+    display: flex;
+    justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+    align-items: center;
+    height: 10vh; 
+}
+
+#select_proyect{
+    margin: 145px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#duelist_box{
+    margin-left: 425px;
+}
+
+#asignar{
+    margin: 145px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#boton_asignar{
+    margin-left: 715px;
+    margin-top: 20px;
+}
+
+@media (min-width: 320px){
+
+    #titulo_asignar{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;
+        height: 8vh; 
+    }
+    
+    #select_proyect{
+        margin: 0x;
+        margin-top: 1px;
+        margin-bottom: 10px;
+    }
+    
+    #duelist_box{
+        margin-left: 0px;
+    }
+    
+    #asignar{
+        margin: 0px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    #boton_asignar{
+        margin-left: 100px;
+        margin-top: 20px;
+    }
+}
+
+@media (min-width: 375px){
+
+    #titulo_asignar{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;
+        height: 8vh; 
+    }
+    
+    #select_proyect{
+        margin: 5px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    #duelist_box{
+        margin-left: 0px;
+    }
+    
+    #asignar{
+        margin: 5px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    #boton_asignar{
+        margin-left: 715px;
+        margin-top: 20px;
+    }
+}
+
+@media (min-width: 410px){
+
+    #titulo_asignar{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;
+        height: 8vh; 
+    }
+    
+    #select_proyect{
+        margin: 5px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    #duelist_box{
+        margin-left: 20px;
+    }
+    
+    #asignar{
+        margin: 5px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    #boton_asignar{
+        margin-left: 150px;
+        margin-top: 20px;
+    }
+}
+
+@media (min-width: 760px){
+
+    #titulo_asignar{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;
+        height: 8vh; 
+    }
+    
+    #select_proyect{
+        margin: 5px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    #duelist_box{
+        margin-left: 20px;
+    }
+    
+    #asignar{
+        margin: 5px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    #boton_asignar{
+        margin-left: 315px;
+        margin-top: 20px;
+    }
+}
+
+@media (min-width: 1024px){
+
+    #titulo_asignar{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;
+        height: 8vh; 
+    }
+    
+    #select_proyect{
+        margin: 55px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    #duelist_box{
+        margin-left: 160px;
+    }
+    
+    #asignar{
+        margin: 55px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    #boton_asignar{
+        margin-left: 445px;
+        margin-top: 20px;
+    }
+}
+
+@media (min-width: 1420px){
+
+    #titulo_asignar{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;
+        height: 8vh; 
+    }
+    
+    #select_proyect{
+        margin: 85px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    #duelist_box{
+        margin-left: 220px;
+    }
+    
+    #asignar{
+        margin: 85px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    #boton_asignar{
+        margin-left: 510px;
+        margin-top: 20px;
+    }
+}
+
+@media (min-width: 1710px){
+
+    #titulo_asignar{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;
+        height: 8vh; 
+    }
+    
+    #select_proyect{
+        margin: 115px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    #duelist_box{
+        margin-left: 365px;
+    }
+    
+    #asignar{
+        margin: 115px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    #boton_asignar{
+        margin-left: 655px;
+        margin-top: 20px;
+    }
+}
+
+@media (min-width: 1820px){
+
+    #titulo_asignar{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;
+        height: 8vh; 
+    }
+    
+    #select_proyect{
+        margin: 115px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    #duelist_box{
+        margin-left: 425px;
+    }
+    
+    #asignar{
+        margin: 115px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    #boton_asignar{
+        margin-left: 715px;
+        margin-top: 20px;
+    }
+}
+
+@media (min-width: 1920px){
+
+    #titulo_asignar{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;
+        height: 8vh; 
+    }
+    
+    #select_proyect{
+        margin: 135px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    #duelist_box{
+        margin-left: 425px;
+    }
+    
+    #asignar{
+        margin: 135px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    #boton_asignar{
+        margin-left: 720px;
+        margin-top: 20px;
+    }
+}
+
+@media (min-width: 1920px){
+
+    #titulo_asignar{
+        display: flex;
+        justify-content: center;    /* titulo de creacion de proyecto y asignacion de actividades */
+        align-items: center;
+        height: 8vh; 
+    }
+    
+    #select_proyect{
+        margin: 135px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    #duelist_box{
+        margin-left: 425px;
+    }
+    
+    #asignar{
+        margin: 135px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    #boton_asignar{
+        margin-left: 720px;
+        margin-top: 20px;
+    }
+}

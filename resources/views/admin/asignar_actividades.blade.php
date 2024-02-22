@@ -1,14 +1,7 @@
 @extends('layouts/admin-layout')
 
 @section('subhead')
-<style>
-    /* Estilos para dar formato */
-    .module {
-        margin-bottom: 10px;
-        padding: 10px;
-        border: 1px solid #ccc;
-    }
-</style>
+<link rel="stylesheet" href="{{asset('build/assets/css/asignar_actividadess.css')}}">
 @endsection
 
 @section('breadcrumb')
@@ -35,7 +28,7 @@
             </div>
         </div>
         <div class="card">
-            <div class="card card-primary">
+            <div class="card card-primary" id="titulo_asignar">
                 <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Asignar Actividades </h3>
             </div>
             <div class="card-body">
@@ -45,7 +38,7 @@
                     <input id="tipo" name="tipo" value={{ $tipo }} type="hidden">
                     @endif
                     <div class="col-span-6 sm:col-span-4 text-center">
-                        <div class="form-group">
+                        <div class="form-group" id="select_proyect">
                             <label for="actividades_l" class="col-md-4 col-form-label text-md-right">Proyecto</label>
                             <select class="form-control" id="proyecto" name="proyecto" onchange="filtrarPrestadores()">
                                 <option value="">Selecciona un proyecto para asignar la actividad</option>
@@ -54,8 +47,8 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
                         <label for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
+                        <div class="form-group" id="duelist_box">
                             <select class="select2" name="prestadores_seleccionados[]" id="prestadores_seleccionados" multiple>  
                                 @if (isset($prestadores))
                                 @foreach ($prestadores as $prestador)
@@ -63,9 +56,9 @@
                                 @endforeach
                                 @endif
                             </select>
-                        <small id="Help" class="form-text text-muted">Selecciona a los prestadores para realizar la actividad</small>
                         </div>
-                        <div class="form-group">
+                        <small id="Help" class="form-text text-muted">Selecciona a los prestadores para realizar la actividad</small>
+                        <div class="form-group" id="asignar">
                             <label for="tipo_categoria">Filtro por categoría</label>
                             <select class="form-control" id="tipo_categoria" name="tipo_categoria" onchange="filtrarCategorias()">
                                 <option value="">Filtrar por categoría</option>
@@ -74,14 +67,14 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="asignar">
                             <label for="tipo_subcategoria">Filtro por subcategoría</label>
                             <select class="form-control" id="tipo_subcategoria" name="tipo_subcategoria" onchange="filtrarActividades2()">
                                 <option value="">Selecciona una subcategoria (Opcional)</option>
                             </select>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" id="asignar">
                             <label for="actividades_l" class="col-md-4 col-form-label text-md-right">Actividad</label>
                             <select class="form-control" id="tipo_actividad" name="tipo_actividad" required>
                                 <option value="">Selecciona una actividad</option>
@@ -92,7 +85,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-8"> <!-- Ancho ajustado para el botón -->
+                    <div class="col-md-8" id="boton_asignar"> <!-- Ancho ajustado para el botón -->
                         <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits">Asignar</button>
                     </div>
                 </form>
