@@ -283,7 +283,7 @@ class PrestadorController extends Controller
             ->where('proyectos_prestadores.id_proyecto', $proys->first()->id_proyecto)
             ->get();
 
-        return view('/prestador/crear_actividad_prestador', compact('prestadores', 'actividades', 'categorias'));
+        return view('/prestador/crear_actividad_prestador', compact('prestadores', 'actividades'));
     }
 
     //SISTEMA DE ACTIVIDADES GAMIFICADO

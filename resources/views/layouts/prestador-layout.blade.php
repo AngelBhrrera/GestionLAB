@@ -291,6 +291,7 @@
                     </div>
                 </div>
             <div  class="container" style="padding: 20px 15px 0px 15px">
+                
                 @yield('subcontent')
             </div>
 
