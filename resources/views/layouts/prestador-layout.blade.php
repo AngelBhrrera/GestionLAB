@@ -78,7 +78,7 @@
                                 </li>
                                 <li>
                                 <a href="{{route('horario')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="clock"></i> </div>
+                                    <div class="side-menu__icon"> <i data-lucide="calendar"></i> </div>
                                     <div class="side-menu__title">Horario prestador</div>
                                 </a>
                                 </li>                             
@@ -147,7 +147,7 @@
                         <ul class="submenu">
                             <li>
                                 <a href="{{route('horario')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="clock"></i> </div>
+                                    <div class="side-menu__icon"> <i><img src="{{asset('build/assets/images/podium.png')}}" width="24" height="24" alt=""></i> </div>
                                     <div class="side-menu__title">Leaderboard W/M</div>
                                 </a>
                             </li>
@@ -159,7 +159,12 @@
                             </li>
                             <li>
                                 <a href="{{route('level')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="x"></i> </div>
+                                    <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" 
+                                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+                                    class="lucide lucide-arrow-up-1-0"><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/>
+                                    <path d="M17 10V4h-2"/><path d="M15 10h4"/><rect x="15" y="14" width="4" height="6" ry="2"/>
+                                    </svg></i> </div>
                                     <div class="side-menu__title">Niveles</div>
                                 </a>
                             </li>
@@ -187,13 +192,13 @@
                             </li>
                             <li>
                                 <a href="{{route('show_imps')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="sidebar"></i> </div>
+                                    <div class="side-menu__icon"> <i><img src="{{asset('build/assets/images/3d-printer.png')}}" width="24" height="24" alt=""></i> </div>
                                     <div class="side-menu__title">  Mostrar mis impresiones </div>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{route('show_all_imps')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="sidebar"></i> </div>
+                                    <div class="side-menu__icon"> <i><img src="{{asset('build/assets/images/3d-printer-gear.png')}}" width="24" height="24" alt=""></i> </div>
                                     <div class="side-menu__title">  Ver todas las impresiones </div>
                                 </a>
                             </li>
