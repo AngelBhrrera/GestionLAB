@@ -98,32 +98,42 @@
                         <ul class="submenu">
                             <li>
                                 <a href="{{route('create_act')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="plus-circle"></i> </div>
+                                    <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                                    stroke-linejoin="round" class="lucide lucide-clipboard-plus"><rect width="8" height="4" x="8" y="2" rx="1" 
+                                    ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 14h6"/>
+                                    <path d="M12 17v-6"/></svg></i> </div>
                                     <div class="side-menu__title"> Crear nueva actividad </div>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{route('obtenerActividades')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
+                                    <div class="side-menu__icon"> <i data-lucide="package"></i> </div>
                                     <div class="side-menu__title">Mi proyecto</div>
                                 </a>
                             </li>
                             </li>
                             <li>
                                 <a href="{{route('misActividades')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="list-checks"></i> </div>
+                                    <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                                    stroke-linejoin="round" class="lucide lucide-list-video"><path d="M12 12H3"/><path d="M16 6H3"/>
+                                    <path d="M12 18H3"/><path d="m16 12 5 3-5 3v-6Z"/></svg></i> </div>
                                     <div class="side-menu__title"> Mis actividades </div>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{route('actividadesAsignadas')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="list-checks"></i> </div>
+                                    <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                                    stroke-linejoin="round" class="lucide lucide-list-todo"><rect x="3" y="5" width="6" height="6"
+                                     rx="1"/><path d="m3 17 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg></i> </div>
                                     <div class="side-menu__title"> Actividades asignadas </div>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{route('actPull')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="list-checks"></i> </div>
+                                    <div class="side-menu__icon"> <i data-lucide="clipboard-list"></i> </div>
                                     <div class="side-menu__title"> Pull de actividades abiertas </div>
                                 </a>
                             </li>
