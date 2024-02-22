@@ -53,7 +53,7 @@
                 layout: "fitColumns",  
                 resizableColumns: false,  
                 pagination: "local",
-                paginationSize: 8,
+                paginationSize: 20,
                 tooltips: true,
                 columns: [{
                         title: "ID",

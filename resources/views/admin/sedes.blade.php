@@ -84,9 +84,9 @@
                 height:"100%",
                 data: sedes,
                 resizableColumns: "false",
-                fitColumns: "true",
+                fitColumns: true,
                 pagination: "local",
-                paginationSize: 10,
+                paginationSize: 15,
                 tooltips: true,
                 columns: [{
                         title: "ID",

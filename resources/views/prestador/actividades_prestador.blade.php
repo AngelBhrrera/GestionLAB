@@ -26,9 +26,10 @@
             var printers = {!! $impresiones !!};
 
             var table = new Tabulator("#players", {
+                height: "100%",
                 data: printers,
                 pagination: "local",
-                layout: "fitColumns",
+                fitColumns: "true",
                 paginationSize: 24,
                 tooltips: true,
                 resizableColumns:false,
@@ -90,7 +91,7 @@
                         },
                     }, {
                         title: "",
-                        field: "id",
+                        field: "id_actividad",
                         width: 120,
                         formatter: function (cell, formatterParams, onRendered) {
                             var value = cell.getValue();

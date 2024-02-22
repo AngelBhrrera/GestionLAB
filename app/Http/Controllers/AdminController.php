@@ -68,24 +68,22 @@ class AdminController extends Controller
             ['id' => 'RBencargado', 'value' => 'coordinador', 'name' => 'Coordinador']
         ];
 
+        $sedes = DB::table('sedes');
+        $areas = DB::table('areas');
+
         if(in_array(Auth::user()->tipo, ['coordinador', 'jefe area'])) {
-            $sedes = DB::table('sedes')
-                ->where('id_sede',  Auth::user()->sede)
-                ->get();
-            $areas = DB::table('areas')
-                ->where('id',  Auth::user()->area)
-                ->get();
+            $sedes->where('id_sede',  Auth::user()->sede);       
+            $areas->where('id',  Auth::user()->area);
         }else if (Auth::user()->tipo == 'jefe sede'){
-            $sedes = DB::table('sedes')
-                ->where('id_sede',  Auth::user()->sede)
-                ->get();
+            $sedes->where('id_sede',  Auth::user()->sede);
             $users[] = ['id' => "RBadmin", 'value' => 'jefe area', 'name' => 'Jefe de area'];
         }else if (Auth::user()->tipo == 'Superadmin'){
-            $sedes = DB::table('sedes')
-                ->get();
             $users[] = ['id' => "RBadmin", 'value' => 'jefe area', 'name' => 'Jefe de area'];
             $users[] = ['id' => "RBadminsede", 'value' => 'jefe sede', 'name' => 'Jefe de Sede'];
         }
+
+        $sedes = $sedes->get();
+        $areas = $areas->get();
         
         return view('auth/registerAdmin', compact('sedes','areas','users'));
     }
@@ -115,8 +113,7 @@ class AdminController extends Controller
 
     public function administradores()
     {  
-        $data = DB::table('solo_admins')
-            ->get();
+        $data = DB::table('solo_admins');
 
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $n_Area = DB::table('areas')
@@ -127,8 +124,10 @@ class AdminController extends Controller
             $n_Sede = DB::table('sedes')
                 ->where('id_sede', auth()->user()->sede)
                 ->value('nombre_sede');
-              $data->where('solo_admins.sede',$n_Sede);
+            $data->where('solo_admins.sede',$n_Sede);
         }
+
+        $data = $data->get();
 
         return view('admin/admins', ['datos' => json_encode($data)]);
     }
@@ -142,8 +141,7 @@ class AdminController extends Controller
 
     public function prestadores()
     {
-        $data = DB::table('solo_prestadores')
-            ->get();
+        $data = DB::table('solo_prestadores');
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $n_area = DB::table('areas')
             ->where('id', Auth::user()->area)
@@ -155,19 +153,19 @@ class AdminController extends Controller
             ->value('nombre_sede');
             $data->where('nombre_sede', $n_sede);
         }
-        
+        $data = $data->get();
         return view('admin/activos', ['datos' => json_encode($data)]);
     }
 
     public function prestadores_pendientes()
     {
-        $data = DB::table('prestadores_pendientes')
-            ->get();
+        $data = DB::table('prestadores_pendientes');
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $data->where('area', Auth::user()->area);
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $data->where('sede',  Auth::user()->sede);
         }
+        $data = $data->get();
 
         return view('admin/prestadoresPendientes', ['datos' => json_encode($data)]);
     }
@@ -187,26 +185,26 @@ class AdminController extends Controller
 
     public function prestadores_liberados()
     {
-        $data = DB::table('prestadores_servicio_liberado')
-            ->get();
+        $data = DB::table('prestadores_servicio_liberado');
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $data->where('area', Auth::user()->area);
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $data->where('sede',  Auth::user()->sede);
         }
+        $data = $data->get();
         return view('admin/servicioLiberado', ['datos' => json_encode($data)]);
     }
 
     public function prestadores_inactivos()
     {
-        $data = DB::table('prestadores_inactivos')
-            ->get();
+        $data = DB::table('prestadores_inactivos');
         if( auth()->user()->tipo == 'coordinador'){
             $data->where('area', Auth::user()->area);
             return view('admin/prestadoresInactivos', ['datos' => json_encode($data)]);
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $data->where('sede',  Auth::user()->sede);
         }
+        $data = $data->get();
         return view('admin/administrar_prestadoresInactivos', ['datos' => json_encode($data)]);
     }
 
@@ -272,8 +270,8 @@ class AdminController extends Controller
 
     public function liberar($id) {
 
-            User::where('id', $id)
-                ->update(['fecha_salida' => Carbon::now()]);
+        User::where('id', $id)
+            ->update(['fecha_salida' => Carbon::now()]);
 
         return response()->json(['message' => 'Liberado exitosamente']);
     }
@@ -344,21 +342,18 @@ class AdminController extends Controller
     
     public function create_act()
     {
-        if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
-            $prestadores = DB::table('solo_prestadores')
-                ->where('id_area', auth()->user()->area)
-                ->where('horario', auth()->user()->horario)
-                ->get();
-        }else  if( auth()->user()->tipo == 'jefe sede'){
-            $prestadores = DB::table('solo_prestadores')
-                ->where('id_sede', auth()->user()->sede)
-                ->where('horario', auth()->user()->horario)
-                ->get();
-        }
-
+        $prestadores = DB::table('solo_prestadores');
         $categorias = DB::table('categorias')->get();
         $subcategorias = DB::table('subcategorias')->get();
-    
+        if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
+            $prestadores->where('id_area', auth()->user()->area)
+                ->where('horario', auth()->user()->horario);
+        }else  if( auth()->user()->tipo == 'jefe sede'){
+            $prestadores->where('id_sede', auth()->user()->sede)
+                ->where('horario', auth()->user()->horario);
+        }
+        $prestadores = $prestadores->get();
+
         return view('/admin/registro_actividades',
                 ['prestadores' => $prestadores,
                 'categorias' => $categorias,
@@ -398,8 +393,7 @@ class AdminController extends Controller
 
     public function asign_act(){
 
-        $prestadores = DB::table('solo_prestadores')
-            ->get();
+        $prestadores = DB::table('solo_prestadores');
     
         if( auth()->user()->tipo == 'coordinador'){
             $prestadores->where('id_area', auth()->user()->area)
@@ -413,6 +407,7 @@ class AdminController extends Controller
         $categorias = DB::table('categorias')->get();
         $actividades = DB::table('actividades')->get();
         $proyectos = DB::table('proyectos')->get();
+        $prestadores = $prestadores->get();
     
         return view( 'admin/asignar_actividades', compact('prestadores', 'categorias', 'actividades', 'proyectos'));
     }
@@ -421,7 +416,6 @@ class AdminController extends Controller
 
         $prestadoresSeleccionados = $request->input('prestadores_seleccionados');
         $tamañoArreglo = count($prestadoresSeleccionados);
-
         for ($i = 0; $i < $tamañoArreglo; $i++) {
 
             $idp = $prestadoresSeleccionados[$i];
@@ -430,7 +424,6 @@ class AdminController extends Controller
                 'id_actividad' => $request->input('tipo_actividad'),
                 'id_proyecto' => $request->input('proyecto')]);
         }
-
         return redirect(route('admin.asign_act'))->with('success', 'Creada correctamente');
     }
 
@@ -460,11 +453,9 @@ class AdminController extends Controller
 
     public function create_proy() {
 
-        $prestadores = DB::table('solo_prestadores')
-            ->get();
+        $prestadores = DB::table('solo_prestadores');
         $areas = DB::table('areas')
-            ->select('id', 'nombre_area')
-            ->get();
+            ->select('id', 'nombre_area');
             
         $categorias = DB::table('categorias')->get();
         $proyectos = DB::table('proyectos')->get();
@@ -478,11 +469,11 @@ class AdminController extends Controller
             $prestadores->where('id_area', auth()->user()->area);
             $areas->where('id', auth()->user()->area);
         }else  if( auth()->user()->tipo == 'jefe sede'){
-            $prestadores->where('id_sede', auth()->user()->sede)
-                ->where('horario', auth()->user()->horario);
-                $areas->where('id_sede', auth()->user()->sede);
+            $prestadores->where('id_sede', auth()->user()->sede);    
+            $areas->where('id_sede', auth()->user()->sede);
         }
-
+        $areas = $areas->get();
+        $prestadores= $prestadores->get();
         return view('/admin/registro_proyectos', compact('prestadores', 'areas', 'categorias', 'proyectos'));
     }
 
@@ -551,10 +542,10 @@ class AdminController extends Controller
     public function obtenerPrestadores(Request $request)
     {
         $prestadores = DB::table('solo_prestadores')
-        ->select('solo_prestadores.id','solo_prestadores.name', 'solo_prestadores.apellido')
-        ->join('proyectos_prestadores', 'solo_prestadores.id', '=', 'proyectos_prestadores.id_prestador')
-        ->where('proyectos_prestadores.id_proyecto', $request->input('proyectoId'))
-        ->get();
+            ->select('solo_prestadores.id','solo_prestadores.name', 'solo_prestadores.apellido')
+            ->join('proyectos_prestadores', 'solo_prestadores.id', '=', 'proyectos_prestadores.id_prestador')
+            ->where('proyectos_prestadores.id_proyecto', $request->input('proyectoId'))
+            ->get();
 
         return response()->json($prestadores);
     }
@@ -585,8 +576,8 @@ class AdminController extends Controller
     public function activate_print($id) {
 
         DB::table('impresoras')
-        ->where('id', $id)
-        ->update(['estado' => DB::raw('CASE WHEN estado = 1 THEN 0 ELSE 1 END')]);
+            ->where('id', $id)
+            ->update(['estado' => DB::raw('CASE WHEN estado = 1 THEN 0 ELSE 1 END')]);
 
         return response()->json(['message' => 'Estado de la impresora cambiado']);
     }
@@ -770,14 +761,17 @@ class AdminController extends Controller
     //CONTROL DE SEDES
 
     public function gestionSedes(){
-        $sedes = DB::table('sedes_areas')->get();
-        $s = DB::table('sedes')->get();
+        $sedes = DB::table('sedes_areas');
+        $s = DB::table('sedes');
         
         if(auth()->user()->tipo != 'Superadmin'){
 
             $sedes->where('id_sede', '=', auth()->user()->sede);
             $s->where('id_sede', '=', auth()->user()->sede);
         }
+
+        $sedes = $sedes->get();
+        $s = $s->get();
 
         return view("admin.sedes", ['s'=>$s, 'tabla_sedes' => json_encode($sedes)]);
     }
@@ -861,24 +855,28 @@ class AdminController extends Controller
         return view('admin.dias_festivos',['no_laboral' =>json_encode($no_laboral)]);
     }
 
-    public function guardarFestivos(Request $request){   
+    public function guardarFestivos(Request $request)
+    {   
+        if($request->input('tipo')=='vacaciones'){
 
-        if ($request->input('tipo') == 'vacaciones') {
-            $inicio = $request->input('vacacionesInicio');
-            $final = $request->input('vacacionesFin');
-        } else {
-            $inicio = $request->input('diaFestivo');
-            $final = $request->input('diaFestivo');
+            $modificar = DB::table('eventos')->insert(
+                ['evento'=> $request->input('descripcion'),                   
+                'inicio' => $request->input('vacacionesInicio'),
+                'final'=> $request->input('vacacionesFin'),
+                'tipo'=>$request->input('tipo'),
+                'sede'=>$request->input('sede'),
+                'area'=>$request->input('area')]
+            );
+        }else{
+            $modificar = DB::table('eventos')->insert(
+                ['evento'=> $request->input('descripcion'),                   
+                'inicio' => $request->input('diaFestivo'),
+                'final'=> $request->input('diaFestivo'),
+                'tipo'=>$request->input('tipo'),
+                'sede'=>$request->input('sede'),
+                'area'=>$request->input('area')]
+            );
         }
-
-        DB::table('eventos')->insert([
-            'evento' => $request->input('descripcion'),
-            'inicio' => $inicio,
-            'final' => $final,
-            'tipo' =>$request->input('tipo'),
-            'sede' =>auth()->user()->sede,
-            'area' =>auth()->user()->area
-        ]);
         
         return redirect()->route('admin.diasfestivos')->with('success','Agregado correctamente');
     }

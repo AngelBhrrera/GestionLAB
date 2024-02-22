@@ -54,9 +54,9 @@
                 height: "100%",
                 data: printers,
                 resizableColumns: "false",
-                fitColumns: "true",
+                fitColumns: true,
                 pagination: "local",
-                paginationSize: 12,
+                paginationSize: 15,
                 tooltips: true,
                 columns: [{
                     title: "ID",

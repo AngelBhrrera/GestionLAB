@@ -28,7 +28,7 @@
                 layout: "fitColumns",
                 pagination: "local",
                 resizableColumns: false,  
-                paginationSize: 8,
+                paginationSize: 20,
                 tooltips: true,
                 groupStartOpen: false,
                 groupBy:"nombre_area",

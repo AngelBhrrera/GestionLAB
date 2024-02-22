@@ -13,6 +13,16 @@
 
 @section('subcontent')
 
+<div>
+
+    <div class="grid grid-cols-12 gap-6 mt-5" id="alerta">
+        <div class="intro-y col-span-12 lg:col-span-6">
+            @if(session('warning'))
+                <h6 class="alert alert-danger">{{session('warning')}}</h6>  
+            @endif
+        </div>
+    </div>
+    
     <div class="contenedor-actividades">
     @if(isset($actividades))
         @foreach ($actividades as $actividad)
@@ -39,14 +49,19 @@
                     echo $horas . " h " . $minutos . " m";
                 @endphp
                 <br>
-                <span class="tr">Tiempo Invertido:</span> {{ $actividad->duracion }}
+                <span class="tr">Tiempo Invertido:</span> 
+                @php
+                    $tiempo_en_minutos = $actividad->duracion;
+                    $horas = floor($tiempo_en_minutos / 60);
+                    $minutos = $tiempo_en_minutos % 60;
+                    echo $horas . " h " . $minutos . " m";
+                @endphp
                 <br>
                 @if(isset($actividad->TEU))
                     @php
                         $tiempo_en_minutos = $actividad->TEU;
                         $horas = floor($tiempo_en_minutos / 60);
                         $minutos = $tiempo_en_minutos % 60;
-
                     @endphp
                     <div class="col-md-6">
                         <input id= "horas_{{ $actividad->id }}" name="horas_{{ $actividad->id }}"  style="width: 125px;"  type="text" disabled class="form-control sm:w-56" value="{{ $horas . ' h '}}"> 
@@ -80,7 +95,7 @@
         @endforeach
     @endif
     </div>
-
+</div>
 @endsection
 
 @section('script')
@@ -107,11 +122,9 @@
                 }else{
                     var minutos = parseInt(horasInput.value) * 60 + parseInt(minutosInput.value);
                 }
-
-                console.log(minutos);
                 
                 const token = document.head.querySelector('meta[name="csrf-token"]').content;
-                fetch(`startAct/${idActividad}/${minutos}`, {
+                fetch(`comenzarActividad/${idActividad}/${minutos}`, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
@@ -120,7 +133,6 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-
                     window.location.reload(); 
                 })
                 .catch(error => {
@@ -184,6 +196,7 @@
                 window.location.reload(); 
             })
             .catch(error => {
+                $('#alerta').html('<div class="intro-y col-span-12 lg:col-span-6"><h6 class="alert alert-danger">' + errorMessage + '</h6></div>');
                 console.error('Error en activacion:', error);
             });
         } 
@@ -192,7 +205,6 @@
         function verDetalles(idActividad) {
                 window.location.href = "detalles_actividad/" + idActividad;
         }
-
 
     </script>
 
