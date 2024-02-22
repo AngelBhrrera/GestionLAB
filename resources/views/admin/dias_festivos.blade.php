@@ -121,7 +121,7 @@
                 data: sedes,
                 layout: "fitColumns",
                 resizableColumns: "false",
-                fitColumns: "true",
+                layout: "fitColumns",
                 pagination: "local",
                 paginationSize: 15,
                 tooltips: true,

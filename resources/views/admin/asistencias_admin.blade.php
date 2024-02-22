@@ -51,7 +51,7 @@
                 data: assist,
                 layout: "fitColumns",
                 resizableColumns: "false",
-                fitColumns: "true",
+                layout: "fitColumns",
                 pagination: "local",
                 paginationSize: 12,
                 tooltips: true,

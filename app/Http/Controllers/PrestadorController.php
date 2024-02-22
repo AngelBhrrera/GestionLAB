@@ -23,6 +23,7 @@ class PrestadorController extends Controller
         $horasPendientes = DB::table('registros_checkin')->where('idusuario',Auth::user()->id)->where('estado', 'pendiente')->sum('horas');
         $horasTotales = DB::table('users')->where('id',Auth::user()->id)->value('horas');
 
+
         $leaderboard= DB::table('full_leaderboard')
             ->limit(10)
             ->get();
@@ -272,18 +273,25 @@ class PrestadorController extends Controller
 
     //VER PROYECTOS
 
-    public function proyectoPrestador()
+    public function myProject()
     {
-        $proys = DB::table('proyectos_prestadores')
-            ->where('id_prestador', auth()->user()->id)
+        $id = DB::table('proyectos_prestadores')
+        ->where('id_prestador', auth()->user()->id)
+        ->value('id_proyecto');
+        $proyecto = DB::table('Proyectos')
+        ->select('titulo')->where('id',$id)
+        ->get();
+        $prestadores = DB::table('proyectos_prestadores')
+            ->select('id_prestador', 'name', 'apellido', 'correo', 'telefono')
+            ->where('id_proyecto', $id)
+            ->join('users', 'id_prestador','=','users.id')
+            ->get();
+        $actividades = DB::table('seguimiento_actividades')
+            ->select('actividad_id','actividad', 'estado', 'prestador')
+            ->where('id_proyecto', $id)
             ->get();
 
-        $prestadores = DB::table('solo_prestadores')
-            ->join('proyectos_prestadores', 'solo_prestadores.id', '=', 'proyectos_prestadores.id_prestador')
-            ->where('proyectos_prestadores.id_proyecto', $proys->first()->id_proyecto)
-            ->get();
-
-        return view('/prestador/crear_actividad_prestador', compact('prestadores', 'actividades', 'categorias'));
+        return view('/prestador/mi_proyecto_prestador', compact('prestadores', 'actividades', 'proyecto'));
     }
 
     //SISTEMA DE ACTIVIDADES GAMIFICADO
@@ -460,7 +468,7 @@ class PrestadorController extends Controller
             DB::table('actividades_prestadores')
             ->where('id', $id)
             ->update([
-                'estado' => 'Finalizada'
+                'estado' => 'En revision'
             ]);
 
             return response()->json(['mensaje' => 'COK']);
@@ -559,7 +567,7 @@ class PrestadorController extends Controller
 
         $tiempo = $this->format_time($request->input('horas'), $request->input('minutos'));
 
-        DB::table('seguimiento_impresiones')->insertGetId([['id_Prestador' =>Auth::user()->id, 
+        DB::table('seguimiento_impresiones')->insert([['id_Prestador' =>Auth::user()->id, 
         'id_Impresora' => $request->input('imp_id'), 'id_Proyecto' =>$request->input('proyect'), 
         'nombre_modelo_stl' => $request->input('model'), 'color' => $request->input('color'), 
         'piezas' => $request->input('pieces'), 'peso' => $request->input('weight'), 'tiempo_impresion' => $tiempo]]);
@@ -592,6 +600,8 @@ class PrestadorController extends Controller
     {
         $data = DB::table('ver_impresiones')
             ->orderByDesc('fecha')
+            ->join('users', 'users.id', '=', 'ver_impresiones.id_prestador')
+            ->select(DB::raw("CONCAT(users.name, ' ', users.apellido) AS prestador"), 'ver_impresiones.*')
             ->get();
 
         return view('prestador/mostrar_impresiones', ['impresiones' => json_encode($data)]);

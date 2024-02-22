@@ -32,14 +32,12 @@
                         title: "Nombre",
                         field: "name",
                         sorter: "string",
-                        editor: "input",
                         headerFilter: "input",
                       
                     }, {
                         title: "Apellido",
                         field: "apellido",
                         sorter: "string",
-                        editor: "input",
                         headerFilter: "input",
                       
                     }, {
