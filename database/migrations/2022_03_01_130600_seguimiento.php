@@ -19,7 +19,8 @@ class Seguimiento extends Migration
 
         DB::statement("
         CREATE VIEW seguimiento_actividades AS 
-            SELECT  
+            SELECT 
+            actividades_prestadores.id, 
             CASE 
                 WHEN actividades_prestadores.id_prestador = 0 THEN '<pendiente>'
                 ELSE CONCAT(u.name, ' ', u.apellido) 
@@ -31,8 +32,8 @@ class Seguimiento extends Migration
             a.id AS actividad_id, 
             a.titulo AS actividad, 
             a.TEC AS TEC, 
-            actividades_prestadores.TEU AS TEU, 
-            actividades_prestadores.estado AS estado, 
+         	TEU,
+            actividades_prestadores.estado,
             d.nombre AS categoria, 
             sc.nombre AS subcategoria,
             p.id AS id_proyecto, 
@@ -40,13 +41,7 @@ class Seguimiento extends Migration
             Tiempo_Invertido AS duracion, 
             fecha, 
             detalles,
-            CASE 
-                WHEN Tiempo_Real <= (CASE WHEN a.TEC > TEU THEN TEU ELSE a.TEC END) THEN 10
-                WHEN Tiempo_Real <= (a.TEC + TEU) THEN 8
-                WHEN Tiempo_Real <= (CASE WHEN a.TEC < TEU THEN TEU ELSE a.TEC END) THEN 5
-                WHEN Tiempo_Real <= ((a.TEC + TEU) * 2) THEN 3
-                ELSE -3
-            END AS exp_obtenida
+            exp
             FROM actividades_prestadores 
             INNER JOIN actividades AS a ON actividades_prestadores.id_actividad = a.id
             LEFT JOIN users AS u ON actividades_prestadores.id_prestador = u.id
