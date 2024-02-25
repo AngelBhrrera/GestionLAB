@@ -769,40 +769,75 @@ class AdminController extends Controller
     public function ver_reportes_parciales(){
 
         $prestadores = DB::table('users')
-            ->where('sede', Auth::user()->sede)
-            ->get();
+            ->select(DB::raw("CONCAT(name, ' ', apellido) AS prestador"), 'codigo', 'id')
+            ->where('sede', Auth::user()->sede);
         
-        $reportes = session('reportes');
-        $codigo = session('codigo');
         if(Auth::user()->tipo == "jefe area"){
             $prestadores->where('area', Auth::user()->area);
         }
+
+        $prestadores = $prestadores->get();
         
-        return view('admin.ver_reportes_parciales', compact('reportes', 'codigo', 'prestadores'));
+        return view('admin.ver_reportes_parciales', compact('prestadores'));
     }
 
     public function busqueda_reportes_parciales(Request $request){
         if ($request->busqueda==""){
-            return redirect()->route('admin.reportes_parciales')->with(['warning'=>'Debes ingresar un código/nombre']);
+            return redirect()->route('admin.reportes_parciales')->with(['warning'=>'Debes ingresar un código']);
         }
 
-        $id_prestador = DB::select("Select id from users where codigo = $request->busqueda");
-    
-        if(count($id_prestador) == 0){
-            return redirect()->route('admin.reportes_parciales')->with('warning', 'El prestador no existe');
-        }
-        $id = $id_prestador[0]->id;
-        $reportes = DB::select("Select * from reportes_s_s where id_prestador = $id");
-
-        if(count($reportes) != 0){
-            return redirect()->route('admin.reportes_parciales')->with(['success'=>'Registro encontrado', 'reportes'=>$reportes, 'codigo'=> $request->busqueda]);
-        }else{
-            return redirect()->route('admin.reportes_parciales')->with(['warning'=>"No se encontraron registros del prestador", 'reportes'=>$reportes, 'codigo'=> $request->busqueda]);
-        }
-        
+        return redirect()->route('admin.resultados_busqueda', ['codigo'=>$request->busqueda]);   
     }
 
-    
+    public function resultados_busqueda($codigo){
+        $prestadores = DB::table('users')
+            ->select(DB::raw("CONCAT(name, ' ', apellido) AS prestador"), 'codigo', 'id')
+            ->where('sede', Auth::user()->sede);
+        if(Auth::user()->tipo == "jefe area"){
+                $prestadores->where('area', Auth::user()->area);
+            }
+        $id_prestador = DB::table('users')
+            ->where('codigo', $codigo)
+            ->value('id');
+
+        if(!$id_prestador) {
+            return redirect()->route('admin.reportes_parciales')->with('warning', 'El prestador no existe');
+        }
+        $reportes = DB::table('reportes_s_s')
+            ->where('id_prestador', $id_prestador)
+            ->get();
+        $prestadores = $prestadores->get();
+        if(count($reportes) != 0){
+            $success = "Registro encontrado";
+            return view('admin.resultados_busqueda', compact('reportes', 'codigo','prestadores', 'success'));
+        }else{
+            $warning = "No se encontraron registros del prestador";
+            return view('admin.resultados_busqueda', compact('reportes', 'codigo', 'prestadores', 'warning'));  
+        } 
+    }
+
+    public function autorizar_denegar_reportes($modo, $id){
+        if($modo == "autorizar"){
+            $autorizar = DB::table('reportes_s_s')->where('id', $id)->update(['estado'=> 'autorizado']);
+        }else{
+            $denegar= DB::table('reportes_s_s')->where('id', $id)->update(['estado'=> 'rechazado']);
+        }
+        return redirect()->back();
+    }
+
+    public function descargar_reporte($nombreArchivo){
+        $rutaArchivo = storage_path('app/public/reportes_parciales/' . $nombreArchivo);
+        return response()->download($rutaArchivo);
+    }
+
+    public function visualizar_reporte($nombreArchivo){
+        $rutaArchivo = storage_path('app/public/reportes_parciales/' . $nombreArchivo);
+        // Verificar si el archivo existe
+            // Haz lo que necesites con el contenido del archivo
+            header('content-type: application/pdf');
+            readfile($rutaArchivo);
+    }
+
     //VISITAS
 
     public function visits()

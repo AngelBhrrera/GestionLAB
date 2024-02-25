@@ -105,13 +105,13 @@ class RegisterController extends Controller
             'area' =>$rArea,
             'horario' => $rhorario,
             'horas' => $rHoras,
-            'encargado_id' =>  ['nullable'],
 
         ]);
     }
 
     protected function create(array $data)
     {
+
         $vCodigo = $data['codigo'];
         $vTelefono = $data['telefono'];
         $vCentro = $data['centro'];
@@ -124,7 +124,6 @@ class RegisterController extends Controller
 
         switch($data['tipo']) {
            
-            
             case 'prestador':
             case 'prestadorp':
             case 'practicantep':
@@ -137,10 +136,7 @@ class RegisterController extends Controller
                 break;
             case 'voluntario':
             case 'voluntariop':
-                $vSede = $data['sede'];
-                $vArea = $data['area'];
                 $vhorario = $data['horario'];
-                break;
             case 'jefe area':
                 $vArea = $data['area'];
             case 'jefe sede':     
@@ -164,7 +160,6 @@ class RegisterController extends Controller
             'area' => $vArea,
             'horario' => $vhorario,
             'horas' => $vHoras,
-            
         ]);
     }
 }

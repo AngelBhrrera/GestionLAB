@@ -166,7 +166,7 @@
 
                         <div class="intro-y col-span-12 sm:col-span-6" id="divTurno">
                             <label for="horarios" class="form-label">Turno</label>
-                            <select class="form-control" name="horario" id="horarios" onchange="filtroTurno()" disabled>
+                            <select class="form-control" name="horario" id="horarios" disabled>
                                 <option selected id="0" value="">Seleccione un turno</option>
                             </select>
                         </div>
@@ -194,13 +194,12 @@
 @section('script')
 
 <script type="text/javascript">
-    //Encargado = Coordinador :)
+
     function filtroTipo(){
         if ((document.getElementById('clientA').selected) || (document.getElementById('clientM').selected) || (document.getElementById('ext').selected)){
             document.getElementById('sedeSelect').disabled = true;
             document.getElementById('area').disabled = true;
             document.getElementById('horarios').disabled = true;
-            document.getElementById('id_encargado').disabled = true;
             document.getElementById('horas').disabled = true;
 
             var divAjustesPrestador = document.getElementById('ajustesPrestador');
@@ -213,7 +212,6 @@
             document.getElementById('sedeSelect').disabled = false;
             document.getElementById('area').disabled = false;
             document.getElementById('horarios').disabled = false;
-            document.getElementById('id_encargado').disabled = false;
             document.getElementById('horas').disabled = false;
         }
     }
@@ -316,37 +314,6 @@
         }
     }
 
-    function filtroTurno() {
-
-        var horarioSelect = document.getElementById('horarios');
-        var encargadoSelect = document.getElementById('id_encargado');
-        var horario = horarioSelect.value;
-        var area = document.getElementById('area').value;
-        encargadoSelect.innerHTML = '<option value=""> Selecciona un encargado</option>';
-        if (horario === '') {
-            encargadoSelect.disabled = true;
-        } else {
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        encargadoSelect.disabled = false;
-                        var encargados = JSON.parse(xhr.responseText);
-                        encargados.forEach(function(encargado) {
-                            var option = document.createElement('option');
-                            option.value = encargado.id;
-                            option.text = encargado.name + ' ' + encargado.apellido;
-                            encargadoSelect.appendChild(option);
-                        });
-                    } else {
-                        console.error('Error al obtener encargados');
-                    }
-                }
-            };
-            xhr.open('GET', 'turno/' + horario + '/' + area);
-            xhr.send();
-        }
-    }
 
 </script>
 @endsection

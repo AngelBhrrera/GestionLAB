@@ -205,6 +205,9 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 //MODULO REPORTES
                 Route::get('admin/ver_reportes_parciales', 'ver_reportes_parciales')->name('reportes_parciales');
                 Route::get('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
+                Route::post('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
+                Route::get('admin/resultados_busqueda/{codigo}', 'resultados_busqueda')->name('resultados_busqueda');
+                Route::get('admin/autorizar_denegar_reportes/{modo}/{id}', 'autorizar_denegar_reportes')->name('autorizar_denegar_reportes');
                 //MODULO SEDES
                 Route::get('admin/gestionSede', 'gestionSedes')->name('sede');
                 Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');

@@ -13,7 +13,7 @@
         <div class="intro-y box py-30  mt-">
 
             <div style="display: flex;">
-                <img class="mx-auto my-auto" alt="Inventores" width="80px" height="80px" src="{{ asset('build/assets/images/logosinventores/InventoresLogoHDWhiteborder.png') }}">
+                <img class="mx-auto my-auto" alt="Inventores" width="80px" height="80px" src="{{ asset('build/assets/images/logosInventores/InventoresBannerHDWhiteBorder.png') }}">
             </div>
 
             <div id="divBase" style="display: flex;"> 
@@ -187,7 +187,7 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divTurno" style="display:none">
                                         <label for="input-wizard-4" class="form-label">Turno</label>
-                                        <select class="form-control" name="horario" id="horarios" onchange="filtroTurno()" disabled>
+                                        <select class="form-control" name="horario" id="horarios" disabled>
                                             <option selected id="0" value="">Seleccione un turno</option> 
                                         </select>
                                     </div>
@@ -248,7 +248,6 @@
 
 @section('script')
     <script type="text/javascript">
-        //Encargado = Coordinador :)
 
     function changeCase($var){
 
@@ -321,7 +320,6 @@
                     document.getElementById('sedeSelect').value ="";
                     document.getElementById('horarios').disabled= true;
                     document.getElementById('area').disabled=true;
-                    document.getElementById('id_encargado').disabled = true;
                 }else{
                     document.getElementById('formTwo').style.display = "";
                 }
@@ -411,7 +409,7 @@
                     if (xhr.status === 200) {
                         var horariosArea = JSON.parse(xhr.responseText);
                         horarioSelect.disabled = false;
-                        console.log(horariosArea);
+                        //console.log(horariosArea);
                         if (horariosArea[0].turnoMatutino === 1) {
                             var option1 = document.createElement('option');
                             option1.value = 'Matutino';
@@ -452,37 +450,7 @@
         }
     }
 
-    function filtroTurno() {
-
-        var horarioSelect = document.getElementById('horarios');
-        var encargadoSelect = document.getElementById('id_encargado');
-        var horario = horarioSelect.value;
-        var area = document.getElementById('area').value;
-        encargadoSelect.innerHTML = '<option value=""> Selecciona un encargado</option>';
-        if (horario === '') {
-            encargadoSelect.disabled = true;
-        }else{
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        encargadoSelect.disabled = false;
-                        var encargados = JSON.parse(xhr.responseText);
-                        encargados.forEach(function(encargado) {
-                            var option = document.createElement('option');
-                            option.value = encargado.id;
-                            option.text = encargado.name + ' ' + encargado.apellido;
-                            encargadoSelect.appendChild(option);
-                        });
-                    } else {
-                        console.error('Error al obtener coordinadores de turno');
-                    }
-                }
-            };
-            xhr.open('GET', 'turno/' + horario + '/' + area);
-            xhr.send();
-        }
-    }
+    
     </script>
 
 @endsection
