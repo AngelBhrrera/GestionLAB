@@ -29,15 +29,12 @@ class Soloprestadores extends Migration
                 `users`.`carrera` AS `carrera`,
                 `users`.`horas` AS `horas`,
                 `seguimiento_horas_completo`.`horas_servicio` AS `horas_cumplidas`,
-                `seguimiento_horas_completo`.`horas_restantes` AS `horas_restantes`,
-                `users`.`encargado_id` AS `encargado_id`
+                `seguimiento_horas_completo`.`horas_restantes` AS `horas_restantes`
             FROM
-                `users`
+                (SELECT * FROM `users` WHERE `tipo` IN ('prestador', 'practicante', 'voluntario', 'coordinador')) AS `users`
             LEFT JOIN `seguimiento_horas_completo` ON `users`.`id` = `seguimiento_horas_completo`.`id`
             LEFT JOIN `areas` ON `users`.`area` = `areas`.`id`
-            LEFT JOIN `sedes` ON `users`.`sede` = `sedes`.`id_sede`
-            WHERE
-                `users`.`tipo` IN ('prestador', 'practicante', 'voluntario', 'coordinador');
+            LEFT JOIN `sedes` ON `users`.`sede` = `sedes`.`id_sede`;
         ");
     }
 

@@ -86,6 +86,9 @@
                 @elseif($actividad->estado == 'Bloqueada')
                     <button class="boton" onclick="continuarActividad({{ $actividad->id }})">Reaunudar Actividad</button>
                     <button class="boton boton-inactivo" data-id="{{ $actividad->id }}" disabled>Terminar Actividad</button>
+                @elseif($actividad->estado == 'Error')
+                    <button class="boton" onclick="continuarActividad({{ $actividad->id }})">Reaunudar Actividad</button>
+                    <button class="boton boton-inactivo" data-id="{{ $actividad->id }}" disabled>Actividad devuelta con error</button>
                 @else
                     <button class="boton" data-id="{{ $actividad->id }}" disabled>{{ $actividad->estado }}</button>
                     <button class="boton boton-inactivo" data-id="{{ $actividad->id }}"  disabled>Terminar Actividad</button>

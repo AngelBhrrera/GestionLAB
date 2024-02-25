@@ -324,21 +324,21 @@
                         <ul class="nav nav-tabs nav-justified" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active">Posición</a>
-                                @foreach ($leaderBoard as $top)
+                                @foreach ($leaderBoardW as $top)
                                     <p id="leaderBoard" class="nav-link">{{$top->Posicion}}</p>
                                 @endforeach
                             </li>
 
                             <li class="nav-item">
                                 <a class="nav-link active">Usuario</a>
-                                @foreach ($leaderBoard as $top)
+                                @foreach ($leaderBoardW as $top)
                                     <p id="leaderBoard"  class="nav-link">{{$top->Inventor}}</p>
                                 @endforeach
                             </li>
 
                             <li class="nav-item">
                                 <a class="nav-link active">Experiecia</a>
-                                @foreach ($leaderBoard as $top)
+                                @foreach ($leaderBoardW as $top)
                                     <p id="leaderBoard" class="nav-link">{{$top->experiencia}}</p>
                                 @endforeach
                             </li>
@@ -349,21 +349,21 @@
                             <ul class="nav nav-tabs nav-justified " role="tablist">
                                 <li class="nav-item ">
                                     <a class="nav-link active">Posición</a>
-                                    @foreach ($leaderBoard as $top)
+                                    @foreach ($leaderBoardM as $top)
                                         <p id="leaderBoard" class="nav-link">{{$top->Posicion}}</p>
                                     @endforeach
                                 </li>
 
                                 <li class="nav-item">
                                     <a class="nav-link active">Usuario</a>
-                                    @foreach ($leaderBoard as $top)
+                                    @foreach ($leaderBoardM as $top)
                                         <p id="leaderBoard" class="nav-link leaderBoard">{{$top->Inventor}}</p>
                                     @endforeach
                                 </li>
 
                                 <li class="nav-item">
                                     <a class="nav-link active">Experiecia</a>
-                                    @foreach ($leaderBoard as $top)
+                                    @foreach ($leaderBoardM as $top)
                                         <p  id="leaderBoard"class="nav-link">{{$top->experiencia}}</p>
                                     @endforeach
                                 </li>

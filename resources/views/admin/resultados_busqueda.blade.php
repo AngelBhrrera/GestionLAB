@@ -146,24 +146,21 @@
         layout: "fitColumns",
         pagination: "local",
         paginationSize: 10,
-        tooltips: true,
-        columns: [{
+        columns:  [{
                 title: "ID",
                 field: "id",
                 visible: false,
                 width: 2,
             }, {
-                title: "Nombre",
-                field: "name",
+                title: "Prestador",
+                field: "prestador",
                 headerFilter: "input",
                 sorter: "string",
-                editor: "input",
             },{
-                title: "Apellido",
-                field: "apellido",
+                title: "Codigo",
+                field: "codigo",
                 headerFilter: "input",
                 sorter: "string",
-                editor: "input",
             },{
                 title: "Ver Reportes",
                 field: "total_personal",

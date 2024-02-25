@@ -83,7 +83,7 @@ class AdminController extends Controller
         }
 
         $sedes = $sedes->get();
-        $areas = $areas->get();
+
         
         return view('auth/registerAdmin', compact('sedes','areas','users'));
     }
@@ -315,6 +315,69 @@ class AdminController extends Controller
 
     // ACTIVIDADES Y PROYECTOS
 
+    public function actstate($id, $state) {
+        DB::table('actividades_prestadores')
+            ->where('id', $id)
+            ->update(['estado' => $state]);
+
+        if($state == 'Aprobada'){
+            $this->approveAct($id);
+        }
+
+        return response()->json(['message' => 'Actividad modificada exitosamente' . $id]);
+    }
+
+    public function approveAct($id){
+
+        $expIsNull = DB::table('actividades_prestadores')
+        ->where('id', $id)
+        ->whereNull('exp')
+        ->exists();
+
+        if($expIsNull){
+
+            $TR = DB::table('actividades_prestadores')
+            ->where('id', $id)
+            ->value('Tiempo_Invertido');
+            
+            DB::table('actividades_prestadores')
+                ->where('id', $id)
+            ->update(['Tiempo_Real' => $TR]);
+
+            $this->expUser($id);
+        }
+
+        return 0;
+
+    }
+
+    public function expUser($id){
+
+        $exp = DB::table('exp_calculator')
+            ->where('id', $id)
+            ->value('exp_obtenida');
+
+        DB::table('actividades_prestadores')
+            ->where('id', $id)
+            ->update(['exp' => $exp]);
+
+        $idP = DB::table('actividades_prestadores')
+        ->where('id', $id)
+        ->value('id_prestador');
+
+        $userXP = DB::table('users')
+        ->where('id', $idP)
+        ->value('experiencia');
+
+        $userXP = $userXP + $exp;
+
+        DB::table('users')
+        ->where('id', $idP)
+        ->update(['experiencia' => $userXP]);
+
+        return 0;
+    }
+
     public function actividades(){
 
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
@@ -342,6 +405,32 @@ class AdminController extends Controller
             ->get();
         }
         return view( 'admin/ver_todasActividades', [ 'data' =>json_encode($data)]);
+    }
+
+    public function reviewActs(){
+        $data = DB::table('seguimiento_actividades')
+        ->whereIn('estado', ['En revision', 'Error']);
+
+        if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
+            $data->whereIn('id_proyecto', function ($query) {
+                $query->select('id')
+                    ->from('proyectos')
+                    ->where('id_area', auth()->user()->area);
+            });
+        }else  if( auth()->user()->tipo == 'jefe sede'){
+            $data->whereIn('id_proyecto', function ($query) {
+                $query->select('id')
+                      ->from('proyectos')
+                      ->whereIn('id_area', function ($subquery) {
+                          $subquery->select('id_sede')
+                                   ->from('areas')
+                                   ->where('id_sede', auth()->user()->sede);
+                      });
+            });
+        }
+        $data = $data->get();
+        
+        return view( 'admin/calificar_actividades', [ 'data' =>json_encode($data)]);
     }
     
     public function create_act()
@@ -680,12 +769,14 @@ class AdminController extends Controller
     public function ver_reportes_parciales(){
 
         $prestadores = DB::table('users')
-            ->where('sede', Auth::user()->sede)
-            ->get();
+            ->select(DB::raw("CONCAT(name, ' ', apellido) AS prestador"), 'codigo', 'id')
+            ->where('sede', Auth::user()->sede);
         
         if(Auth::user()->tipo == "jefe area"){
             $prestadores->where('area', Auth::user()->area);
         }
+
+        $prestadores = $prestadores->get();
         
         return view('admin.ver_reportes_parciales', compact('prestadores'));
     }
@@ -700,20 +791,22 @@ class AdminController extends Controller
 
     public function resultados_busqueda($codigo){
         $prestadores = DB::table('users')
-            ->where('sede', Auth::user()->sede)
-            ->get();
-        
-        $id_prestador = DB::select("Select id from users where codigo = $codigo");
+            ->select(DB::raw("CONCAT(name, ' ', apellido) AS prestador"), 'codigo', 'id')
+            ->where('sede', Auth::user()->sede);
+        if(Auth::user()->tipo == "jefe area"){
+                $prestadores->where('area', Auth::user()->area);
+            }
+        $id_prestador = DB::table('users')
+            ->where('codigo', $codigo)
+            ->value('id');
 
-        if(count($id_prestador) == 0){
+        if(!$id_prestador) {
             return redirect()->route('admin.reportes_parciales')->with('warning', 'El prestador no existe');
         }
-        $id = $id_prestador[0]->id;
-        $reportes = DB::select("Select * from reportes_s_s where id_prestador = $id");
-        if(Auth::user()->tipo == "jefe area"){
-            $prestadores->where('area', Auth::user()->area);
-        }
-
+        $reportes = DB::table('reportes_s_s')
+            ->where('id_prestador', $id_prestador)
+            ->get();
+        $prestadores = $prestadores->get();
         if(count($reportes) != 0){
             $success = "Registro encontrado";
             return view('admin.resultados_busqueda', compact('reportes', 'codigo','prestadores', 'success'));
@@ -745,7 +838,6 @@ class AdminController extends Controller
             readfile($rutaArchivo);
     }
 
-    
     //VISITAS
 
     public function visits()

@@ -451,9 +451,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.view_proys') }}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="package"></i> </div>
-                            <div class="side-menu__title">Ver proyectos</div>
+                        <a href="{{ route('admin.reviewActs') }}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
+                            <div class="side-menu__title"> Revisar actividades</div>
                         </a>
                     </li>
                     @if (Auth::user()->tipo == "jefe area" || Auth::user()->tipo == "jefe sede" || Auth::user()->tipo == "Superadmin")

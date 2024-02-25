@@ -28,7 +28,11 @@ class sedesAreas extends Migration
             LEFT JOIN 
                 users u ON a.id = u.area AND u.tipo IN ('prestador', 'practicante', 'voluntario', 'coordinador') 
             GROUP BY 
-                a.id;
+                a.id, s.id_sede, a.nombre_area, a.turnoMatutino, a.turnoMediodia, 
+                a.turnoVespertino, a.turnoSabatino, a.turnoTiempoCompleto,
+                a.no_Aplica, a.activa, a.id_sede, s.nombre_sede,
+                m.gamificacion,m.impresiones,m.visitas,m.solicitudes,
+                u.name ;
         ");
 
     }

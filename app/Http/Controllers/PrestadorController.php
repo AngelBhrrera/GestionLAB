@@ -304,6 +304,7 @@ class PrestadorController extends Controller
 
         $actividades = DB::table('seguimiento_actividades')
             ->where('id_prestador', auth()->user()->id)
+            ->whereNotIn('estado', ['Aprobada'])
             ->orWhere(function($query) use ($proys) {
                 $query->whereIn('id_proyecto', $proys)
                         ->where('id_prestador', 0);
@@ -376,6 +377,9 @@ class PrestadorController extends Controller
             ->exists();
 
         if($disponible && $verificar){
+            if($this->checkAct()){
+                $this->pauseAct();
+            }
             DB::table('actividades_prestadores')
             ->where('id', $id)
             ->update([
@@ -384,10 +388,6 @@ class PrestadorController extends Controller
                 'horas_ref' => $hor,
                 'TEU' => $teu
             ]);
-
-            if($this->checkAct()){
-                $this->pauseAct();
-            }
         }else{
             return redirect()->route('actividadesAsignadas')->with('error', 'No has hecho Check de entrada');
         }
@@ -414,9 +414,7 @@ class PrestadorController extends Controller
 
         DB::table('actividades_prestadores')
             ->where('id', $found)
-            ->update([
-            'estado' => 'Bloqueada'
-        ]);
+            ->update(['estado' => 'Bloqueada']);
 
         return 0;
     }
@@ -464,12 +462,20 @@ class PrestadorController extends Controller
 
         }else if($mode == 3){
 
-            //AGREGAR EN ACTIVIDADES PRESTADORES EL TIEMPO REAL FINAL.
-            DB::table('actividades_prestadores')
-            ->where('id', $id)
-            ->update([
-                'estado' => 'En revision'
-            ]);
+            $inv = DB::table('actividades_prestadores')
+                ->where('id', $id)
+                ->value('Tiempo_Invertido');
+
+            if($inv > 0){
+                DB::table('actividades_prestadores')
+                ->where('id', $id)
+                ->update([
+                    'estado' => 'En revision'
+                ]);
+            }else{
+                #error, mandaste a completar una actividad que no le has invertido tiempo
+            }
+           
 
             return response()->json(['mensaje' => 'COK']);
         }
@@ -790,6 +796,30 @@ class PrestadorController extends Controller
             ->first();
 
         return $actualLevel;
+    }
+
+    public function leaderboard_area(){
+
+        $area =  DB::table('users')
+            ->where('codigo',  Auth::user()->codigo) 
+            ->value('area');
+
+        $leaderBoard = DB::table('full_leaderboard')
+            ->select('full_leaderboard.*')
+            ->limit(25)
+            ->get();
+
+        $leaderBoardW = DB::table('full_leaderboard_w')
+            ->select('full_leaderboard_w.*')
+            ->limit(25)->get();
+
+        $leaderBoardM = DB::table('full_leaderboard_m')
+            ->select('full_leaderboard_m.*')
+            ->limit(25)->get();
+
+        return view(
+            'prestador/prestador_leaderboard', compact('leaderBoard','leaderBoardW','leaderBoardM')
+        );
     }
 
     public function level_progress()
