@@ -85,9 +85,24 @@ class logsysController extends Controller
 
     public function filtroSede($id){
 
-        $area = DB::table('filtrosedes')
+        $area = DB::table('filtro_sedes')
             ->where('id_sede', $id)
             ->get();
+
+        return response()->json($area);
+    }
+
+    public function filtroSedeA($id){
+
+        if(Auth::user()->area == 0){
+            $area = DB::table('filtro_sedes')
+                ->where('id_sede', $id)
+                ->get();
+        }else{
+            $area = DB::table('filtro_sedes')
+            ->where('id_area', Auth::user()->area)
+            ->get();
+        }
 
         return response()->json($area);
     }

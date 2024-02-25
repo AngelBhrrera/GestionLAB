@@ -109,15 +109,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Tiempo estimado (TEC)</label>
-                            <div class="col-md-6">
-                                    <input name="horas" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
-                                    <input name="minutos" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
-                            </div>
-                    </div>
-
-
                     <div class="col-md-12 text-right">
                         <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits ">Crear</button>
                     </div>

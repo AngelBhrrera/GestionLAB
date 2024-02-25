@@ -9,7 +9,7 @@ class sedeFilter extends Migration
     public function up()
     {
         DB::statement("
-        CREATE VIEW filtroSedes AS
+        CREATE VIEW filtro_sedes AS
             SELECT 
                 S.id_sede,
                 S.nombre_sede,
@@ -33,6 +33,6 @@ class sedeFilter extends Migration
      */
     public function down()
     {
-        DB::statement("DROP VIEW filtroSedes");
+        DB::statement("DROP VIEW filtro_sedes");
     }
 }

@@ -129,7 +129,7 @@
                             @endforeach
                             @if (!$bandera)
                                 <tr>
-                                    <td> <p style="color: #0023FF"><strong>{{$pos}} </strong> </p></td>
+                                    <td> <p style="color: #0023FF"><strong>{{$posicionUsuario}} </strong> </p></td>
                                     <td>
                                     <div class="w-10 h-10 image-fit">
                                         <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" width="40" height="40" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" 
@@ -149,4 +149,3 @@
     </div>
 
 @endsection
-

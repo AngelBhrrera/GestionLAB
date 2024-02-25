@@ -83,6 +83,7 @@ class AdminController extends Controller
         }
 
         $sedes = $sedes->get();
+        $areas = $areas->get();
 
         
         return view('auth/registerAdmin', compact('sedes','areas','users'));
@@ -498,7 +499,9 @@ class AdminController extends Controller
         }
             
         $categorias = DB::table('categorias')->get();
-        $actividades = DB::table('actividades')->get();
+        $actividades = DB::table('actividades')
+            ->whereNotNull('TEC')
+            ->get();
         $proyectos = DB::table('proyectos')->get();
         $prestadores = $prestadores->get();
     
@@ -603,7 +606,7 @@ class AdminController extends Controller
     
     public function view_details_proy($id){
 
-        $proyecto = DB::table('Proyectos')
+        $proyecto = DB::table('proyectos')
             ->select('titulo')->where('id',$id)
             ->get();
         $prestadores = DB::table('proyectos_prestadores')
@@ -658,7 +661,7 @@ class AdminController extends Controller
     public function control_print()
     {
         $data = DB::table('impresoras')
-        ->where('id_sede', auth()->user()->sede)
+        ->where('id_area', auth()->user()->area)
         ->get();
 
         return view('admin/registro_impresora',
@@ -699,7 +702,7 @@ class AdminController extends Controller
             'nombre' => $request->input('nombre'),
             'marca' => $request->input('mark'),
             'tipo' =>$request->input('tipo'),
-            'id_sede' =>auth()->user()->sede
+            'id_area' =>auth()->user()->area
         ]);
 
         return redirect()->back();
@@ -768,7 +771,7 @@ class AdminController extends Controller
 
     public function ver_reportes_parciales(){
 
-        $prestadores = DB::table('users')
+        $prestadores = DB::table('solo_prestadores')
             ->select(DB::raw("CONCAT(name, ' ', apellido) AS prestador"), 'codigo', 'id')
             ->where('sede', Auth::user()->sede);
         
@@ -1037,6 +1040,7 @@ class AdminController extends Controller
     {
         $actividades = DB::table('actividades')
             ->where('id_categoria', $request->input('categoriaId'))
+            ->whereNotNull('TEC')
             ->get();
 
         return response()->json($actividades);
@@ -1046,6 +1050,7 @@ class AdminController extends Controller
     {
         $actividades = DB::table('actividades')
             ->where('id_subcategoria', $request->input('subcategoriaId'))
+            ->whereNotNull('TEC')
             ->get();
 
         return response()->json($actividades);
@@ -1058,6 +1063,37 @@ class AdminController extends Controller
             ->get();
 
         return response()->json($subcateg);
+    }
+
+    public function proposeActs(){
+        $data = DB::table('actividades')
+            ->whereNull('TEC')
+            ->get();
+        return view("admin.aprobar_actividades", compact('data'));
+    }
+
+    public function setActTEC($id){
+        
+        $actividad = DB::table('actividades')
+            ->where('id', $id)
+            ->whereNull('TEC')
+            ->get();
+        if(!$actividad){
+            return redirect()->back()->with("Error",);
+        }else{
+            $categ = DB::table('categorias')
+            ->where('id', $actividad[0]->id_categoria)
+            ->value('nombre');
+            $subcateg = DB::table('subcategorias')
+                ->where('id', $actividad[0]->id_subcategoria)
+                ->value('nombre');
+            $categorias = DB::table('categorias')->get();
+            return view("admin.aprobar_actividad", compact('actividad', 'categ', 'subcateg', 'categorias'));
+        }
+    }
+
+    public function actTEC(Request $request){
+        dd($request);
     }
 
     // PREMIOS
@@ -1074,7 +1110,7 @@ class AdminController extends Controller
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $prestadores->where('id_sede', auth()->user()->sede);
         }
-        return view("admin.premios", ["prestadores"=>$prestadores, "premios"=>$premios]);
+        return view("admin.premios", compact('prestadores', 'premios'));
     }
 
     public function guardar_premio(Request $request){
@@ -1094,7 +1130,7 @@ class AdminController extends Controller
             "ref" => "ref",
         ]);
        
-        return redirect()->back()->with("Exito",);
+        return redirect()->back()->with('success', 'Creada correctamente');
     }
 
     public function asignar_premio(Request $request){
@@ -1111,7 +1147,7 @@ class AdminController extends Controller
             ]);
            
         }
-        return redirect()->back()->with("Exito",);
+        return redirect(route("admin.gestor_premios"))->with("Exito",);
     }
 
     public function gestor_premios(){

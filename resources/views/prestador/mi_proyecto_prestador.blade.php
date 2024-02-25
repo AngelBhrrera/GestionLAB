@@ -13,39 +13,37 @@
         <h2 class="text-2xl font-medium leading-none mt-3" style="padding-top: 20px; padding-bottom: 20px;">
             Detalles de Proyecto
         </h2>
-        <h3 class="text-xl font-medium leading-none">{{$proyecto[0]->titulo}}</h3>
-        <input type="hidden" id="nombre" value="{{$proyecto[0]->titulo}}">
-        <br>
-        <h3 class="text-xl font-medium leading-none mt-3">--Integrantes--</h3>
-        @if(count($prestadores)==0)
-            Este es un proyecto abierto
-        @else
-            
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th class="whitespace-nowrap">Prestador</th>
-                        <th class="whitespace-nowrap">Correo</th>
-                        <th class="whitespace-nowrap">Teléfono</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                    @foreach ($prestadores as $prestador )
-                        <tr>
-                            <td>{{$prestador->name." ".$prestador->apellido}}</td>
-                            <td>{{$prestador->correo}}</td>
-                            <td>{{$prestador->telefono}}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+        @if (isset($proyecto))
+            <h3 class="text-xl font-medium leading-none">{{$proyecto}}</h3>
+            <input type="hidden" id="nombre" value="{{$proyecto[0]->titulo}}">
             <br>
-            <h3 class="text-xl font-medium leading-none mt-3">Actividades</h3>
-            <div class="text-center mx-auto" style="padding-left: 10px" id="actividades"></div>
+            <h3 class="text-xl font-medium leading-none mt-3">--Integrantes--</h3>
+                
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="whitespace-nowrap">Prestador</th>
+                            <th class="whitespace-nowrap">Correo</th>
+                            <th class="whitespace-nowrap">Teléfono</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        @foreach ($prestadores as $prestador )
+                            <tr>
+                                <td>{{$prestador->name." ".$prestador->apellido}}</td>
+                                <td>{{$prestador->correo}}</td>
+                                <td>{{$prestador->telefono}}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <br>
+                <h3 class="text-xl font-medium leading-none mt-3">Actividades</h3>
+                <div class="text-center mx-auto" style="padding-left: 10px" id="actividades"></div>
+        @else
+            <h3 class="text-xl font-medium leading-none">No tienes un proyecto asignado ☹ </h3>
         @endif
-
-        
     </div>
 
 @endsection

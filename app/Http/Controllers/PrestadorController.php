@@ -25,20 +25,42 @@ class PrestadorController extends Controller
 
 
         $leaderboard= DB::table('full_leaderboard')
+            ->select('Posicion','Inventor','full_leaderboard.experiencia','ruta','max_nivel', 'full_leaderboard.codigo', 'sede','area')
+            ->join('users', 'users.codigo', '=','full_leaderboard.codigo')
+            ->where('sede', Auth::user()->sede)
+            ->where('area', Auth::user()->area)
             ->limit(10)
             ->get();
+        $i=1;
+        foreach($leaderboard as $posicion){
+            $posicion->Posicion = $i;
+            $i++;
+        }
+        $i=1;
+        $tablaCompleta = DB::table('full_leaderboard')
+        ->select('Posicion','Inventor','full_leaderboard.experiencia','ruta','max_nivel', 'full_leaderboard.codigo', 'sede','area')
+        ->join('users', 'users.codigo', '=','full_leaderboard.codigo')
+        ->where('sede', Auth::user()->sede)
+        ->where('area', Auth::user()->area)
+        ->get();
 
-        $posicionUsuario= DB::table('full_leaderboard')
-            ->where('codigo',  Auth::user()->codigo)
-            ->value('Posicion');
+        $i=1;
+        foreach($tablaCompleta as $elemento){
 
+            if($elemento->codigo == Auth::user()->codigo){
+                $posicionUsuario = $i;
+                break;
+            }
+            $i++;
+        }
+        
         $usuarioMedalla = $this->prestador_level();
 
         return view(
             'prestador/newHomeP',compact('horasAutorizadas', 'horasPendientes', 'horasTotales', 'horasRestantes',  
             'leaderboard', 'posicionUsuario', 'usuarioMedalla'));
     }
-
+    
     public function horas()
     {
         $asistencias = DB::table('registros_checkin')
@@ -276,11 +298,11 @@ class PrestadorController extends Controller
     public function myProject()
     {
         $id = DB::table('proyectos_prestadores')
-        ->where('id_prestador', auth()->user()->id)
-        ->value('id_proyecto');
-        $proyecto = DB::table('Proyectos')
-        ->select('titulo')->where('id',$id)
-        ->get();
+            ->where('id_prestador', auth()->user()->id)
+            ->value('id_proyecto');
+        $proyecto = DB::table('proyectos')
+            ->where('id',$id)
+            ->value('titulo');
         $prestadores = DB::table('proyectos_prestadores')
             ->select('id_prestador', 'name', 'apellido', 'correo', 'telefono')
             ->where('id_proyecto', $id)
@@ -499,9 +521,6 @@ class PrestadorController extends Controller
         $subcategoria = $request->input('tipo_subcategoria');
         if($subcategoria == '')
             $subcategoria = null;
-        $horas = $request->input('horas')*60;
-        $minutos = $request->input('minutos');
-        $tec = $horas + $minutos;
     
         DB::table('actividades')->insert([
             'titulo' => $request->input('nombre'),
@@ -511,7 +530,6 @@ class PrestadorController extends Controller
             'recursos' =>  $request->input('recursos'),
             'descripcion' => $request->input('descripcion'),
             'objetivos' => $request->input('resultados'),
-            'TEC' => $tec,
         ]);
 
         return redirect()->route('misActividades');
@@ -606,6 +624,7 @@ class PrestadorController extends Controller
     {
         $data = DB::table('ver_impresiones')
             ->orderByDesc('fecha')
+            ->where('id_area', Auth::user()->area)
             ->join('users', 'users.id', '=', 'ver_impresiones.id_prestador')
             ->select(DB::raw("CONCAT(users.name, ' ', users.apellido) AS prestador"), 'ver_impresiones.*')
             ->get();
