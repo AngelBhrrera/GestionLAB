@@ -157,7 +157,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
             Route::get('/admin/ver_actividades', 'actividades')->name('actividades');
             Route::get('/admin/actividades_en_progreso','actividades_en_progreso')->name('actividades_en_progreso');
-            Route::get('/admin/actividades_revision', 'actividades_revision')->name('actividades_revision');
+            Route::get('/admin/actividades_revision', 'reviewActs')->name('reviewActs');
             //RUTAS PROYECTOS Y ASIGNACIONES
             Route::get('/admin/C_proyectos', 'create_proy')->name('create_proy');
             Route::post('/admin/M_proyecto', 'make_proy')->name('make_proy');
@@ -235,6 +235,8 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('admin/activar_impresora/{value}', 'activate_print')->name('activate_print');
             Route::get('admin/changestate_print/{id}/{value}', 'printstate')->name('printstate');
             Route::get('admin/observaciones_impresion/{id}/{value}', 'detail_prints')->name('detail_prints');
+
+            Route::get('admin/califAct/{id}/{value}', 'actstate')->name('actstate');
             
             Route::middleware('role:jefe area,jefe sede,Superadmin')->group(function() {
                 //API PRESTADOR
@@ -357,6 +359,7 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::get('prestador/observaciones_actividad/{id}/{val}', 'detail_act')->middleware('role:prestador,practicante,voluntario,coordinador,jefe area,jefe sede')->name('detail_act');
         //MODULO GAMIFICACION
         Route::get('prestador/nivel', 'level_progress')->name('level');
+        Route::get('prestador/leaderboard', 'leaderboard_area')->name('leaderboard_area');
 
 
         Route::post('prestador/completar_impresion','completar_impresion')->name('completar_impresion');

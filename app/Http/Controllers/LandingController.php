@@ -15,12 +15,11 @@ class LandingController extends Controller
         $sabatino =  DB::select("SELECT CONCAT(name, ' ', apellido) AS Nombre , correo, horario from users WHERE fecha_salida is NULL AND sede = 1 AND horario = 'Sabatino' AND (tipo = 'jefe area' OR tipo = 'coordinador')");  
     
         $leaderBoard= DB::select("SELECT * from full_leaderboard limit 10");  
+        $leaderBoardW= DB::select("SELECT * from full_leaderboard_w limit 10");  
+        $leaderBoardM= DB::select("SELECT * from full_leaderboard_m limit 10");  
     
         return view(
-            'landingPage',
-            [
-                'leaderBoard'=> $leaderBoard, 'matutino'=>$matutino, 'mediodia'=>$mediodia, 'vespertino'=>$vespertino, 'sabatino'=>$sabatino
-            ]
+            'landingPage', compact('leaderBoard','leaderBoardW','leaderBoardM','matutino','vespertino','mediodia','sabatino')
         );
     }
 

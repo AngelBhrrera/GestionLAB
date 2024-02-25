@@ -13,7 +13,7 @@
         <div class="intro-y box py-30  mt-">
 
             <div style="display: flex;">
-                <img class="mx-auto my-auto" alt="Inventores" width="80px" height="80px" src="{{ asset('build/assets//images/logosinventores/InventoresLogoHDWhiteborder.png') }}">
+                <img class="mx-auto my-auto" alt="Inventores" width="80px" height="80px" src="{{ asset('build/assets/images/logosinventores/InventoresLogoHDWhiteborder.png') }}">
             </div>
 
             <div id="divBase" style="display: flex;"> 
@@ -175,7 +175,6 @@
                                                     <option id="{{$dato->id_sede}}" value="{{$dato->id_sede}}" data-nombre="{{$dato->nombre_sede}}">{{$dato->nombre_sede }} </option>
                                                 @endforeach
                                             @endif
-                                        
                                         </select>  
                                     </div>
 
@@ -204,14 +203,6 @@
                                                                 @enderror
                                                             @endif
                                     </div>
-                                    
-                                    <div class="intro-y col-span-12 sm:col-span-6" id="divEncargado" style="display:none">
-                                        <label for="input-wizard-4" class="form-label">Encargado *</label>
-                                        <select class="form-control @if(old('opc')=='1') @error('id_encargado') is-invalid @enderror @endif" name="id_encargado" id="id_encargado" disabled>
-                                                <option id="0" value="" {{isset($dV[0]->id_encargado) ? $dV[0]->id_encargado == null ? 'selected="selected"' : '' : ''}}>Seleccione un coordinador</option>
-                                        </select>              
-                                    </div>
-
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divPW" style="display:none">
                                         <label for="input-wizard-4" class="form-label">Contraseña *</label>
                                             <input id="password" type="password" class="form-control @if(old('opc')=='1') @error('password') is-invalid @enderror @endif" name="password" autocomplete="new-password" required autocomplete="password" placeholder="Contraseña">
@@ -324,7 +315,6 @@
                     document.getElementById('formThree').style.display = "";
                     document.getElementById('divHoras').style.display = "";
                     document.getElementById('divSede').style.display = "";
-                    document.getElementById('divEncargado').style.display = "";
                     document.getElementById('divTurno').style.display= "";
                     document.getElementById('divArea').style.display="";
 
@@ -356,7 +346,6 @@
                 document.getElementById('divCarrera').style.display = "none";
                 document.getElementById('divHoras').style.display = "none";
                 document.getElementById('divSede').style.display = "none";
-                document.getElementById('divEncargado').style.display = "none";
                 document.getElementById('divCode').style.display = "none";
                 document.getElementById('divPW').style.display = "none";
                 document.getElementById('divPW2').style.display = "none";
@@ -389,7 +378,7 @@
                             areaSelect.appendChild(option);
                         });
                     } else {
-                        console.error('Error al obtener las actividades');
+                        console.error('Error al obtener las sedes');
                     }
                 }
             }
@@ -495,4 +484,5 @@
         }
     }
     </script>
+
 @endsection

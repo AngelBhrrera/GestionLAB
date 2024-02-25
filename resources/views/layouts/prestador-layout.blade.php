@@ -156,7 +156,7 @@
                         </a>
                         <ul class="submenu">
                             <li>
-                                <a href="{{route('horario')}}" class="side-menu">
+                                <a href="{{route('leaderboard_area')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i><img src="{{asset('build/assets/images/podium.png')}}" width="24" height="24" alt=""></i> </div>
                                     <div class="side-menu__title">Leaderboard W/M</div>
                                 </a>

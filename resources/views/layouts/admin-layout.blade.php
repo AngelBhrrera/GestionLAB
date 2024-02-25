@@ -438,6 +438,12 @@
                             <div class="side-menu__title"> Asignar actividades</div>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('admin.reviewActs') }}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
+                            <div class="side-menu__title"> Revisar actividades</div>
+                        </a>
+                    </li>
                     @if (Auth::user()->tipo == "jefe area" || Auth::user()->tipo == "jefe sede" || Auth::user()->tipo == "Superadmin")
                     <li>
                         <a href="{{route('admin.categorias')}}" class="side-menu">
