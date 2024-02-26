@@ -94,6 +94,7 @@
             resizableColumns: false, 
             layout: "fitColumns",
             pagination: "local",
+            groupStartOpen: false,
             paginationSize: 10,
             tooltips: true,
             groupBy: "categoria",

@@ -59,26 +59,31 @@
                         title: "TEC",
                         field: "TEC",
                         sorter: "number",
-                        width: 65,
+                        headerTooltip: "Tiempo Estimado Compromiso que coordinacion valoro para la actividad",
+                        width: 85,
                     },  {
                         title: "TEU",
                         field: "TEU",
                         sorter: "number",
-                        width: 65,
+                        headerTooltip: "Tiempo Estimado del Usuario para terminar la actividad",
+                        width: 85,
                     },  {
-                        title: "Inversion",
+                        title: "TI",
                         field: "Tiempo_Invertido",
+                        headerTooltip: "Total de tiempo invertido en la actividad",
                         sorter: "number",
-                        width: 65,
+                        width: 75,
                     }, {
-                        title: "Tiempo",
+                        title: "TR",
                         field: "Tiempo_Real",
+                        headerTooltip: "Total de tiempo que tomo realizar la actividad",
                         sorter: "number",
-                        width: 65,
+                        width: 75,
                     }, {
-                        title: "Experiencia",
+                        title: "XP",
                         field: "exp",
                         sorter: "number",
+                        headerTooltip: "Calculo en funcion al TEC, TEU y TR de tu rendimiento en la actividad",
                         width: 75,
                     },  {
                         title: "Detalles",
@@ -94,7 +99,6 @@
                     }, {
                         title: "",
                         field: "id_actividad",
-                        width: 120,
                         formatter: function (cell, formatterParams, onRendered) {
                             var value = cell.getValue();
                             var button = document.createElement("button");

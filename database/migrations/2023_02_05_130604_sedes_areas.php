@@ -12,12 +12,12 @@ class sedesAreas extends Migration
 
         CREATE VIEW sedes_areas AS
             SELECT 
-            a.*, 
-            s.nombre_sede, 
-            COUNT(u.id) AS total_personal, 
-            m.gamificacion, 
-            m.impresiones, 
-            m.visitas, 
+                a.*, 
+                s.nombre_sede, 
+                COUNT(u.id) AS total_personal, 
+                m.gamificacion, 
+                m.impresiones, 
+                m.visitas, 
                 m.solicitudes 
             FROM 
                 areas a 
@@ -31,8 +31,7 @@ class sedesAreas extends Migration
                 a.id, s.id_sede, a.nombre_area, a.turnoMatutino, a.turnoMediodia, 
                 a.turnoVespertino, a.turnoSabatino, a.turnoTiempoCompleto,
                 a.no_Aplica, a.activa, a.id_sede, s.nombre_sede,
-                m.gamificacion,m.impresiones,m.visitas,m.solicitudes,
-                u.name ;
+                m.gamificacion, m.impresiones, m.visitas, m.solicitudes;
         ");
 
     }

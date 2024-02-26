@@ -90,8 +90,7 @@
                     }, {
                         title: "Asignado a",
                         field: "prestador",
-                    },
-                    {
+                    }, {
                         title: "",
                         field: "actividad_id",
                         formatter: function (cell, formatterParams, onRendered) {

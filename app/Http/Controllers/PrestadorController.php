@@ -61,7 +61,7 @@ class PrestadorController extends Controller
             'prestador/newHomeP',compact('horasAutorizadas', 'horasPendientes', 'horasTotales', 'horasRestantes',  
             'leaderboard', 'posicionUsuario', 'usuarioMedalla'));
     }
-
+    
     public function horas()
     {
         $asistencias = DB::table('registros_checkin')
@@ -299,11 +299,11 @@ class PrestadorController extends Controller
     public function myProject()
     {
         $id = DB::table('proyectos_prestadores')
-        ->where('id_prestador', auth()->user()->id)
-        ->value('id_proyecto');
-        $proyecto = DB::table('Proyectos')
-        ->select('titulo')->where('id',$id)
-        ->get();
+            ->where('id_prestador', auth()->user()->id)
+            ->value('id_proyecto');
+        $proyecto = DB::table('proyectos')
+            ->where('id',$id)
+            ->value('titulo');
         $prestadores = DB::table('proyectos_prestadores')
             ->select('id_prestador', 'name', 'apellido', 'correo', 'telefono')
             ->where('id_proyecto', $id)
@@ -522,9 +522,6 @@ class PrestadorController extends Controller
         $subcategoria = $request->input('tipo_subcategoria');
         if($subcategoria == '')
             $subcategoria = null;
-        $horas = $request->input('horas')*60;
-        $minutos = $request->input('minutos');
-        $tec = $horas + $minutos;
     
         DB::table('actividades')->insert([
             'titulo' => $request->input('nombre'),
@@ -534,7 +531,6 @@ class PrestadorController extends Controller
             'recursos' =>  $request->input('recursos'),
             'descripcion' => $request->input('descripcion'),
             'objetivos' => $request->input('resultados'),
-            'TEC' => $tec,
         ]);
 
         return redirect()->route('misActividades');
@@ -629,6 +625,7 @@ class PrestadorController extends Controller
     {
         $data = DB::table('ver_impresiones')
             ->orderByDesc('fecha')
+            ->where('id_area', Auth::user()->area)
             ->join('users', 'users.id', '=', 'ver_impresiones.id_prestador')
             ->select(DB::raw("CONCAT(users.name, ' ', users.apellido) AS prestador"), 'ver_impresiones.*')
             ->get();
