@@ -139,7 +139,10 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
                     Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg'); 
                 });
-          
+                    
+            });
+
+
             Route::get('/admin/home', 'firmas')->name('home');
             Route::get('/admin/firmas', 'firmas')->name('firmas');
             Route::get('admin/check-in', 'checkin')->name('checkin');
@@ -189,10 +192,49 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('admin/motivo_visita/{id}/{value}', 'motivo')->name('motivo');
             Route::get('/admin/registrovisitas', 'registroVisitas')->name('registrovisitas');
 
-            Route::get('/admin/faltas', 'faltas')->name('faltas');
-            Route::get('/admin/horarios', 'horarios')->name('horarios');
-
+            Route::middleware('role:coordinador')->group(function() {
+                Route::get('admin/cambiarRol', 'cambiarRol')->name('cambiorol');
             });
+
+            Route::middleware('role:jefe area,jefe sede,Superadmin')->group(function() {
+
+                Route::middleware('role:Superadmin')->group(function() {
+                    Route::get('/superadmin/gestion', 'gestionViews')->name('gestionViews');
+                });
+                
+                Route::get('/admin/registro', 'registro')->name('registro'); 
+
+                Route::get('/admin/administradores', 'administradores')->name('administradores');
+                //MODULO PREMIOS
+                Route::get('/admin/premios', 'premios')->name('premios');
+                Route::post('admin/g_premio', 'guardar_premio')->name('guardar_premio');
+                Route::post("admin/a_premio", "asignar_premio")->name("asignar_premio");
+                Route::get('/admin/verpremios', 'gestor_premios')->name('gestor_premios');
+                //MODULO REPORTES
+                Route::get('admin/ver_reportes_parciales', 'ver_reportes_parciales')->name('reportes_parciales');
+                Route::get('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
+                Route::post('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
+                Route::get('admin/resultados_busqueda/{codigo}', 'resultados_busqueda')->name('resultados_busqueda');
+                Route::get('admin/autorizar_denegar_reportes/{modo}/{id}', 'autorizar_denegar_reportes')->name('autorizar_denegar_reportes');
+                //MODULO SEDES
+                Route::get('admin/gestionSede', 'gestionSedes')->name('sede');
+                Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
+                Route::post('admin/nuevaArea', 'nuevaArea')->name('nuevaArea');
+                Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
+                //MODULO CALENDARIO
+                Route::get('/admin/faltas', 'faltas')->name('faltas');
+                Route::get('/admin/horarios', 'horarios')->name('horarios');
+                Route::get('/admin/Dias_no_laborables', 'diasfestivos')->name('diasfestivos');
+                Route::post('/admin/agregar_festivos', 'guardarFestivos')->name('agregar_festivos');
+                //MODULO CATEGORIAS
+                Route::get('/admin/categorias', 'categorias')->name('categorias');
+                Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
+                Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg'); 
+                 //CAMBIO PASSWORD
+                 Route::get('/admin/ver_cambio_password', 'verCambiarPassword')->name('verCambiarPassword');
+                 Route::post('/admin/actualizar_password', 'actualizar_password')->name('actualizar_password');
+            });
+
         });
 
         Route::name('api.')->group(function () {

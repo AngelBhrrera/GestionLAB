@@ -561,6 +561,11 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
+                            @if (Auth::user()->tipo != "coordinador")
+                                <li>
+                                <a href="{{ route('admin.verCambiarPassword') }}" class="dropdown-item"> <i data-lucide="lock" class="w-4 h-4 mr-2"></i> Cambiar contraseña</a>
+                                </li>
+                            @endif
                             <li>
                                 <a href="{{ route('logout') }}" class="dropdown-item"> <i data-lucide="toggle-right" class="w-4 h-4 mr-2"></i> Cerrar sesión </a>
                             </li>
