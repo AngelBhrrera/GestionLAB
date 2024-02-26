@@ -13,13 +13,20 @@
               
         <div class="w-full min-h-screen p-5 md:p-20 flex items-center justify-center">
             <div class="w-96 intro-y">
-
-                <a href="<?php echo e(route('landing')); ?>"><img class="mx-auto my-auto" alt="Inventores" width="200px" height="150px" src="<?php echo e(asset('build/assets/images/logosinventores/InventoresBannerHDWhiteBorder.png')); ?>"></a>
-                
+            <div class="text-center" style="margin: 10px 25% 15px 25%;">
+                    <div class="box px-5 py-5 mt-10 relative" style="width: 200px; height: 120px;">
+                        <a href="<?php echo e(route('landing')); ?>"><img class="mx-auto my-auto" alt="Inventores" width="200px" height="150px" src="<?php echo e(asset('build/assets/images/logosInventores/InventoresBannerHDWhiteBorder.png')); ?>"></a>
+                    </div>
+                </div>
                 <div class="box px-5 py-8 mt-10 max-w-[450px] relative before:content-[''] before:z-[-1] before:w-[95%] before:h-full before:bg-slate-200 before:border before:border-slate-200 before:-mt-5 before:absolute before:rounded-lg before:mx-auto before:inset-x-0 before:dark:bg-darkmode-600/70 before:dark:border-darkmode-500/60">
                     <?php if(session('FAIL')): ?>
                         <div class="intro-y col-span-12 lg:col-span-6">
                             <h6 class="alert alert-danger"><?php echo e(session('FAIL')); ?></h6>
+                        </div>
+                    <?php endif; ?>
+                    <?php if(isset($success)): ?>
+                        <div class="intro-y col-span-12 lg:col-span-6">
+                            <h6 class="alert alert-success"><?php echo e($success); ?></h6>
                         </div>
                     <?php endif; ?>
                     <div class="container pt-3">

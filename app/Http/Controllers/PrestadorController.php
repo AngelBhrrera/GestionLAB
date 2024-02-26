@@ -25,13 +25,36 @@ class PrestadorController extends Controller
 
 
         $leaderboard= DB::table('full_leaderboard')
+            ->select('Posicion','Inventor','full_leaderboard.experiencia','ruta','max_nivel', 'full_leaderboard.codigo', 'sede','area')
+            ->join('users', 'users.codigo', '=','full_leaderboard.codigo')
+            ->where('sede', Auth::user()->sede)
+            ->where('area', Auth::user()->area)
             ->limit(10)
             ->get();
+        $i=1;
+        foreach($leaderboard as $posicion){
+            $posicion->Posicion = $i;
+            $i++;
+        }
 
-        $posicionUsuario= DB::table('full_leaderboard')
-            ->where('codigo',  Auth::user()->codigo)
-            ->value('Posicion');
+        $i=1;
+        $tablaCompleta = DB::table('full_leaderboard')
+        ->select('Posicion','Inventor','full_leaderboard.experiencia','ruta','max_nivel', 'full_leaderboard.codigo', 'sede','area')
+        ->join('users', 'users.codigo', '=','full_leaderboard.codigo')
+        ->where('sede', Auth::user()->sede)
+        ->where('area', Auth::user()->area)
+        ->get();
 
+        $i=1;
+        foreach($tablaCompleta as $elemento){
+
+            if($elemento->codigo == Auth::user()->codigo){
+                $posicionUsuario = $i;
+                break;
+            }
+            $i++;
+        }
+        
         $usuarioMedalla = $this->prestador_level();
 
         return view(

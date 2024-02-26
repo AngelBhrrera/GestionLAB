@@ -13,7 +13,7 @@
         <div class="intro-y box py-30  mt-">
 
             <div style="display: flex;">
-                <img class="mx-auto my-auto" alt="Inventores" width="80px" height="80px" src="{{ asset('build/assets/images/logosInventores/InventoresBannerHDWhiteBorder.png') }}">
+                <img class="mx-auto my-auto" alt="Inventores" width="200px" height="120px" src="{{ asset('build/assets/images/logosInventores/InventoresBannerHDWhiteBorder.png') }}">
             </div>
 
             <div id="divBase" style="display: flex;"> 
