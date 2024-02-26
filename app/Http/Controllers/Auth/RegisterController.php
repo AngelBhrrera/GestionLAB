@@ -144,7 +144,7 @@ class RegisterController extends Controller
                 break;
         }
 
-        return User::create([
+        User::create([
             'name' => $data['name'],
             'apellido' => $data['apellido'],
             'correo' => $data['correo'],
@@ -161,5 +161,10 @@ class RegisterController extends Controller
             'horario' => $vhorario,
             'horas' => $vHoras,
         ]);
+
+        session()->flash('MADE', 'Usuario pendiente de activacion');
+
+
+        return redirect('/login');
     }
 }

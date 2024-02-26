@@ -80,14 +80,14 @@ Route::controller(App\Http\Controllers\Auth\logsysController::class)->group(func
     Route::get('/logout', 'logoutF')->name('logout');
 
     Route::name('api.')->group(function () {
+        //FILTRADOS DEL REGISTER ADMIN
+        Route::get('admin/sede/{id}', 'filtroSedeA')->name('filtroSedeA');
+        Route::get('admin/area/{id}', 'filtroArea')->name('filtroArea');
+        Route::get('admin/turno/{t}/{sed}', 'filtroTurno')->name('filtroTurno');
         //FILTRADOS DEL REGISTER GUEST
         Route::get('/sede/{id}', 'filtroSede')->name('filtroSede');
         Route::get('/area/{id}', 'filtroArea')->name('filtroArea');
         Route::get('/turno/{t}/{sed}', 'filtroTurno')->name('filtroTurno');
-        //FILTRADOS DEL REGISTER ADMIN
-        Route::get('admin/sede/{id}', 'filtroSede')->name('filtroSedeA');
-        Route::get('admin/area/{id}', 'filtroArea')->name('filtroArea');
-        Route::get('admin/turno/{t}/{sed}', 'filtroTurno')->name('filtroTurno');
     });
 });
 

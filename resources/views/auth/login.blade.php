@@ -24,6 +24,11 @@
                             <h6 class="alert alert-danger">{{session('FAIL')}}</h6>
                         </div>
                     @endif
+                    @if(session('MADE'))
+                    <div class="alert alert-primary">
+                        {{ session('MADE') }}
+                    </div>
+                    @endif
                     <div class="container pt-3">
                     <form method="POST" id="login-form">
                         @csrf

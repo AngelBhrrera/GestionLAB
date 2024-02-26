@@ -1069,6 +1069,8 @@ class AdminController extends Controller
         $data = DB::table('actividades')
             ->whereNull('TEC')
             ->get();
+
+        
         return view("admin.aprobar_actividades", compact('data'));
     }
 
@@ -1077,15 +1079,16 @@ class AdminController extends Controller
         $actividad = DB::table('actividades')
             ->where('id', $id)
             ->whereNull('TEC')
-            ->get();
+            ->first();
+
         if(!$actividad){
             return redirect()->back()->with("Error",);
         }else{
             $categ = DB::table('categorias')
-            ->where('id', $actividad[0]->id_categoria)
+            ->where('id', $actividad->id_categoria)
             ->value('nombre');
             $subcateg = DB::table('subcategorias')
-                ->where('id', $actividad[0]->id_subcategoria)
+                ->where('id', $actividad->id_subcategoria)
                 ->value('nombre');
             $categorias = DB::table('categorias')->get();
             return view("admin.aprobar_actividad", compact('actividad', 'categ', 'subcateg', 'categorias'));
@@ -1093,7 +1096,41 @@ class AdminController extends Controller
     }
 
     public function actTEC(Request $request){
-        dd($request);
+
+        $actividad = DB::table('actividades')
+            ->where('id', $request->input('id'))
+            ->first();
+        $subcategoria = $request->input('tipo_subcategoria');
+        if($subcategoria == '')
+            $subcategoria = null;
+        $horas = $request->input('horas')*60;
+        $minutos = $request->input('minutos');
+        $tec = $horas + $minutos;
+
+        $updates = [];
+        if ($actividad->titulo != $request->input('nombre')) 
+            $updates['titulo'] = $request->input('nombre');
+        if ($actividad->id_categoria != $request->input('tipo_categoria')) 
+            $updates['id_categoria'] = $request->input('tipo_categoria');
+        if ($actividad->id_subcategoria != $subcategoria) 
+            $updates['id_subcategoria'] = $subcategoria;
+        if ($actividad->descripcion != $request->input('descripcion')) 
+                $updates['descripcion'] = $request->input('descripcion');    
+        if ($actividad->recursos != $request->input('recursos')) 
+                $updates['recursos'] = $request->input('recursos');
+        if ($actividad->objetivos != $request->input('resultados')) 
+                $updates['objetivos'] = $request->input('resultados'); 
+        if ($actividad->tipo != $request->input('tipo_actividad')) 
+                $updates['tipo'] = $request->input('tipo_actividad');
+
+        $updates['TEC'] = $tec;
+
+
+        if (!empty($updates)) {
+            // Realizar la actualización solo si hay campos que han cambiado
+            DB::table('actividades')->where('id', $request->input('id'))->update($updates);
+            }
+        return redirect('/admin/A_actividades')->with('SUCCESS', 'Actividad agregada');
     }
 
     // PREMIOS
