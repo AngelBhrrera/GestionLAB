@@ -10,6 +10,7 @@ use App\Models\Visitas;
 use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
+use Illuminate\Support\Facades\Hash;
 
 /*
 use Illuminate\Support\Facades\Hash;
@@ -1124,6 +1125,28 @@ class AdminController extends Controller
         DB::table("premios_prestadores")->where("id", $id)->delete();
 
         return response()->json(['message' => 'Premio Eliminado']);
+    }
+
+    public function verCambiarPassword(){
+        return view('admin.cambioPassword');
+    }
+
+    public function actualizar_password(Request $request){
+        
+        $request->validate([
+            'nuevaPassword' => 'required|min:8'    
+        ],
+        [
+            'nuevaPassword.required'=>'El campo de contraseña es requerido',
+            'nuevaPassword.min' => 'La contraseña debe ser de mínimo 8 caracteres'
+        ]
+        );
+        
+        $password = $request->nuevaPassword;
+        $password = Hash::make($password);
+        $actualizar = DB::table('users')->where('id', Auth::user()->id)->update(['password'=>$password]);
+
+        return redirect()->route('login', ['success'=>'Actualización de credenciales, inicia sesión de nuevo']);
     }
 
 

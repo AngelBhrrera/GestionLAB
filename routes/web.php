@@ -139,6 +139,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::middleware('role:Superadmin')->group(function() {
                     Route::get('/superadmin/gestion', 'gestionViews')->name('gestionViews');
                 });
+
                     
             });
 
@@ -226,6 +227,10 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::get('/admin/categorias', 'categorias')->name('categorias');
                 Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
                 Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg'); 
+
+                //CAMBIO PASSWORD
+                Route::get('/admin/ver_cambio_password', 'verCambiarPassword')->name('verCambiarPassword');
+                Route::post('/admin/actualizar_password', 'actualizar_password')->name('actualizar_password');
             });
 
         });
