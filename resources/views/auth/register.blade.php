@@ -9,8 +9,15 @@
 @section('content')
 
     <div class="w-full min-h-screen md:p-10 flex items-center justify-center">
+       
         <!-- BEGIN: Wizard Layout -->
         <div class="intro-y box py-30  mt-">
+
+            @if(session('alert-type'))
+                <div class="alert alert-{{ session('alert-type') }}">
+                    {{ session('alert-message') }}
+                </div>
+            @endif
 
             <div style="display: flex;">
                 <img class="mx-auto my-auto" alt="Inventores" width="200" height="120" src="{{ asset('build/assets/images/logosInventores/InventoresBannerHDWhiteBorder.png') }}">
@@ -18,9 +25,6 @@
 
             <div id="divBase" style="display: flex;"> 
                 <form method="POST" action="{{ route('registrar') }}"> 
-                    <input id="id" name="id" type="hidden" value="{{!isset($dV[0]->id) ? '' : $dV[0]->id }}">
-                    <input id="opc" name="opc" type="hidden" value="1">
-                    <input  name="TipoOriginal" type="hidden" value="{{isset($dV[0]->tipo) ? $dV[0]->tipo : '' }}">
                     @csrf
 
                     <!-- START: TOP -->

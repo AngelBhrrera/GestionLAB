@@ -132,6 +132,8 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     //MODULO CALENDARIO
                     Route::get('/admin/faltas', 'faltas')->name('faltas');
                     Route::get('/admin/horarios', 'horarios')->name('horarios');
+                    Route::get('admin/eliminarFestivo/{id}', 'eliminardiafestivo')->name('eliminarFestivo');
+                    Route::post('admin/editarFestivo', 'editardiafestivo')->name('editarFestivo');
                     Route::get('/admin/Dias_no_laborables', 'diasfestivos')->name('diasfestivos');
                     Route::post('/admin/agregar_festivos', 'guardarFestivos')->name('agregar_festivos');
                     //MODULO CATEGORIAS
@@ -168,6 +170,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
             //RUTAS PROYECTOS Y ASIGNACIONES
             Route::get('/admin/C_proyectos', 'create_proy')->name('create_proy');
+            Route::get('/admin/A_proyectos', 'proy_acts')->name('proy_acts');
             Route::post('/admin/M_proyecto', 'make_proy')->name('make_proy');
             Route::post('/admin/asign', 'asign')->name('asign');
             Route::post('/admin/asign2', 'asign2')->name('asign2');

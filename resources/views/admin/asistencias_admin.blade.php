@@ -77,6 +77,7 @@
                         title: "Horas",
                         field: "horas",
                         sorter: "number",
+                        editor: "select",
                         width: 70,
                     }, {
                         title: "Estado",
