@@ -633,7 +633,6 @@ class AdminController extends Controller
     }
     
     public function view_details_proy($id){
-
         $proyecto = DB::table('proyectos')
             ->select('titulo')->where('id',$id)
             ->get();
@@ -801,13 +800,13 @@ class AdminController extends Controller
 
         $prestadores = DB::table('solo_prestadores')
             ->select(DB::raw("CONCAT(name, ' ', apellido) AS prestador"), 'codigo', 'id')
-            ->where('id_sede', Auth::user()->sede);
+            ->where('id_sede', Auth::user()->sede)->get();
         
         if(Auth::user()->tipo == "jefe area"){
             $prestadores->where('id_area', Auth::user()->area);
         }
 
-        $prestadores = $prestadores->get();
+        
         
         return view('admin.ver_reportes_parciales', compact('prestadores'));
     }
