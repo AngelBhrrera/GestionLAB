@@ -44,6 +44,7 @@
                 data: assist,
                 layout: "fitColumns",
                 pagination: "local",
+                resizableColumns: false,  
                 paginationSize: 25,
                 tooltips: true,
                 columns: [{
@@ -51,10 +52,12 @@
                         field: "fecha",
                         sorter: "joiningdate",
                         headerFilter: "input",
+                        width: 120,
                     }, {
                         title: "Horas",
                         field: "horas",
                         sorter: "number",
+                        width: 100,
                     }, {
                         title: "Estado",
                         field: "estado",
@@ -83,11 +86,13 @@
                         title: "Entrada",
                         field: "hora_entrada",
                         sorter: "string",
+                        width: 120,
                     },
                     {
                         title: "Salida",
                         field: "hora_salida",
                         sorter: "string",
+                        width: 120,
                     }, {
                         title: "Tiempo",
                         field: "tiempo",
@@ -95,9 +100,6 @@
                     },  
                     
                 ],
-                //rowClick: function(e, row) {
-                //    alert("Row " + row.getData().playerid + " Clicked!!!!");
-                //},
             });
 
             document.getElementById("download-csv").addEventListener("click", function(){

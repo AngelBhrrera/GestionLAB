@@ -15,7 +15,6 @@
         </h2>
         @if (isset($proyecto))
             <h3 class="text-xl font-medium leading-none">{{$proyecto}}</h3>
-            <input type="hidden" id="nombre" value="{{$proyecto[0]->titulo}}">
             <br>
             <h3 class="text-xl font-medium leading-none mt-3">--Integrantes--</h3>
                 

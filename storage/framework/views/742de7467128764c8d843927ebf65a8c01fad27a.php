@@ -24,10 +24,11 @@
                             <h6 class="alert alert-danger"><?php echo e(session('FAIL')); ?></h6>
                         </div>
                     <?php endif; ?>
-                    <?php if(isset($success)): ?>
-                        <div class="intro-y col-span-12 lg:col-span-6">
-                            <h6 class="alert alert-success"><?php echo e($success); ?></h6>
-                        </div>
+                    <?php if(session('MADE')): ?>
+                    <div class="alert alert-primary">
+                        <?php echo e(session('MADE')); ?>
+
+                    </div>
                     <?php endif; ?>
                     <div class="container pt-3">
                     <form method="POST" id="login-form">
@@ -37,9 +38,7 @@
                         <div id="error-email" class="login__input-error text-danger mt-2"></div>                    
                         <input id="password" type="password" class="form-control py-3 px-4 block mt-4 " placeholder="Contraseña" name="password"  autocomplete="current-password">
                         <div id="error-password" class="login__input-error text-danger mt-2"></div>
-                        <div class="text-slate-500 flex text-xs sm:text-sm mt-4 ">
-                            <a href="<?php echo e(route('password.request')); ?>">Recuperar contraseña</a>
-                        </div>
+                        
                         <div class="mt-5 xl:mt-8 text-center xl:text-left">                        
                             <button id="btn-login" type="submit" class="btn btn-primary w-full xl:mr-3 " >Iniciar Sesion</button>
                         </div>

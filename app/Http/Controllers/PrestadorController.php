@@ -376,7 +376,7 @@ class PrestadorController extends Controller
             ->update([
                 'id_prestador' => auth()->user()->id,
                 'estado' => 'En Proceso',
-                'horas_ref' => $hor,
+                'hora_refs' => $hor,
                 'TEU' => $teu
             ]);
 
@@ -408,7 +408,7 @@ class PrestadorController extends Controller
             ->update([
                 'id_prestador' => auth()->user()->id,
                 'estado' => 'En Proceso',
-                'horas_ref' => $hor,
+                'hora_refs' => $hor,
                 'TEU' => $teu
             ]);
         }else{
@@ -455,7 +455,7 @@ class PrestadorController extends Controller
             ->where('id', $id)
             ->update([
                 'estado' => 'En Proceso',
-                'horas_ref' => $hor
+                'hora_refs' => $hor
             ]);
 
             return response()->json(['mensaje' => 'AOK']);
@@ -464,7 +464,7 @@ class PrestadorController extends Controller
 
             $timeRef = DB::table('actividades_prestadores')
                 ->where('id', $id)
-                ->value('horas_ref');
+                ->value('hora_refs');
             $timeRef2 = date('H:i:s');
 
             $tiempoInvertido = DB::table('actividades_prestadores')
@@ -625,7 +625,7 @@ class PrestadorController extends Controller
     {
         $data = DB::table('ver_impresiones')
             ->orderByDesc('fecha')
-            ->where('id_area', Auth::user()->area)
+            ->where('users.area', Auth::user()->area)
             ->join('users', 'users.id', '=', 'ver_impresiones.id_prestador')
             ->select(DB::raw("CONCAT(users.name, ' ', users.apellido) AS prestador"), 'ver_impresiones.*')
             ->get();

@@ -80,14 +80,14 @@ Route::controller(App\Http\Controllers\Auth\logsysController::class)->group(func
     Route::get('/logout', 'logoutF')->name('logout');
 
     Route::name('api.')->group(function () {
+        //FILTRADOS DEL REGISTER ADMIN
+        Route::get('admin/sede/{id}', 'filtroSedeA')->name('filtroSedeA');
+        Route::get('admin/area/{id}', 'filtroArea')->name('filtroArea');
+        Route::get('admin/turno/{t}/{sed}', 'filtroTurno')->name('filtroTurno');
         //FILTRADOS DEL REGISTER GUEST
         Route::get('/sede/{id}', 'filtroSede')->name('filtroSede');
         Route::get('/area/{id}', 'filtroArea')->name('filtroArea');
         Route::get('/turno/{t}/{sed}', 'filtroTurno')->name('filtroTurno');
-        //FILTRADOS DEL REGISTER ADMIN
-        Route::get('admin/sede/{id}', 'filtroSede')->name('filtroSedeA');
-        Route::get('admin/area/{id}', 'filtroArea')->name('filtroArea');
-        Route::get('admin/turno/{t}/{sed}', 'filtroTurno')->name('filtroTurno');
     });
 });
 
@@ -150,6 +150,8 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     //MODULO CALENDARIO
                     Route::get('/admin/faltas', 'faltas')->name('faltas');
                     Route::get('/admin/horarios', 'horarios')->name('horarios');
+                    Route::get('admin/eliminarFestivo/{id}', 'eliminardiafestivo')->name('eliminarFestivo');
+                    Route::post('admin/editarFestivo', 'editardiafestivo')->name('editarFestivo');
                     Route::get('/admin/Dias_no_laborables', 'diasfestivos')->name('diasfestivos');
                     Route::post('/admin/agregar_festivos', 'guardarFestivos')->name('agregar_festivos');
                     //MODULO CATEGORIAS
@@ -157,12 +159,10 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
                     Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg'); 
                 });
-
                     
             });
 
 
-          
             Route::get('/admin/home', 'firmas')->name('home');
             Route::get('/admin/firmas', 'firmas')->name('firmas');
             Route::get('admin/check-in', 'checkin')->name('checkin');
@@ -188,6 +188,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
             //RUTAS PROYECTOS Y ASIGNACIONES
             Route::get('/admin/C_proyectos', 'create_proy')->name('create_proy');
+            Route::get('/admin/A_proyectos', 'proy_acts')->name('proy_acts');
             Route::post('/admin/M_proyecto', 'make_proy')->name('make_proy');
             Route::post('/admin/asign', 'asign')->name('asign');
             Route::post('/admin/asign2', 'asign2')->name('asign2');
@@ -213,8 +214,9 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('admin/motivo_visita/{id}/{value}', 'motivo')->name('motivo');
             Route::get('/admin/registrovisitas', 'registroVisitas')->name('registrovisitas');
 
-            Route::get('/admin/faltas', 'faltas')->name('faltas');
-            Route::get('/admin/horarios', 'horarios')->name('horarios');
+            Route::middleware('role:coordinador')->group(function() {
+                Route::get('admin/cambiarRol', 'cambiarRol')->name('cambiorol');
+            });
 
             Route::middleware('role:jefe area,jefe sede,Superadmin')->group(function() {
 
@@ -250,11 +252,11 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::get('/admin/categorias', 'categorias')->name('categorias');
                 Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
                 Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg'); 
-
-                //CAMBIO PASSWORD
-                Route::get('/admin/ver_cambio_password', 'verCambiarPassword')->name('verCambiarPassword');
-                Route::post('/admin/actualizar_password', 'actualizar_password')->name('actualizar_password');
+                 //CAMBIO PASSWORD
+                 Route::get('/admin/ver_cambio_password', 'verCambiarPassword')->name('verCambiarPassword');
+                 Route::post('/admin/actualizar_password', 'actualizar_password')->name('actualizar_password');
             });
+
         });
 
         Route::name('api.')->group(function () {

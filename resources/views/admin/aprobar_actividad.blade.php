@@ -18,15 +18,14 @@
             <div class="card-body pl-10 pr-10">
 
                 <form method="POST" action="{{route('admin.actTEC')}}">
-                    <input id="id" name="id" type="hidden">
+                    <input type="hidden" name="id" value="{{ $actividad->id }}">
                     @csrf
 
                     <div class="form-group row">
                         <label for="nombre" class="col-md-4 col-form-label text-md-right">Nombre de la actividad</label>
 
                         <div class="col-md-6">
-                            <input id="nombre" type="text" class="form-control"  value= "{{ $actividad->titulo }}" >
-
+                            <input id="nombre" type="text" class="form-control" name="nombre" value= "{{ $actividad->titulo }}" >
                         </div>
                     </div>
 
@@ -35,7 +34,7 @@
                         <div class="col-md-6">
                             <select class="form-control" id="tipo_categoria" name="tipo_categoria" required onchange="filtrarActividades()">
                             @if (isset($categ))    
-                            <option selected value= "${{ actividad->categoria }}">{{ $categ }} </option>
+                            <option selected value= "{{ $actividad->id_categoria }}">{{ $categ }} </option>
                             @endif
                                 @foreach ($categorias as $categoria)
                                     <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
@@ -49,7 +48,7 @@
                         <div class="col-md-6">
                             <select class="form-control" id="tipo_subcategoria" name="tipo_subcategoria">
                                 @if (isset($subcateg))    
-                                    <option selected value= "${{ actividad->subcategoria }}">{{ $subcateg }} </option>
+                                    <option selected value= "{{ $actividad->id_subcategoria }}">{{ $subcateg }} </option>
                                 @endif
                             </select>
                         </div>
@@ -86,7 +85,7 @@
                         <label for="resultados" class="col-md-4 col-form-label text-md-right">Objetivos, resultados que se esperan - salidas</label>
 
                         <div class="col-md-6">
-                            <textarea id="resultados" type="text" class="form-control" name="resultados" > {{$actividad->resultados}} </textarea>
+                            <textarea id="resultados" type="text" class="form-control" name="resultados" > {{$actividad->objetivos}} </textarea>
 
                         </div>
                     </div>

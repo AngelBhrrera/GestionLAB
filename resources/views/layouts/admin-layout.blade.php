@@ -451,9 +451,21 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('admin.proy_acts') }}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
+                            <div class="side-menu__title"> Asignar actividades a proyecto</div>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('admin.reviewActs') }}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
                             <div class="side-menu__title"> Revisar actividades</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.proposeActs') }}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
+                            <div class="side-menu__title"> Actividades propuestas prestador</div>
                         </a>
                     </li>
                     @if (Auth::user()->tipo == "jefe area" || Auth::user()->tipo == "jefe sede" || Auth::user()->tipo == "Superadmin")
