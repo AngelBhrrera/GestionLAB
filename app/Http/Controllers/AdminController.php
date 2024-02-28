@@ -1280,5 +1280,5 @@ class AdminController extends Controller
         $actualizar = DB::table('users')->where('id', Auth::user()->id)->update(['password'=>$password]);
 
         return redirect()->route('login', ['success'=>'Actualización de credenciales, inicia sesión de nuevo']);
-    }
+    }*/
 }
