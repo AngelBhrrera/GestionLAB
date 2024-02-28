@@ -25,6 +25,9 @@
     
     <div class="contenedor-actividades">
     @if(isset($actividades))
+        @if (count($actividades)==0)
+            <h3 class="text-xl font-medium leading-none">No tienes ninguna actividad asignada ☹ </h3>
+        @endif
         @foreach ($actividades as $actividad)
 
         <div class="actividad">
@@ -112,6 +115,7 @@
         var nM = "minutos_"+id;
         const horasInput = document.getElementById(nH);
         const minutosInput = document.getElementById(nM);
+        
 
             if (horasInput.value || minutosInput.value) {
 
@@ -148,7 +152,7 @@
 
         function continuarActividad(idActividad) {
             const token = document.head.querySelector('meta[name="csrf-token"]').content;
-            fetch(`actividadStatus/${idActividad}/${1}`, {
+            fetch(`actividadStatus/${idActividad}/${1}/Reanudada`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -166,42 +170,54 @@
         } 
 
         function pausarActividad(idActividad) {
-            const token = document.head.querySelector('meta[name="csrf-token"]').content;
-            fetch(`actividadStatus/${idActividad}/${2}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': token,
-                    },
-            })
-            .then(response => response.json())
-            .then(data => {
+            const detallesInput = document.getElementById('detalles');
+            if(detallesInput.value==""){
+                alert("Ingresa un motivo de pausa de la actividad");
+            }else{
+                var comentario = detallesInput.value;
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`actividadStatus/${idActividad}/${2}/${comentario}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': token,
+                        },
+                })
+                .then(response => response.json())
+                .then(data => {
 
-                window.location.reload(); 
-            })
-            .catch(error => {
-                console.error('Error en activacion:', error);
-            });
+                    window.location.reload(); 
+                })
+                .catch(error => {
+                    console.error('Error en activacion:', error);
+                });
+            }
         } 
 
         function terminarActividad(idActividad) {
-            const token = document.head.querySelector('meta[name="csrf-token"]').content;
-            fetch(`actividadStatus/${idActividad}/${3}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': token,
-                    },
-            })
-            .then(response => response.json())
-            .then(data => {
+            const detallesInput = document.getElementById('detalles');
+            if(detallesInput.value==""){
+                alert("Ingresa un comentario para terminar");
+            }else{
+                var comentario = detallesInput.value;
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`actividadStatus/${idActividad}/${3}/${comentario}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': token,
+                        },
+                })
+                .then(response => response.json())
+                .then(data => {
 
-                window.location.reload(); 
-            })
-            .catch(error => {
-                $('#alerta').html('<div class="intro-y col-span-12 lg:col-span-6"><h6 class="alert alert-danger">' + errorMessage + '</h6></div>');
-                console.error('Error en activacion:', error);
-            });
+                    window.location.reload(); 
+                })
+                .catch(error => {
+                    $('#alerta').html('<div class="intro-y col-span-12 lg:col-span-6"><h6 class="alert alert-danger">' + errorMessage + '</h6></div>');
+                    console.error('Error en activacion:', error);
+                });
+            }
         } 
 
 
