@@ -22,6 +22,12 @@ class PrestadorController extends Controller
         $horasRestantes = DB::table('seguimiento_horas_completo')->where('id', Auth::user()->id)->value('horas_restantes');
         $horasPendientes = DB::table('registros_checkin')->where('idusuario',Auth::user()->id)->where('estado', 'pendiente')->sum('horas');
         $horasTotales = DB::table('users')->where('id',Auth::user()->id)->value('horas');
+        
+        $asistencias = DB::table('registros_checkin')
+            ->where('idusuario', Auth::user()->id)
+            ->orderBy('fecha_actual', 'desc')
+            ->limit(5)
+            ->get();
 
 
         $leaderboard= DB::table('full_leaderboard')
@@ -57,8 +63,10 @@ class PrestadorController extends Controller
         $usuarioMedalla = $this->prestador_level();
 
         return view(
-            'prestador/newHomeP',compact('horasAutorizadas', 'horasPendientes', 'horasTotales', 'horasRestantes',  
-            'leaderboard', 'posicionUsuario', 'usuarioMedalla'));
+            'prestador/newHomeP',  
+            compact('horasAutorizadas', 'horasPendientes', 'horasTotales', 'horasRestantes',  
+            'leaderboard', 'posicionUsuario', 'usuarioMedalla')
+        )->with('asistencias', json_encode($asistencias));
     }
     
     public function horas()
@@ -194,7 +202,7 @@ class PrestadorController extends Controller
 
                     //CHECK DE SALIDA
                     if ($verificar) {
-                        $this->pauseAct();
+                        $this->pauseActP($user->id);
                         $this->marcarSalida($user);
                         return redirect()->route( $fuenteCheckin['dir'])->with('success', 'Adios ' . $user->name);
 
@@ -418,7 +426,7 @@ class PrestadorController extends Controller
     }
 
     public function checkAct(){
-        //Busca si el prestador ya tenia una actividad en proceso
+
         $actual = DB::table('actividades_prestadores')
             ->where('id_prestador', auth()->user()->id)
             ->where('estado', 'En proceso')
@@ -441,68 +449,100 @@ class PrestadorController extends Controller
         return 0;
     }
 
+    public function pauseActP($id){
+
+        $found = DB::table('actividades_prestadores')
+            ->where('id_prestador', $id)
+            ->where('estado', 'En proceso')
+            ->value('id');
+
+        DB::table('actividades_prestadores')
+            ->where('id', $found)
+            ->update(['estado' => 'Bloqueada']);
+
+        return 0;
+    }
+
     public function statusAct($id, $mode)
     {
-        if($this->checkAct()){
-            $this->pauseAct();
-        }
 
-        if($mode == 1){
-            $hor = date('H:i:s');
-
-            DB::table('actividades_prestadores')
-            ->where('id', $id)
-            ->update([
-                'estado' => 'En Proceso',
-                'hora_refs' => $hor
-            ]);
-
-            return response()->json(['mensaje' => 'AOK']);
-            
-        }else if($mode == 2){
-
-            $timeRef = DB::table('actividades_prestadores')
-                ->where('id', $id)
-                ->value('hora_refs');
-            $timeRef2 = date('H:i:s');
-
-            $tiempoInvertido = DB::table('actividades_prestadores')
-                ->where('id', $id)
-                ->value('Tiempo_Invertido');
-
-            $intervalCalc = $this->calculoIntervaloM($timeRef, $timeRef2);
-            $tiempoInvertido += $intervalCalc;
-
-            DB::table('actividades_prestadores')
-            ->where('id', $id)
-            ->update([
-                'estado' => 'Bloqueada',
-                'Tiempo_Invertido' => $tiempoInvertido
-            ]);
-
-            return response()->json(['mensaje' => 'BOK']);
-
-        }else if($mode == 3){
-
-            $inv = DB::table('actividades_prestadores')
-                ->where('id', $id)
-                ->value('Tiempo_Invertido');
-
-            if($inv > 0){
+        $verificar = $this->checkEntrada(auth()->user()->id);
+        if($verificar){
+            if($this->checkAct()){
+                $this->pauseAct();
+            }
+    
+            if($mode == 1){
+                $hor = date('H:i:s');
+    
                 DB::table('actividades_prestadores')
                 ->where('id', $id)
                 ->update([
-                    'estado' => 'En revision'
+                    'estado' => 'En Proceso',
+                    'hora_refs' => $hor
                 ]);
-            }else{
-                #error, mandaste a completar una actividad que no le has invertido tiempo
-            }
-           
+    
+                return response()->json(['mensaje' => 'AOK']);
+                
+            }else if($mode == 2){
+    
+                $timeRef = DB::table('actividades_prestadores')
+                    ->where('id', $id)
+                    ->value('hora_refs');
+                $timeRef2 = date('H:i:s');
+    
+                $tiempoInvertido = DB::table('actividades_prestadores')
+                    ->where('id', $id)
+                    ->value('Tiempo_Invertido');
+    
+                $intervalCalc = $this->calculoIntervaloM($timeRef, $timeRef2);
+                $tiempoInvertido += $intervalCalc;
+    
+                DB::table('actividades_prestadores')
+                ->where('id', $id)
+                ->update([
+                    'estado' => 'Bloqueada',
+                    'Tiempo_Invertido' => $tiempoInvertido
+                ]);
+    
+                return response()->json(['mensaje' => 'BOK']);
 
-            return response()->json(['mensaje' => 'COK']);
+            }else if($mode == 3){
+
+                $timeRef = DB::table('actividades_prestadores')
+                ->where('id', $id)
+                ->value('hora_refs');
+                $timeRef2 = date('H:i:s');
+    
+                $tiempoInvertido = DB::table('actividades_prestadores')
+                    ->where('id', $id)
+                    ->value('Tiempo_Invertido');
+    
+                $intervalCalc = $this->calculoIntervaloM($timeRef, $timeRef2);
+                $tiempoInvertido += $intervalCalc;
+    
+                DB::table('actividades_prestadores')
+                ->where('id', $id)
+                ->update([
+                    'estado' => 'Bloqueada',
+                    'Tiempo_Invertido' => $tiempoInvertido
+                ]);
+    
+    
+                if($tiempoInvertido > 0){
+                    DB::table('actividades_prestadores')
+                    ->where('id', $id)
+                    ->update([
+                        'estado' => 'En revision'
+                    ]);
+                }else{
+                    return response()->json(['mensaje' => 'ERROR, finalizaste una tarea sin tiempo invertido']);
+                }
+                return response()->json(['mensaje' => 'COK']);
+            }
         }
         
-        return response()->json(['mensaje' => 'OK']);
+        return response()->json(['mensaje' => 'ERROR, no hay check de entrada']);
     }
 
     //CREACION DE ACTIVIDADES COMO PRESTADOR

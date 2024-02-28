@@ -55,6 +55,14 @@ class AdminController extends Controller
         return response()->json(['message' => 'Activado exitosamente' . $id]);
     }
 
+    public function modifHoras($id, $hrs) {
+        DB::table('registros_checkin')
+            ->where('id', $id)
+            ->update(['horas' => $hrs]);
+
+    return response()->json(['message' => 'Activado exitosamente' . $id]);
+}
+
     //ADMINSITRADOR DE PRESTADORES / VOLUNTARIOS / PRACTICANTES
 
     public function registro()
@@ -99,17 +107,18 @@ class AdminController extends Controller
     {
         $data = DB::table('users')
             ->select('users.id','users.name', 'users.apellido', 'users.correo', 'users.codigo', 'users.tipo', 'users.telefono', 'areas.nombre_area')
-            ->whereNotIn('users.tipo', ['Superadmin']);
+            ->whereNotIn('users.tipo', ['Superadmin'])
+            ->join('areas', 'users.area', '=', 'areas.id');
 
         if (auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area') {
             $data->where('users.area', auth()->user()->area);
+            $data = $data->get();
             return view('admin/general_users', ['datos' => json_encode($data)]);
         } else if (auth()->user()->tipo == 'jefe sede') {
             $data->where('users.sede', auth()->user()->sede);
         }
 
-        $data = $data->join('areas', 'users.area', '=', 'areas.id')
-            ->get();
+        $data = $data->get();
 
         return view('admin/admin_general_users', ['datos' => json_encode($data)]);
     }
@@ -1166,6 +1175,7 @@ class AdminController extends Controller
     public function premios(){
 
         $premios = DB::table('premios')
+            ->where('ref', auth()->user()->area)
             ->get();
         $prestadores = DB::table('solo_prestadores');
 
@@ -1193,7 +1203,7 @@ class AdminController extends Controller
             "descripcion" => $request -> input("descripcion"),  
             "tipo" => $request -> input("tipo"),
             "horas" => $request -> input("horas"),
-            "ref" => "ref",
+            "ref" => auth()->user()->area,
         ]);
        
         return redirect()->back()->with('success', 'Creada correctamente');
