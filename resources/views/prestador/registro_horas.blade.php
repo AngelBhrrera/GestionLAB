@@ -40,18 +40,19 @@
             var assist = {!! $datos !!};
 
             var table = new Tabulator("#players", {
-                height: 525,
+                height: "100%",
                 data: assist,
                 layout: "fitColumns",
                 pagination: "local",
-                paginationSize: 8,
+                resizableColumns: false,  
+                paginationSize: 25,
                 tooltips: true,
                 columns: [{
                         title: "Fecha",
                         field: "fecha",
                         sorter: "joiningdate",
-                        width: 150,
                         headerFilter: "input",
+                        width: 120,
                     }, {
                         title: "Horas",
                         field: "horas",
@@ -60,7 +61,6 @@
                     }, {
                         title: "Estado",
                         field: "estado",
-                        width: 100,
                         headerFilter: true,
                         headerFilterParams: {
                             "autorizado": "autorizado",
@@ -86,24 +86,20 @@
                         title: "Entrada",
                         field: "hora_entrada",
                         sorter: "string",
-                        width: 200,
+                        width: 120,
                     },
                     {
                         title: "Salida",
                         field: "hora_salida",
                         sorter: "string",
-                        width: 200,
+                        width: 120,
                     }, {
                         title: "Tiempo",
                         field: "tiempo",
                         sorter: "number",
-                        width: 200,
                     },  
                     
                 ],
-                //rowClick: function(e, row) {
-                //    alert("Row " + row.getData().playerid + " Clicked!!!!");
-                //},
             });
 
             document.getElementById("download-csv").addEventListener("click", function(){

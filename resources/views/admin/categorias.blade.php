@@ -8,19 +8,19 @@
 
 @section('subcontent')
 
-        <div class="grid grid-cols-12 gap-6 mt-5" >
-            <div class="intro-y col-span-12 lg:col-span-6" id="alerta">
-                @if (session('success'))
-                    <h6 class="alert alert-success">{{session('success')}}</h6>     
-                @endif
-                @if(session('warning'))
-                    <h6 class="alert alert-warning">{{session('warning')}}</h6>  
-                @endif
-                @error('nombre')
-                    <h6 class="alert alert-danger">{{$message}}</h6>
-                @enderror
-            </div>
+    <div class="grid grid-cols-12 gap-6 mt-5" >
+        <div class="intro-y col-span-12 lg:col-span-6" id="alerta">
+            @if (session('success'))
+                <h6 class="alert alert-success">{{session('success')}}</h6>     
+            @endif
+            @if(session('warning'))
+                <h6 class="alert alert-warning">{{session('warning')}}</h6>  
+            @endif
+            @error('nombre')
+                <h6 class="alert alert-danger">{{$message}}</h6>
+            @enderror
         </div>
+    </div>
 
     
         
@@ -91,14 +91,14 @@
         var table = new Tabulator("#categs", {
             height: "10%",
             data: c,
+            resizableColumns: false, 
             layout: "fitColumns",
-            resizableColumns: false, // Puedes usar false en lugar de "false"
-            fitColumns: true, // Aquí fitColumns no necesita ser una cadena
             pagination: "local",
+            groupStartOpen: false,
             paginationSize: 10,
             tooltips: true,
             groupBy: "categoria",
-            groupHeader:function(value, count, data, group){ // Función para personalizar el encabezado de la agrupación
+            groupHeader:function(value, count, data, group){ 
                 return "<span style='font-weight:bold; font-size:14px;'>" + value + " (" + count + " items)</span>";
             },
             columns: [

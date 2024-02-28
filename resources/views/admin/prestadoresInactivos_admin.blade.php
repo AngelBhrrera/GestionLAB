@@ -24,14 +24,13 @@
                 layout: "fitColumns",
                 pagination: "local",
                 resizableColumns: false,  
-                paginationSize: 10,
+                paginationSize: 20,
                 tooltips: true,
                 columns: [{
                         title: "Nombre",
                         field: "name",
                         sorter: "string",
                         headerFilter: "input",
-                        
                     }, {
                         title: "Apellido",
                         field: "apellido",
@@ -78,7 +77,6 @@
                             });
                             return button;
                         }, 
-                        
                     },
                 ],
             });

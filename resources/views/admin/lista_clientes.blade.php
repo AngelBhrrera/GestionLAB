@@ -48,11 +48,10 @@
             var table = new Tabulator("#players", {
                 height:"100%",
                 data: assist,
-                layout: "fitColumns",
                 resizableColumns: "false",
-                fitColumns: "true",
+                layout: "fitColumns",
                 pagination: "local",
-                paginationSize: 8,
+                paginationSize: 20,
                 tooltips: true,
                 groupBy: "tipo",
                 columns: [{

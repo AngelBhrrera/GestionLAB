@@ -20,26 +20,24 @@
             var users = {!! $datos !!};
 
             var table = new Tabulator("#players", {
-                height: 500,
+                height: "100%",
                 data: users,
                 layout: "fitColumns",
                 pagination: "local",
                 resizableColumns: false,  
-                paginationSize: 24,
+                paginationSize: 20,
                 groupBy: "nombre_area",
                 tooltips: true,
                 columns: [{
                         title: "Nombre",
                         field: "name",
                         sorter: "string",
-                        editor: "input",
                         headerFilter: "input",
                       
                     }, {
                         title: "Apellido",
                         field: "apellido",
                         sorter: "string",
-                        editor: "input",
                         headerFilter: "input",
                       
                     }, {
@@ -55,7 +53,7 @@
                         editorParams: {
                             values: {
                                     "prestador": "prestador",
-                                    "encargado": "encargado",
+                                    "coordinador": "coordinador",
                                 }
                         },
                       

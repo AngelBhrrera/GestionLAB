@@ -73,16 +73,6 @@ class CreateAreasTable extends Migration
             'no_Aplica'=> 1,
             'id_sede'=> 2,
         ]);
-        DB::table('areas')->insert([
-            "nombre_area" => "Inventores",
-            'turnoMatutino'=> 1,
-            'turnoMediodia'=> 1,
-            'turnoVespertino'=> 1,
-            'turnoSabatino'=> 1,
-            'turnoTiempoCompleto'=> 1,
-            'no_Aplica'=> 1,
-            'id_sede'=> 4,
-        ]);
     }
 
 

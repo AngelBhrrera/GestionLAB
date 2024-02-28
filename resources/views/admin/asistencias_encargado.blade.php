@@ -53,7 +53,7 @@
                 layout: "fitColumns",  
                 resizableColumns: false,  
                 pagination: "local",
-                paginationSize: 8,
+                paginationSize: 20,
                 tooltips: true,
                 columns: [{
                         title: "ID",
@@ -62,14 +62,14 @@
                         width: 2,
                     }, {
                         title: "Prestador",
-                        field: "responsable",
+                        field: "origen",
                         headerFilter: "input",
                         sorter: "string",
                         hozAlign: "center",
                         width: 200,
                     },{
-                        title: "Encargado",
-                        field: "origen",
+                        title: "Coordinador",
+                        field: "responsable",
                         sorter: "string",
                         headerFilter: "input",
                         hozAlign: "center",

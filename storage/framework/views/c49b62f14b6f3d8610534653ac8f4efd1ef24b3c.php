@@ -26,8 +26,15 @@
         .btn-primary:hover{
             color: rgb(147,36,0);
         }
+        .hidden {
+           display: none;
+        }
+        .visible {
+            display: block;
+        }
     </style>
     <?php echo $__env->yieldContent('content'); ?>
+    <script type="module" src="<?php echo e(asset('/build/assets/js/app.6c589841.js')); ?>"></script>
     <?php echo $__env->yieldContent('script'); ?>
     </body>
 <?php $__env->stopSection(); ?>

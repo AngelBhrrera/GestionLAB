@@ -36,15 +36,13 @@ class RegisterController extends Controller
                 $rArea = ['required'];
                 $rhorario = ['required','string'];
                 $rHoras =  ['nullable'];
-                $rEncargado = ['required'];
-               
                 break;
     
             case 'practicantep':
             case 'practicante':
             case 'prestador':
             case 'prestadorp':
-            case 'encargado':
+            case 'coordinador':
 
                 
                 $rCodigo = ['required','integer','unique:users'];
@@ -55,7 +53,6 @@ class RegisterController extends Controller
                 $rArea = ['required'];
                 $rhorario = ['required','string'];
                 $rHoras =  ['required'];
-                $rEncargado = ['required'];
 
                 break;
 
@@ -69,11 +66,10 @@ class RegisterController extends Controller
                 $rArea = ['nullable'];
                 $rhorario = ['nullable'];
                 $rHoras =  ['nullable'];
-                $rEncargado = ['nullable'];
                 break;
 
-            case 'admin':
-            case 'admin_sede':
+            case 'jefe area':
+            case 'jefe sede':
 
                 $rCentro = ['nullable'];
                 $rTelefono = ['nullable'];
@@ -83,11 +79,37 @@ class RegisterController extends Controller
                 $rArea = ['nullable'];
                 $rhorario = ['nullable'];
                 $rHoras =  ['nullable'];
-                $rEncargado = ['nullable'];
                 break;
         }
 
-        return Validator::make($data, [
+        $customMessages = [
+            'required' => 'El campo :attribute es obligatorio.',
+            'integer' => 'El campo :attribute debe ser un número entero.',
+            'unique' => 'El valor ingresado en el campo :attribute ya existe en la base de datos.',
+            'max:255' => 'El campo :attribute no debe sobrepasar 255 caracteres.',
+            'string' => 'El campo :attribute debe ser una cadena de texto.',
+            'max:10' => 'El campo :attribute no debe sobrepasar 10 caracteres.',
+            'min:3' => 'El campo :attribute debe tener al menos tres caracteres.',
+            'confirmed' => 'El campo :attribute debe ser igual en ambos.'
+        ];
+    
+        $customAttributes = [
+            'name' => 'Nombre',
+            'apellido' => 'Apellido',
+            'password' => 'Contraseña',
+            'tipo' => 'Tipo',
+            'correo' => 'Correo electrónico',
+            'centro' => 'Centro',
+            'telefono' => 'Teléfono',
+            'carrera' => 'Carrera',
+            'codigo' => 'Código',
+            'sede' => 'Sede',
+            'area' => 'Área',
+            'horario' => 'Horario',
+            'horas' => 'Horas'
+        ];
+
+        $validator = Validator::make($data, [
 
             //OBLIGATORIOS
             'name' => ['required', 'string', 'max:255'],
@@ -109,13 +131,22 @@ class RegisterController extends Controller
             'area' =>$rArea,
             'horario' => $rhorario,
             'horas' => $rHoras,
-            'encargado_id' =>  ['nullable'],
 
-        ]);
+        ], $customMessages, $customAttributes);
+
+        if ($validator->fails()) {
+           
+            session()->flash('alert-type', 'error');
+            session()->flash('alert-message', 'Error en la validación: ' . $validator->errors()->first());
+
+        }
+    
+        return $validator;
     }
 
     protected function create(array $data)
     {
+
         $vCodigo = $data['codigo'];
         $vTelefono = $data['telefono'];
         $vCentro = $data['centro'];
@@ -125,54 +156,51 @@ class RegisterController extends Controller
         $vArea = 0;
         $vhorario = "No Aplica";
         $vHoras = null;
-        $vEncargado = null;
 
         switch($data['tipo']) {
            
-            
             case 'prestador':
             case 'prestadorp':
             case 'practicantep':
             case 'practicante':
+            case 'coordinador':
                 $vArea = $data['area'];
-                $vEncargado = $data['id_encargado'];
-            case 'encargado':
                 $vSede = $data['sede'];
                 $vhorario = $data['horario'];
                 $vHoras = $data['horas'];
                 break;
             case 'voluntario':
             case 'voluntariop':
-                $vSede = $data['sede'];
-                $vArea = $data['area'];
                 $vhorario = $data['horario'];
-                $vEncargado = $data['id_encargado'];
-                break;
-            case 'admin':
+            case 'jefe area':
                 $vArea = $data['area'];
-            case 'admin_sede':     
+            case 'jefe sede':     
                 $vSede = $data['sede'];
                 break;
         }
 
-        return User::create([
-            'name' => $data['name'],
-            'apellido' => $data['apellido'],
-            'correo' => $data['correo'],
-            'tipo' => $data['tipo'],
-            'password' => Hash::make($data['password']),
-
-            'codigo' => $vCodigo,
-            'telefono' => $vTelefono,
-            'centro' => $vCentro,
-            'carrera' => $vCarrera,
-
-            'sede' => $vSede,
-            'area' => $vArea,
-            'horario' => $vhorario,
-            'horas' => $vHoras,
-            'encargado_id' => $vEncargado,
-            
-        ]);
+        try {
+            User::create([
+                'name' => $data['name'],
+                'apellido' => $data['apellido'],
+                'correo' => $data['correo'],
+                'tipo' => $data['tipo'],
+                'password' => Hash::make($data['password']),
+    
+                'codigo' => $vCodigo,
+                'telefono' => $vTelefono,
+                'centro' => $vCentro,
+                'carrera' => $vCarrera,
+    
+                'sede' => $vSede,
+                'area' => $vArea,
+                'horario' => $vhorario,
+                'horas' => $vHoras,
+            ]);
+            session()->flash('primary-type', 'alert');
+            return redirect('/login')->with('success', 'Usuario creado exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error al crear el usuario: ' . $e->getMessage())->withInput();
+        }
     }
 }

@@ -91,7 +91,6 @@
                 pagination: "local",
                 paginationSize: 5,
                 tooltips: true,
-                groupBy: "id:sede",
                 columns: [{
                         title: "Nombre",
                         field: "nombre",
@@ -146,7 +145,7 @@
                             console.log(nombreCampo);
                             if(state == 1){
                                 button.style = "background-color: red; color: white; border: 1px solid red; padding: 5px 15px; border-radius: 5px; font-size: 12px;";
-                                button.textContent = "Desctivar";
+                                button.textContent = "Desactivar";
                             }else{
                                 button.style = "background-color: #4CAF50; color: white; border: 1px solid #4CAF50; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
                                 button.textContent = "Activar";

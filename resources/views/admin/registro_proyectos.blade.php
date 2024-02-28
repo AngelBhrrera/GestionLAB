@@ -1,19 +1,12 @@
 @extends('layouts/admin-layout')
 @section('subhead')
-    <style>
-        .bootstrap-duallistbox-container .box1,
-        .bootstrap-duallistbox-container .box2 {
-            width: 48%; /* Ajusta el ancho según tus necesidades */
-            display: inline-block;
-            vertical-align: top;
-            margin-right: 2%;
-        }
-    </style>
+
+<link rel="stylesheet" href="{{asset('build/assets/css/registro_proyecto_actividadess.css')}}">
 @endsection
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Registro</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Actividades</li>
+<li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
+<li class="breadcrumb-item"><a href="{{route('homeP')}}">Registro</a></li>
+<li class="breadcrumb-item active" aria-current="page">Actividades</li>
 @endsection
 
 @section('subcontent')
@@ -21,92 +14,111 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-9">
-            <div class="card card-primary">
+            <div class="grid grid-cols-12 gap-6 mt-5">
+                <div class="intro-y ml-5 col-span-12 lg:col-span-6 flex justify-center" id="alerta">
+                    @if (session('success'))
+                        <div class="alert alert-success w-full px-4">{{session('success')}}</div>
+                    @endif
+                    @if(session('warning'))
+                        <div class="alert alert-warning w-full px-4">{{session('warning')}}</div>
+                    @endif
+                    @error('nombre')
+                        <div class="alert alert-danger w-full px-4">{{$message}}</div>
+                    @enderror
+                        </div>
+                </div>
+            </div>
+            <div class="card card-primary" id="crear_proyecto">
                 <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Crear Nuevo Proyecto </h3>
             </div>
-            <div class="card-body pl-10 pr-10">
-                <form method="POST" action="{{route('admin.make_act')}}">
+            <div class="card-body pl-10 pr-10" id="crear_proyecto_2">
+                <form id="enviar" method="POST" action="{{route('admin.make_proy')}}">
+                    @csrf
                     @if (isset($tipo))
                     <input id="tipo" name="tipo" value={{ $tipo }} type="hidden">
                     @endif
-                    <div class="grid grid-cols-2 gap-4">
-                        <!-- Primera Columna -->
-                        <div class="col-span-1">
-                            <div class="form-group row">
-                                <label for="nombre" class="col-md-4 col-form-label text-md-right">Nombre del proyecto</label>
-                                <div class="col-md-8">
-                                    <textarea id="nombre" type="text" class="form-control @error('nombre') is-invalid @enderror" name="nombre" required>@if(isset($actm)){{$actm[0]->nombre}}@endif</textarea>
 
-                                    @error('nombre')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-                           
-                        </div>
-
-                        <!-- Segunda Columna -->
-                        <div class="col-span-1">
-                        <div class="form-group row">
-                                <label for="actividades_l" class="col-md-4 col-form-label text-md-right">Actividades</label>
-                                <div class="col-md-8">
-                                    <select class="form-control" id="actividades_l" name="actividades_l" required>
-                                        <option value="">Asignar actividad</option>
-                                        @foreach ($actividades as $actividad)
-                                        <option value="{{ $actividad->id }}">{{ $actividad->titulo }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                           
-                        </div>
-                    </div>
-                    
-                    <div class="col-span-1">
-                        <label for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
+                    <div class="form-group row" >
+                        <label for="nombre" class="col-md-4 col-form-label text-md-right">Titulo del proyecto</label>
                         <div class="col-md-8">
-                            <select class="duallistbox" name="duallistbox_demo1[]" id="opcionPrestadores" multiple="multiple" required>
-                                @if (isset($prestadores))
-                                    @foreach ($prestadores as $prestador)
-                                        <option value="{{$prestador->id}}"> {{$prestador->name." ".$prestador->apellido}} </option>
-                                    @endforeach
-                                @endif
-                            </select>
+                            <textarea id="t_proyecto" name="t_nombre" type="text" class="form-control"  placeholder="Ingresa el titulo del proyecto" required></textarea>
                         </div>
                     </div>
-
-                    <div class="col-md-12 text-right">
-                        <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits ">Enviar</button>
+                    <div class="form-group">
+                            <label for="tipo_categoria">Seleccionar area</label>
+                            <select class="form-control" id="area" name="area" required>
+                                <option value="">Selecciona el area de trabajo donde estará principalmente el proyecto</option>
+                                @foreach ($areas as $area)
+                                <option value="{{ $area->id }}">{{ $area->nombre_area }}</option>
+                                @endforeach
+                            </select>
                     </div>
+                    <div class="form-check mt-2" >
+                        <input id="checkbox" name="particular" class="form-check-input" type="checkbox" checked>
+                        <label class="form-check-label" for="checkbox-switch-1">Particular</label>
+                    </div>
+                    <div class="container" id="card_duelist_box">
+                        <div class="row justify-content-center">
+                            <label for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
+                            <div class="col-md-8"> 
+                                <select class="select2" name="prestadores_seleccionados[]" id="prestadores_seleccionados" multiple>  
+                                    @if (isset($prestadores))
+                                    @foreach ($prestadores as $prestador)
+                                    <option value="{{$prestador->id}}">{{$prestador->name." ".$prestador->apellido}}</option>
+                                    @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                            <small id="Help" class="form-text text-muted">Selecciona a los prestadores para realizar la actividad</small>
+                        </div>
+                        <button id="boton_crear" type="submit" class="btn btn-primary from-prevent-multiple-submits">Crear proyecto</button>
+                    </div>
+                    <br>
                 </form>
             </div>
         </div>
     </div>
 </div>
-<div style="height: 65px;"></div>
+
+
+<div style="height: 45px;"></div>
 
 @endsection
 
 @section('script')
 
-{{-- para que funcione todo, nota: este debe importarse primero si no, todo se chinga xd --}}
-<script src={{asset('plugins/jquery/jquery.min.js')}}></script>
+    <script type="text/javascript">
 
+        document.getElementById('enviar').addEventListener('submit', function(event) {
 
-{{-- componentes necesarios para que funcione el dualistbox --}}
-<script src={{asset('plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}></script>
-<script src="{{asset('plugins/moment/moment.min.js')}}"></script>
-<script src="{{asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
+            const prestadorSelect = document.getElementById('prestadores_seleccionados');
+            const check = document.getElementById('checkbox');
 
-<script type="text/javascript">
-    var demo1 = $('select[name="duallistbox_demo1[]"]').bootstrapDualListbox({
-        preserveSelectionOnMove: 'Mover ',
-        moveAllLabel: 'Mover todo',
-        removeAllLabel: 'Borrar todo'
-    });
+            if (prestadorSelect.selectedOptions.length === 0) {
+                
+                if(check.checked){
+                    event.preventDefault();
+                    alert('Por favor, selecciona al menos un prestador.');
+                }        
+            }
+        });
 
-</script>
+        let dlb2 = new DualListbox('.select2', {
+            availableTitle: 'Prestadores disponibles',
+            selectedTitle: 'Prestadores seleccionados',
+            addButtonText: '🡺',
+            removeButtonText: '🡸',
+            addAllButtonText: '>>',
+            removeAllButtonText: '<<',
+            searchPlaceholder: 'Buscar prestadores'
+        });
+        dlb2.addEventListener('added', function(event) {
+
+        });
+        dlb2.addEventListener('removed', function(event) {
+
+        });
+
+    </script>
 
 @endsection

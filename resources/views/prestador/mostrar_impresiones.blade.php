@@ -28,17 +28,24 @@
             var printers = {!! $impresiones !!};
 
             var table = new Tabulator("#players", {
-                height: 500,
+                height: "100%",
                 data: printers,
                 pagination: "local",
                 paginationSize: 24,
                 tooltips: true,
+                layout: "fitColumns",
                 resizableColumns:false,
                 columns: [{
                     title: "ID",
                         field: "id",
                         visible: false,
                         width: 2,
+                    },  {
+                        title: "Prestador",
+                        field: "prestador",
+                        sorter: "string",
+                        width: 150,
+                        headerFilter: "input",
                     }, {
                         title: "Impresora",
                         field: "impresora",
@@ -49,12 +56,12 @@
                         title: "Proyecto",
                         field: "proyecto",
                         sorter: "string",
-                        width: 100,
+                        width: 190,
                     }, {
                         title: "Fecha",
                         field: "fecha",
                         sorter: "date",
-                        width: 100,
+                        width: 120,
                     },  {
                         title: "Modelo",
                         field: "nombre_modelo_stl",
@@ -81,7 +88,6 @@
                         title: "Estado",
                         field: "estado",
                         sorter: "string",
-                        editor: "select",
                         width: 130,
                         headerFilter: true,
                         headerFilterParams: {

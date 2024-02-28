@@ -1,7 +1,7 @@
 @extends('layouts/admin-layout')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
+    <li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">Clientes</a></li>
     <li class="breadcrumb-item active" aria-current="page">Ver registro visitas</li>
 @endsection
@@ -25,7 +25,7 @@
                 layout: "fitColumns",
                 pagination: "local",
                 resizableColumns: "false",
-                paginationSize: 7,
+                paginationSize: 20,
                 tooltips: true,
                 columns: [{
                     title: "ID",

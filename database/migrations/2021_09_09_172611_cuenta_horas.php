@@ -15,28 +15,27 @@ class Cuentahoras extends Migration
         DB::statement("
         CREATE VIEW cuenta_horas AS 
         SELECT
-        `registros_checkin`.`idusuario` AS `id`,
-        SUM(`registros_checkin`.`horas`) AS `horas_servicio`,
-        (
-            `users`.`horas` - SUM(`registros_checkin`.`horas`)
-        ) AS `horas_restantes`
-        FROM
+            `users`.`id` AS `id`,
+            COALESCE(SUM(`registros_checkin`.`horas`), 0) AS `horas_servicio`,
             (
-                `users`
-            JOIN `registros_checkin` ON
-                (
-                    (
-                        `users`.`id` = `registros_checkin`.`idusuario`
-                    )
+                `users`.`horas` - COALESCE(SUM(`registros_checkin`.`horas`), 0)
+            ) AS `horas_restantes`,
+            CASE
+                WHEN EXISTS (
+                    SELECT 1
+                    FROM `registros_checkin`
+                    WHERE `registros_checkin`.`idusuario` = `users`.`id`
                 )
-            )
+                THEN TRUE
+                ELSE FALSE
+            END AS `tiene_registros_checkin`
+        FROM
+            `users`
+        LEFT JOIN `registros_checkin` ON `users`.`id` = `registros_checkin`.`idusuario`
         WHERE
-            (
-                `registros_checkin`.`estado` = 'autorizado'
-            )
+            `users`.`tipo` IN ('prestador', 'coordinador', 'practicante', 'voluntario')
         GROUP BY
-            `registros_checkin`.`idusuario`,
-            `users`.`horas`
+            `users`.`id`, `users`.`horas`; 
         ");
     }
 

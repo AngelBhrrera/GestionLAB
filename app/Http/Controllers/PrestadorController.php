@@ -1,411 +1,235 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use DateTime;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
+use DateTime;
 
 
 class PrestadorController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    
-    public function actividadesPrestador()
-    {
-        $encargado_id = auth()->user()->encargado_id;
-        $prestadores = DB::table('users')->select('id', 'name', 'apellido')->where('id', auth()->user()->id)->get();
-        $categorias = DB::table('categorias')->get();
-        $actividades = DB::table('actividades')->get();
-
-        return view('/prestador/crear_actividad_prestador', compact('prestadores', 'actividades', 'categorias'));
-    }
-
-    public function create_act()
-    {
-
-        $categorias = DB::table('categorias')->get();
-        $subcategorias = DB::table('subcategorias')->get();
-    
-        return view('/prestador/registro_nActividad_prestador',
-                ['categorias' => $categorias, 'subcategorias' => $subcategorias,]);
-    }
-
-    public function make_act(Request $request)
-    {
-
-        $categorias = DB::table('categorias')->get();
-        $actividades = DB::table('actividades')->get();
-    
-        $nomact = $request->input('nombre');
-
-        $categoria = $request->input('tipo_categoria');
-        $subcategoria = $request->input('tipo_subcategoria');
-        if($subcategoria == '')
-            $subcategoria = null;
-        $tipo = $request->input('tipo_actividad');
-
-        $desc = $request->input('descripcion');
-        $reso = $request->input('recursos');
-        $obj = $request->input('resultados');
-    
-        $horas = $request->input('horas')*60;
-        $minutos = $request->input('minutos');
-        $tec = $horas + $minutos;
-    
-        DB::table('actividades')->insert([
-            'titulo' => $nomact,
-            'id_categoria' => $categoria,
-            'id_subcategoria' => $subcategoria,
-            'tipo' => $tipo,                
-            'recursos' => $reso,
-            'descripcion' => $desc,
-            'objetivos' => $obj,
-
-            'TEC' => $tec,
-        ]);
-    
-        return view( 'prestador/asignar_actividad_prestador', ['categorias' => $categorias,'actividades' => $actividades]);
-    }
-
-    public function asign_act()
-    {
-
-        $categorias = DB::table('categorias')->get();
-        $actividades = DB::table('actividades')->get();
-    
-        return view( 'prestador/asignar_actividad_prestador', [ 'categorias' => $categorias, 'actividades' => $actividades]);
-    }    
-
-    public function obtenerActividades(Request $request)
-    {
-        $categoriaId = $request->input('categoriaId');
-
-        $actividades = DB::table('actividades')
-            ->where('id_categoria', $categoriaId)
-            ->get();
-
-        return response()->json($actividades);
-    }
-
-    public function obtenerActividadesB(Request $request)
-    {
-        $subcategoriaId = $request->input('subcategoriaId');
-
-        $actividades = DB::table('actividades')
-            ->where('id_subcategoria', $subcategoriaId)
-            ->get();
-
-        return response()->json($actividades);
-    }
-
-    public function obtenerSubcategorias(Request $request)
-    {
-        $categoriaId = $request->input('categoriaId');
-
-        $subcateg = DB::table('subcategorias')
-            ->where('categoria', $categoriaId)
-            ->get();
-
-        return response()->json($subcateg);
-    }
-
-    public function index()
-    {
-
-        $code = Auth::user()->codigo;
-        if(request()->ajax()) {
-            $data = DB::table('registros_checkin')
-            ->select('SELECT `fecha`, `hora_entrada`, `hora_salida`, `tiempo`, `horas`, `estado` FROM `registros_checkin` WHERE `codigo` =' + $code )
-            ->get();
-
-            return datatables()->of($data)
-        //->addColumn('action', 'employee-action')
-          //  ->rawColumns(['action'])
-            ->addIndexColumn()
-            ->make(true);
-        }
-        return view('prestador/registro_horas');
-    }
-
     public function home(){
 
-        $id = Auth::user()->id;
-        $experiencia = Auth::user()->experiencia;
-        $horasAutorizadas = DB::table('registros_checkin')->where('idusuario', $id)->where('estado', 'autorizado')->sum('horas');
-        $horasPendientes = DB::table('registros_checkin')->where('idusuario', $id)->where('estado', 'pendiente')->sum('horas');
-        $horasTotales = DB::table('users')->where('id', $id)->select('horas')->get();
-        $horasRestantes = $horasTotales[0]->horas - $horasAutorizadas;
-        $leaderBoard= DB::select("SELECT * from full_leaderboard limit 10");
-        $posicionUsuario = DB::select("SELECT x.experiencia, x.id, x.position, CONCAT(x.name, ' ', x.apellido) AS 'Nombre' FROM (SELECT users.id, users.name, users.apellido, @rownum := @rownum + 1 AS position,
-        users.experiencia FROM users JOIN (SELECT @rownum := 0) r ORDER BY users.experiencia DESC) x WHERE x.id = $id;");
-        $usuarioMedalla = DB::table('niveles')
-        ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
-        ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion')
-        ->where('niveles.experiencia_acumulada', '<=', $experiencia?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
-        ->orderByDesc('niveles.experiencia_acumulada')
-        ->first();
+        $horasAutorizadas = DB::table('seguimiento_horas_completo')->where('id',Auth::user()->id)->value('horas_servicio');
+        $horasRestantes = DB::table('seguimiento_horas_completo')->where('id', Auth::user()->id)->value('horas_restantes');
+        $horasPendientes = DB::table('registros_checkin')->where('idusuario',Auth::user()->id)->where('estado', 'pendiente')->sum('horas');
+        $horasTotales = DB::table('users')->where('id',Auth::user()->id)->value('horas');
+        
+        $asistencias = DB::table('registros_checkin')
+            ->where('idusuario', Auth::user()->id)
+            ->orderBy('fecha_actual', 'desc')
+            ->limit(5)
+            ->get();
 
+
+        $leaderboard= DB::table('full_leaderboard')
+            ->select('Posicion','Inventor','full_leaderboard.experiencia','ruta','max_nivel', 'full_leaderboard.codigo', 'sede','area')
+            ->join('users', 'users.codigo', '=','full_leaderboard.codigo')
+            ->where('sede', Auth::user()->sede)
+            ->where('area', Auth::user()->area)
+            ->limit(10)
+            ->get();
+        $i=1;
+        foreach($leaderboard as $posicion){
+            $posicion->Posicion = $i;
+            $i++;
+        }
+        $i=1;
+        $tablaCompleta = DB::table('full_leaderboard')
+        ->select('Posicion','Inventor','full_leaderboard.experiencia','ruta','max_nivel', 'full_leaderboard.codigo', 'sede','area')
+        ->join('users', 'users.codigo', '=','full_leaderboard.codigo')
+        ->where('sede', Auth::user()->sede)
+        ->where('area', Auth::user()->area)
+        ->get();
+
+        $i=1;
+        foreach($tablaCompleta as $elemento){
+
+            if($elemento->codigo == Auth::user()->codigo){
+                $posicionUsuario = $i;
+                break;
+            }
+            $i++;
+        }
+        
+        $usuarioMedalla = $this->prestador_level();
 
         return view(
-            'prestador/newHomeP',
-            [
-                'horasAutorizadas' => $horasAutorizadas,
-                'horasPendientes' => $horasPendientes,
-                'horasTotales'=> $horasTotales[0]->horas,
-                'horasRestantes' => $horasRestantes,
-                'leaderBoard'=> $leaderBoard,
-                'posicionUsuario'=> $posicionUsuario,
-                'usuarioMedalla'=>$usuarioMedalla,
-
-            ]
-        );
+            'prestador/newHomeP',  
+            compact('horasAutorizadas', 'horasPendientes', 'horasTotales', 'horasRestantes',  
+            'leaderboard', 'posicionUsuario', 'usuarioMedalla')
+        )->with('asistencias', json_encode($asistencias));
     }
-
-    public function create_imps()
-    {
-        $impresoras = DB::table('impresoras')
-            ->select('*')
-            ->where('estado', 1)
-            ->get();
-        $proy = DB::table('proyectos')->select('*')->get();
-
-        return view('prestador/registro_impresion',
-            ['imps' => $impresoras,
-            'proys' => $proy
-        ]);
-    }
-
-    public function register_imps(Request $request)
-    {
-        $origin = Auth::user()->id;
-        $name = $request->input('name');
-        $proy = $request->input('proyect');
-        $model = $request->input('model');
-        $color = $request->input('color');
-        $pieces = $request->input('pieces');
-        $w = $request->input('weight');
-
-        $horas = $request->input('horas');
-        $horasFormateadas = str_pad($horas, 2, '0', STR_PAD_LEFT);
-        $minutos = $request->input('minutos');
-        $minsFormateados = str_pad($minutos, 2, '0', STR_PAD_LEFT);
-        $tiempo = $horasFormateadas . 'h' . $minsFormateados . 'm';
-
-        $make_imp = DB::table('seguimiento_impresiones')
-        ->insert([['id_Prestador' => $origin, 'id_Impresora' => $name,
-        'id_Proyecto' => $proy, 'nombre_modelo_stl' => $model,
-         'color' => $color, 'piezas' => $pieces,
-         'peso' => $w, 'tiempo_impresion' => $tiempo]]);
-
-        $actual = DB::table('seguimiento_impresiones')
-            ->where('id_Impresora', $name)
-            ->orderByDesc('fecha')
-            ->limit(1)
-            ->value('fecha');
-
-        DB::table('impresoras')
-            ->where('id', $name)
-            ->update(['ultimo_uso' => $actual]);
-
-        return redirect()->route('show_imps');
-    }
-
-    public function show_imps()
-    {
-        $data = DB::table('ver_impresiones')
-        ->select('id', 'impresora', 'proyecto',  'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
-        ->where('id_Prestador', Auth::user()->id)
-        ->orderByDesc('fecha')
-        ->get();
-
-        return view('prestador/mostrar_mis_impresiones', ['impresiones' => json_encode($data)]);
-
-    }
-
-    public function show_all_imps()
-    {
-        $data = DB::table('ver_impresiones')
-        ->select('id', 'impresora', 'proyecto',  'fecha', 'nombre_modelo_stl', 'tiempo_impresion', 'color', 'piezas', 'estado', 'peso', 'observaciones')
-        ->orderByDesc('fecha')
-        ->get();
-
-        return view('prestador/mostrar_impresiones', ['impresiones' => json_encode($data)]);
-
-    }
-
-    public function printstate($id, $state) {
-
-        DB::table('seguimiento_impresiones')
-        ->where('id', $id)
-        ->update(['estado' => $state]);
-
-        return response()->json(['message' => 'Activado exitosamente' . $id]);
-    }
-
-    public function detail_prints($id, $value) {
-
-        $sql=    DB::table('seguimiento_impresiones')
-            ->where('id', $id)
-            ->update(['observaciones' => $value]);
-        return response()->json(['message' => $sql]);
-    }
-
-
-    public function horario()
-    {
-        $id = Auth::user()->id;
-
-        $turno = Auth::user()->horario;
-
-
-        $asistencias = DB::select("Select fecha from registros_checkin where idusuario = $id");
-        $festivos = DB::select("Select * from eventos");
-        
-        foreach($asistencias as $valor){
-            // Crear un objeto DateTime interpretando la cadena original
-            $fechaObjeto = DateTime::createFromFormat('d/m/Y', $valor->fecha);
-
-            // Obtener la nueva cadena de fecha en el formato deseado ("d/m/Y")
-            $valor->fecha = $fechaObjeto->format('Y-m-d');
-        }
-
-        foreach($festivos as $valor){
-            // Crear un objeto DateTime interpretando la cadena original
-            $fechaObjeto = DateTime::createFromFormat('Y-m-d H:i:s', $valor->inicio);
-            // Obtener la nueva cadena de fecha en el formato deseado ("d/m/Y")
-            $valor->inicio = $fechaObjeto->format('Y-m-d');
-
-            $fechaObjeto = DateTime::createFromFormat('Y-m-d H:i:s', $valor->final);
-            // Obtener la nueva cadena de fecha en el formato deseado ("d/m/Y")
-            $valor->final = $fechaObjeto->format('Y-m-d');
-        }
-        
-
-        return view('/prestador/horario_prestador', [
-                'asistencias'=>$asistencias,
-                'festivos'=>$festivos
-        ]);
-    }
-
+    
     public function horas()
     {
-        $id = Auth::user()->id;
-
         $asistencias = DB::table('registros_checkin')
-        ->where('idusuario', $id)
-        ->orderBy('fecha_actual', 'desc')
-        ->get();
-
+            ->where('idusuario', Auth::user()->id)
+            ->orderBy('fecha_actual', 'desc')
+            ->get();
 
         return view('prestador/registro_horas', ['datos' => json_encode($asistencias)]);
+    }
 
+    public function checkInOrigin($area){
+        $dir = '';
+        $responsable = Auth::user()->name . ' ' . Auth::user()->apellido;
+        $verifArea = false;
+        switch (Auth::user()->tipo) {
+            case 'Superadmin':
+                $dir = 'admin.checkin';
+                $verifArea =  true;
+                break;
+            case 'jefe area':
+            case 'coordinador':
+                $dir = 'admin.checkin';
+                $verifArea = $area == Auth::user()->area;
+                break;
+            case 'checkin':
+                $dir = 'api.checkin';
+                $responsable = 'checkin';
+                $verifArea = $area == Auth::user()->area;
+                break;
+        };
+
+        return compact('dir', 'responsable', 'verifArea');
+    }
+
+    public function checkEntrada($id){
+        $verificar = DB::table('registros_checkin')
+        ->where('idusuario', $id)
+        ->where('fecha', date("d/m/Y"))
+        ->where('hora_salida', null)->exists();
+
+        return $verificar;
+    }
+
+    public function obtenerUbicacion(){
+
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $geo = file_get_contents("http://ip-api.com/json/{$ip}");
+        $geoData = json_decode($geo);
+
+        if ($geoData && $geoData->status == 'success') {
+            $latitud = $geoData->lat;
+            $longitud = $geoData->lon;
+            $enlaceMaps = "https://www.google.com/maps?q={$latitud},{$longitud}";
+        } else {
+            $enlaceMaps = "https://www.google.com/maps?q=20.6568344,-103.3273073";
+        }
+        return $enlaceMaps;
+    }
+
+    public function marcarEntrada($user, $fuenteCheckin){
+        $origen = $user->name . " " . $user->apellido;
+
+        $ubicacion = $this->obtenerUbicacion();
+        DB::table('registros_checkin')
+            ->insert([['origen' => $origen, 'idusuario' => $user->id, 'fecha' => date("d/m/Y"), 'ubicacion' => $ubicacion,
+            'hora_entrada' => date('H:i:s'), 'horas' => 0, 'responsable'=>  $fuenteCheckin['responsable'], 'tipo' => $user->tipo,
+            'encargado_id' => Auth::user()->id]]);
+
+        return 0;
+    }
+
+    public function marcarSalida($user){
+            
+        $hor = date('H:i:s');
+        $tiempo = DB::table('registros_checkin')
+            ->select('hora_entrada')
+            ->where('idusuario', $user->id)
+            ->where('fecha', date("d/m/Y"))
+            ->where('hora_salida', null)->get();
+        $tiempoCompleto = $this->diferencia($tiempo[0]->hora_entrada, $hor);
+
+        DB::table('registros_checkin')
+            ->where('idusuario', $user->id)
+            ->where('fecha', date("d/m/Y"))
+            ->where('hora_salida', null)
+            ->update(['hora_salida' => $hor, 'tiempo' => $tiempoCompleto, 'horas' => $this->calculoIntervaloH($tiempoCompleto)]);
+
+        return 0;
+    }
+
+    private function checkHora($horaActual, $horaInicio, $horaFin) {
+        return ($horaActual >= $horaInicio && $horaActual <= $horaFin);
+    }
+
+    public function checkTurno($turno){
+        $hor = date('H:i:s');
+    
+        if($turno == 'Matutino' ){
+            return $this->checkHora($hor, '07:30:00', '09:45:00');
+        } else if($turno == 'Mediodia'){
+            return $this->checkHora($hor, '11:30:00', '13:45:00');
+        } else if($turno == 'Vespertino'){
+            return $this->checkHora($hor, '15:30:00', '17:45:00');
+        } else {
+            return true;
+        }
     }
 
     public function marcar(Request $request)
     {
+        $codigo = $request->input('codigo');
+        $refArea =  DB::table('users')
+            ->where('codigo', $codigo)
+            ->value('area');
+        $fuenteCheckin = $this->checkinOrigin($refArea);
+
         try {
-            $dir = '';
-            switch (Auth::user()->tipo) {
-                
-                case 'Superadmin':
-                    $codigo = $request->input('codigo');
-                    $sedeVerif =  true;
-                case 'admin':
-                case 'encargado':
-                    $dir = 'admin.checkin';
-                    $responsable = Auth::user()->name . ' ' . Auth::user()->apellido;
-                    $codigo = $request->input('codigo');
-                    $sedeVerif =  DB::table('users')
-                    ->select('sede')
-                    ->where('codigo', $codigo)
-                    ->get();
-                    break;
-                case 'checkin':
-                    $dir = 'api.checkin';
-                    $origen = 'checkin';
-                    $codigo = $request->input('codigo');
-                    $sedeVerif =  DB::table('users')
-                    ->select('sede')
-                    ->where('codigo', $codigo)
-                    ->get();
-                    break;
-            };
+           
+            $user = DB::table('users')
+                ->select('id','name','apellido','tipo','horario')
+                ->where('codigo', $codigo)
+                ->where(function ($query) {
+                    $query->whereIn('tipo', ["prestador", "coordinador", "voluntario", "practicante"]);
+                })
+                ->first();
+           
+            if($user != null){
 
-            if($sedeVerif->first()->sede == Auth::user()->sede){
+                if($fuenteCheckin['verifArea']){
+                    $verificar = $this->checkEntrada($user->id);
 
-                $usuario = DB::table('users')->where('codigo', $codigo)->where(function ($query) {
-                    $query->where('tipo', '=', "prestador")
-                        ->orWhere('tipo', '=', "encargado")
-                        ->orWhere('tipo', '=', "voluntario")
-                        ->orWhere('tipo', '=', "practicante");
-                })->select('name', 'id', 'apellido', 'tipo', 'encargado_id')->get();
+                    //CHECK DE SALIDA
+                    if ($verificar) {
+                        $this->pauseActP($user->id);
+                        $this->marcarSalida($user);
+                        return redirect()->route( $fuenteCheckin['dir'])->with('success', 'Adios ' . $user->name);
 
-                $origen = $usuario[0]->name . " " . $usuario[0]->apellido;
+                    //CHECK DE ENTRADA
+                    }else{
 
-                $verificar = DB::table('registros_checkin')
-                ->where('idusuario', $usuario[0]->id)
-                ->where('fecha', date("d/m/Y"))
-                ->where('hora_salida', null)->exists();
-                if ($verificar) {
-
-                    $hor = date('H:i:s');
-
-                    $tiempo = DB::table('registros_checkin')
-                    ->select('hora_entrada')
-                    ->where('idusuario', $usuario[0]->id)
-                    ->where('fecha', date("d/m/Y"))
-                    ->where('hora_salida', null)->get();
-
-                    $tiempoCompleto = $this->diferencia($tiempo[0]->hora_entrada, $hor);
-
-                    $salida = DB::table('registros_checkin')
-                    ->where('idusuario', $usuario[0]->id)
-                    ->where('fecha', date("d/m/Y"))
-                    ->where('hora_salida', null)
-                    ->update(['hora_salida' => $hor, 'tiempo' => $tiempoCompleto, 'horas' => $this->horasC($tiempoCompleto)]);
-
-                    return redirect()->route($dir)->with('success', 'Adios ' . $usuario[0]->name);
-                } else {
-                    $ip = $_SERVER['REMOTE_ADDR'];
-                    $geo = file_get_contents("http://ip-api.com/json/{$ip}");
-                    $geoData = json_decode($geo);
-
-                    if ($geoData && $geoData->status == 'success') {
-                        // Obtiene la latitud y longitud
-                        $latitud = $geoData->lat;
-                        $longitud = $geoData->lon;
-                        // Crea el enlace a Google Maps
-                        $enlaceMaps = "https://www.google.com/maps?q={$latitud},{$longitud}";
-                    } else {
-                        $enlaceMaps = "https://www.google.com/maps?q=20.6568344,-103.3273073";
-                        echo "No se pudo obtener la información de geolocalización.";
+                        $this->marcarEntrada($user, $fuenteCheckin);
+                        return redirect()->route( $fuenteCheckin['dir'])->with('success', 'Bienvenido/a ' . $user->name);
+                        
+                        if($this->checkTurno($user->horario)){
+                            $this->marcarEntrada($user, $fuenteCheckin);
+                            return redirect()->route( $fuenteCheckin['dir'])->with('success', 'Bienvenido/a ' . $user . '!');
+                        }else{
+                            $msg = "El prestador pertenece a otro turno";
+                            return redirect()->route( $fuenteCheckin['dir'])->with('error', $msg);
+                        }
                     }
-
-
-                    $inicio = DB::table('registros_checkin')
-                    ->insert([['origen' => $origen, 'idusuario' => $usuario[0]->id, 'fecha' => date("d/m/Y"), 'ubicacion' => $enlaceMaps,
-                    'hora_entrada' => date('H:i:s'), 'horas' => 0, 'responsable'=> $responsable, 'tipo' => $usuario[0]->tipo,
-                    'encargado_id' => Auth::user()->id]]);
-
-                    return redirect()->route($dir)
-                    ->with('success', 'Bienvenido/a ' . $usuario[0]->name . '!');
+                }else{
+                    $msg = "El codigo ingresado no corresponde a la sede.";
+                    return redirect()->route( $fuenteCheckin['dir'])->with('error', $msg);
                 }
             }else{
-                $msg = "El codigo ingresado no corresponde a la sede.";
-                return redirect()->route($dir)->with('error', $msg());
+                $msg = "El codigo ingresado no corresponde a ningun usuario válido";
+                return redirect()->route( $fuenteCheckin['dir'])->with('error', $msg);
             }
         } catch (\Throwable $th) {
-
-            return redirect()->route($dir)->with('error', $th->getMessage());
+            return redirect()->route($fuenteCheckin['dir'])->with('error', $th->getMessage());
         }
     }
 
@@ -417,7 +241,7 @@ class PrestadorController extends Controller
         return $interval->format('%H:%I:%S');
     }
 
-    function horasC($time)
+    function calculoIntervaloH($time)
     {
         $horas = new DateTime($time);
         $tiempo = $horas->format('H.i');
@@ -427,18 +251,484 @@ class PrestadorController extends Controller
         return intval($tiempo);
     }
 
-    
+    function calculoIntervaloM($hora,$hora2)
+    { 
+        $time1 = new DateTime($hora);
+        $time2 = new DateTime($hora2);
+        $interval = $time1->diff($time2);
+        $totalMinutos = ($interval->days * 24 * 60) + ($interval->h * 60) + $interval->i; 
+        return $totalMinutos;
+    }
+
     public function cambiarRol()
     {
-        echo "<script>console.log('Mensaje en consola antes de redirección');</script>";
         return redirect()->route('admin.home');
     }
+
+    //VER ACTIVIDADES Y AGREGAR DETALLES
+
+    public function misActividades()
+    {
+
+        $actividades = DB::table('actividades_prestadores')
+            ->select('actividades_prestadores.*', 'actividades.TEC', 'actividades.titulo')
+            ->join('actividades', 'actividades.id', '=', 'actividades_prestadores.id_actividad')
+            ->where('actividades_prestadores.id_prestador', auth()->user()->id)
+            ->get();
+
+        return view('/prestador/actividades_prestador', [ 'impresiones' =>json_encode($actividades)]);
+    }
+
+    public function detail_act($id, $value) {
+
+        $sql= DB::table('actividades_prestadores')
+            ->where('id', $id)
+            ->update(['detalles' => $value]);
+
+        return response()->json(['message' => $sql]);
+    }
+
+    public function detallesActividad($value)
+    {
+
+        $detalles = DB::table('actividades')
+            ->select('actividades.*', 'categorias.nombre AS nombre_categoria', 'subcategorias.nombre AS nombre_subcategoria')
+            ->join('categorias', 'actividades.id_categoria', '=', 'categorias.id')
+            ->leftJoin('subcategorias', 'actividades.id_subcategoria', '=', 'subcategorias.id') 
+            ->where('actividades.id', $value)
+            ->first();
+
+        return view('/prestador/detalles_actividad', [ 'detalle' => $detalles]);
+    }
+
+    //VER PROYECTOS
+
+    public function myProject()
+    {
+        $id = DB::table('proyectos_prestadores')
+            ->where('id_prestador', auth()->user()->id)
+            ->value('id_proyecto');
+        $proyecto = DB::table('proyectos')
+            ->where('id',$id)
+            ->value('titulo');
+        $prestadores = DB::table('proyectos_prestadores')
+            ->select('id_prestador', 'name', 'apellido', 'correo', 'telefono')
+            ->where('id_proyecto', $id)
+            ->join('users', 'id_prestador','=','users.id')
+            ->get();
+        $actividades = DB::table('seguimiento_actividades')
+            ->select('actividad_id','actividad', 'estado', 'prestador')
+            ->where('id_proyecto', $id)
+            ->get();
+
+        return view('/prestador/mi_proyecto_prestador', compact('prestadores', 'actividades', 'proyecto'));
+    }
+
+    //SISTEMA DE ACTIVIDADES GAMIFICADO
+
+    public function actividadesAsignadas()
+    {
+        $proys = DB::table('proyectos_prestadores')
+            ->where('id_prestador', auth()->user()->id)
+            ->pluck('id_proyecto');
+
+        $actividades = DB::table('seguimiento_actividades')
+            ->where('id_prestador', auth()->user()->id)
+            ->whereNotIn('estado', ['Aprobada'])
+            ->orWhere(function($query) use ($proys) {
+                $query->whereIn('id_proyecto', $proys)
+                        ->where('id_prestador', 0);
+            })
+            ->orderByDesc('fecha')
+            ->get();
+
+        return view('/prestador/actividades_asignadas',compact('actividades'));
+    }
+
+    public function actPull()
+    {
+        $proys = DB::table('proyectos')
+            ->leftJoin('proyectos_prestadores', 'proyectos.id', '=', 'proyectos_prestadores.id_proyecto')
+            ->whereNull('proyectos_prestadores.id_proyecto')
+            ->pluck('proyectos.id');
+
+        $acts = DB::table('seguimiento_actividades')
+            ->where('id_prestador', 0)
+            ->whereIn('id_proyecto', $proys)
+            ->get();
+
+        return view('/prestador/actividades_abiertas', ['actividades' =>$acts]);
+    }
+
+    public function startAct($id, $teu){
+
+        $hor = date('H:i:s');
+
+        $verificar = $this->checkEntrada(auth()->user()->id);
+
+        $disponible = DB::table('actividades_prestadores')
+            ->where('id_prestador', auth()->user()->id)
+            ->orWhere('id_prestador', 0)
+            ->where('id', $id)
+            ->exists();
+
+        if($disponible && $verificar){
+
+            if($this->checkAct()){
+                $this->pauseAct();
+            }
+            
+            DB::table('actividades_prestadores')
+            ->where('id', $id)
+            ->update([
+                'id_prestador' => auth()->user()->id,
+                'estado' => 'En Proceso',
+                'hora_refs' => $hor,
+                'TEU' => $teu
+            ]);
+
+        }else{
+            return response()->json(['message' => 'NO has realizado check de entrada']);
+        }
+
+        return response()->json(['mensaje' => 'Actividad iniciada correctamente para la actividad con ID ' . $id]);
+    }
+
+    public function takeAct($id, $teu){
+
+        $hor = date('H:i:s');
+
+        $verificar = $this->checkEntrada(auth()->user()->id);
+
+        $disponible = DB::table('actividades_prestadores')
+            ->where('id_prestador', auth()->user()->id)
+            ->orWhere('id_prestador', 0)
+            ->where('id', $id)
+            ->exists();
+
+        if($disponible && $verificar){
+            if($this->checkAct()){
+                $this->pauseAct();
+            }
+            DB::table('actividades_prestadores')
+            ->where('id', $id)
+            ->update([
+                'id_prestador' => auth()->user()->id,
+                'estado' => 'En Proceso',
+                'hora_refs' => $hor,
+                'TEU' => $teu
+            ]);
+        }else{
+            return redirect()->route('actividadesAsignadas')->with('error', 'No has hecho Check de entrada');
+        }
+
+        return response()->json(['mensaje' => 'Actividad iniciada correctamente para la actividad con ID ' . $id]);
+    }
+
+    public function checkAct(){
+
+        $actual = DB::table('actividades_prestadores')
+            ->where('id_prestador', auth()->user()->id)
+            ->where('estado', 'En proceso')
+            ->exists();
+
+        return $actual;
+    }
+
+    public function pauseAct(){
+
+        $found = DB::table('actividades_prestadores')
+            ->where('id_prestador',  auth()->user()->id)
+            ->where('estado', 'En proceso')
+            ->value('id');
+
+        DB::table('actividades_prestadores')
+            ->where('id', $found)
+            ->update(['estado' => 'Bloqueada']);
+
+        return 0;
+    }
+
+    public function pauseActP($id){
+
+        $found = DB::table('actividades_prestadores')
+            ->where('id_prestador', $id)
+            ->where('estado', 'En proceso')
+            ->value('id');
+
+        DB::table('actividades_prestadores')
+            ->where('id', $found)
+            ->update(['estado' => 'Bloqueada']);
+
+        return 0;
+    }
+
+    public function statusAct($id, $mode)
+    {
+
+        $verificar = $this->checkEntrada(auth()->user()->id);
+        if($verificar){
+            if($this->checkAct()){
+                $this->pauseAct();
+            }
+    
+            if($mode == 1){
+                $hor = date('H:i:s');
+    
+                DB::table('actividades_prestadores')
+                ->where('id', $id)
+                ->update([
+                    'estado' => 'En Proceso',
+                    'hora_refs' => $hor
+                ]);
+    
+                return response()->json(['mensaje' => 'AOK']);
+                
+            }else if($mode == 2){
+    
+                $timeRef = DB::table('actividades_prestadores')
+                    ->where('id', $id)
+                    ->value('hora_refs');
+                $timeRef2 = date('H:i:s');
+    
+                $tiempoInvertido = DB::table('actividades_prestadores')
+                    ->where('id', $id)
+                    ->value('Tiempo_Invertido');
+    
+                $intervalCalc = $this->calculoIntervaloM($timeRef, $timeRef2);
+                $tiempoInvertido += $intervalCalc;
+    
+                DB::table('actividades_prestadores')
+                ->where('id', $id)
+                ->update([
+                    'estado' => 'Bloqueada',
+                    'Tiempo_Invertido' => $tiempoInvertido
+                ]);
+    
+                return response()->json(['mensaje' => 'BOK']);
+
+            }else if($mode == 3){
+
+                $timeRef = DB::table('actividades_prestadores')
+                ->where('id', $id)
+                ->value('hora_refs');
+                $timeRef2 = date('H:i:s');
+    
+                $tiempoInvertido = DB::table('actividades_prestadores')
+                    ->where('id', $id)
+                    ->value('Tiempo_Invertido');
+    
+                $intervalCalc = $this->calculoIntervaloM($timeRef, $timeRef2);
+                $tiempoInvertido += $intervalCalc;
+    
+                DB::table('actividades_prestadores')
+                ->where('id', $id)
+                ->update([
+                    'estado' => 'Bloqueada',
+                    'Tiempo_Invertido' => $tiempoInvertido
+                ]);
+    
+    
+                if($tiempoInvertido > 0){
+                    DB::table('actividades_prestadores')
+                    ->where('id', $id)
+                    ->update([
+                        'estado' => 'En revision'
+                    ]);
+                }else{
+                    return response()->json(['mensaje' => 'ERROR, finalizaste una tarea sin tiempo invertido']);
+                }
+                return response()->json(['mensaje' => 'COK']);
+            }
+        }
+        
+        return response()->json(['mensaje' => 'ERROR, no hay check de entrada']);
+    }
+
+    //CREACION DE ACTIVIDADES COMO PRESTADOR
+
+    public function create_act()
+    {
+        $categorias = DB::table('categorias')->get();
+        $subcategorias = DB::table('subcategorias')->get();
+    
+        return view('/prestador/registro_nActividad_prestador', compact('categorias', 'subcategorias'));
+    }
+
+    public function make_act(Request $request)
+    {
+
+        $subcategoria = $request->input('tipo_subcategoria');
+        if($subcategoria == '')
+            $subcategoria = null;
+    
+        DB::table('actividades')->insert([
+            'titulo' => $request->input('nombre'),
+            'id_categoria' =>  $request->input('tipo_categoria'),
+            'id_subcategoria' => $subcategoria,
+            'tipo' => $request->input('tipo_actividad'),                
+            'recursos' =>  $request->input('recursos'),
+            'descripcion' => $request->input('descripcion'),
+            'objetivos' => $request->input('resultados'),
+        ]);
+
+        return redirect()->route('misActividades');
+    }
+
+    public function obtenerActividades(Request $request)
+    {
+        $actividades = DB::table('actividades')
+            ->where('id_categoria', $request->input('categoriaId'))
+            ->get();
+
+        return response()->json($actividades);
+    }
+
+    public function obtenerActividadesB(Request $request)
+    {
+        $actividades = DB::table('actividades')
+            ->where('id_subcategoria', $request->input('subcategoriaId'))
+            ->get();
+
+        return response()->json($actividades);
+    }
+
+    public function obtenerSubcategorias(Request $request)
+    {
+        $subcateg = DB::table('subcategorias')
+            ->where('categoria', $request->input('categoriaId'))
+            ->get();
+
+        return response()->json($subcateg);
+    }
+
+    public function format_time($hours,$minutes){
+
+        $formatH = str_pad($hours, 2, '0', STR_PAD_LEFT);
+        $formatM = str_pad($minutes, 2, '0', STR_PAD_LEFT);
+        return $formatH . 'h' . $formatM . 'm';
+
+    }
+
+    //IMPRESIONES PRESTADOR
+
+    public function create_imps()
+    {
+        $impresoras = DB::table('impresoras')
+            ->where('estado', 1)
+            ->get();
+
+        $proy = DB::table('proyectos')->get();
+
+        return view('prestador/registro_impresion',
+            ['imps' => $impresoras,
+            'proys' => $proy
+        ]);
+    }
+
+    public function register_imps(Request $request)
+    {
+
+        $tiempo = $this->format_time($request->input('horas'), $request->input('minutos'));
+
+        DB::table('seguimiento_impresiones')->insert([['id_Prestador' =>Auth::user()->id, 
+        'id_Impresora' => $request->input('imp_id'), 'id_Proyecto' =>$request->input('proyect'), 
+        'nombre_modelo_stl' => $request->input('model'), 'color' => $request->input('color'), 
+        'piezas' => $request->input('pieces'), 'peso' => $request->input('weight'), 'tiempo_impresion' => $tiempo]]);
+
+        $actual = DB::table('seguimiento_impresiones')
+            ->where('id_Impresora', $request->input('imp_id'))
+            ->orderByDesc('fecha')
+            ->limit(1)
+            ->value('fecha');
+
+        DB::table('impresoras')
+            ->where('id', $request->input('imp_id'))
+            ->update(['ultimo_uso' => $actual]);
+
+        return redirect()->route('show_imps');
+    }
+
+    public function show_imps()
+    {
+        $data = DB::table('ver_impresiones')
+            ->where('id_Prestador', Auth::user()->id)
+            ->orderByDesc('fecha')
+            ->get();
+
+        return view('prestador/mostrar_mis_impresiones', ['impresiones' => json_encode($data)]);
+
+    }
+
+    public function show_all_imps()
+    {
+        $data = DB::table('ver_impresiones')
+            ->orderByDesc('fecha')
+            ->where('users.area', Auth::user()->area)
+            ->join('users', 'users.id', '=', 'ver_impresiones.id_prestador')
+            ->select(DB::raw("CONCAT(users.name, ' ', users.apellido) AS prestador"), 'ver_impresiones.*')
+            ->get();
+
+        return view('prestador/mostrar_impresiones', ['impresiones' => json_encode($data)]);
+
+    }
+
+    public function printstate($id, $state) {
+
+        DB::table('seguimiento_impresiones')
+            ->where('id', $id)
+            ->update(['estado' => $state]);
+
+        return response()->json(['message' => 'Activado exitosamente' . $id]);
+    }
+
+    public function detail_prints($id, $value) {
+
+        $sql = DB::table('seguimiento_impresiones')
+            ->where('id', $id)
+            ->update(['observaciones' => $value]);
+        return response()->json(['message' => $sql]);
+    }
+
+    //CALENDARIO PRESTADOR
+
+    public function horario()
+    {   
+
+        $festivos = DB::table('eventos')
+            ->where('sede', Auth::user()->sede)
+            ->where('area', Auth::user()->area)
+            ->orWhere('area', 0)
+            ->get();
+
+        $asists = DB::table('registros_checkin')
+            ->where('idusuario', Auth::user()->id)
+            ->pluck('fecha');
+        $asistencias = [];
+        
+        foreach ($asists as &$asist) {
+            $fechaObjeto = DateTime::createFromFormat('d/m/Y', $asist);
+            $asistenciaFormateada = $fechaObjeto->format('Y-m-d');
+            $asistencias[] = $asistenciaFormateada;
+        }
+
+        foreach($festivos as $festivo){
+
+            $fechaObjeto = DateTime::createFromFormat('Y-m-d H:i:s', $festivo->inicio);
+            $festivo->inicio = $fechaObjeto->format('Y-m-d');
+
+            $fechaObjeto = DateTime::createFromFormat('Y-m-d H:i:s', $festivo->final);
+            $festivo->final = $fechaObjeto->format('Y-m-d');
+        }
+
+        return view('/prestador/horario_prestador', compact('asistencias', 'festivos'));
+    }
+
+    //REPORTES
 
     public function show_reportes(){
         $user_id = Auth::user()->id;
         $reportes = DB::select("Select * from reportes_s_s where id_prestador = $user_id");
-        
-        
         
         //Validar oficio
         $oficio = (count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Oficio de comision'"))==0)? true : false;
@@ -501,37 +791,30 @@ class PrestadorController extends Controller
             readfile($rutaArchivo);
     }
 
+    //PERFIL DEL USUARIO
+
     public function perfil()
     {
         $user = Auth::user();
 
         $sede = DB::table('sedes')
-        ->select('sedes.nombre_sede', 'sedes.id_sede')
-        ->where('sedes.id_sede', '=', $user->sede ?? "No definida") // Si la sede es null, establece la experiencia acumulada en 0.
-        ->first();
-
-        $nivel = DB::table('niveles')
-            ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
-            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n')
-            ->where('niveles.experiencia_acumulada', '<=', $user->experiencia ?? 1) // Si la experiencia es null, establece la experiencia acumulada en 0.
-            ->orderByDesc('niveles.experiencia_acumulada')
+            ->select('nombre_sede', 'id_sede')
+            ->where('sedes.id_sede', $user->sede) 
             ->first();
+
         $todasMedallasUsuario = DB::table('niveles')
                 ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
                 ->select('medallas.ruta', 'medallas.nivel', 'medallas.descripcion')
-                ->where('niveles.experiencia_acumulada', '<=', $user->experiencia ?? 0) // Si la experiencia es null, establece la experiencia acumulada en 0.
-                ->orderBy('niveles.experiencia_acumulada', 'asc')
+                ->where('niveles.experiencia', '<=', $user->experiencia ) 
+                ->orderBy('niveles.experiencia_acumulada')
                 ->get();
 
-        // Convertimos el valor del nivel a una cadena de texto
-        $nivel_str = strval($nivel->nivel);
+        $ultimoElemento = $todasMedallasUsuario->last();
+        $nivel_str = strval($ultimoElemento->nivel);
+        $medalla = $ultimoElemento->ruta;
+        $descripcion_medalla = $ultimoElemento->descripcion;
 
-        $medalla = asset($nivel->ruta);
-        //dd($nivel); // Verificar si la propiedad ruta_n está presente en $nivel
-        // Descripcion de la medalla
-        $descripcion_medalla = $nivel->descripcion;
-
-        return view('prestador.newProfile', compact('user', 'sede', 'nivel_str', 'medalla', 'nivel', 'descripcion_medalla', 'todasMedallasUsuario'));
+        return view('prestador.prestador_perfil', compact('user', 'sede', 'nivel_str', 'medalla', 'descripcion_medalla', 'todasMedallasUsuario'));
     }
 
     public function cambiarImagenPerfil(Request $request)
@@ -542,59 +825,115 @@ class PrestadorController extends Controller
             'imagen_perfil.max' => 'La imagen debe pesar menos de 4MB',
         ]);
 
-        // Obtener el usuario autenticado
         $user = Auth::user();
 
         // Eliminar la imagen del usuario si es que ya tenia
         if ($user->imagen_perfil) {
             // $image_path = public_path('storage/imagen/imagen/' . $user->imagen_perfil);
-            $image_path = public_path('storage/userImg/'.$user->imagen_perfil);
+            $image_path = storage_path('app/public/userImg/'.$user->imagen_perfil);
             if (file_exists($image_path)) {
                 unlink($image_path);
             }
         }
 
-
-        // Almacenar la nueva imagen
         $imagen_path = $request->file('imagen_perfil')->store('public/userImg/');
-
         $nombre_archivo = basename($imagen_path);
-
-        // Actualizar el campo 'imagen_perfil' del usuario
         $user->imagen_perfil =  $nombre_archivo;
 
         $user->save();
 
-        // Redireccionar al perfil del usuario
         return redirect()->route('perfil')->with('success', 'Imagen cambiada correctamente');
+    }
+
+    //GAMIFICACION
+
+    public function prestador_level(){
+        $actualLevel = DB::table('full_leaderboard')
+            ->where('codigo',  Auth::user()->codigo) 
+            ->join('medallas', 'max_nivel', '=', 'medallas.nivel')  
+            ->select('max_nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n')
+            ->first();
+
+        return $actualLevel;
+    }
+
+    public function leaderboard_area(){
+
+        $area =  DB::table('users')
+            ->where('codigo',  Auth::user()->codigo) 
+            ->value('area');
+
+        $leaderBoard = DB::table('full_leaderboard')
+            ->select('full_leaderboard.*')
+            ->limit(25)
+            ->get();
+
+        $leaderBoardW = DB::table('full_leaderboard_w')
+            ->select('full_leaderboard_w.*')
+            ->limit(25)->get();
+
+        $leaderBoardM = DB::table('full_leaderboard_m')
+            ->select('full_leaderboard_m.*')
+            ->limit(25)->get();
+
+        return view(
+            'prestador/prestador_leaderboard', compact('leaderBoard','leaderBoardW','leaderBoardM')
+        );
     }
 
     public function level_progress()
     {
-        $user = Auth::user();
 
-        if($user->experiencia >= 2000){
-            $percent = 100;
-        }else{
+        if(Auth::user()->experiencia >= 2000){
             $niveles = DB::table('niveles')
-            ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
-            ->join('ruta_niveles', 'niveles.nivel', '=', 'ruta_niveles.nivel')
-            ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'ruta_niveles.exp', 'niveles.experiencia' )
-            ->where('niveles.experiencia_acumulada', '>=', $user->experiencia)
-            ->orderBy('niveles.experiencia_acumulada')
-            ->limit(2)
-            ->get();
+                ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
+                ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'niveles.experiencia')
+                ->where('niveles.experiencia_acumulada', '>=', 1835)
+                ->orderBy('niveles.experiencia_acumulada')
+                ->limit(2)
+                ->get();
 
-            $full = $niveles[1]->experiencia - $niveles[0]->experiencia;
-            $adv = $user->experiencia - $niveles[0]->experiencia;
+            $percent = 100;
+
+        }else{
+            $nivel = DB::table('niveles')
+                ->join('medallas', 'niveles.nivel', '=', 'medallas.nivel')
+                ->join('ruta_niveles', 'niveles.nivel', '=', 'ruta_niveles.nivel')
+                ->select('niveles.nivel', 'medallas.ruta', 'medallas.descripcion', 'ruta_niveles.exp', 'niveles.experiencia' )
+                ->where('niveles.experiencia_acumulada', '>=', Auth::user()->experiencia)
+                ->orderBy('niveles.experiencia_acumulada')
+                ->limit(2)
+                ->get();
+
+            $full = $nivel[1]->experiencia - $nivel[0]->experiencia;
+            $adv = Auth::user()->experiencia - $nivel[0]->experiencia;
             $percent = number_format(($adv * 100) / $full, 2);
         }
 
-        return view('prestador/prestador_levels',['user' =>$user, 'nivel' => $niveles, 'percent' => $percent ]);
+        return view('prestador/prestador_levels',compact('nivel','percent'));
     }
 
     //TERRITORIOS DESCONOCIDOS 
     /*
+
+        public function index()
+    {
+
+        $code = Auth::user()->codigo;
+        if(request()->ajax()) {
+            $data = DB::table('registros_checkin')
+            ->select('SELECT `fecha`, `hora_entrada`, `hora_salida`, `tiempo`, `horas`, `estado` FROM `registros_checkin` WHERE `codigo` =' + $code )
+            ->get();
+
+            return datatables()->of($data)
+        //->addColumn('action', 'employee-action')
+          //  ->rawColumns(['action'])
+            ->addIndexColumn()
+            ->make(true);
+        }
+        return view('prestador/registro_horas');
+    }
+
 
     public function asignarfirmas(Request $request)
     {
@@ -1137,5 +1476,4 @@ class PrestadorController extends Controller
         return view('prestador.faltas_prestador');
     }
     */
-
 }

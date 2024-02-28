@@ -10,7 +10,7 @@ class RutaNiveles extends Migration
     {
         DB::statement("
         CREATE VIEW ruta_niveles AS
-        SELECT n.`nivel`, n.`experiencia_acumulada` as exp, m.`ruta` 
+        SELECT n.`nivel`, n.`experiencia` as exp, m.`ruta` 
         FROM `niveles` as n INNER JOIN `medallas` as m ON n.`nivel` = m.`nivel`; 
         ");
 

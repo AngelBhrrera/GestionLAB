@@ -12,12 +12,8 @@
         <div class="box intro-y px-3 pt-3 pb-5">
             <div class="flex flex-col 2xl:flex-row items-center justify-center text-center 2xl:text-left">
                 <div class="image-fit w-40 h-40 rounded-full border-4 border-white shadow-md overflow-hidden">
-                
-                @if(!isset($user->imagen_perfil))
-                    <img alt="{{$user->name.' '.$user->apellido}}" src="{{asset('storage/userImg/default-profile-image.png')}}">
-                @else
-                    <img alt="{{$user->name.' '.$user->apellido}}" src="{{asset('storage/userImg/'.$user->imagen_perfil)}}">
-                @endif
+                    <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" 
+                    src="{{route('obtenerImagen', ['nombreArchivo' => ($user->imagen_perfil != null) ? $user->imagen_perfil : 'false'])}}">
                 </div>
                     
                 <div class="2xl:ml-5">
@@ -44,8 +40,8 @@
                 <div class="flex 2xl:mr-10 mt-5"></div>
                 <div class="flex 2xl:mr-10 mt-5">
                     <div class="box intro-y p-5 mt-5">
-                        <h2 class="text-2xl  font-medium">{{$nivel->descripcion}}</h2>
-                        <img width="100" heigth="50"src="{{asset('build/assets/'.$nivel->ruta)}}" alt="Medalla">
+                        <h2 class="text-2xl  font-medium">{{$descripcion_medalla}}</h2>
+                        <img width="100" heigth="50"src="{{asset('build/assets/'.$medalla)}}" alt="Medalla">
                         
                         <h2 class="text-2xl  font-medium">
                             Nivel: {{$nivel_str}}

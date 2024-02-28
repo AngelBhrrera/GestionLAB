@@ -53,7 +53,7 @@
                     </li>
 
                     <li>
-                        <a href="{{route('cliente.solicitud_capacitacion')}}" class="side-menu">
+                        <a href="" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="laptop"></i> </div>
                             <div class="side-menu__title">
                                 SERVICIOS
@@ -118,9 +118,9 @@
                         <div class="h-full dropdown-toggle flex items-center" role="button" aria-expanded="false" data-tw-toggle="dropdown">
                             <div class="w-10 h-10 image-fit">
                             @if(Auth::user()->tipo=='alumno')
-                                <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/student-default-profile.jpg')}}">
+                                <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('build/assets/images/student-default-profile.jpg')}}">
                             @else
-                                <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('storage/userImg/teacher-default-profile.png')}}">
+                                <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" src="{{asset('build/assets/images/teacher-default-profile.png')}}">
                             @endif
                             </div>
                             <div class="hidden md:block ml-3">
