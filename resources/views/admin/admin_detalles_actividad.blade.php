@@ -15,8 +15,9 @@
 @section('subcontent')
 <div class="container">
     <h1 class="text-center">Detalle Actividad</h1>
-    <div class="text-center mx-auto" style="padding-left: 1.5px;" id="players"></div>
-    <ul>
+    @if(isset($detalle))
+    <div class="text-center mx-auto" style="padding-left: 1.5px;"> </div>
+        <ul>
             <li><strong>Categoría:</strong> {{ $detalle->nombre_categoria }}</li>
             <li><strong>Subcategoría:</strong> {{ $detalle->nombre_subcategoria }}</li>
             <li><strong>Título:</strong> {{ $detalle->titulo }}</li>
@@ -43,6 +44,7 @@
                 </ul>
             </li>
         </ul>
+    @endif
 </div>
 @endsection
 

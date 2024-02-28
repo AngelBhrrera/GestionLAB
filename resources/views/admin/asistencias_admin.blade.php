@@ -51,7 +51,7 @@
                 data: assist,
                 layout: "fitColumns",
                 resizableColumns: "false",
-                fitColumns: "true",
+                layout: "fitColumns",
                 pagination: "local",
                 paginationSize: 12,
                 tooltips: true,
@@ -77,6 +77,7 @@
                         title: "Horas",
                         field: "horas",
                         sorter: "number",
+                        editor: "select",
                         width: 70,
                     }, {
                         title: "Estado",

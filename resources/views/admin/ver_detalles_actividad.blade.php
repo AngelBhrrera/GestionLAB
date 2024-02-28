@@ -12,10 +12,7 @@
     <div class="intro-y box p-5 mt-5">
         <h2 class="text-2xl font-medium leading-none mt-3" style="padding-top: 20px; padding-bottom: 20px;">
             Detalles de Actividad
-
         </h2>
-
-        
     </div>
 
 @endsection

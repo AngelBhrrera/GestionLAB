@@ -80,14 +80,14 @@ Route::controller(App\Http\Controllers\Auth\logsysController::class)->group(func
     Route::get('/logout', 'logoutF')->name('logout');
 
     Route::name('api.')->group(function () {
+        //FILTRADOS DEL REGISTER ADMIN
+        Route::get('admin/sede/{id}', 'filtroSedeA')->name('filtroSedeA');
+        Route::get('admin/area/{id}', 'filtroArea')->name('filtroArea');
+        Route::get('admin/turno/{t}/{sed}', 'filtroTurno')->name('filtroTurno');
         //FILTRADOS DEL REGISTER GUEST
         Route::get('/sede/{id}', 'filtroSede')->name('filtroSede');
         Route::get('/area/{id}', 'filtroArea')->name('filtroArea');
         Route::get('/turno/{t}/{sed}', 'filtroTurno')->name('filtroTurno');
-        //FILTRADOS DEL REGISTER ADMIN
-        Route::get('admin/sede/{id}', 'filtroSede')->name('filtroSede');
-        Route::get('admin/area/{id}', 'filtroArea')->name('filtroArea');
-        Route::get('admin/turno/{t}/{sed}', 'filtroTurno')->name('filtroTurno');
     });
 });
 
@@ -103,35 +103,43 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     Route::get('admin/cambiarRol', 'cambiarRol')->name('cambiorol');
                 });
 
-                
-                Route::get('/admin/registro', 'registro')->name('registro'); //NUEVA RUTA
+                Route::middleware('role:jefe area,jefe sede,Superadmin')->group(function() {
 
-                Route::get('/admin/premios', 'premios')->name('premios');
-                Route::get('/admin/premios_tabulador', 'gestor_premios')->name('gestor_premios');
-                Route::get('admin/eliminar_premio/{value}', 'eliminar_premio')->name('eliminar_premio');
-
-                Route::get('admin/ver_reportes_parciales', 'ver_reportes_parciales')->name('reportes_parciales');
-                Route::get('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
-
-                Route::get('/admin/administradores', 'administradores')->name('administradores');
-
-                Route::get('admin/gestionSede', 'gestionSedes')->name('sede');
-
-                Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
-                Route::post('admin/nuevaArea', 'nuevaArea')->name('nuevaArea');
-                Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
+                    Route::middleware('role:Superadmin')->group(function() {
+                        Route::get('/superadmin/gestion', 'gestionViews')->name('gestionViews');
+                    });
                     
-                Route::get('/admin/faltas', 'faltas')->name('faltas');
-                Route::get('/admin/horarios', 'horarios')->name('horarios');
-                Route::get('/admin/Dias_no_laborables', 'diasfestivos')->name('diasfestivos');
-                Route::post('/admin/agregar_festivos', 'guardarFestivos')->name('agregar_festivos');
-
-                Route::get('/admin/categorias', 'categorias')->name('categorias');
-                Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
-                Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg');
-
-                Route::middleware('role:Superadmin')->group(function() {
-                    Route::get('/superadmin/gestion', 'gestionViews')->name('gestionViews');
+                    Route::get('/admin/registro', 'registro')->name('registro'); 
+    
+                    Route::get('/admin/administradores', 'administradores')->name('administradores');
+                    //MODULO PREMIOS
+                    Route::get('/admin/premios', 'premios')->name('premios');
+                    Route::post('admin/g_premio', 'guardar_premio')->name('guardar_premio');
+                    Route::get('admin/eliminar_premio/{value}', 'eliminar_premio')->name('eliminar_premio');
+                    Route::post("admin/a_premio", "asignar_premio")->name("asignar_premio");
+                    Route::get('/admin/verpremios', 'gestor_premios')->name('gestor_premios');
+                    //MODULO REPORTES
+                    Route::get('admin/ver_reportes_parciales', 'ver_reportes_parciales')->name('reportes_parciales');
+                    Route::get('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
+                    Route::post('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
+                    Route::get('admin/resultados_busqueda/{codigo}', 'resultados_busqueda')->name('resultados_busqueda');
+                    Route::get('admin/autorizar_denegar_reportes/{modo}/{id}', 'autorizar_denegar_reportes')->name('autorizar_denegar_reportes');
+                    //MODULO SEDES
+                    Route::get('admin/gestionSede', 'gestionSedes')->name('sede');
+                    Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
+                    Route::post('admin/nuevaArea', 'nuevaArea')->name('nuevaArea');
+                    Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
+                    //MODULO CALENDARIO
+                    Route::get('/admin/faltas', 'faltas')->name('faltas');
+                    Route::get('/admin/horarios', 'horarios')->name('horarios');
+                    Route::get('admin/eliminarFestivo/{id}', 'eliminardiafestivo')->name('eliminarFestivo');
+                    Route::post('admin/editarFestivo', 'editardiafestivo')->name('editarFestivo');
+                    Route::get('/admin/Dias_no_laborables', 'diasfestivos')->name('diasfestivos');
+                    Route::post('/admin/agregar_festivos', 'guardarFestivos')->name('agregar_festivos');
+                    //MODULO CATEGORIAS
+                    Route::get('/admin/categorias', 'categorias')->name('categorias');
+                    Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
+                    Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg'); 
                 });
                     
             });
@@ -154,15 +162,21 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
             Route::get('/admin/ver_actividades', 'actividades')->name('actividades');
             Route::get('/admin/actividades_en_progreso','actividades_en_progreso')->name('actividades_en_progreso');
-            Route::get('/admin/actividades_revision', 'actividades_revision')->name('actividades_revision');
+            Route::get('/admin/actividades_revision', 'reviewActs')->name('reviewActs');
+
+            Route::get('/admin/actividades_propuestas','proposeActs')->name('proposeActs');
+            Route::get('/admin/aprobar_actividad/{id}', 'setActTEC')->name('setActTEC');
+            Route::post('/admin/actividad_TEU', 'actTEC')->name('actTEC');
+
             //RUTAS PROYECTOS Y ASIGNACIONES
             Route::get('/admin/C_proyectos', 'create_proy')->name('create_proy');
+            Route::get('/admin/A_proyectos', 'proy_acts')->name('proy_acts');
             Route::post('/admin/M_proyecto', 'make_proy')->name('make_proy');
             Route::post('/admin/asign', 'asign')->name('asign');
             Route::post('/admin/asign2', 'asign2')->name('asign2');
             Route::get('/admin/ver_proyectos', 'view_proys')->name('view_proys');
             Route::get('/admin/ver_detalles_proyecto/{id}', 'view_details_proy')->name('view_details_proy');
-            Route::get('/admin/ver_detalles_actividad/{proyecto_origen}/{id}', 'view_details_act')->name('view_details_act');
+            Route::get('/admin/ver_detalles_proyecto/ver_detalles_actividad/{id}', 'view_details_act')->name('view_details_act');
             //MODULO IMPRESIONES
             Route::get('/admin/ver_impresoras', 'control_print')->name('control_print');
             Route::post('/admin/registrar_impresoras', 'make_print')->name('make_print');
@@ -202,6 +216,9 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 //MODULO REPORTES
                 Route::get('admin/ver_reportes_parciales', 'ver_reportes_parciales')->name('reportes_parciales');
                 Route::get('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
+                Route::post('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
+                Route::get('admin/resultados_busqueda/{codigo}', 'resultados_busqueda')->name('resultados_busqueda');
+                Route::get('admin/autorizar_denegar_reportes/{modo}/{id}', 'autorizar_denegar_reportes')->name('autorizar_denegar_reportes');
                 //MODULO SEDES
                 Route::get('admin/gestionSede', 'gestionSedes')->name('sede');
                 Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
@@ -216,6 +233,9 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::get('/admin/categorias', 'categorias')->name('categorias');
                 Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
                 Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg'); 
+                 //CAMBIO PASSWORD
+                 Route::get('/admin/ver_cambio_password', 'verCambiarPassword')->name('verCambiarPassword');
+                 Route::post('/admin/actualizar_password', 'actualizar_password')->name('actualizar_password');
             });
 
         });
@@ -232,6 +252,8 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('admin/activar_impresora/{value}', 'activate_print')->name('activate_print');
             Route::get('admin/changestate_print/{id}/{value}', 'printstate')->name('printstate');
             Route::get('admin/observaciones_impresion/{id}/{value}', 'detail_prints')->name('detail_prints');
+
+            Route::get('admin/califAct/{id}/{value}', 'actstate')->name('actstate');
             
             Route::middleware('role:jefe area,jefe sede,Superadmin')->group(function() {
                 //API PRESTADOR
@@ -241,11 +263,9 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::get('admin/changestate/{id}/{value}', 'checkinstate')->name('checkinstate');
                 //API SEDES
                 Route::get('admin/activar_area/{id}/{campo}', 'activate_area')->name('activatearea');
-               
-            });
 
-            Route::middleware('role:jefe area,jefe sede')->group(function() {
-                Route::get('admin/eliminarFestivo/{id}', 'eliminardiafestivo')->name('eliminarFestivo');
+                Route::get('admin/changeHrs/{id}/{value}', 'modifHoras')->name('modifHoras');
+               
             });
             /*
             Route::post('/actualizarcursos1',  'guardarcursos1')->name('actualizarcursos1');
@@ -343,20 +363,23 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::get('prestador/obtenerSubcategoria', 'obtenerSubcategorias')->name('obtenerSubcategorias');
 
         Route::get('prestador/actividadesAsignadas', 'actividadesAsignadas')->name('actividadesAsignadas');
-
         Route::get('prestador/actividadesAbiertas', 'actPull')->name('actPull');
-
-        Route::get('prestador/startAct/{id}/{teu}', 'startAct')->name('startAct');
+        Route::get('prestador/tomarActividad/{id}/{teu}', 'takeAct')->name('takeAct');
+        Route::get('prestador/comenzarActividad/{id}/{teu}', 'startAct')->name('startAct');
         Route::get('prestador/actividadStatus/{id}/{mode}', 'statusAct')->name('statusAct');
         //RUTAS ACTIVIDADES
         Route::get('prestador/C_actividades', 'create_act')->name('create_act');
         Route::post('prestador/M_actividades', 'make_act')->name('make_act');
         Route::get('prestador/A_actividades', 'asign_act')->name('asign_act');
         Route::get('prestador/misActividades','misActividades')->name('misActividades');
+
+        Route::get('prestador/miProyecto','myProject')->name('myProject');
         Route::get('prestador/detalles_actividad/{val}','detallesActividad')->name('detallesActividad');
-        Route::get('prestador/observaciones_actividad/{id}/{val}', 'detail_act')->middleware('role:prestador,practicante,voluntario,coordinador,jefe area,jefe sede')->name('detail_act');
+        Route::get('prestador/observaciones_actividad/{id}/{val}', 'detail_act')->middleware('role:prestador,practicante,voluntario')->name('detail_act');
+        Route::get('admnin/observaciones_actividad/{id}/{val}', 'detail_act')->middleware('role:coordinador,jefe area,jefe sede')->name('detail_act');
         //MODULO GAMIFICACION
         Route::get('prestador/nivel', 'level_progress')->name('level');
+        Route::get('prestador/leaderboard', 'leaderboard_area')->name('leaderboard_area');
 
 
         Route::post('prestador/completar_impresion','completar_impresion')->name('completar_impresion');

@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <title>GESTION LAB INVENTORES</title>
-        <link href="{{ asset('build/assets/images/inventores.png')}}" rel="shortcut icon">
+        <link href="{{ asset('build/assets/images/Inventores.png')}}" rel="shortcut icon">
         <!-- BEGIN: CSS Assets-->
         <link rel="stylesheet" href="{{ asset('build/assets/css/dual-listbox.css') }}">
         <link rel="stylesheet" href="{{ asset('build/assets/css/app.c07cb30e.css') }}">

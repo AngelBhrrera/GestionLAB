@@ -17,7 +17,8 @@
 <div class="container" id="contenedor-actividades">
     <h1 class="text-center" id="detalle_titulo">Detalle Actividad</h1>
     <div class="text-center mx-auto" style="padding-left: 1.5px;" id="players"></div>
-    <div id="actividad">
+    @if(isset($detalle))
+        <div id="actividad">
         <ul>
                 <h1 id="titulo_actividad">{{$detalle->titulo}}</h1>
                 <li id="categorias"><strong>Categoría:</strong> {{ $detalle->nombre_categoria }}</li>
@@ -46,6 +47,7 @@
                 </li>
             </ul>
     </div>
+    @endif
 </div>
 @endsection
 

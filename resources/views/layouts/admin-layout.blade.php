@@ -28,6 +28,9 @@
             background-color: #BDC9EB; 
             z-index: 1000; 
         }
+        .blanco {
+            filter: invert(80%) saturate(0%);
+        }
     </style>
 
     <?php  
@@ -110,14 +113,18 @@
                     </li>
                     <li>
                         <a href="{{route('admin.premios')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                            <div class="side-menu__icon"> <i data-lucide="award"></i> </div>
                             <div class="side-menu__title">Premios</div>
                         </a>
                     </li>
                     </li>
                     <li>
                         <a href="{{route('admin.gestor_premios')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                            <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
+                            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-badge">
+                            <path d="M12 22h6a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                            <path d="M5 17a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M7 16.5 8 22l-3-1-3 1 1-5.5"/></svg></i></div>
                             <div class="side-menu__title">Ver premios</div>
                         </a>
                     </li>
@@ -126,18 +133,6 @@
                         <a href="{{route('admin.sede')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
                             <div class="side-menu__title">Modificar sede</div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{route('admin.premios')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
-                            <div class="side-menu__title">Gestionar Premios</div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{route('admin.gestor_premios')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
-                            <div class="side-menu__title">Tabulador premios</div>
                         </a>
                     </li>
                     @endif
@@ -367,6 +362,31 @@
                             <div class="side-menu__title">Registro de visitas</div>
                         </a>
                     </li>
+                    <li>
+                        <a href="" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="plus-circle"></i> </div>
+                            <div class="side-menu__title">Solicitudes</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="alert-circle"></i> </div>
+                            <div class="side-menu__title">Citas por confirmar </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a hhref="" class="side-menu">
+                            <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-clock">
+                                        <path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5" />
+                                        <path d="M16 2v4" />
+                                        <path d="M8 2v4" />
+                                        <path d="M3 10h5" />
+                                        <path d="M17.5 17.5 16 16.25V14" />
+                                        <path d="M22 16a6 6 0 1 1-12 0 6 6 0 0 1 12 0Z" />
+                                    </svg></i> </div>
+                            <div class="side-menu__title">Programadas</div>
+                        </a>
+                    </li>
                 </ul>
             </li>
         @endsection
@@ -392,12 +412,11 @@
                     </li>
                     <li>
                         <a href="{{ route('admin.create_act')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-edit">
-                                        <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
-                                        <path d="M10.42 12.61a2.1 2.1 0 1 1 2.97 2.97L7.95 21 4 22l.99-3.95 5.43-5.44Z" />
-                                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5.5" />
-                                        <path d="M4 13.5V6a2 2 0 0 1 2-2h2" />
-                                    </svg></i> </div>
+                            <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                            stroke-linejoin="round" class="lucide lucide-clipboard-plus"><rect width="8" height="4" x="8" 
+                            y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                            <path d="M9 14h6"/><path d="M12 17v-6"/></svg></i> </div>
                             <div class="side-menu__title">Crear actividades</div>
                         </a>
                     </li>
@@ -408,31 +427,43 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.asign_act') }}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
-                            <div class="side-menu__title"> Asignar a prestadores </div>
-                        </a>
-                    </li>
-                    <li>
                         <a href="{{route('admin.actividades')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="list-checks"></i> </div>
                             <div class="side-menu__title"> Ver todas las actividades </div>
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('actividades_canceladas')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-warning">
-                                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-                                        <path d="M12 9v4" />
-                                        <path d="M12 17h.01" />
-                                    </svg></i> </div>
-                            <div class="side-menu__title"> Actividades con error </div>
+                        <a href="{{ route('admin.asign_act') }}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
+                            <div class="side-menu__title"> Asignar actividades</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.proy_acts') }}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
+                            <div class="side-menu__title"> Asignar actividades a proyecto</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.reviewActs') }}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
+                            <div class="side-menu__title"> Revisar actividades</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.proposeActs') }}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
+                            <div class="side-menu__title"> Actividades propuestas prestador</div>
                         </a>
                     </li>
                     @if (Auth::user()->tipo == "jefe area" || Auth::user()->tipo == "jefe sede" || Auth::user()->tipo == "Superadmin")
                     <li>
                         <a href="{{route('admin.categorias')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                            <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                            stroke-linejoin="round" class="lucide lucide-between-horizontal-start"><rect width="13" 
+                            height="7" x="8" y="3" rx="1"/><path d="m2 9 3 3-3 3"/><rect width="13" height="7" 
+                            x="8" y="14" rx="1"/></svg></i> </div>
                             <div class="side-menu__title">Añadir categorias</div>
                         </a>
                     </li>
@@ -440,7 +471,8 @@
                 </ul>
             </li>
         @endsection
-@endif
+    @endif
+
 
 @if ($filtro->impresiones == 1)
     @if (Auth::user()->tipo == "coordinador" || Auth::user()->tipo == "jefe area")
@@ -456,13 +488,13 @@
                 <ul class="">
                     <li>
                         <a href="{{route('admin.control_print')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                            <div class="side-menu__icon"> <i><img src="{{asset('build/assets/images/3d-printer-gear.png')}}" class="blanco"  width="24" height="24" alt=""></i> </div>
                             <div class="side-menu__title">Gestión Impresoras</div>
                         </a>
                     </li>
                     <li>
                         <a href="{{route('admin.watch_prints')}}" class="side-menu">
-                        <div class="side-menu__icon"> <i data-lucide="kanban-square-dashed"></i> </div>
+                        <div class="side-menu__icon"> <i><img src="{{asset('build/assets/images/3d-printer.png')}}"  class="blanco"  width="24" height="24" alt=""></i> </div>
                             <div class="side-menu__title">Gestión Impresiones</div>
                         </a>
                     </li>
@@ -541,6 +573,11 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
+                            @if (Auth::user()->tipo != "coordinador")
+                                <li>
+                                <a href="{{ route('admin.verCambiarPassword') }}" class="dropdown-item"> <i data-lucide="lock" class="w-4 h-4 mr-2"></i> Cambiar contraseña</a>
+                                </li>
+                            @endif
                             <li>
                                 <a href="{{ route('logout') }}" class="dropdown-item"> <i data-lucide="toggle-right" class="w-4 h-4 mr-2"></i> Cerrar sesión </a>
                             </li>

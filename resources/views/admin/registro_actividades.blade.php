@@ -43,7 +43,7 @@
                     <div class="form-group row">
                         <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Categoría</label>
                         <div class="col-md-6">
-                        <select class="form-control" id="tipo_categoria" name="tipo_categoria" required onchange="filtrarActividades()">
+                            <select class="form-control" id="tipo_categoria" name="tipo_categoria" required onchange="filtrarActividades()">
                                 <option value="">Selecciona una categoría</option>
                                 @foreach ($categorias as $categoria)
                                     <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
@@ -115,8 +115,8 @@
                     <div class="form-group row">
                         <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Tiempo estimado (TEC)</label>
                             <div class="col-md-6">
-                                    <input name="horas" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
-                                    <input name="minutos" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
+                                    <input name="horas" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" required value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
+                                    <input name="minutos" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" required value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
                             </div>
                             <small id="Help" class="form-text text-muted">Ingresa el tiempo estimado para la actividad</small>
                     </div>

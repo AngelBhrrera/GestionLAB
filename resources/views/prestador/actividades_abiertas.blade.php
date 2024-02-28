@@ -39,27 +39,12 @@
                     echo $horas . " h " . $minutos . " m";
                 @endphp
                 <br>
-                <span class="tr">Tiempo Invertido:</span> {{ $actividad->duracion }}
-                <br>
-                @if(isset($actividad->TEU))
-                    @php
-                        $tiempo_en_minutos = $actividad->TEU;
-                        $horas = floor($tiempo_en_minutos / 60);
-                        $minutos = $tiempo_en_minutos % 60;
-
-                    @endphp
-                    <div class="col-md-6">
-                        <input name="horas"  style="width: 125px;"  class="form-control sm:w-56" value="{{ $horas . ' h '}}"> 
-                        <input name="minutos"  style="width: 125px;" class="form-control sm:w-56" value= "{{ $minutos . ' m '}}" >
-                    </div>
-                @else
-                    <div class="col-md-6">
-                        <input name="horas"  style="width: 125px;" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
-                        <input name="minutos"  style="width: 125px;" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
+                <div class="col-md-6">
+                        <input id = "horas_{{ $actividad->id }}" name="horas_{{ $actividad->id }}"  style="width: 125px;" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" >
+                        <input id= "minutos_{{ $actividad->id }}" name="minutos_{{ $actividad->id }}"  style="width: 125px;" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" >
                     </div>
                     <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
-                @endif
-            </div>
+                </div>
             <div class="detalle botones">
                 @if($actividad->estado == 'Asignada')
                     <button class="boton"  onclick="tomarActividad({{ $actividad->id }})" >Tomar Actividad</button>
@@ -75,38 +60,33 @@
 @section('script')
 
     <script type="text/javascript">
-        function comenzarActividad(idActividad) {
 
-            const horasInput = document.querySelector('input[name="horas"]').value;
-            const minutosInput = document.querySelector('input[name="minutos"]').value;
+    function tomarActividad(idActividad) {
 
-            if (horasInput && minutosInput) {
-                const minutos = parseInt(horasInput) * 60 + parseInt(minutosInput);
+        var id = idActividad;
 
-                const token = document.head.querySelector('meta[name="csrf-token"]').content;
-                fetch(`startAct/${idActividad}/${minutos}`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': token,
-                        },
-                })
-                .then(response => response.json())
-                .then(data => {
+        var nH = "horas_"+id;
+        var nM = "minutos_"+id;
+        const horasInput = document.getElementById(nH);
+        const minutosInput = document.getElementById(nM);
 
-                    window.location.reload(); 
-                })
-                .catch(error => {
-                    console.error('Error en activacion:', error);
-                });
-            } else {
-                alert('Por favor, ingrese las horas y los minutos.');
+        if (horasInput.value || minutosInput.value) {
+
+            if(!horasInput.value){
+                fixedHoras = 0;
+                var minutos = parseInt(minutosInput.value);
             }
-        } 
+            if(!minutosInput.value){
+                fixedMinutos = 0;
+                var minutos = parseInt(horasInput.value) * 60;
+            }else{
+                var minutos = parseInt(horasInput.value) * 60 + parseInt(minutosInput.value);
+            }
 
-        function pausarActividad(idActividad) {
+            console.log(minutos);
+            
             const token = document.head.querySelector('meta[name="csrf-token"]').content;
-            fetch(`actividadStatus/${idActividad}/${1}`, {
+            fetch(`tomarActividad/${idActividad}/${minutos}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -121,52 +101,14 @@
             .catch(error => {
                 console.error('Error en activacion:', error);
             });
-        } 
-
-        function continuarActividad(idActividad) {
-            const token = document.head.querySelector('meta[name="csrf-token"]').content;
-            fetch(`actividadStatus/${idActividad}/${2}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': token,
-                    },
-            })
-            .then(response => response.json())
-            .then(data => {
-
-                window.location.reload(); 
-            })
-            .catch(error => {
-                console.error('Error en activacion:', error);
-            });
-        } 
-
-        function terminarActividad(idActividad) {
-            const token = document.head.querySelector('meta[name="csrf-token"]').content;
-            fetch(`actividadStatus/${idActividad}/${3}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': token,
-                    },
-            })
-            .then(response => response.json())
-            .then(data => {
-
-                window.location.reload(); 
-            })
-            .catch(error => {
-                console.error('Error en activacion:', error);
-            });
-        } 
-
-
-        function verDetalles(idActividad) {
-                window.location.href = "detalles_actividad/" + idActividad;
+        } else {
+            alert('Por favor, ingrese las horas y los minutos.');
         }
+    } 
 
+    function verDetalles(idActividad) {
+            window.location.href = "detalles_actividad/" + idActividad;
+    }
 
     </script>
-
 @endsection

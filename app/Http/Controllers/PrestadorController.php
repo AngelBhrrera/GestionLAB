@@ -22,22 +22,53 @@ class PrestadorController extends Controller
         $horasRestantes = DB::table('seguimiento_horas_completo')->where('id', Auth::user()->id)->value('horas_restantes');
         $horasPendientes = DB::table('registros_checkin')->where('idusuario',Auth::user()->id)->where('estado', 'pendiente')->sum('horas');
         $horasTotales = DB::table('users')->where('id',Auth::user()->id)->value('horas');
-
-        $leaderboard= DB::table('full_leaderboard')
-            ->limit(10)
+        
+        $asistencias = DB::table('registros_checkin')
+            ->where('idusuario', Auth::user()->id)
+            ->orderBy('fecha_actual', 'desc')
+            ->limit(5)
             ->get();
 
-        $posicionUsuario= DB::table('full_leaderboard')
-            ->where('codigo',  Auth::user()->codigo)
-            ->value('Posicion');
 
+        $leaderboard= DB::table('full_leaderboard')
+            ->select('Posicion','Inventor','full_leaderboard.experiencia','ruta','max_nivel', 'full_leaderboard.codigo', 'sede','area')
+            ->join('users', 'users.codigo', '=','full_leaderboard.codigo')
+            ->where('sede', Auth::user()->sede)
+            ->where('area', Auth::user()->area)
+            ->limit(10)
+            ->get();
+        $i=1;
+        foreach($leaderboard as $posicion){
+            $posicion->Posicion = $i;
+            $i++;
+        }
+        $i=1;
+        $tablaCompleta = DB::table('full_leaderboard')
+        ->select('Posicion','Inventor','full_leaderboard.experiencia','ruta','max_nivel', 'full_leaderboard.codigo', 'sede','area')
+        ->join('users', 'users.codigo', '=','full_leaderboard.codigo')
+        ->where('sede', Auth::user()->sede)
+        ->where('area', Auth::user()->area)
+        ->get();
+
+        $i=1;
+        foreach($tablaCompleta as $elemento){
+
+            if($elemento->codigo == Auth::user()->codigo){
+                $posicionUsuario = $i;
+                break;
+            }
+            $i++;
+        }
+        
         $usuarioMedalla = $this->prestador_level();
 
         return view(
-            'prestador/newHomeP',compact('horasAutorizadas', 'horasPendientes', 'horasTotales', 'horasRestantes',  
-            'leaderboard', 'posicionUsuario', 'usuarioMedalla'));
+            'prestador/newHomeP',  
+            compact('horasAutorizadas', 'horasPendientes', 'horasTotales', 'horasRestantes',  
+            'leaderboard', 'posicionUsuario', 'usuarioMedalla')
+        )->with('asistencias', json_encode($asistencias));
     }
-
+    
     public function horas()
     {
         $asistencias = DB::table('registros_checkin')
@@ -171,9 +202,8 @@ class PrestadorController extends Controller
 
                     //CHECK DE SALIDA
                     if ($verificar) {
-
+                        $this->pauseActP($user->id);
                         $this->marcarSalida($user);
-                        $this->pauseAct();
                         return redirect()->route( $fuenteCheckin['dir'])->with('success', 'Adios ' . $user->name);
 
                     //CHECK DE ENTRADA
@@ -241,7 +271,7 @@ class PrestadorController extends Controller
     {
 
         $actividades = DB::table('actividades_prestadores')
-            ->select('actividades_prestadores.*', 'actividades.tec', 'actividades.titulo')
+            ->select('actividades_prestadores.*', 'actividades.TEC', 'actividades.titulo')
             ->join('actividades', 'actividades.id', '=', 'actividades_prestadores.id_actividad')
             ->where('actividades_prestadores.id_prestador', auth()->user()->id)
             ->get();
@@ -273,18 +303,25 @@ class PrestadorController extends Controller
 
     //VER PROYECTOS
 
-    public function proyectoPrestador()
+    public function myProject()
     {
-        $proys = DB::table('proyectos_prestadores')
+        $id = DB::table('proyectos_prestadores')
             ->where('id_prestador', auth()->user()->id)
+            ->value('id_proyecto');
+        $proyecto = DB::table('proyectos')
+            ->where('id',$id)
+            ->value('titulo');
+        $prestadores = DB::table('proyectos_prestadores')
+            ->select('id_prestador', 'name', 'apellido', 'correo', 'telefono')
+            ->where('id_proyecto', $id)
+            ->join('users', 'id_prestador','=','users.id')
+            ->get();
+        $actividades = DB::table('seguimiento_actividades')
+            ->select('actividad_id','actividad', 'estado', 'prestador')
+            ->where('id_proyecto', $id)
             ->get();
 
-        $prestadores = DB::table('solo_prestadores')
-            ->join('proyectos_prestadores', 'solo_prestadores.id', '=', 'proyectos_prestadores.id_prestador')
-            ->where('proyectos_prestadores.id_proyecto', $proys->first()->id_proyecto)
-            ->get();
-
-        return view('/prestador/crear_actividad_prestador', compact('prestadores', 'actividades', 'categorias'));
+        return view('/prestador/mi_proyecto_prestador', compact('prestadores', 'actividades', 'proyecto'));
     }
 
     //SISTEMA DE ACTIVIDADES GAMIFICADO
@@ -295,8 +332,9 @@ class PrestadorController extends Controller
             ->where('id_prestador', auth()->user()->id)
             ->pluck('id_proyecto');
 
-        $acts = DB::table('seguimiento_actividades')
+        $actividades = DB::table('seguimiento_actividades')
             ->where('id_prestador', auth()->user()->id)
+            ->whereNotIn('estado', ['Aprobada'])
             ->orWhere(function($query) use ($proys) {
                 $query->whereIn('id_proyecto', $proys)
                         ->where('id_prestador', 0);
@@ -304,7 +342,7 @@ class PrestadorController extends Controller
             ->orderByDesc('fecha')
             ->get();
 
-        return view('/prestador/actividades_asignadas', ['actividades' =>$acts]);
+        return view('/prestador/actividades_asignadas',compact('actividades'));
     }
 
     public function actPull()
@@ -329,18 +367,55 @@ class PrestadorController extends Controller
         $verificar = $this->checkEntrada(auth()->user()->id);
 
         $disponible = DB::table('actividades_prestadores')
-        ->where('id_prestador', auth()->user()->id)
-        ->orWhere('id_prestador', 0)
-        ->where('id', $id)
-        ->exists();
+            ->where('id_prestador', auth()->user()->id)
+            ->orWhere('id_prestador', 0)
+            ->where('id', $id)
+            ->exists();
 
         if($disponible && $verificar){
+
+            if($this->checkAct()){
+                $this->pauseAct();
+            }
+            
             DB::table('actividades_prestadores')
             ->where('id', $id)
             ->update([
                 'id_prestador' => auth()->user()->id,
                 'estado' => 'En Proceso',
-                'horas_ref' => $hor,
+                'hora_refs' => $hor,
+                'TEU' => $teu
+            ]);
+
+        }else{
+            return response()->json(['message' => 'NO has realizado check de entrada']);
+        }
+
+        return response()->json(['mensaje' => 'Actividad iniciada correctamente para la actividad con ID ' . $id]);
+    }
+
+    public function takeAct($id, $teu){
+
+        $hor = date('H:i:s');
+
+        $verificar = $this->checkEntrada(auth()->user()->id);
+
+        $disponible = DB::table('actividades_prestadores')
+            ->where('id_prestador', auth()->user()->id)
+            ->orWhere('id_prestador', 0)
+            ->where('id', $id)
+            ->exists();
+
+        if($disponible && $verificar){
+            if($this->checkAct()){
+                $this->pauseAct();
+            }
+            DB::table('actividades_prestadores')
+            ->where('id', $id)
+            ->update([
+                'id_prestador' => auth()->user()->id,
+                'estado' => 'En Proceso',
+                'hora_refs' => $hor,
                 'TEU' => $teu
             ]);
         }else{
@@ -351,11 +426,11 @@ class PrestadorController extends Controller
     }
 
     public function checkAct(){
-        //Busca si el prestador ya tenia una actividad en proceso
+
         $actual = DB::table('actividades_prestadores')
-        ->where('id_prestador', auth()->user()->id)
-        ->where('estado', 'En proceso')
-        ->exists();
+            ->where('id_prestador', auth()->user()->id)
+            ->where('estado', 'En proceso')
+            ->exists();
 
         return $actual;
     }
@@ -367,67 +442,107 @@ class PrestadorController extends Controller
             ->where('estado', 'En proceso')
             ->value('id');
 
-        return DB::table('actividades_prestadores')
+        DB::table('actividades_prestadores')
             ->where('id', $found)
-            ->update([
-            'estado' => 'Bloqueada'
-        ]);
+            ->update(['estado' => 'Bloqueada']);
+
+        return 0;
+    }
+
+    public function pauseActP($id){
+
+        $found = DB::table('actividades_prestadores')
+            ->where('id_prestador', $id)
+            ->where('estado', 'En proceso')
+            ->value('id');
+
+        DB::table('actividades_prestadores')
+            ->where('id', $found)
+            ->update(['estado' => 'Bloqueada']);
+
+        return 0;
     }
 
     public function statusAct($id, $mode)
     {
-        if($this->checkAct()){
-            $this->pauseAct();
-        }
 
-        if($mode == 1){
-            $hor = date('H:i:s');
-
-            DB::table('actividades_prestadores')
-            ->where('id', $id)
-            ->update([
-                'estado' => 'En Proceso',
-                'horas_ref' => $hor
-            ]);
-
-            return response()->json(['mensaje' => 'AOK']);
-            
-        }else if($mode == 2){
-
-            $timeRef = DB::table('actividades_prestadores')
+        $verificar = $this->checkEntrada(auth()->user()->id);
+        if($verificar){
+            if($this->checkAct()){
+                $this->pauseAct();
+            }
+    
+            if($mode == 1){
+                $hor = date('H:i:s');
+    
+                DB::table('actividades_prestadores')
                 ->where('id', $id)
-                ->value('horas_ref');
-            $timeRef2 = date('H:i:s');
-
-            $tiempoInvertido = DB::table('actividades_prestadores')
+                ->update([
+                    'estado' => 'En Proceso',
+                    'hora_refs' => $hor
+                ]);
+    
+                return response()->json(['mensaje' => 'AOK']);
+                
+            }else if($mode == 2){
+    
+                $timeRef = DB::table('actividades_prestadores')
+                    ->where('id', $id)
+                    ->value('hora_refs');
+                $timeRef2 = date('H:i:s');
+    
+                $tiempoInvertido = DB::table('actividades_prestadores')
+                    ->where('id', $id)
+                    ->value('Tiempo_Invertido');
+    
+                $intervalCalc = $this->calculoIntervaloM($timeRef, $timeRef2);
+                $tiempoInvertido += $intervalCalc;
+    
+                DB::table('actividades_prestadores')
                 ->where('id', $id)
-                ->value('Tiempo_Invertido');
+                ->update([
+                    'estado' => 'Bloqueada',
+                    'Tiempo_Invertido' => $tiempoInvertido
+                ]);
+    
+                return response()->json(['mensaje' => 'BOK']);
 
-            $intervalCalc = $this->calculoIntervaloM($timeRef, $timeRef2);
-            $tiempoInvertido += $intervalCalc;
+            }else if($mode == 3){
 
-            DB::table('actividades_prestadores')
-            ->where('id', $id)
-            ->update([
-                'estado' => 'Bloqueada',
-                'Tiempo_Invertido' => $tiempoInvertido
-            ]);
-
-            return response()->json(['mensaje' => 'BOK']);
-
-        }else if($mode == 3){
-
-            //AGREGAR EN ACTIVIDADES PRESTADORES EL TIEMPO REAL FINAL.
-            DB::table('actividades_prestadores')
-            ->where('id', $id)
-            ->update([
-                'estado' => 'Finalizada'
-            ]);
-
-            return response()->json(['mensaje' => 'COK']);
+                $timeRef = DB::table('actividades_prestadores')
+                ->where('id', $id)
+                ->value('hora_refs');
+                $timeRef2 = date('H:i:s');
+    
+                $tiempoInvertido = DB::table('actividades_prestadores')
+                    ->where('id', $id)
+                    ->value('Tiempo_Invertido');
+    
+                $intervalCalc = $this->calculoIntervaloM($timeRef, $timeRef2);
+                $tiempoInvertido += $intervalCalc;
+    
+                DB::table('actividades_prestadores')
+                ->where('id', $id)
+                ->update([
+                    'estado' => 'Bloqueada',
+                    'Tiempo_Invertido' => $tiempoInvertido
+                ]);
+    
+    
+                if($tiempoInvertido > 0){
+                    DB::table('actividades_prestadores')
+                    ->where('id', $id)
+                    ->update([
+                        'estado' => 'En revision'
+                    ]);
+                }else{
+                    return response()->json(['mensaje' => 'ERROR, finalizaste una tarea sin tiempo invertido']);
+                }
+                return response()->json(['mensaje' => 'COK']);
+            }
         }
         
-        return response()->json(['mensaje' => 'OK']);
+        return response()->json(['mensaje' => 'ERROR, no hay check de entrada']);
     }
 
     //CREACION DE ACTIVIDADES COMO PRESTADOR
@@ -446,9 +561,6 @@ class PrestadorController extends Controller
         $subcategoria = $request->input('tipo_subcategoria');
         if($subcategoria == '')
             $subcategoria = null;
-        $horas = $request->input('horas')*60;
-        $minutos = $request->input('minutos');
-        $tec = $horas + $minutos;
     
         DB::table('actividades')->insert([
             'titulo' => $request->input('nombre'),
@@ -458,7 +570,6 @@ class PrestadorController extends Controller
             'recursos' =>  $request->input('recursos'),
             'descripcion' => $request->input('descripcion'),
             'objetivos' => $request->input('resultados'),
-            'TEC' => $tec,
         ]);
 
         return redirect()->route('misActividades');
@@ -520,7 +631,7 @@ class PrestadorController extends Controller
 
         $tiempo = $this->format_time($request->input('horas'), $request->input('minutos'));
 
-        DB::table('seguimiento_impresiones')->insertGetId([['id_Prestador' =>Auth::user()->id, 
+        DB::table('seguimiento_impresiones')->insert([['id_Prestador' =>Auth::user()->id, 
         'id_Impresora' => $request->input('imp_id'), 'id_Proyecto' =>$request->input('proyect'), 
         'nombre_modelo_stl' => $request->input('model'), 'color' => $request->input('color'), 
         'piezas' => $request->input('pieces'), 'peso' => $request->input('weight'), 'tiempo_impresion' => $tiempo]]);
@@ -553,6 +664,9 @@ class PrestadorController extends Controller
     {
         $data = DB::table('ver_impresiones')
             ->orderByDesc('fecha')
+            ->where('users.area', Auth::user()->area)
+            ->join('users', 'users.id', '=', 'ver_impresiones.id_prestador')
+            ->select(DB::raw("CONCAT(users.name, ' ', users.apellido) AS prestador"), 'ver_impresiones.*')
             ->get();
 
         return view('prestador/mostrar_impresiones', ['impresiones' => json_encode($data)]);
@@ -741,6 +855,30 @@ class PrestadorController extends Controller
             ->first();
 
         return $actualLevel;
+    }
+
+    public function leaderboard_area(){
+
+        $area =  DB::table('users')
+            ->where('codigo',  Auth::user()->codigo) 
+            ->value('area');
+
+        $leaderBoard = DB::table('full_leaderboard')
+            ->select('full_leaderboard.*')
+            ->limit(25)
+            ->get();
+
+        $leaderBoardW = DB::table('full_leaderboard_w')
+            ->select('full_leaderboard_w.*')
+            ->limit(25)->get();
+
+        $leaderBoardM = DB::table('full_leaderboard_m')
+            ->select('full_leaderboard_m.*')
+            ->limit(25)->get();
+
+        return view(
+            'prestador/prestador_leaderboard', compact('leaderBoard','leaderBoardW','leaderBoardM')
+        );
     }
 
     public function level_progress()

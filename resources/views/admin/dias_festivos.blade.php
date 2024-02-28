@@ -75,21 +75,53 @@
         <div class="text-center mx-auto" style="padding-left: 10px" id="festivos"></div>
         </div>
     </div>
-
+                              
+    <!-- BEGIN: Modal Content -->
+    <div id="static-backdrop-modal-preview" id="editarFestivo"class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body px-5 py-10">
+                    <div class="text-center">
+                        <div class="mb-5"></div>
+                        <form action="{{route('admin.editarFestivo')}}" method="POST">
+                            @csrf
+                            <input type="hidden" id="id_festivo" name="id_festivo" value="">
+                            <input type="hidden" id="tipo" name="tipo" value="">
+                            <div class="intro-y col-span-12 sm:col-span-6" id="divCarrera">
+                                <h2 class="text-2xl mt-5 font-small">Introduce los nuevos datos</h2><br>
+                                <input id="inicio" value="" type="date" class="form-control" name="inicio" placeholder="inicio" style="width: 200px"></div>
+                                <input id="fin" value="" type="date" class="form-control mt-5" name="fin" placeholder="fin" style="width: 200px"></div>
+                                <br>
+                                <label class="mr-5" for="descripcion">Descripción</label>
+                                <input required id="descripcion" class="form-control" type="text" name="descripcion" autocomplete="off">
+                                <br><br>
+                                <div class="text-center">
+                                    <button type="button" data-tw-dismiss="modal" class="btn btn-danger w-24">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary w-24">Guardar</button>
+                                </div>
+                                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END: Modal Content -->
     <div style="height: 65px;"></div>
 @endsection
 
+
+
 @section('script')
     <script type="text/javascript">
-
             var sedes = {!! $no_laboral !!};
-
             var table = new Tabulator("#festivos", {
                 height:"100%",
                 data: sedes,
                 layout: "fitColumns",
                 resizableColumns: "false",
-                fitColumns: true,
+                layout: "fitColumns",
                 pagination: "local",
                 paginationSize: 15,
                 tooltips: true,
@@ -104,28 +136,34 @@
                         headerFilter: "input",
                         sorter: "string",
                         hozAlign: "center",
+                        width: 300,
                     }, {
                         title: "Inicio",
                         field: "inicio",
                         hozAlign: "center",
+                        width: 150,
                     },{
                         title: "Fin",
                         field: "final",
                         hozAlign: "center",
+                        width: 150,
                     },
                     {
                         title: "Tipo",
                         field: "tipo",
                         hozAlign: "center",
+                        width: 150,
                     },
                     {
-                        title: "Tipo",
-                        field: "tipo",
-                        hozAlign: "center",
+                        title: "Editar",
+                        field: "datos",
+                        formatter: customButtonFormatter,
+                        width: 150,
                     },
                     {
                         title: "Eliminar",
                         field: "id",
+                        
                         formatter: function (cell, formatterParams, onRendered) {
                             var value = cell.getValue();
                             var button = document.createElement("button");
@@ -135,13 +173,17 @@
                                 eliminarFestivo(value);
                             });
                             return button;
-                        }, 
+                        },
+                        width: 150,
                     },
+                    
                 ],
             });
 
             function eliminarFestivo(value){
-                if(true){
+                let confirmar = confirm("¿Estás seguro de eliminar el registro? Esta acción no se puede deshacer.")
+                if(confirmar){
+                    if(true){
                     const token = document.head.querySelector('meta[name="csrf-token"]').content;
                     fetch(`eliminarFestivo/${value}`, {
                         method: 'GET',
@@ -160,10 +202,55 @@
                     .catch(error => {
                         console.error('Error al intentar eliminar', error);
                     });
+                    }else{
+                        console.log("No se pudo eliminar el registro");
+                    }
+                } 
+            }
+    
+        function customButtonFormatter(cell, formatterParams, onRendered) {
+            var div = document.createElement("div");
+            div.classList.add("text-center");
+            
+            var a = document.createElement("a");
+            a.href = "javascript:;";
+            a.setAttribute("data-tw-toggle", "modal");
+            a.setAttribute("data-tw-target", "#static-backdrop-modal-preview");
+            a.classList.add("btn", "btn-primary");
+            a.textContent = "Editar";
+
+            div.appendChild(a);
+            a.addEventListener('click', function(){
+                var data = cell.getRow().getData();
+                var fechaInicio = formatoFecha(data.inicio);
+                var fechaFin = formatoFecha(data.final);
+                console.log(fechaInicio);
+                document.getElementById('id_festivo').value = data.id;
+                document.getElementById('tipo').value = data.tipo;
+                document.getElementById('inicio').value = fechaInicio;
+                document.getElementById('descripcion').value = data.evento;
+                var final = document.getElementById('fin');
+                
+                final.value = fechaFin;
+                if(data.tipo == "festivo"){
+                    final.classList.add('hidden');
                 }else{
-                    console.log("No se pudo eliminar el registro");
+                    final.classList.remove('hidden');
                 }
                 
-            }
+            });
+            return div;
+        }
+
+        function formatoFecha(fechaString){
+
+            var fechaParts = fechaString.split('-');
+            var fechaFormateada = fechaParts[2] + '-' + fechaParts[1] + '-' + fechaParts[0];
+
+            return fechaFormateada;
+        }
+
+        
+
     </script>
 @endsection

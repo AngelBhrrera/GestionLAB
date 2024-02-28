@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class logsysController extends Controller
 {
@@ -23,14 +24,22 @@ class logsysController extends Controller
         ];
         $remember = ($request->has('remember') ? true : false);
 
-        if(Auth::attempt($credentials, $remember)){
-
-            $request->session()->regenerate();
-            return redirect('/');
-            
-        }else{
-
-          return redirect('/login')->with('FAIL', 'Correo o contraseña incorrecta');
+        if (Auth::attempt($credentials, $remember)) {
+            $user = Auth::user();
+            if ($user->tipo == 'prestadorp' || $user->tipo == 'practicantep' || $user->tipo == 'voluntariop') {
+                return redirect('/login')->with('FAIL', 'Usuario no activado');
+            } else {
+                $request->session()->regenerate();
+                return redirect('/');
+            }
+        } else {
+            // Verificar si el usuario existe pero las credenciales son incorrectas
+            $userExists = User::where('correo', $credentials['correo'])->exists();
+            if ($userExists) {
+                return redirect('/login')->with('FAIL', 'Contraseña incorrecta');
+            } else {
+                return redirect('/login')->with('FAIL', 'Correo electrónico incorrecto');
+            }
         }
 
     }
@@ -85,9 +94,26 @@ class logsysController extends Controller
 
     public function filtroSede($id){
 
-        $area = DB::table('filtrosedes')
+        $area = DB::table('filtro_sedes')
             ->where('id_sede', $id)
             ->get();
+
+        return response()->json($area);
+    }
+
+    public function filtroSedeA($id){
+
+        if(Auth::user()->area == 0){
+
+            $area = DB::table('filtro_sedes')
+                ->where('id_sede', $id)
+                ->get();
+        }else{
+
+            $area = DB::table('filtro_sedes')
+            ->where('id_area', Auth::user()->area)
+            ->get();
+        }
 
         return response()->json($area);
     }

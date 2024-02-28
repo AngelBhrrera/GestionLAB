@@ -37,8 +37,7 @@ class PrestadoresInactivos extends Migration
                         )
                     )
                 )
-            WHERE
-                (`users`.`tipo` = 'prestador_inactivo' )
+            WHERE `users`.`tipo` IN ('prestador_inactivo', 'voluntario_inactivo', 'practicante_inactivo')
         ");
     }
 

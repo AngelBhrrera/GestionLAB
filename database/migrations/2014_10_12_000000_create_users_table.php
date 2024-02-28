@@ -39,7 +39,6 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('sede')->default(0);
             $table->tinyInteger('area')->nullable();
             $table->string('horario', 100)->default('No Aplica');
-            $table->unsignedBigInteger('encargado_id')->nullable();
 
             $table->string('imagen_perfil', 255)->nullable();
             $table->unsignedInteger('experiencia')->default(1)->nullable();
@@ -61,7 +60,6 @@ class CreateUsersTable extends Migration
             "centro"=> null,
             "carrera"=> "INCO",
             "fecha_salida" => null,
-            "encargado_id" => null,
             "imagen_perfil" => null,
             "experiencia" => null
         ]);

@@ -32,7 +32,6 @@ class User extends Authenticatable
         'area',
         'horario',
         'can_admin',
-        'encargado_id'
     ];
 
     /**

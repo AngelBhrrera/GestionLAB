@@ -38,7 +38,7 @@
                                 <option id="null_proyect" value="{{null}}" >Selecciona el proyecto (omitir en caso de interno) </option>
                                 @if (isset($proys))
                                     @foreach ($proys as $dato )
-                                        <option id="{{$dato->id}}" value="{{$dato->titulo}}">{{$dato->titulo }} </option>
+                                        <option id="{{$dato->id}}" value="{{$dato->id}}">{{$dato->titulo }} </option>
                                     @endforeach
                                 @endif                 
                             </select>

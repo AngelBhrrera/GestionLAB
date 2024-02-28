@@ -16,7 +16,7 @@ class CreateActividadesTable extends Migration
             $table->unsignedBigInteger('id_categoria');
             $table->foreign('id_categoria')->references('id')->on('categorias')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('id_subcategoria')->nullable();
-            $table->integer('TEC');
+            $table->integer('TEC')->nullable();
             $table->string('tipo', 10)->default('generica');
             $table->string('recursos', 500);
             $table->string('descripcion', 500);

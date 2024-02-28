@@ -40,7 +40,7 @@
                     <div class="col-span-6 sm:col-span-4 text-center">
                         <div class="form-group" id="select_proyect">
                             <label for="actividades_l" class="col-md-4 col-form-label text-md-right">Proyecto</label>
-                            <select class="form-control" id="proyecto" name="proyecto" onchange="filtrarPrestadores()">
+                            <select class="form-control" id="proyecto" name="proyecto" required onchange="filtrarPrestadores()">
                                 <option value="">Selecciona un proyecto para asignar la actividad</option>
                                 @foreach ($proyectos as $proyecto)
                                 <option value="{{ $proyecto->id }}">{{ $proyecto->titulo }}</option>

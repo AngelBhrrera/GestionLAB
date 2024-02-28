@@ -24,7 +24,7 @@ class CreatePremiosPrestadoresTable extends Migration
                 INNER JOIN premios_prestadores AS pp ON u.id = pp.id_prestador
                 INNER JOIN premios AS p ON p.id = pp.id_premio
                 WHERE p.tipo = 'horas'
-                GROUP BY u.id
+                GROUP BY u.id, u.name, p.horas;
         ");
 
         DB::statement("
@@ -54,7 +54,8 @@ class CreatePremiosPrestadoresTable extends Migration
             FROM premios_prestadores
             INNER JOIN users u ON u.id = premios_prestadores.id_prestador
             INNER JOIN premios p ON p.id = premios_prestadores.id_premio
-            GROUP BY premios_prestadores.id;
+            GROUP BY premios_prestadores.id, u.name, u.apellido,
+            p.nombre, p.descripcion, p.tipo, p.horas, premios_prestadores.fecha
         ");    
     }
 
