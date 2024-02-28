@@ -385,7 +385,7 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::get('prestador/actividadesAbiertas', 'actPull')->name('actPull');
         Route::get('prestador/tomarActividad/{id}/{teu}', 'takeAct')->name('takeAct');
         Route::get('prestador/comenzarActividad/{id}/{teu}', 'startAct')->name('startAct');
-        Route::get('prestador/actividadStatus/{id}/{mode}', 'statusAct')->name('statusAct');
+        Route::get('prestador/actividadStatus/{id}/{mode}/{coment}', 'statusAct')->name('statusAct');
         //RUTAS ACTIVIDADES
         Route::get('prestador/C_actividades', 'create_act')->name('create_act');
         Route::post('prestador/M_actividades', 'make_act')->name('make_act');

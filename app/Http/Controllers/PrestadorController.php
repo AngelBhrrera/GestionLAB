@@ -467,9 +467,8 @@ class PrestadorController extends Controller
         return 0;
     }
 
-    public function statusAct($id, $mode)
+    public function statusAct($id, $mode, $coment)
     {
-
         $verificar = $this->checkEntrada(auth()->user()->id);
         if($verificar){
             if($this->checkAct()){
@@ -483,7 +482,8 @@ class PrestadorController extends Controller
                 ->where('id', $id)
                 ->update([
                     'estado' => 'En Proceso',
-                    'hora_refs' => $hor
+                    'hora_refs' => $hor,
+                    'detalles' => $coment
                 ]);
     
                 return response()->json(['mensaje' => 'AOK']);
@@ -506,7 +506,8 @@ class PrestadorController extends Controller
                 ->where('id', $id)
                 ->update([
                     'estado' => 'Bloqueada',
-                    'Tiempo_Invertido' => $tiempoInvertido
+                    'Tiempo_Invertido' => $tiempoInvertido,
+                    'detalles' => $coment
                 ]);
     
                 return response()->json(['mensaje' => 'BOK']);
@@ -529,7 +530,8 @@ class PrestadorController extends Controller
                 ->where('id', $id)
                 ->update([
                     'estado' => 'Bloqueada',
-                    'Tiempo_Invertido' => $tiempoInvertido
+                    'Tiempo_Invertido' => $tiempoInvertido,
+                    'detalles' => $coment
                 ]);
     
     
