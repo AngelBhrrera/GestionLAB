@@ -283,7 +283,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 //API SEDES
                 Route::get('admin/activar_area/{id}/{campo}', 'activate_area')->name('activatearea');
 
-                Route::get('admin/eliminar_prestador/{value}', 'eliminar')->name('eliminar');
+                Route::get('admin/changeHrs/{id}/{value}', 'modifHoras')->name('modifHoras');
                
             });
             /*
@@ -394,7 +394,8 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
 
         Route::get('prestador/miProyecto','myProject')->name('myProject');
         Route::get('prestador/detalles_actividad/{val}','detallesActividad')->name('detallesActividad');
-        Route::get('prestador/observaciones_actividad/{id}/{val}', 'detail_act')->middleware('role:prestador,practicante,voluntario,coordinador,jefe area,jefe sede')->name('detail_act');
+        Route::get('prestador/observaciones_actividad/{id}/{val}', 'detail_act')->middleware('role:prestador,practicante,voluntario')->name('detail_act');
+        Route::get('admnin/observaciones_actividad/{id}/{val}', 'detail_act')->middleware('role:coordinador,jefe area,jefe sede')->name('detail_act');
         //MODULO GAMIFICACION
         Route::get('prestador/nivel', 'level_progress')->name('level');
         Route::get('prestador/leaderboard', 'leaderboard_area')->name('leaderboard_area');
