@@ -963,7 +963,7 @@ class AdminController extends Controller
             ]);
            
         }
-        return redirect()->back()->with("Exito",);
+        return redirect(route("admin.gestor_premios"));
     }
 
     public function gestor_premios(){
