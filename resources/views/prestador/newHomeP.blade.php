@@ -1,5 +1,16 @@
 @extends('layouts/prestador-layout')
 
+@section('subhead')
+
+    <?php  
+        $area = Auth::user()->area;
+        $filtro = DB::table('modulos')
+            ->where('id', $area)
+            ->first();
+    ?>
+
+@endsection
+
 @section('breadcrumb')
     <nav aria-label="breadcrumb" class="-intro-x hidden xl:flex">
         <ol class="breadcrumb">
@@ -13,7 +24,7 @@
 
     <div class="col-span-12 2xl:col-span-9">
         <div class="intro-y block sm:flex items-center h-10">
-            <h2 class="text-lg font-medium truncate mr-5 text-align center">Seguimiento de horas</h2>
+            <h2 class="text-lg font-medium truncate mr-5 text-align center">SEGUIMIENTO DE HORAS</h2>
         </div>
         <div class="grid grid-cols-12">
 
@@ -69,7 +80,12 @@
                 </div>
             </div>
             <!-- END: Reporte 1 -->
-
+            <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
+                <h2 class="text-lg font-medium mr-auto">ULTIMOS 5 CHECK IN</h2>
+            </div>
+            <br>
+            <div id="players"> </div>
+            @if ($filtro->gamificacion == 1)
             <!-- BEGIN: leaderboard -->
             <div class="xl:px-6 mt-2.5">
                 <div class="intro-y flex items-center mt-8">
@@ -79,26 +95,89 @@
                 </div>
             </div>
 
-            <div class="p-5" id="basic-table">
-                <div class="overflow-x-auto">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#area">Área</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#sede">Sede</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="area">
+                <ul class="nav nav-tabs nav-justified " role="tablist">
                     <table class="table">
                         <thead>
                             <tr>
                                 <th class="whitespace-nowrap">#</th>
                                 <th class="whitespace-nowrap">Prestador</th>
                                 <th class="whitespace-nowrap">Experiencia</th>
+                                <th class="whitespace-nowrap">Semanas</th>
                                 <th class="whitespace-nowrap">Rango</th>
-
                             </tr>
                         </thead>
-
                         <tbody>
-
-                            <?php $bandera = false;?>
-                                
-                            @foreach ( $leaderboard as $top)
-                                <?php $imagen = DB::select("select imagen_perfil from users where codigo=$top->codigo")?>
+                            @foreach ($leaderboard as $top)
+                            @if ($top->codigo == Auth::user()->codigo)
+                                        <?php $bandera = true; ?>
+                                        <td><strong><p style="color: #0023FF;">{{$top->Posicion}}</p></strong></td>
+                                        
+                                        <td>
+                                            <div class="w-10 h-10 image-fit">
+                                                <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" width="40" height="40" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" 
+                                                 src="{{route('obtenerImagen', ['nombreArchivo' => (Auth::user()->imagen_perfil != null) ? Auth::user()->imagen_perfil : 'false'])}}">
+                                            </div>
+                                            <strong><p style="color: #0023FF"> {{$top->Inventor}}</p></strong></td>
+                                        <td><strong><p style="color: #0023FF">{{$top->total_exp}}</p></strong></td>
+                                        <td>{{ $top->semanas_actividad }}</td>
+                                        <td><img src="{{asset('build/assets/'.$usuarioMedalla->ruta)}}"  width="40" height="80" alt=""></td>  
+                            @else
+                                        
+                                        <td>{{$top->Posicion}}</td>
+                                        <td>
+                                            <div class="w-10 h-10 image-fit">
+                                                <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" width="40" height="40" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" 
+                                                src="{{route('obtenerImagen', ['nombreArchivo' => ($top->imagen_perfil != null) ? $top->imagen_perfil : 'false'])}}">
+                                            </div>
+                                            {{$top->Inventor}}</td>
+                                        <td>{{$top->total_exp}}</td>
+                                        <td>{{ $top->semanas_actividad }}</td>
+                                        <td><img src="{{asset('build/assets/'.$top->ruta)}}"  width="40" height="80" alt=""></td>
+                                    @endif
+                                </tr>
+                            @endforeach
+                            @if (!$bandera)
                                 <tr>
+                                    <td> <p style="color: #0023FF"><strong>{{$posicionUsuario}} </strong> </p></td>
+                                    <td>
+                                    <div class="w-10 h-10 image-fit">
+                                        <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" width="40" height="40" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" 
+                                        src="{{route('obtenerImagen', ['nombreArchivo' => (Auth::user()->imagen_perfil != null) ? Auth::user()->imagen_perfil : 'false'])}}">
+                                    </div>    
+                                    <p style="color: #0023FF"><strong> {{Auth::user()->name}}</strong></p> </td>
+                                    <td> <p style="color: #0023FF"><strong>{{Auth::user()->total_exp}}</strong></p> </td>
+                                    <td>{{ $top->semanas_actividad }}</td>
+                                    <td><img src="{{asset('build/assets/'.$usuarioMedalla->ruta)}}" width="40" height="80"alt=""></td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                <ul>
+                </div>
+                <div class="tab-pane" id="sede">
+                <ul class="nav nav-tabs nav-justified " role="tablist">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="whitespace-nowrap">#</th>
+                                <th class="whitespace-nowrap">Prestador</th>
+                                <th class="whitespace-nowrap">Experiencia</th>
+                                <th class="whitespace-nowrap">Semanas</th>
+                                <th class="whitespace-nowrap">Rango</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($leaderboardSede as $top)
                                     @if ($top->codigo == Auth::user()->codigo)
                                         <?php $bandera = true; ?>
                                         <td><strong><p style="color: #0023FF;">{{$top->Posicion}}</p></strong></td>
@@ -109,7 +188,8 @@
                                                  src="{{route('obtenerImagen', ['nombreArchivo' => (Auth::user()->imagen_perfil != null) ? Auth::user()->imagen_perfil : 'false'])}}">
                                             </div>
                                             <strong><p style="color: #0023FF"> {{$top->Inventor}}</p></strong></td>
-                                        <td><strong><p style="color: #0023FF">{{$top->experiencia}}</p></strong></td>
+                                        <td><strong><p style="color: #0023FF">{{$top->total_exp}}</p></strong></td>
+                                        <td>{{ $top->semanas_actividad }}</td>
                                         <td><img src="{{asset('build/assets/'.$usuarioMedalla->ruta)}}"  width="40" height="80" alt=""></td>
                                                 
                                     @else
@@ -118,10 +198,11 @@
                                         <td>
                                             <div class="w-10 h-10 image-fit">
                                                 <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" width="40" height="40" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" 
-                                                src="{{route('obtenerImagen', ['nombreArchivo' => ($imagen[0]->imagen_perfil != null) ? $imagen[0]->imagen_perfil : 'false'])}}">
+                                                src="{{route('obtenerImagen', ['nombreArchivo' => ($top->imagen_perfil != null) ? $top->imagen_perfil : 'false'])}}">
                                             </div>
                                             {{$top->Inventor}}</td>
-                                        <td>{{$top->experiencia}}</td>
+                                        <td>{{$top->total_exp}}</td>
+                                        <td>{{ $top->semanas_actividad }}</td>
                                         <td><img src="{{asset('build/assets/'.$top->ruta)}}"  width="40" height="80" alt=""></td>
                                     @endif
                                     
@@ -136,16 +217,90 @@
                                         src="{{route('obtenerImagen', ['nombreArchivo' => (Auth::user()->imagen_perfil != null) ? Auth::user()->imagen_perfil : 'false'])}}">
                                     </div>    
                                     <p style="color: #0023FF"><strong> {{Auth::user()->name}}</strong></p> </td>
-                                    <td> <p style="color: #0023FF"><strong>{{Auth::user()->experiencia}}</strong></p> </td>
+                                    <td> <p style="color: #0023FF"><strong>{{Auth::user()->total_exp}}</strong></p> </td>
+                                    <td>{{ $top->semanas_actividad }}</td>
                                     <td><img src="{{asset('build/assets/'.$usuarioMedalla->ruta)}}" width="40" height="80"alt=""></td>
                                 </tr>
                             @endif
                         </tbody>
                     </table>
-                </div>
+                <ul>
             </div>
+            <!-- END: leaderboard-->
+            @endif
         </div>
-        <!-- END: leaderboard-->
     </div>
+
+@endsection
+
+@section('script')
+
+    <script type="text/javascript">
+
+            var assist = {!! $asistencias !!};
+
+            var table = new Tabulator("#players", {
+                data: assist,
+                layout: "fitColumns",
+                pagination: "local",
+                resizableColumns: false,  
+                paginationSize: 5,
+                tooltips: true,
+                columns: [{
+                        title: "Fecha",
+                        field: "fecha",
+                        sorter: "joiningdate",
+                        headerFilter: "input",
+                        width: 120,
+                    }, {
+                        title: "Horas",
+                        field: "horas",
+                        sorter: "number",
+                        width: 100,
+                    }, {
+                        title: "Estado",
+                        field: "estado",
+                        headerFilter: true,
+                        headerFilterParams: {
+                            "autorizado": "autorizado",
+                            "pendiente": "pendiente",
+                            "denegado": "denegado",
+                        },
+                        formatter: function(cell, formatterParams, onRendered) {
+                            // Mostrar un ícono o texto según el estado
+                            var estado = cell.getValue();
+                            var icono = "";
+
+                            if (estado === "autorizado") {
+                                icono = "✔️";
+                            } else if (estado === "pendiente") {
+                                icono = "⏳";
+                            } else if (estado === "denegado") {
+                                icono = "❌";
+                            }
+                            return icono;
+                        },
+                        
+                    },{
+                        title: "Entrada",
+                        field: "hora_entrada",
+                        sorter: "string",
+                        width: 120,
+                    },
+                    {
+                        title: "Salida",
+                        field: "hora_salida",
+                        sorter: "string",
+                        width: 120,
+                    }, {
+                        title: "Tiempo",
+                        field: "tiempo",
+                        sorter: "number",
+                    },  
+                    
+                ],
+            });
+
+    </script>
 
 @endsection
