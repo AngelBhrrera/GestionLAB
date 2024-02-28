@@ -102,11 +102,66 @@
     </div>
     <br>
     <div>
-        <p><strong>Aquí puedes subir y visualizar tus reportes. Deben subirse en orden oficio de comisión, 
-            reportes parciales consecutivos y reporte final.</strong></p>
-        <p>-Oficio de comisión: Documento que te entregan para dar inicio a tu servicio social.</p>
-        <p>-Reportes parciales: Reportes de horas que realizas en la plataforma de servicio social de la udg.</p>
-        <p>-Reporte final: Reporte que general al finalizar las horas de tu servicio social.</p>
+        <h2 class="text-lg font-medium mr-auto">Aquí puedes subir y visualizar tus reportes. Sigue los pasos para subir tus documentos en orden.</h2>
+        <div class="alert @if($orden) alert-secondary @else alert-success-soft @endif show mb-2" role="alert">
+            <div class="flex items-center">
+                <div class="font-medium text-lg">1. Orden de pago con comprobante.</div>
+            </div>
+            <div class="mt-3">Orden de pago generada en la plataforma de servicio social con su comprobante correspondiente</div>
+        </div>
+        <div class="alert @if($imss) alert-secondary @else alert-success-soft @endif show mb-2" role="alert">
+            <div class="flex items-center">
+                <div class="font-medium text-lg">2. Constancia del IMSS</div>       
+            </div>
+            <div class="mt-3">Constancia de vigencia de derechos que puedes obtener en la página del Instituto Mexicano del Seguro Social (IMSS)</div>
+        </div>
+        <div class="alert @if($oficio) alert-secondary @else alert-success-soft @endif show mb-2" role="alert">
+            <div class="flex items-center">
+                <div class="font-medium text-lg">3. Oficio de comisión</div>
+            </div>
+            <div class="mt-3">Documento que te entregan en la unidad de servicio social para dar comenzar tu servicio.</div>
+        </div>
+        <div class="alert @if($reporte1) alert-secondary @else alert-success-soft @endif show mb-2" role="alert">
+            <div class="flex items-center">
+                <div class="font-medium text-lg">4. Primer reporte parcial</div>
+                
+            </div>
+            <div class="mt-3"> Primer reporte con 160 horas que realizas en la plataforma de servicio social de la udg.</div>
+        </div>
+        <div class="alert @if($reporte2) alert-secondary @else alert-success-soft @endif show mb-2" role="alert">
+            <div class="flex items-center">
+                <div class="font-medium text-lg">5. Segundo reporte parcial</div>
+                
+            </div>
+            <div class="mt-3">Segundo reporte con 160 horas (320 en total) que realizas en la plataforma de servicio social de la udg.</div>
+        </div>
+        <div class="alert @if($reporte3) alert-secondary @else alert-success-soft @endif show mb-2" role="alert">
+            <div class="flex items-center">
+                <div class="font-medium text-lg">6. Tercer reporte parcial</div>
+                
+            </div>
+            <div class="mt-3">Tercer reporte con 160 horas (480 en total) que realizas en la plataforma de servicio social de la udg.</div>
+        </div>
+        <div class="alert @if($final) alert-secondary @else alert-success-soft @endif show mb-2" role="alert">
+            <div class="flex items-center">
+                <div class="font-medium text-lg">7. Reporte final de servicio</div>
+                
+            </div>
+            <div class="mt-3">Reporte que realizas en la plataforma una vez que completaste las 480 horas de servicio social.</div>
+        </div>
+        <div class="alert @if($finalDep) alert-secondary @else alert-success-soft @endif show mb-2" role="alert">
+            <div class="flex items-center">
+                <div class="font-medium text-lg">8. Reporte final de la dependencia</div>
+            </div>
+            <div class="mt-3">Reporte final generado por la dependencia a la que perteneces.</div>
+        </div>
+        <div class="alert @if($carta) alert-secondary @else alert-success-soft @endif show mb-2" role="alert">
+            <div class="flex items-center">
+                <div class="font-medium text-lg">9. Carta de recomentdación (sólo prestadores destacados)</div>
+            </div>
+            <div class="mt-3">Carta otorgada a los prestadores de servicio destacados que tengan menos de 3 faltas 
+                y hayan realizado al menos 2 actividaes por cada día de servicio.</div>
+        </div>
     </div>
     <!-- Modal para subir archivo -->
     <div id="blank-modal" class="p-5">
@@ -150,6 +205,12 @@
                                         <select class="form-select mt-2 sm:mr-2" aria-label="Default select example" name="tipo_reporte" id="tipo_reporte">
                                             <option value="{{null}}">Seleccione un tipo reporte</option>
                                             
+                                            @if($orden)
+                                                <option value="Orden de pago">Orden de pago</option>
+                                            @endif
+                                            @if($imss)
+                                                <option value="Constancia IMSS">Constancia IMSS</option>
+                                            @endif
                                             @if($oficio)
                                                 <option value="Oficio de comision">Oficio de comisión</option>
                                             @endif
@@ -166,6 +227,13 @@
                                             @if ($final)
                                                 <option value="Reporte final">Reporte final</option>
                                             @endif
+                                            @if ($finalDep)
+                                                <option value="Reporte final dependencia">Reporte final dependencia</option>
+                                            @endif
+                                            @if ($carta)
+                                                <option value="Carta recomendacion">Carta de recomendación</option>
+                                            @endif
+
                                             
                                         </select>
                                         

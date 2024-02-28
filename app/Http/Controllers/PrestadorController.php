@@ -730,15 +730,19 @@ class PrestadorController extends Controller
         $user_id = Auth::user()->id;
         $reportes = DB::select("Select * from reportes_s_s where id_prestador = $user_id");
         
-        //Validar oficio
+        $orden = (count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Orden de pago'"))==0)? true : false;
+        $imss = (count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Constancia IMSS'"))==0)? true : false;
         $oficio = (count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Oficio de comision'"))==0)? true : false;
-        $reporte1 = (!$oficio && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte parcial 1'"))==0)? true : false;
-        $reporte2 = (!$oficio && !$reporte1 && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte parcial 2'"))==0)? true : false;
-        $reporte3 = (!$oficio && !$reporte1 && !$reporte2 && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte parcial 3'"))==0)? true : false;
-        $final = (!$oficio && !$reporte1 && !$reporte2 && !$reporte3 && count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte final'"))==0)? true : false;
-        //Validar reportes parciales 
-        return view('prestador.reportes_parciales',['reportes' =>$reportes, 'oficio' => $oficio, 
-        'reporte1'=>$reporte1, 'reporte2'=>$reporte2, 'reporte3'=> $reporte3, 'final'=> $final]);
+
+        $reporte1 = (count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte parcial 1'"))==0)? true : false;
+        $reporte2 = (count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte parcial 2'"))==0)? true : false;
+        $reporte3 = (count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte parcial 3'"))==0)? true : false;
+        $final = (count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte final'"))==0)? true : false;
+        $finalDep = (count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Reporte final dependencia'"))==0)? true : false;
+        $carta = (count(DB::select("Select id from reportes_s_s where id_prestador=$user_id and tipo = 'Carta recomendacion'"))==0)? true : false;
+        return view('prestador.reportes_parciales',
+        compact('orden','imss','oficio','reporte1',
+        'reporte2','reporte3','final','finalDep','carta','reportes'));
     }
 
     public function subir_reportes_parciales(Request $request){
