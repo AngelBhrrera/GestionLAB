@@ -32,10 +32,10 @@ class AdminController extends Controller
     //ADMIN HOME
 
     public function firmas(){
-        
+
         $sql = DB::table('registros_checkin as r')
-            ->select('r.id', 'r.ubicacion', 'r.responsable', 'r.origen', 'r.fecha', 'r.hora_entrada', 'r.hora_salida', 'r.tiempo', 'r.horas', 'r.tipo', 'r.estado')
-            ->join('users as u', 'r.encargado_id', '=', 'u.id')
+            ->select('r.*', 'u.codigo')
+            ->join('users as u', 'r.idusuario', '=', 'u.id')
             ->where('u.area', Auth::user()->area)
             ->orderBy('fecha_actual', 'desc')
             ->get();
@@ -54,14 +54,6 @@ class AdminController extends Controller
     
         return response()->json(['message' => 'Activado exitosamente' . $id]);
     }
-
-    public function modifHoras($id, $hrs) {
-        DB::table('registros_checkin')
-            ->where('id', $id)
-            ->update(['horas' => $hrs]);
-
-    return response()->json(['message' => 'Activado exitosamente' . $id]);
-}
 
     //ADMINSITRADOR DE PRESTADORES / VOLUNTARIOS / PRACTICANTES
 
@@ -107,18 +99,17 @@ class AdminController extends Controller
     {
         $data = DB::table('users')
             ->select('users.id','users.name', 'users.apellido', 'users.correo', 'users.codigo', 'users.tipo', 'users.telefono', 'areas.nombre_area')
-            ->whereNotIn('users.tipo', ['Superadmin'])
-            ->join('areas', 'users.area', '=', 'areas.id');
+            ->whereNotIn('users.tipo', ['Superadmin']);
 
         if (auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area') {
             $data->where('users.area', auth()->user()->area);
-            $data = $data->get();
             return view('admin/general_users', ['datos' => json_encode($data)]);
         } else if (auth()->user()->tipo == 'jefe sede') {
             $data->where('users.sede', auth()->user()->sede);
         }
 
-        $data = $data->get();
+        $data = $data->join('areas', 'users.area', '=', 'areas.id')
+            ->get();
 
         return view('admin/admin_general_users', ['datos' => json_encode($data)]);
     }
@@ -1174,7 +1165,6 @@ class AdminController extends Controller
     public function premios(){
 
         $premios = DB::table('premios')
-            ->where('ref', auth()->user()->area)
             ->get();
         $prestadores = DB::table('solo_prestadores');
 
@@ -1202,7 +1192,7 @@ class AdminController extends Controller
             "descripcion" => $request -> input("descripcion"),  
             "tipo" => $request -> input("tipo"),
             "horas" => $request -> input("horas"),
-            "ref" => auth()->user()->area,
+            "ref" => "ref",
         ]);
        
         return redirect()->back()->with('success', 'Creada correctamente');

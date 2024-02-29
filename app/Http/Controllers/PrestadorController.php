@@ -30,43 +30,15 @@ class PrestadorController extends Controller
             ->get();
 
 
-        $leaderboard= DB::table('full_leaderboard')
-            ->select('Posicion','Inventor','full_leaderboard.experiencia','ruta','max_nivel', 'full_leaderboard.codigo', 'sede','area')
-            ->join('users', 'users.codigo', '=','full_leaderboard.codigo')
-            ->where('sede', Auth::user()->sede)
-            ->where('area', Auth::user()->area)
-            ->limit(10)
-            ->get();
-        $i=1;
-        foreach($leaderboard as $posicion){
-            $posicion->Posicion = $i;
-            $i++;
-        }
+        $leaderboard = $this->consultarLeaderboard('lb_at', Auth::user()->area, 'area',10); 
+        $leaderboardSede = $this->consultarLeaderboard('lb_at', Auth::user()->sede, 'sede',10);
 
-        $i=1;
-        $tablaCompleta = DB::table('full_leaderboard')
-        ->select('Posicion','Inventor','full_leaderboard.experiencia','ruta','max_nivel', 'full_leaderboard.codigo', 'sede','area')
-        ->join('users', 'users.codigo', '=','full_leaderboard.codigo')
-        ->where('sede', Auth::user()->sede)
-        ->where('area', Auth::user()->area)
-        ->get();
-
-        $i=1;
-        foreach($tablaCompleta as $elemento){
-
-            if($elemento->codigo == Auth::user()->codigo){
-                $posicionUsuario = $i;
-                break;
-            }
-            $i++;
-        }
-        
         $usuarioMedalla = $this->prestador_level();
 
         return view(
             'prestador/newHomeP',  
             compact('horasAutorizadas', 'horasPendientes', 'horasTotales', 'horasRestantes',  
-            'leaderboard', 'posicionUsuario', 'usuarioMedalla')
+            'leaderboard', 'leaderboardSede', 'usuarioMedalla')
         )->with('asistencias', json_encode($asistencias));
     }
     
@@ -550,7 +522,6 @@ class PrestadorController extends Controller
         
         return response()->json(['mensaje' => 'ERROR, no hay check de entrada']);
     }
-
     //CREACION DE ACTIVIDADES COMO PRESTADOR
 
     public function create_act()
@@ -858,8 +829,8 @@ class PrestadorController extends Controller
     //GAMIFICACION
 
     public function prestador_level(){
-        $actualLevel = DB::table('full_leaderboard')
-            ->where('codigo',  Auth::user()->codigo) 
+        $actualLevel = DB::table('user_level')
+            ->where('id',  Auth::user()->id) 
             ->join('medallas', 'max_nivel', '=', 'medallas.nivel')  
             ->select('max_nivel', 'medallas.ruta', 'medallas.descripcion', 'medallas.ruta_n')
             ->first();
@@ -867,28 +838,35 @@ class PrestadorController extends Controller
         return $actualLevel;
     }
 
+    private function consultarLeaderboard($tabla, $filtro,$zona,$limit)
+    {
+        return DB::table($tabla)
+            ->select('solo_prestadores.codigo', 'solo_prestadores.semanas_actividad', "$tabla.total_exp", 'solo_prestadores.ruta', 'solo_prestadores.max_nivel', 'solo_prestadores.imagen_perfil')
+            ->selectRaw('ROW_NUMBER() OVER (ORDER BY '.$tabla.'.total_exp DESC) AS Posicion')
+            ->selectRaw('CONCAT(solo_prestadores.name, " ", solo_prestadores.apellido) AS Inventor')
+            ->join('solo_prestadores', 'solo_prestadores.id', '=', "$tabla.id_prestador")
+            ->where('solo_prestadores.id_'.$zona.'', $filtro)
+            ->orderByDesc("$tabla.total_exp")
+            ->limit($limit)
+            ->get();
+    }
+
     public function leaderboard_area(){
 
-        $area =  DB::table('users')
-            ->where('codigo',  Auth::user()->codigo) 
-            ->value('area');
+        $area = Auth::user()->area;
+        $sede = Auth::user()->sede;
 
-        $leaderBoard = DB::table('full_leaderboard')
-            ->select('full_leaderboard.*')
-            ->limit(25)
-            ->get();
+        $leaderBoard = $this->consultarLeaderboard('lb_at', $area, 'area',25);
+        $leaderBoardW = $this->consultarLeaderboard('lb_w', $area, 'area',25);
+        $leaderBoardM = $this->consultarLeaderboard('lb_m', $area, 'area',25);
+        $leaderBoardSede = $this->consultarLeaderboard('lb_at', $sede, 'sede',25);
+        $leaderBoardWSede = $this->consultarLeaderboard('lb_w', $sede, 'sede',25);
+        $leaderBoardMSede = $this->consultarLeaderboard('lb_m', $sede, 'sede',25);
 
-        $leaderBoardW = DB::table('full_leaderboard_w')
-            ->select('full_leaderboard_w.*')
-            ->limit(25)->get();
-
-        $leaderBoardM = DB::table('full_leaderboard_m')
-            ->select('full_leaderboard_m.*')
-            ->limit(25)->get();
-
-        return view(
-            'prestador/prestador_leaderboard', compact('leaderBoard','leaderBoardW','leaderBoardM')
-        );
+        return view('prestador/prestador_leaderboard', compact(
+            'leaderBoard', 'leaderBoardW', 'leaderBoardM', 
+            'leaderBoardSede', 'leaderBoardWSede', 'leaderBoardMSede'
+        ));
     }
 
     public function level_progress()

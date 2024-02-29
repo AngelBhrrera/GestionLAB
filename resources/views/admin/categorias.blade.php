@@ -89,15 +89,14 @@
         var c = {!! $tabla_subcategorias !!};
 
         var table = new Tabulator("#categs", {
-            height: "10%",
             data: c,
-            resizableColumns: false, 
-            layout: "fitColumns",
-            pagination: "local",
             groupStartOpen: false,
             paginationSize: 10,
-            tooltips: true,
             groupBy: "categoria",
+            pagination: "local",
+                layout: "fitDataFill",
+                resizableColumns:false,
+                height: "10%",
             groupHeader:function(value, count, data, group){ 
                 return "<span style='font-weight:bold; font-size:14px;'>" + value + " (" + count + " items)</span>";
             },

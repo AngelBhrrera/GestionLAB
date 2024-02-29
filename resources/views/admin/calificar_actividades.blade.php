@@ -19,12 +19,13 @@
             var visits = {!! $data !!};
 
             var table = new Tabulator("#players", {
-                height: "100%",
                 data: visits,
-                layout: "fitColumns",
-                pagination: "local",
-                resizableColumns: "false",
                 paginationSize: 10,
+
+                pagination: "local",
+                layout: "fitDataFill",
+                resizableColumns:false,
+                height: "100%",
                 columns: [{
                         title: "Prestador",
                         field: "prestador",

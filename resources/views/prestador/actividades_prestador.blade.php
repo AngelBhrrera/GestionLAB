@@ -26,76 +26,56 @@
             var printers = {!! $impresiones !!};
 
             var table = new Tabulator("#players", {
-                height: "100%",
+               
                 data: printers,
-                pagination: "local",
-                layout: "fitColumns",
-                paginationSize: 24,
+                paginationSize: 20,
                 tooltips: true,
+                
+                pagination: "local",
+                layout: "fitDataFill",
                 resizableColumns:false,
+                height: "100%",
+                
+               
                 columns: [{
-                    title: "ID",
-                        field: "id",
-                        visible: false,
-                        width: 2,
-                    }, {
                         title: "Nombre de la actividad",
                         field: "titulo",
                         sorter: "string",
                         headerFilter: "input",
-                        width: 120,
                     },  {
                         title: "Estado",
                         field: "estado",
                         sorter: "string",
                         headerFilter: "input",
-                        width: 100
                     },{
                         title: "Fecha",
                         field: "fecha",
                         sorter: "date",
-                        width: 120,
                     }, {
                         title: "TEC",
                         field: "TEC",
                         sorter: "number",
                         headerTooltip: "Tiempo Estimado Compromiso que coordinacion valoro para la actividad",
-                        width: 85,
                     },  {
                         title: "TEU",
                         field: "TEU",
                         sorter: "number",
                         headerTooltip: "Tiempo Estimado del Usuario para terminar la actividad",
-                        width: 85,
                     },  {
                         title: "TI",
                         field: "Tiempo_Invertido",
                         headerTooltip: "Total de tiempo invertido en la actividad",
                         sorter: "number",
-                        width: 75,
                     }, {
                         title: "TR",
                         field: "Tiempo_Real",
                         headerTooltip: "Total de tiempo que tomo realizar la actividad",
                         sorter: "number",
-                        width: 75,
                     }, {
                         title: "XP",
                         field: "exp",
                         sorter: "number",
                         headerTooltip: "Calculo en funcion al TEC, TEU y TR de tu rendimiento en la actividad",
-                        width: 75,
-                    },  {
-                        title: "Detalles",
-                        field: "detalles",
-                        editor: "input",
-                        width: 290,
-                        cellEdited: function (cell) {
-                            var row = cell.getRow();
-                            var id = row.getData().id;
-                            var value = cell.getValue();
-                            agregarObservaciones(id, value);
-                        },
                     }, {
                         title: "",
                         field: "id_actividad",
@@ -103,15 +83,19 @@
                             var value = cell.getValue();
                             var button = document.createElement("button");
                             button.style = "background-color: blue; color: white; border: 1px solid white; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
-                            button.textContent = "Más Info.";
+                            button.textContent = "+";
                             button.title = "";
                             button.addEventListener("click", function() {
                                 window.location.href = "detalles_actividad/" + value;
                             });
                             return button;
                         }, 
-                      
-                    },
+                    }, {
+                    title: "ID",
+                        field: "id",
+                        visible: false,
+                        width: 2,
+                    }
                 ],
             });
 

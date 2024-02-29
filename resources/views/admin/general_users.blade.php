@@ -23,15 +23,16 @@
             var users = {!! $datos !!};
 
             var table = new Tabulator("#players", {
-                height: "100%",
+              
                 data: users,
-                layout: "fitColumns",
-                pagination: "local",
-                resizableColumns: false,  
                 paginationSize: 20,
-                tooltips: true,
                 groupStartOpen: false,
                 groupBy:"nombre_area",
+
+                pagination: "local",
+                layout: "fitDataFill",
+                resizableColumns:false,
+                height: "100%",
                 columns: [{
                         title: "Nombre",
                         field: "name",
