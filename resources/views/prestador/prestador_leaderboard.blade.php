@@ -36,7 +36,7 @@
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade" id="filtro-area">
+    <div class="tab-pane" id="filtro-area">
         <ul class="nav nav-tabs nav-justified" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#semanal-area">Semana</a>
@@ -50,7 +50,7 @@
         </ul>
     </div>
     
-    <div class="tab-pane fade" id="filtro-sede">
+    <div class="tab-pane" id="filtro-sede">
         <ul class="nav nav-tabs nav-justified" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#semanal-sede">Semana</a>

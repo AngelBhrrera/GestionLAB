@@ -105,7 +105,7 @@
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="area">
-                <ul class="nav nav-tabs nav-justified " role="tablist">
+                <ul class="nav nav-tabs nav-justified " style="overflow-x: auto; padding-bottom: 10px;" role="tablist">
                     <table class="table">
                         <thead>
                             <tr>
@@ -229,6 +229,7 @@
             <!-- END: leaderboard-->
             @endif
         </div>
+        <div class="container" style="height: 45px;"></div>
     </div>
 
 @endsection
@@ -242,9 +243,7 @@
             var table = new Tabulator("#players", {
                 data: assist,
                 layout: "fitColumns",
-                pagination: "local",
                 resizableColumns: false,  
-                paginationSize: 5,
                 tooltips: true,
                 columns: [{
                         title: "Fecha",

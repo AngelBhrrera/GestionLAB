@@ -39,6 +39,8 @@
         </div>
     </div>
 </div>
+
+<div style="height: 45px;"></div>
 @endsection
 
     @section('script')
@@ -47,42 +49,41 @@
             var assist = {!! $datos !!};
 
             var table = new Tabulator("#players", {
-                height:"100%",
                 data: assist,
-                layout: "fitColumns",
-                resizableColumns: "false",
-                layout: "fitColumns",
-                pagination: "local",
                 paginationSize: 12,
-                tooltips: true,
+
+                pagination: "local",
+                layout: "fitDataFill",
+                resizableColumns:false,
+                height: "100%",
+                //responsiveLayout:"collapse",
+                layoutColumnsOnNewData:true,
+                virtualDomHoz:true,
                 columns: [{
                         title: "ID",
                         field: "id",
                         visible: false,
                         width: 2,
-                    }, {
+                    },  {
+                        title: "Codigo",
+                        field: "codigo",
+                        headerFilter: "input",
+                    },{
                         title: "Prestador",
                         field: "origen",
                         headerFilter: "input",
-                        sorter: "string",
-                        width: 200,
                     },{
                         title: "Coordinador",
                         field: "responsable",
                         sorter: "string",
-                        headerFilter: "input",
-                        width: 200,
-
                     },  {
                         title: "Horas",
                         field: "horas",
                         sorter: "number",
                         editor: "select",
-                        width: 70,
                     }, {
                         title: "Estado",
                         field: "estado",
-                        width: 70,
                         editor: "select",
                         editorParams: {
                             values: {
@@ -110,7 +111,6 @@
                             }
                             return icono;
                         },
-                        width: 100,
                         cellEdited: function (cell) {
                             var row = cell.getRow();
                             var id = row.getData().id;
@@ -121,7 +121,6 @@
                         title: "Fecha",
                         field: "fecha",
                         sorter: "date",
-                        width: 120,
                             sorterParams: {
                                 format: "DD/MM/YYYY", 
                             },
@@ -130,9 +129,8 @@
                         title: "Entrada",
                         field: "hora_entrada",
                         sorter: "string", 
-                        width: 100,
-                    },
-                    {
+
+                    }, {
                         title: "Salida",
                         field: "hora_salida",
                         sorter: "string", 
@@ -141,14 +139,12 @@
                         title: "Tiempo",
                         field: "tiempo",
                         sorter: "string", 
-                        width: 100,
                         sorterParams: {
                             format: "HH:mm:ss",
                         },
                     },  {
                         title: "Ubicacion",
                         field: "ubicacion",
-                        width: 200,
                         formatter: "link",
                         formatterParams: {
                             labelField: "ubicacion",

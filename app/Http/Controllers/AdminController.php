@@ -32,10 +32,10 @@ class AdminController extends Controller
     //ADMIN HOME
 
     public function firmas(){
-        
+
         $sql = DB::table('registros_checkin as r')
-            ->select('r.id', 'r.ubicacion', 'r.responsable', 'r.origen', 'r.fecha', 'r.hora_entrada', 'r.hora_salida', 'r.tiempo', 'r.horas', 'r.tipo', 'r.estado')
-            ->join('users as u', 'r.encargado_id', '=', 'u.id')
+            ->select('r.*', 'u.codigo')
+            ->join('users as u', 'r.idusuario', '=', 'u.id')
             ->where('u.area', Auth::user()->area)
             ->orderBy('fecha_actual', 'desc')
             ->get();

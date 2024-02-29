@@ -12,6 +12,7 @@
 </h2>
 
 <div id="players"></div>
+<div style="height: 65px;"></div>
 @endsection
 
 @section('script')
@@ -20,14 +21,18 @@
             var users = {!! $datos !!};
 
             var table = new Tabulator("#players", {
-                height: "100%",
-                data: users,
-                layout: "fitColumns",
-                pagination: "local",
-                resizableColumns: false,  
+                data: users, 
                 paginationSize: 20,
                 groupBy: "nombre_area",
-                tooltips: true,
+
+                pagination: "local",
+                layout: "fitDataFill",
+                resizableColumns:false,
+                height: "100%",
+                responsiveLayout:"collapse",
+                layoutColumnsOnNewData:true,
+                virtualDomHoz:true,
+
                 columns: [{
                         title: "Nombre",
                         field: "name",

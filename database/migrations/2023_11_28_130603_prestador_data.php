@@ -10,13 +10,13 @@ class prestadorData extends Migration
     {
         DB::statement("
         CREATE VIEW semanas_prestador AS
-        SELECT 
-            idusuario,
-            CEIL(DATEDIFF(NOW(), MIN(STR_TO_DATE(fecha, '%d/%m/%Y'))) / 7) AS semanas_actividad
-        FROM 
-            registros_checkin
-        GROUP BY 
-            idusuario;
+            SELECT 
+                idusuario,
+                CEIL(DATEDIFF(NOW(), MIN(STR_TO_DATE(fecha, '%d/%m/%Y'))) / 7) AS semanas_actividad
+            FROM 
+                registros_checkin
+            GROUP BY 
+                idusuario;
         ");
 
         DB::statement("

@@ -315,7 +315,10 @@ class PrestadorController extends Controller
             ->orderByDesc('fecha')
             ->get();
 
-        return view('/prestador/actividades_asignadas',compact('actividades'));
+        $fechaActual = date('d/m/Y');
+        $registroCheck = DB::table('registros_checkin')->select('fecha')->where('fecha', $fechaActual)->where('hora_salida', null)->get();
+        $activo = (count($registroCheck) > 0) ? true : false;
+        return view('/prestador/actividades_asignadas',compact('actividades', 'activo'));
     }
 
     public function actPull()
@@ -519,7 +522,6 @@ class PrestadorController extends Controller
         
         return response()->json(['mensaje' => 'ERROR, no hay check de entrada']);
     }
-
     //CREACION DE ACTIVIDADES COMO PRESTADOR
 
     public function create_act()

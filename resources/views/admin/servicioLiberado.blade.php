@@ -10,7 +10,7 @@
 <h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
     Prestadores Servicio Liberado (fecha de salida)
 </h2>
-<div id="players"></div>
+<div class="container" id="players"></div>
 @endsection
 
 @section('script')
@@ -19,13 +19,14 @@
             var users = {!! $datos !!};
 
             var table = new Tabulator("#players", {
-                height: "100%",
+               
                 data: users,
-                layout: "fitColumns",
-                pagination: "local",
-                resizableColumns: false,  
                 paginationSize: 20,
-                tooltips: true,
+
+                pagination: "local",
+                layout: "fitDataFill",
+                resizableColumns:false,
+
                 columns: [{
                         title: "Nombre",
                         field: "name",

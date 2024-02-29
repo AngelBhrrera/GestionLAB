@@ -22,6 +22,11 @@
             @endif
         </div>
     </div>
+    @if (!$activo)
+        <div class="alert alert-danger-soft show flex items-center mb-2" role="alert">
+            <i data-lucide="alert-octagon" class="w-6 h-6 mr-2"></i> Para iniciar actividades debes hacer Check-in
+        </div>
+    @endif
     
     <div class="contenedor-actividades">
     @if(isset($actividades))
@@ -77,13 +82,17 @@
                     </div>
                     <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
                 @endif
+                @if($actividad->estado == 'En Proceso')
+                    <br>
+                    <label for="detalles">Comentario (motivo de pausa)</label>
+                    <input class="form-control" type="text" name="detalles" id="detalles" placeholder="Comentario">
+                @endif
             </div>
             <div class="detalle botones">
                 @if($actividad->estado == 'Asignada')
                     <button class="boton"  onclick="comenzarActividad({{ $actividad->id }})" >Comenzar Actividad</button>
                     <button class="boton boton-inactivo" data-id="{{ $actividad->id }}" disabled>Terminar Actividad</button>
                 @elseif($actividad->estado == 'En Proceso')
-
                     <button class="boton" onclick="pausarActividad({{ $actividad->id }})" >Pausar Actividad</button>
                     <button class="boton" onclick="terminarActividad({{ $actividad->id }})" >Terminar Actividad</button>
                 @elseif($actividad->estado == 'Bloqueada')
@@ -110,7 +119,7 @@
         function comenzarActividad(idActividad) {
 
         var id = idActividad;
-
+        
         var nH = "horas_"+id;
         var nM = "minutos_"+id;
         const horasInput = document.getElementById(nH);
