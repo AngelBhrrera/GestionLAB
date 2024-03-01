@@ -32,7 +32,7 @@
             <div class="col-span-12 mt-6">     
                 <div class="intro-y report-box mt-12 sm:mt-4">
                     <div class="box py-0 xl:py-5 grid grid-cols-12 gap-0 divide-y xl:divide-y-0 divide-x divide-dashed divide-slate-200 dark:divide-white/5">
-
+                
                         <div class="report-box__item py-5 xl:py-0 px-5 col-span-12 sm:col-span-6 xl:col-span-3">
                             <div class="report-box__content">
                                 <div class="flex">
@@ -76,9 +76,27 @@
                             <div class="text-2xl font-medium leading-7 mt-6">{{$horasRestantes}}</div>
                             <div class="text-slate-500 mt-1 text-align center">HORAS RESTANTES</div>
                         </div>
+                        
                     </div>
                 </div>
             </div>
+            <br>
+            <div class="mt-4" style="width: 200px;">
+                <div class="intro-x box p-5">
+                    <div class="flex items-center">
+                        <img class="w-7 h-7" alt="Rocketman Tailwind HTML Admin Template" src="{{ asset('build/assets/images/calendar-check.png') }}">
+                        <div class="ml-4">Racha de asistencias</div>
+                        <div class="ml-auto">{{$racha}}</div>
+                    </div>
+                    <div class="flex items-center mt-5 sm:w-50">
+                        <img class="w-7 h-7" alt="Rocketman Tailwind HTML Admin Template" src="{{ asset('build/assets/images/calendar-x.png') }}">
+                        <div class="ml-4">Faltas totales</div>
+                        <div class="ml-auto">{{$faltas}}</div>
+                    </div>
+                </div>
+            </div>
+            
+
             <!-- END: Reporte 1 -->
             <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
                 <h2 class="text-lg font-medium mr-auto">ULTIMOS 5 CHECK IN</h2>

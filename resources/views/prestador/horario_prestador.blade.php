@@ -24,7 +24,7 @@
 @section('subcontent')
 
     <div id='container'>
-        <div id='calendar' style='width: auto; height: auto;'></div>
+        <div id='calendar' style='width: 100%; height: 100%;'></div>
     </div>
 
     <style>
@@ -39,6 +39,8 @@
 </style>
     <div id="asistencias" data-asistencias="{{json_encode($asistencias)}}"></div>
     <div id="festivos" data-festivos="{{json_encode($festivos)}}"></div>
+    <div id="primerCheck" data-check="{{json_encode($primerCheck)}}"></div>
+    <div id="horario" data-horario="{{json_encode(Auth::user()->horario)}}"></div>
 @endsection
 
 @section('script')
@@ -55,12 +57,14 @@
       
       var asistencias = document.getElementById("asistencias").getAttribute('data-asistencias');
       var festivos = document.getElementById("festivos").getAttribute('data-festivos');
+      var primerCheck = convertirFormatoFecha(JSON.parse(document.getElementById("primerCheck").getAttribute('data-check')).fecha);
+      var horario = JSON.parse(document.getElementById('horario').getAttribute('data-horario'));
       var arrayAsist = JSON.parse(asistencias);
       var arrayFest = JSON.parse(festivos);
       var a=[];
       var fest=[];
       var faltasCalendario=[];
-          
+      console.log(primerCheck);
       //Asistencias
       arrayAsist.forEach(function(elemento) {
             a.push({
@@ -107,15 +111,12 @@
         var arrayFest = JSON.parse(festivos);
 
         const diasLaborables = obtenerDiasLaborablesDelMes(mesActual, añoActual);
-        console.log(arrayAsist);
         const diasLaborablesNoFestivos = diasLaborables.filter(dia => !arrayFest.includes(dia) && new Date(dia) <= fechaActual);
-        console.log(diasLaborablesNoFestivos);
         let faltas = 0;
-
         diasLaborablesNoFestivos.forEach(diaLaborable => {
           const asistenciaEnDia = arrayAsist.find(asistencia => asistencia === diaLaborable);
-          if (!asistenciaEnDia) {
-            //console.log(diaLaborable);
+          if (!asistenciaEnDia && (diaLaborable > primerCheck)) {
+            console.log(diaLaborable);
             faltas++;
             faltasCalendario.push({
               start: diaLaborable,
@@ -126,6 +127,19 @@
           }
         });
         return faltas;
+      }
+
+      function convertirFormatoFecha(fecha) {
+          // Dividir la cadena de fecha en día, mes y año
+          var partes = fecha.split("/");
+          var day = partes[0];
+          var month = partes[1];
+          var year = partes[2];
+
+          // Crear una nueva cadena de fecha en el formato "aaaa-mm-dd"
+          var nuevaFecha = year + "-" + month + "-" + day;
+
+          return nuevaFecha;
       }
 
       faltas = contarFaltas();
@@ -157,8 +171,9 @@
         evento.style.marginTop= margin;
         margin+=20;
       });
-      console.log(eventos.length);
-    });      
+    });
+    
+    
   </script>
 
 @endsection
