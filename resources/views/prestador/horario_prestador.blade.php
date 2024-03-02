@@ -38,6 +38,7 @@
     
 </style>
     <div id="asistencias" data-asistencias="{{json_encode($asistencias)}}"></div>
+    <div id="faltas" data-faltas="{{json_encode($fechasFaltas)}}"></div>
     <div id="festivos" data-festivos="{{json_encode($festivos)}}"></div>
     <div id="primerCheck" data-check="{{json_encode($primerCheck)}}"></div>
     <div id="horario" data-horario="{{json_encode(Auth::user()->horario)}}"></div>
@@ -57,12 +58,15 @@
       
       var asistencias = document.getElementById("asistencias").getAttribute('data-asistencias');
       var festivos = document.getElementById("festivos").getAttribute('data-festivos');
+      var fechasFaltas = document.getElementById("faltas").getAttribute('data-faltas');
       var primerCheck = convertirFormatoFecha(JSON.parse(document.getElementById("primerCheck").getAttribute('data-check')).fecha);
       var horario = JSON.parse(document.getElementById('horario').getAttribute('data-horario'));
       var arrayAsist = JSON.parse(asistencias);
       var arrayFest = JSON.parse(festivos);
+      var arrayFalt = JSON.parse(fechasFaltas);
       var a=[];
       var fest=[];
+      var faltas = [];
       var faltasCalendario=[];
       //Asistencias
       arrayAsist.forEach(function(elemento) {
@@ -94,7 +98,16 @@
       });
 
       //Faltas
-    
+
+      arrayFalt.forEach(function(elemento) {
+            faltas.push({
+            start: elemento,
+            end: elemento,
+            backgroundColor: "red",
+            display: "background"
+          });
+      })
+
       function obtenerDiasLaborablesDelMes(mes, año) {
           const diasLaborables = [];
           const primerDiaMes = new Date(año, mes, 1);
@@ -149,7 +162,7 @@
           return nuevaFecha;
       }
 
-      faltas = contarFaltas();
+      //faltas = contarFaltas();
       //console.log(faltas);
       //console.log(faltasCalendario);
 
@@ -160,7 +173,8 @@
         events: [
             ...a,
             ...fest,
-            ...faltasCalendario
+            ...faltas
+            //...faltasCalendario
           ],
 
       });
@@ -179,7 +193,6 @@
         margin+=20;
       });
     });
-    
     
   </script>
 

@@ -817,7 +817,17 @@ class PrestadorController extends Controller
             $festivo->final = $fechaObjeto->format('Y-m-d');
         }
 
-        return view('/prestador/horario_prestador', compact('asistencias', 'festivos', 'primerCheck'));
+        $faltas = $this->racha_asistencias_faltas()[2];
+        $fechasFaltas= [];
+        foreach($faltas as $falta){
+
+            $fechaObjeto = DateTime::createFromFormat('d/m/Y', $falta);
+            $falta = $fechaObjeto->format('Y-m-d');
+            $fechasFaltas[] = $falta;
+        }
+        
+
+        return view('/prestador/horario_prestador', compact('asistencias', 'festivos', 'primerCheck', 'fechasFaltas'));
     }
     //REPORTES
 
