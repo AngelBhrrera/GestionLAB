@@ -64,7 +64,6 @@
       var a=[];
       var fest=[];
       var faltasCalendario=[];
-      console.log(primerCheck);
       //Asistencias
       arrayAsist.forEach(function(elemento) {
             a.push({
@@ -76,7 +75,15 @@
       });
 
       //Días festivos
-      arrayFest.forEach(function(elemento) {
+      arrayFest.forEach(function(elemento) 
+      {
+            if(elemento.tipo == "vacaciones"){
+              var fecha = new Date(elemento.final);
+
+              fecha.setDate(fecha.getDate() + 2);
+
+              elemento.final = fecha.getFullYear() + '-' + ('0' + (fecha.getMonth() + 1)).slice(-2) + '-' + ('0' + fecha.getDate()).slice(-2);
+            }
             fest.push({
             title: elemento.evento,
             start: elemento.inicio,

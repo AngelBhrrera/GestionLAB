@@ -28,10 +28,10 @@ class PrestadorController extends Controller
             ->orderBy('fecha_actual', 'desc')
             ->limit(5)
             ->get();
-        
-        $racha = $this->racha_asistencias_faltas(1);
-        $faltas = $this->racha_asistencias_faltas(0)[0];
-        $fechas_faltas = $this->racha_asistencias_faltas(0)[1];
+        $llamadaRachaFaltas = $this->racha_asistencias_faltas();
+        $racha = $llamadaRachaFaltas[0];
+        $faltas = $llamadaRachaFaltas[1];
+        //$fechas_faltas = $this->racha_asistencias_faltas()[2];
 
         $leaderboard = $this->consultarLeaderboard('lb_at', Auth::user()->area, 'area',10);
         $leaderboardSede = $this->consultarLeaderboard('lb_at', Auth::user()->sede, 'sede',10);
@@ -44,13 +44,43 @@ class PrestadorController extends Controller
         )->with('asistencias', json_encode($asistencias));
     }
 
-    public function racha_asistencias_faltas($modo){
+    public function racha_asistencias_faltas(){
         $primerCheck = DB::table('registros_checkin')
         ->select('fecha')
         ->where('idusuario', Auth::user()->id)
         ->orderByRaw("STR_TO_DATE(fecha, '%d/%m/%Y')")->first();
         
-        $primerCheck->fecha = DateTime::createFromFormat('d/m/Y', $primerCheck->fecha)->format('d-m-Y');
+        if($primerCheck){
+            $primerCheck->fecha = DateTime::createFromFormat('d/m/Y', $primerCheck->fecha)->format('d-m-Y');
+        }else{
+            return [0,0,[]];
+        }
+        //Días festivos
+        $festivos = DB::table('eventos')
+            ->where('sede', Auth::user()->sede)
+            ->where('area', Auth::user()->area)
+            ->orWhere('area', 0)
+            ->get();
+
+        $diasFestivos = [];
+        foreach($festivos as $festivo){
+            $fechaInicio = DateTime::createFromFormat('Y-m-d H:i:s', $festivo->inicio);
+            $festivo->inicio = $fechaInicio->format('d/m/Y');
+            
+            $fechaFinal = DateTime::createFromFormat('Y-m-d H:i:s', $festivo->final);
+            $festivo->final = $fechaFinal->format('d/m/Y');
+            //dd($fechaInicio->modify("+1 day"), $fechaFinal->modify("+1 day"));
+            if($festivo->tipo == "vacaciones"){
+                while($fechaInicio <= $fechaFinal){
+                    $diasFestivos[] = $fechaInicio->format('d/m/Y');
+                    $fechaInicio->modify("+1 day");
+                    
+                }
+            }else{
+                $diasFestivos[] = $festivo->inicio;
+            }
+        }
+        //dd($primerCheck); 
         $asist = DB::table('registros_checkin')
         ->select('fecha')
         ->where('idusuario', Auth::user()->id)
@@ -58,54 +88,70 @@ class PrestadorController extends Controller
         ->orderByRaw("STR_TO_DATE(fecha, '%d/%m/%Y')")
         ->pluck('fecha')
         ->toArray();
+        //dd($asist);
 
         $fecha_inicial = new DateTime($primerCheck->fecha); // Fecha inicial específica
         $fecha_actual = new DateTime();
+        $fecha_actual->modify("+1 day");
         $fechas = [];
-        //dd($fecha_actual->format('d-m-Y'));
-        
         $ultimoCheck = DB::table('registros_checkin')
             ->where('idusuario', Auth::user()->id)
             ->where('fecha', $fecha_actual->format('d/m/Y'))
             ->where('horas', '>=' , '3')->get();
         
-        if(count($ultimoCheck) == 0){
-            $fecha_actual->modify("-1 day");
+        
+        if(Auth::user()->horario == "Sabatino"){
+            if(count($ultimoCheck) == 0){
+                $fecha_actual->modify("-1 day");
+            }
+            while ($fecha_inicial <= $fecha_actual) {
+                if($fecha_inicial->format('w') == 6){
+                    //Sabados
+                $fechas[] = $fecha_inicial->format('d/m/Y');
+                }
+                
+                $fecha_inicial->modify('+1 day');
+            }
+            //dd($fechas);
+        }else{
+            if(count($ultimoCheck) == 0){
+                $fecha_actual->modify("-1 day");
+            }
+            while ($fecha_inicial <= $fecha_actual) {
+                if($fecha_inicial->format('w') > 0 && $fecha_inicial->format('w') < 6){
+                    //De lunes a viernes
+                $fechas[] = $fecha_inicial->format('d/m/Y');
+                }
+                $fecha_inicial->modify('+1 day');
+            }
         }
         
-        while ($fecha_inicial <= $fecha_actual) {
-            if($fecha_inicial->format('w') > 0 && $fecha_inicial->format('w') < 6){
-                //De lunes a viernes
-            $fechas[] = $fecha_inicial->format('d/m/Y');
-            }
-            $fecha_inicial->modify('+1 day');
-        }
-        if($modo == 1){
-            //Calculo para rachas de asistencias
-            $racha = 0;
-            foreach ($fechas as $fecha) {
-                if (in_array($fecha, $asist)) {
-                    
-                    $racha++;
-                } else {
-                    
+        //Calculo para rachas de asistencias
+        $racha = 0;
+        foreach ($fechas as $fecha) {
+            if (in_array($fecha, $asist)) {
+                
+                $racha++;
+            } else {
+                if(!in_array($fecha, $diasFestivos)){
                     $racha = 0;
                 }
             }
-            return $racha;
+        }
+
+        //Calculo de faltas
+        $faltas = 0;
+        $fechas_faltas = [];
+        
+        foreach ($fechas as $fecha) {
+            if (!in_array($fecha, $asist) && !in_array($fecha, $diasFestivos)) {
+                $fechas_faltas[]=$fecha;
+                $faltas++;
             }
-            else{
-                $faltas = 0;
-                $fechas_faltas = [];
-                //dd($primerCheck,$fecha_inicial,$fechas);
-                foreach ($fechas as $fecha) {
-                    if (!in_array($fecha, $asist)) {
-                        $fechas_faltas[]=$fecha;
-                        $faltas++;
-                    }
-                }
-                return [$faltas, $fechas_faltas];
-            }
+        }
+
+        return [$racha, $faltas, $fechas_faltas];
+        
         
     }
     
@@ -751,8 +797,9 @@ class PrestadorController extends Controller
 
         $asists = DB::table('registros_checkin')
             ->where('idusuario', Auth::user()->id)
+            ->where('horas', '>', 3)
             ->pluck('fecha');
-
+        
         $asistencias = [];
         foreach ($asists as &$asist) {
             $fechaObjeto = DateTime::createFromFormat('d/m/Y', $asist);
@@ -772,7 +819,6 @@ class PrestadorController extends Controller
 
         return view('/prestador/horario_prestador', compact('asistencias', 'festivos', 'primerCheck'));
     }
-
     //REPORTES
 
     public function show_reportes(){

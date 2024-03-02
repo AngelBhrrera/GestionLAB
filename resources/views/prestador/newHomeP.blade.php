@@ -81,7 +81,7 @@
                 </div>
             </div>
             <br>
-            <div class="mt-4" style="width: 200px;">
+            <div class="mt-4" style="width: 300px;">
                 <div class="intro-x box p-5">
                     <div class="flex items-center">
                         <img class="w-7 h-7" alt="Rocketman Tailwind HTML Admin Template" src="{{ asset('build/assets/images/calendar-check.png') }}">
