@@ -23,12 +23,6 @@
         <h2 class="text-lg font-medium mr-auto">REGISTRO DE HORAS</h2>
     </div>
     <br>
-    <div class="table-controls pl-10">
-                    <button class="download-button" id="download-json">Download JSON</button>
-                    <button class="download-button" id="download-csv">Download CSV</button>
-                    <button class="download-button" id="download-xlsx">Download XLSX</button>
-    </div>
-    <br>
     <div id="players"></div>
 
 @endsection
@@ -100,16 +94,6 @@
                     },  
                     
                 ],
-            });
-
-            document.getElementById("download-csv").addEventListener("click", function(){
-                table.download("csv", "data.csv");
-            });
-            document.getElementById("download-json").addEventListener("click", function(){
-                table.download("json", "data.json");
-            });
-            document.getElementById("download-xlsx").addEventListener("click", function(){
-                table.download("xlsx", "data.xlsx", {sheetName:"My Data"});
             });
             
     </script>

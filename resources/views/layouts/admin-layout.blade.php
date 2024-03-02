@@ -118,6 +118,7 @@
                         </a>
                     </li>
                     </li>
+                    @if (Auth::user()->tipo == "jefe area")
                     <li>
                         <a href="{{route('admin.gestor_premios')}}" class="side-menu">
                             <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
@@ -128,23 +129,20 @@
                             <div class="side-menu__title">Ver premios</div>
                         </a>
                     </li>
+                    @endif
+                    @if (Auth::user()->tipo == "jefe area")
+                        <li>
+                            <a href="{{route('admin.sede')}}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                                <div class="side-menu__title">Modificar area</div>
+                            </a>
+                        </li>
+                    @endif
                     @if (Auth::user()->tipo == "jefe sede" || Auth::user()->tipo == "Superadmin")
                     <li>
                         <a href="{{route('admin.sede')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
                             <div class="side-menu__title">Modificar sede</div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{route('admin.premios')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
-                            <div class="side-menu__title">Gestionar Premios</div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{route('admin.gestor_premios')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
-                            <div class="side-menu__title">Tabulador premios</div>
                         </a>
                     </li>
                     @endif
@@ -406,6 +404,7 @@
 @endif
 
 @if ($filtro->gamificacion == 1)
+    @if (Auth::user()->tipo == "coordinador" || Auth::user()->tipo == "jefe area")
         @section('actividades')
             <li>
                 <a href="javascript:;" class="side-menu">
@@ -484,6 +483,7 @@
             </li>
         @endsection
     @endif
+@endif
 
 
 @if ($filtro->impresiones == 1)

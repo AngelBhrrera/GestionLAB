@@ -118,7 +118,7 @@
                                     <input name="horas" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" required value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
                                     <input name="minutos" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" required value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
                             </div>
-                            <small id="Help" class="form-text text-muted">Ingresa el tiempo estimado para la actividad</small>
+                            <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
                     </div>
 
 
