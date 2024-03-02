@@ -167,21 +167,22 @@
                 </a>
                 <ul class="">
                     <li>
-                        <a href="{{route('admin.prestadores')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="user-check"></i> </div>
-                            <div class="side-menu__title">Activos</div>
+                        <a href="{{route('admin.prestadores_pendientes')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="alert-octagon"></i> </div>
+                            <div class="side-menu__title">Activar Prestador</div>
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('admin.prestadores_pendientes')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="alert-octagon"></i> </div>
-                            <div class="side-menu__title">Pendientes</div>
+                        <a href="{{route('admin.prestadores')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="user-check"></i> </div>
+                            <div class="side-menu__title">Ver prestadores activos</div>
                         </a>
                     </li>
+ 
                     <li>
                         <a href="{{route('admin.prestadores_inactivos')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="user-x"></i> </div>
-                            <div class="side-menu__title">Inactivos</div>
+                            <div class="side-menu__title">Ver prestadores inactivos</div>
                         </a>
                     </li>
                     <li>
@@ -190,7 +191,7 @@
                                         <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
                                         <path d="m9 12 2 2 4-4" />
                                     </svg></i> </div>
-                            <div class="side-menu__title">Servicio concluido</div>
+                            <div class="side-menu__title">Ver prestadores con servicio concluido</div>
                         </a>
                     </li>
                     <li>
@@ -199,7 +200,7 @@
                                         <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z" />
                                         <path d="m9 10 2 2 4-4" />
                                     </svg></i> </div>
-                            <div class="side-menu__title">Servicio liberado</div>
+                            <div class="side-menu__title">Ver prestadores con servicio liberado</div>
                         </a>
                     </li>
                 </ul>

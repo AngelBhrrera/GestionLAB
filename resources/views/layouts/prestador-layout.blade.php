@@ -173,6 +173,7 @@
                         </ul>
                     </li>
                 @endif
+                
                 @if ($filtro->gamificacion == 1)
                     <li>
                         <a href="#" class="side-menu">

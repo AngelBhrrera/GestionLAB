@@ -169,7 +169,7 @@ class AdminController extends Controller
         $data = DB::table('prestadores_pendientes');
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $data->where('area', Auth::user()->area);
-        }else{
+        }else if(auth()->user()->tipo == 'jefe sede'){
             $data->where('sede',  Auth::user()->sede);
         }
         $data = $data->get();
@@ -180,15 +180,18 @@ class AdminController extends Controller
     public function prestadores_terminados()
     {
         $data = DB::table('prestadores_servicio_concluido');
-            
-        if(Auth::user()->tipo == 'coordinador' )
-        {
-            $data = $data->where('sede', Auth::user()->sede)->get();
+        if( auth()->user()->tipo == 'coordinador'){
+            $data->where('area', Auth::user()->area);
             return view('admin/servicioConcluido', ['datos' => json_encode($data)]);
-        }else{
-            $data = $data->get();
-            return view('admin/administrar_servicioConcluido', ['datos' => json_encode($data)]);
+        }else  if( auth()->user()->tipo == 'jefe area'){
+            $data->where('area', Auth::user()->area);
+        }else  if( auth()->user()->tipo == 'jefe sede'){
+            $data->where('sede',  Auth::user()->sede);
         }
+        $data = $data->get();
+
+        return view('admin/administrar_servicioConcluido', ['datos' => json_encode($data)]);
+            
     }
 
     public function prestadores_liberados()
