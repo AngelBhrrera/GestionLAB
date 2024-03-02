@@ -23,15 +23,11 @@ class CreateProyectosTable extends Migration
             $table->boolean('particular')->default(1);
             $table->integer('id_area');
             $table->integer('id_cliente')->nullable()->default(null);
+            $table->string('turno', 50)->default('No Aplica');
            
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('proyectos');

@@ -105,27 +105,26 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
                 Route::middleware('role:jefe area,jefe sede,Superadmin')->group(function() {
 
-                Route::get('/admin/premios', 'premios')->name('premios');
-                Route::get('/admin/premios_tabulador', 'gestor_premios')->name('gestor_premios');
-                Route::get('admin/eliminar_premio/{value}', 'eliminar_premio')->name('eliminar_premio');
+                    Route::get('/admin/premios', 'premios')->name('premios');
+                    Route::get('/admin/premios_tabulador', 'gestor_premios')->name('gestor_premios');
+                    Route::get('admin/eliminar_premio/{value}', 'eliminar_premio')->name('eliminar_premio');
 
-                Route::get('admin/ver_reportes_parciales', 'ver_reportes_parciales')->name('reportes_parciales');
-                Route::post('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
-                Route::get('admin/resultados_busqueda/{codigo}', 'resultados_busqueda')->name('resultados_busqueda');
-                Route::get('admin/autorizar_denegar_reportes/{modo}/{id}', 'autorizar_denegar_reportes')->name('autorizar_denegar_reportes');
+                    Route::get('admin/ver_reportes_parciales', 'ver_reportes_parciales')->name('reportes_parciales');
+                    Route::post('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
+                    Route::get('admin/resultados_busqueda/{codigo}', 'resultados_busqueda')->name('resultados_busqueda');
+                    Route::get('admin/autorizar_denegar_reportes/{modo}/{id}', 'autorizar_denegar_reportes')->name('autorizar_denegar_reportes');
 
-                Route::get('/admin/administradores', 'administradores')->name('administradores');
-                Route::get('/admin/admin_prestadores_terminados','admin_prestadores_terminados')->name('admin_prestadores_terminados');
-                
-                
-                Route::get('admin/gestionSede', 'gestionSedes')->name('sede');
+                    Route::get('/admin/administradores', 'administradores')->name('administradores');
+                    Route::get('/admin/admin_prestadores_terminados','admin_prestadores_terminados')->name('admin_prestadores_terminados');
+                    
+                    Route::get('admin/gestionSede', 'gestionSedes')->name('sede');
+                    Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
+                    Route::post('admin/nuevaArea', 'nuevaArea')->name('nuevaArea');
+                    Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
 
-                Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
-                Route::post('admin/nuevaArea', 'nuevaArea')->name('nuevaArea');
-                Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
-                    Route::middleware('role:Superadmin')->group(function() {
-                        Route::get('/superadmin/gestion', 'gestionViews')->name('gestionViews');
-                    });
+                        Route::middleware('role:Superadmin')->group(function() {
+                            Route::get('/superadmin/gestion', 'gestionViews')->name('gestionViews');
+                        });
                     
                     Route::get('/admin/registro', 'registro')->name('registro'); 
     
@@ -159,11 +158,9 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
                     Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg'); 
                 });
-                    
             });
 
-
-            Route::get('/admin/home', 'firmas')->name('home');
+            Route::get('/admin/home', 'home')->name('homeA');
             Route::get('/admin/firmas', 'firmas')->name('firmas');
             Route::get('admin/check-in', 'checkin')->name('checkin');
             //FILTROS PARA ACTIVIDADES
@@ -172,6 +169,8 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/obtenerSubcategoria', 'obtenerSubcategoria')->name('obtenerSubcategorias');
             Route::get('/admin/obtenerPrestadores', 'obtenerPrestadores')->name('obtenerPrestadoresProyecto');
             //RUTAS ACTIVIDADES Y ASIGNACIONES
+            Route::get('/admin/actividades', 'actHub')->name('actHub');
+
             Route::get('/admin/C_actividades', 'create_act')->name('create_act');
             Route::post('/admin/M_actividades', 'make_act')->name('make_act');
             Route::get('/admin/A_actividades', 'asign_act')->name('asign_act');
@@ -180,13 +179,15 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
             Route::get('/admin/ver_actividades', 'actividades')->name('actividades');
             Route::get('/admin/actividades_en_progreso','actividades_en_progreso')->name('actividades_en_progreso');
-            Route::get('/admin/actividades_revision', 'reviewActs')->name('reviewActs');
+            Route::get('/admin/actividades_revision', 'reviewActs')->name('review_acts');
 
-            Route::get('/admin/actividades_propuestas','proposeActs')->name('proposeActs');
+            Route::get('/admin/actividades_propuestas','proposeActs')->name('propose_acts');
             Route::get('/admin/aprobar_actividad/{id}', 'setActTEC')->name('setActTEC');
             Route::post('/admin/actividad_TEU', 'actTEC')->name('actTEC');
 
             //RUTAS PROYECTOS Y ASIGNACIONES
+            Route::get('/admin/proyectos', 'proyHub')->name('proyHub');
+
             Route::get('/admin/C_proyectos', 'create_proy')->name('create_proy');
             Route::get('/admin/A_proyectos', 'proy_acts')->name('proy_acts');
             Route::post('/admin/M_proyecto', 'make_proy')->name('make_proy');
@@ -195,14 +196,15 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/ver_proyectos', 'view_proys')->name('view_proys');
             Route::get('/admin/ver_detalles_proyecto/{id}', 'view_details_proy')->name('view_details_proy');
             Route::get('/admin/ver_detalles_proyecto/ver_detalles_actividad/{id}', 'view_details_act')->name('view_details_act');
+            
             //MODULO IMPRESIONES
-
             Route::get('/admin/ver_impresoras', 'control_print')->name('control_print');
             Route::post('/admin/registrar_impresoras', 'make_print')->name('make_print');
             Route::get('/admin/ver_impresiones', 'watch_prints')->name('watch_prints');
             //MODULO DE PRESTADORES
+            Route::get('/admin/prestadores', 'prestadorHub')->name('prestadorHub');
             Route::get('/admin/general', 'general')->name('general');
-            Route::get('/admin/prestadores', 'prestadores')->name('prestadores');
+            Route::get('/admin/prestadores_activos', 'prestadores')->name('prestadores');
             Route::get('/admin/prestadores_pendientes', 'prestadores_pendientes')->name('prestadores_pendientes');
             Route::get('/admin/prestadores_inactivos', 'prestadores_inactivos')->name('prestadores_inactivos');
             Route::get('/admin/prestadores_liberados', 'prestadores_liberados')->name('prestadores_liberados');

@@ -12,6 +12,14 @@
         }
     </style>
 
+    <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- jQuery UI -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+
 @endsection
 
 @section('breadcrumb')
@@ -31,7 +39,10 @@
                         <button class="download-button" id="download-json">Download JSON</button>
                         <button class="download-button" id="download-csv">Download CSV</button>
                         <button class="download-button" id="download-xlsx">Download XLSX</button>
+                        <input id="searchInput" type="text" placeholder="Buscar...">
+                        <button id="resetButton">Restablecer búsqueda</button>
                     </div>
+                   
                 </div>
 
                 <div class="text-center mx-auto" style="padding-left: 1.5px;" id="players"></div>
@@ -43,14 +54,14 @@
 <div style="height: 45px;"></div>
 @endsection
 
-    @section('script')
+@section('script')
     <script type="text/javascript">
 
             var assist = {!! $datos !!};
 
             var table = new Tabulator("#players", {
                 data: assist,
-                paginationSize: 12,
+                paginationSize: 20,
 
                 pagination: "local",
                 layout: "fitDataFill",
@@ -59,6 +70,9 @@
                 //responsiveLayout:"collapse",
                 layoutColumnsOnNewData:true,
                 virtualDomHoz:true,
+                headerFilterPlaceholder: "Buscar..",
+                headerFilterLiveFilter: false,
+
                 columns: [{
                         title: "ID",
                         field: "id",
@@ -67,15 +81,12 @@
                     },  {
                         title: "Codigo",
                         field: "codigo",
-                        headerFilter: "input",
-                    },{
+                    }, {
                         title: "Prestador",
                         field: "origen",
-                        headerFilter: "input",
                     },{
                         title: "Coordinador",
                         field: "responsable",
-                        sorter: "string",
                     },  {
                         title: "Horas",
                         field: "horas",
@@ -124,7 +135,6 @@
                             sorterParams: {
                                 format: "DD/MM/YYYY", 
                             },
-                        headerFilter: "input",
                     }, {
                         title: "Entrada",
                         field: "hora_entrada",
@@ -186,6 +196,35 @@
                 table.download("xlsx", "data.xlsx", {sheetName:"My Data"});
             });
 
-            
+            document.addEventListener('DOMContentLoaded', function() {
+                function applyCustomFilter(value) {
+                var searchValue = value.toLowerCase().replace(/[^a-z0-9áéíóúüñ]/g, '');
+
+                // Aplicar el filtro a las columnas "codigo", "name", "apellido" y "correo"
+                table.setFilter(function(row) {
+                    return (row.codigo && row.codigo.toString().toLowerCase().includes(searchValue)) || 
+                        (row.origen && row.origen.toLowerCase().includes(searchValue)) || 
+                        (row.responsable && row.responsable.toLowerCase().includes(searchValue)) || 
+                        (row.fecha && row.fecha.toLowerCase().includes(searchValue));
+                });
+                }
+
+                    // Evento de cambio en el input de búsqueda
+                    document.getElementById("searchInput").addEventListener("input", function(e) {
+                    var value = e.target.value.trim();
+                    applyCustomFilter(value);
+                    });
+
+                    function resetSearch() {
+                        table.clearFilter();
+                        document.getElementById("searchInput").value = ""; // Limpiar el campo de búsqueda
+                        }
+
+                        // Evento de clic en un botón para restablecer la búsqueda
+                        document.getElementById("resetButton").addEventListener("click", function() {
+                        resetSearch();
+                        });
+        });
+    
     </script>
 @endsection
