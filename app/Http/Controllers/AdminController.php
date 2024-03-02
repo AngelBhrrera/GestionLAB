@@ -32,13 +32,14 @@ class AdminController extends Controller
     //ADMIN HOME
 
     public function firmas(){
-
+        
         $sql = DB::table('registros_checkin as r')
             ->select('r.*', 'u.codigo')
             ->join('users as u', 'r.idusuario', '=', 'u.id')
             ->where('u.area', Auth::user()->area)
             ->orderBy('fecha_actual', 'desc')
             ->get();
+
 
         if(Auth::user()->tipo == "coordinador"){
             return view("admin.asistencias_encargado", ['datos' => json_encode($sql)]);
@@ -54,6 +55,14 @@ class AdminController extends Controller
     
         return response()->json(['message' => 'Activado exitosamente' . $id]);
     }
+
+    public function modifHoras($id, $hrs) {
+        DB::table('registros_checkin')
+            ->where('id', $id)
+            ->update(['horas' => $hrs]);
+
+    return response()->json(['message' => 'Activado exitosamente' . $id]);
+}
 
     //ADMINSITRADOR DE PRESTADORES / VOLUNTARIOS / PRACTICANTES
 
@@ -99,17 +108,18 @@ class AdminController extends Controller
     {
         $data = DB::table('users')
             ->select('users.id','users.name', 'users.apellido', 'users.correo', 'users.codigo', 'users.tipo', 'users.telefono', 'areas.nombre_area')
-            ->whereNotIn('users.tipo', ['Superadmin']);
+            ->whereNotIn('users.tipo', ['Superadmin'])
+            ->join('areas', 'users.area', '=', 'areas.id');
 
         if (auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area') {
             $data->where('users.area', auth()->user()->area);
+            $data = $data->get();
             return view('admin/general_users', ['datos' => json_encode($data)]);
         } else if (auth()->user()->tipo == 'jefe sede') {
             $data->where('users.sede', auth()->user()->sede);
         }
 
-        $data = $data->join('areas', 'users.area', '=', 'areas.id')
-            ->get();
+        $data = $data->get();
 
         return view('admin/admin_general_users', ['datos' => json_encode($data)]);
     }
@@ -159,7 +169,7 @@ class AdminController extends Controller
         $data = DB::table('prestadores_pendientes');
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $data->where('area', Auth::user()->area);
-        }else{
+        }else if(auth()->user()->tipo == 'jefe sede'){
             $data->where('sede',  Auth::user()->sede);
         }
         $data = $data->get();
@@ -170,15 +180,18 @@ class AdminController extends Controller
     public function prestadores_terminados()
     {
         $data = DB::table('prestadores_servicio_concluido');
-            
-        if(Auth::user()->tipo == 'coordinador' )
-        {
-            $data = $data->where('sede', Auth::user()->sede)->get();
+        if( auth()->user()->tipo == 'coordinador'){
+            $data->where('area', Auth::user()->area);
             return view('admin/servicioConcluido', ['datos' => json_encode($data)]);
-        }else{
-            $data = $data->get();
-            return view('admin/administrar_servicioConcluido', ['datos' => json_encode($data)]);
+        }else  if( auth()->user()->tipo == 'jefe area'){
+            $data->where('area', Auth::user()->area);
+        }else  if( auth()->user()->tipo == 'jefe sede'){
+            $data->where('sede',  Auth::user()->sede);
         }
+        $data = $data->get();
+
+        return view('admin/administrar_servicioConcluido', ['datos' => json_encode($data)]);
+            
     }
 
     public function prestadores_liberados()
@@ -326,9 +339,9 @@ class AdminController extends Controller
     public function approveAct($id){
 
         $expIsNull = DB::table('actividades_prestadores')
-        ->where('id', $id)
-        ->whereNull('exp')
-        ->exists();
+            ->where('id', $id)
+            ->whereNull('exp')
+            ->exists();
 
         if($expIsNull){
 
@@ -450,31 +463,33 @@ class AdminController extends Controller
     }
     
     public function make_act(Request $request) {
-        $nomact = $request->input('nombre');
 
-        $categoria = $request->input('tipo_categoria');
+        $request->validate([
+            'nombre' => 'string|max:255',
+            'tipo' => 'integer',
+            'recursos' => 'string', 
+            'descripcion' => 'string|max:500',
+            'objetivos' => 'string', 
+            'horas' => 'integer|min:1|max:60', 
+            'minutos' => 'integer|min:1|max:60',
+        ]);
+
         $subcategoria = $request->input('tipo_subcategoria');
         if($subcategoria == '')
             $subcategoria = null;
-        $tipo = $request->input('tipo_actividad');
-
-        $desc = $request->input('descripcion');
-        $reso = $request->input('recursos');
-        $obj = $request->input('resultados');
-    
         $horas = $request->input('horas')*60;
         $minutos = $request->input('minutos');
         $tec = $horas + $minutos;
     
         DB::table('actividades')->insert([
     
-            'titulo' => $nomact,
-            'id_categoria' => $categoria,
+            'titulo' =>$request->input('nombre'),
+            'id_categoria' =>  $request->input('tipo_categoria'),
             'id_subcategoria' => $subcategoria,
-            'tipo' => $tipo,
-            'recursos' => $reso,
-            'descripcion' => $desc,
-            'objetivos' => $obj,
+            'tipo' => $request->input('tipo_actividad'),
+            'recursos' => $request->input('recursos'),
+            'descripcion' =>$request->input('descripcion'),
+            'objetivos' => $request->input('resultados'),
             'TEC' => $tec,]);
     
         return redirect(route('admin.asign_act'));
@@ -504,6 +519,13 @@ class AdminController extends Controller
     }
 
     public function asign(Request $request){
+
+        $request->validate([
+            'proyecto' => 'integer',
+            'tipo_actividad' => 'integer',
+            'prestadores_seleccionados' => 'required|array',
+            'prestadores_seleccionados.*' => 'integer',
+        ]);
 
         $generic = DB::table('proyectos')
             ->where('particular', 0)
@@ -544,6 +566,10 @@ class AdminController extends Controller
     }
 
     public function asign2(Request $request){
+
+        $request->validate([
+            'proyecto' => 'integer',
+        ]);
 
         $modules = array();
 
@@ -602,6 +628,13 @@ class AdminController extends Controller
     }
 
     public function make_proy(Request $request){
+
+        $request->validate([
+            'particular' => 'integer',
+            'area' => 'integer',
+            'prestadores_seleccionados' => 'required|array',
+            'prestadores_seleccionados.*' => 'integer',
+        ]);
             
         $boolp = boolval($request->input('particular'));
         $idpy = DB::table('proyectos')->insertGetId([
@@ -633,6 +666,7 @@ class AdminController extends Controller
     }
     
     public function view_details_proy($id){
+
         $proyecto = DB::table('proyectos')
             ->select('titulo')->where('id',$id)
             ->get();
@@ -677,7 +711,6 @@ class AdminController extends Controller
 
     public function watch_prints()
     {
-
         $data = DB::table('ver_impresiones')
             ->join('users', 'ver_impresiones.id_Prestador', '=', 'users.id')
             ->where('sede', auth()->user()->sede)
@@ -724,6 +757,12 @@ class AdminController extends Controller
 
     public function make_print(Request $request)
     {
+        $request->validate([
+            'nombre' => 'string|max:255',
+            'nombre' => 'string|max:255',
+            'nombre' => 'string|max:255',
+        ]);
+
 
         DB::table('impresoras')->insert([
             'nombre' => $request->input('nombre'),
@@ -800,18 +839,23 @@ class AdminController extends Controller
 
         $prestadores = DB::table('solo_prestadores')
             ->select(DB::raw("CONCAT(name, ' ', apellido) AS prestador"), 'codigo', 'id')
-            ->where('id_sede', Auth::user()->sede)->get();
+            ->where('id_sede', Auth::user()->sede);
         
         if(Auth::user()->tipo == "jefe area"){
             $prestadores->where('id_area', Auth::user()->area);
         }
 
-        
+        $prestadores = $prestadores->get();
         
         return view('admin.ver_reportes_parciales', compact('prestadores'));
     }
 
     public function busqueda_reportes_parciales(Request $request){
+
+        $request->validate([
+            'busqueda' => 'string|max:9',
+        ]);
+
         if ($request->busqueda==""){
             return redirect()->route('admin.reportes_parciales')->with(['warning'=>'Debes ingresar un código']);
         }
@@ -1015,9 +1059,16 @@ class AdminController extends Controller
 
     public function guardarFestivos(Request $request)
     {   
+        $request->validate([
+            'descripcion' => 'string|max:500',
+            'tipo' => 'string | max:100',
+            'sede' =>  'integer',
+            'area' => 'integer',
+        ]);
+
         if($request->input('tipo')=='vacaciones'){
 
-            $modificar = DB::table('eventos')->insert(
+            DB::table('eventos')->insert(
                 ['evento'=> $request->input('descripcion'),                   
                 'inicio' => $request->input('vacacionesInicio'),
                 'final'=> $request->input('vacacionesFin'),
@@ -1026,7 +1077,7 @@ class AdminController extends Controller
                 'area'=>$request->input('area')]
             );
         }else{
-            $modificar = DB::table('eventos')->insert(
+            DB::table('eventos')->insert(
                 ['evento'=> $request->input('descripcion'),                   
                 'inicio' => $request->input('diaFestivo'),
                 'final'=> $request->input('diaFestivo'),
@@ -1041,6 +1092,14 @@ class AdminController extends Controller
 
     public function editardiafestivo(Request $request)
     {   
+        $request->validate([
+            'id_festivo' => 'integer',
+            'descripcion' => 'string|max:500',
+            'tipo' => 'string | max:100',
+            'sede' =>  'integer',
+            'area' => 'integer',
+        ]);
+
         $id_festivo = $request->id_festivo;
         $tipo = $request->tipo;
         $inicio = $request->inicio;
@@ -1051,7 +1110,9 @@ class AdminController extends Controller
             $fin = $inicio;
         }
 
-        $actualizar = DB::table('eventos')->where('id', $id_festivo)->update(['evento'=>$descripcion, 'inicio'=>$inicio, 'final'=>$fin]);
+        DB::table('eventos')
+            ->where('id', $id_festivo)
+            ->update(['evento'=>$descripcion, 'inicio'=>$inicio, 'final'=>$fin]);
 
         return redirect()->route('admin.diasfestivos')->with('success', 'Modificado correctamente');
     }
@@ -1065,6 +1126,10 @@ class AdminController extends Controller
 
     public function obtenerActividades(Request $request)
     {
+        $request->validate([
+            'categoriaId' => 'integer',
+        ]);
+
         $actividades = DB::table('actividades')
             ->where('id_categoria', $request->input('categoriaId'))
             ->whereNotNull('TEC')
@@ -1075,6 +1140,10 @@ class AdminController extends Controller
 
     public function obtenerActividadesB(Request $request)
     {
+        $request->validate([
+            'subcategoriaId' => 'integer',
+        ]);
+
         $actividades = DB::table('actividades')
             ->where('id_subcategoria', $request->input('subcategoriaId'))
             ->whereNotNull('TEC')
@@ -1085,6 +1154,10 @@ class AdminController extends Controller
 
     public function obtenerSubcategoria(Request $request)
     {
+        $request->validate([
+            'categoriaId' => 'integer',
+        ]);
+
         $subcateg = DB::table('subcategorias')
             ->where('categoria', $request->input('categoriaId'))
             ->get();
@@ -1096,8 +1169,6 @@ class AdminController extends Controller
         $data = DB::table('actividades')
             ->whereNull('TEC')
             ->get();
-
-        
         return view("admin.aprobar_actividades", compact('data'));
     }
 
@@ -1123,7 +1194,15 @@ class AdminController extends Controller
     }
 
     public function actTEC(Request $request){
-
+        $request->validate([
+            'nombre' => 'required |string | max:255',
+            'tipo_categoria' => 'required | integer',
+            'recursos' => 'required | string', 
+            'descripcion' => 'required | string|max:500',
+            'objetivos' => 'required | string', 
+            'horas' => 'integer|min:1|max:60', 
+            'minutos' => 'integer|min:1|max:60',
+        ]);
         $actividad = DB::table('actividades')
             ->where('id', $request->input('id'))
             ->first();
@@ -1154,9 +1233,8 @@ class AdminController extends Controller
 
 
         if (!empty($updates)) {
-            // Realizar la actualización solo si hay campos que han cambiado
             DB::table('actividades')->where('id', $request->input('id'))->update($updates);
-            }
+        }
         return redirect('/admin/A_actividades')->with('SUCCESS', 'Actividad agregada');
     }
 
@@ -1165,6 +1243,7 @@ class AdminController extends Controller
     public function premios(){
 
         $premios = DB::table('premios')
+            ->where('ref', auth()->user()->area)
             ->get();
         $prestadores = DB::table('solo_prestadores');
 
@@ -1181,10 +1260,10 @@ class AdminController extends Controller
     public function guardar_premio(Request $request){
 
         $request->validate([
-            "nombre" => "required",
-            "descripcion" => "required",  
-            "tipo" => "required",
-            "horas" => "required",
+            "nombre" => "required|string|max:255",
+            "descripcion" => "required|string|max:255",  
+            "tipo" => "required|string",
+            "horas" => "integer|nullable|between:1,60", 
         ]);
 
         DB::table("premios")->insert([
@@ -1192,7 +1271,7 @@ class AdminController extends Controller
             "descripcion" => $request -> input("descripcion"),  
             "tipo" => $request -> input("tipo"),
             "horas" => $request -> input("horas"),
-            "ref" => "ref",
+            "ref" => auth()->user()->area,
         ]);
        
         return redirect()->back()->with('success', 'Creada correctamente');
@@ -1248,37 +1327,4 @@ class AdminController extends Controller
 
         return redirect()->route('login', ['success'=>'Actualización de credenciales, inicia sesión de nuevo']);
     }
-
-
-
-//VIEJO CONTROLLER. /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
-    //Guardar Estado
-    public function guardar(Request $request)
-    {
-        print_r("hola");
-        $id = $request->input('id');
-        $estado = $request->input('estado');
-        $responsable = $request->input('responsable');
-        $modificar = DB::table('registros_checkin')->where('id', $id)->update(['estado' => $estado, 'responsable' => $responsable]);   
-
-    }
-
-    public function actualizar_password(Request $request){
-        
-        $request->validate([
-            'nuevaPassword' => 'required|min:8'    
-        ],
-        [
-            'nuevaPassword.required'=>'El campo de contraseña es requerido',
-            'nuevaPassword.min' => 'La contraseña debe ser de mínimo 8 caracteres'
-        ]
-        );
-        
-        $password = $request->nuevaPassword;
-        $password = Hash::make($password);
-        $actualizar = DB::table('users')->where('id', Auth::user()->id)->update(['password'=>$password]);
-
-        return redirect()->route('login', ['success'=>'Actualización de credenciales, inicia sesión de nuevo']);
-    }*/
 }

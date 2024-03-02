@@ -94,16 +94,6 @@
                     
                 ],
             });
-
-            document.getElementById("download-csv").addEventListener("click", function(){
-                table.download("csv", "data.csv");
-            });
-            document.getElementById("download-json").addEventListener("click", function(){
-                table.download("json", "data.json");
-            });
-            document.getElementById("download-xlsx").addEventListener("click", function(){
-                table.download("xlsx", "data.xlsx", {sheetName:"My Data"});
-            });
             
     </script>
 @endsection

@@ -87,7 +87,7 @@
 
             function agregarObservaciones(id, value) {
                 const token = document.head.querySelector('meta[name="csrf-token"]').content;
-                fetch(`motivo_visita/${id}/${value}`, {
+                fetch(`observaciones_actividad/${id}/${value}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -97,7 +97,7 @@
                 .then(response => response.json())
                 .then(data => {
 
-                    console.log('Estado de impresion cambiado', data);
+                    console.log('Observaciones de actividad cambiada', data);
                 })
                 .catch(error => {
                     console.error('Error al cambiar de estado de impresion:', error);

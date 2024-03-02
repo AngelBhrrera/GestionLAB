@@ -1,5 +1,14 @@
 @extends('layouts/prestador-layout')
 
+@section('subhead')
+    <?php  
+        $area = Auth::user()->area;
+        $filtro = DB::table('modulos')
+            ->where('id', $area)
+            ->first();
+    ?>
+@endsection
+
 @section('breadcrumb')
 
         <li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
@@ -117,7 +126,7 @@
     </div>
     <!-- END modal cambiar imagen-->
         
-    
+    @if ($filtro->gamificacion == 1)
     <!-- BEGIN: Profile Content -->
     <div class="col-span-12 xl:col-span-8">
         
@@ -152,6 +161,7 @@
         </div>
     </div>
     <!-- END: Profile Content -->
+    @endif
 
 @endsection
 @section('script')

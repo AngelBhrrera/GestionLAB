@@ -64,7 +64,7 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6">
                                         <label for="input-wizard-1" class="form-label">Nombre *</label>
-                                        <input id="name" type="text" class="form-control @if(old('opc')=='1') @error('name') is-invalid @enderror @endif" value="{{old('name')}}" name="name" required autocomplete="name" placeholder="Nombre">
+                                        <input id="name" type="text" class="form-control @if(old('opc')=='1') @error('name') is-invalid @enderror @endif" name="name" required autocomplete="name" placeholder="Nombre">
                                                 @error('name')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -359,12 +359,15 @@
         function filtroSede() {
         var sedeSelect = document.getElementById('sedeSelect');
         var areaSelect = document.getElementById('area');
+        var horarioSelect = document.getElementById('horarios');
         
         var sedeId = sedeSelect.value;
         areaSelect.innerHTML = '<option value=""> Selecciona un área de trabajo</option>';
 
         if (sedeId === '') {
             areaSelect.disabled = true;
+            horarioSelect.disabled = true;
+            horarioSelect.innerHTML = '<option value="">Selecciona un horario</option>';
             return;
         }else{
             var xhr = new XMLHttpRequest();
