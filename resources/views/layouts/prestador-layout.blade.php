@@ -253,7 +253,9 @@
                         <img src="{{asset('build/assets/images/XP.ico')}}"width="30" height="30" alt="">{{Auth::user()->experiencia}}</img>
                     </div>
 
-                    <a title="Ver avance de nivel" href="{{route('level')}}"><img class="ml-5"width="50" heigth="30" src="{{asset('build/assets/'.$nivel->ruta)}}" alt="medalla"></a>
+                    <div class="intro-x relative ml-auto flex sm:mx-auto">
+                            <a title="Ver avance de nivel" href="{{route('level')}}"><img class="ml-5"width="50" heigth="30" src="{{asset('build/assets/'.$nivel->ruta)}}" alt="medalla"></a>
+                    </div>
 
                     <div class="intro-x dropdown h-10">
                         
