@@ -797,7 +797,7 @@ class PrestadorController extends Controller
 
         $asists = DB::table('registros_checkin')
             ->where('idusuario', Auth::user()->id)
-            ->where('horas', '>', 3)
+            ->where('horas', '>=', 3)
             ->pluck('fecha');
         
         $asistencias = [];
