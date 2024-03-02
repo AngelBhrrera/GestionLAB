@@ -337,9 +337,9 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link active">Experiecia</a>
+                                <a class="nav-link active">Experiencia</a>
                                 @foreach ($leaderBoardW as $top)
-                                    <p id="leaderBoard" class="nav-link">{{$top->experiencia}}</p>
+                                    <p id="leaderBoard" class="nav-link">{{$top->total_exp}}</p>
                                 @endforeach
                             </li>
                         </ul>
@@ -362,9 +362,9 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link active">Experiecia</a>
+                                    <a class="nav-link active">Experiencia</a>
                                     @foreach ($leaderBoardM as $top)
-                                        <p  id="leaderBoard"class="nav-link">{{$top->experiencia}}</p>
+                                        <p  id="leaderBoard"class="nav-link">{{$top->total_exp}}</p>
                                     @endforeach
                                 </li>
                             </ul>
@@ -387,9 +387,9 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link active">Experiecia</a>
+                                <a class="nav-link active">Experiencia</a>
                                 @foreach ($leaderBoard as $top)
-                                    <p  id="leaderBoard" class="nav-link">{{$top->experiencia}}</p>
+                                    <p  id="leaderBoard" class="nav-link">{{$top->total_exp}}</p>
                                 @endforeach
                             </li>
                         </ul>
