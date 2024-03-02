@@ -81,7 +81,7 @@ class Seguimiento extends Migration
 
         DB::statement("
         CREATE VIEW seguimiento_proyecto3 AS 
-            SELECT sp.*, sp2.duracion, sp2.conteo_terminado
+            SELECT sp2.duracion, sp2.conteo_terminado
             FROM seguimiento_proyecto sp 
             INNER JOIN seguimiento_proyecto2 sp2 ON sp.id = sp2.id
         ");

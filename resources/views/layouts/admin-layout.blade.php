@@ -135,6 +135,18 @@
                             <div class="side-menu__title">Modificar sede</div>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{route('admin.premios')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                            <div class="side-menu__title">Gestionar Premios</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.gestor_premios')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                            <div class="side-menu__title">Tabulador premios</div>
+                        </a>
+                    </li>
                     @endif
                 </ul>
             </li>

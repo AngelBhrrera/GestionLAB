@@ -27,7 +27,7 @@
         <div class="px-5 sm:px-20 pt-10">
             <div id="formOne">
                 <h3 class="text-2xl font-medium leading-none mt-3" style="padding-top: 20px; padding-bottom: 20px;">Cambiar contraseña </h3>
-                <form method="POST" onsubmit="return confirmarCambio()" action="{{ route('admin.actualizar_password') }}">
+                <form onsubmit="return confirmarCambio()" method="POST" action="{{ route('admin.actualizar_password') }}">
                     @csrf
                     <div class="col-span-12 sm:col-span-4">
                         <div class="intro-y col-span-12 sm:col-span-6">
@@ -56,16 +56,17 @@
 @endsection
 
 @section('script')
-    <script>
-        function confirmarCambio(){
-            const confirmar = confirm("¿Estás seguro de cambiar la contraseña?");
+<script>
+    function confirmarCambio(){
+        const confirmar = confirm("¿Estás seguro de cambiar la contraseña?");
 
-            if(confirmar){
-                return true;
-            }else{
-                return false;
-            }
-
+        if(confirmar){
+            return true;
+        }else{
+            return false;
         }
-    </script>
+
+    }
+</script>
+    
 @endsection
