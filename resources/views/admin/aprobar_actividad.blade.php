@@ -59,7 +59,13 @@
                         <div class="row text-center">
                             <div class="col">
                                 <select class="form-control" name="tipo_actividad">
-                                    <option selected value="{{ $actividad->tipo }}"> {{ $actividad->recursos }}</option>
+                                    <option selected value="{{ $actividad->tipo }}">  
+                                        @if($actividad->tipo == 0)
+                                            Genérica
+                                        @else
+                                            Particular
+                                        @endif
+                                    </option>
                                     <option value="generica">Genérica</option>
                                     <option value="particular">Particular</option>
                                 </select>

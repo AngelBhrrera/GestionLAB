@@ -53,7 +53,7 @@
                     @csrf
                     <div class="form-group">
                         <label for="sede">Selecciona una sede</label>
-                        <select class="form-control" name="sede" id="sede">
+                        <select class="form-control" name="sede" id="sede" required>
                             @if (isset($s))
                                 <option value="null">Selecciona una sede</option>
                                 @foreach ($s as $dato)

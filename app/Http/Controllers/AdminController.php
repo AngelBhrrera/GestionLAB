@@ -528,6 +528,7 @@ class AdminController extends Controller
             'recursos' => 'string', 
             'descripcion' => 'string|max:500',
             'objetivos' => 'string', 
+            'exp' => 'integer|min:5|max:100',
             'horas' => 'integer|min:1|max:60', 
             'minutos' => 'integer|min:1|max:60',
         ]);
@@ -538,15 +539,21 @@ class AdminController extends Controller
         $horas = $request->input('horas')*60;
         $minutos = $request->input('minutos');
         $tec = $horas + $minutos;
+        if( $request->input('tipo_actividad') != 'generica'){
+            $tipo = auth()->user()->sede;
+        }else{
+            $tipo = 0;
+        }
     
         DB::table('actividades')->insert([
     
             'titulo' =>$request->input('nombre'),
             'id_categoria' =>  $request->input('tipo_categoria'),
             'id_subcategoria' => $subcategoria,
-            'tipo' => $request->input('tipo_actividad'),
+            'tipo' => $tipo,
             'recursos' => $request->input('recursos'),
             'descripcion' =>$request->input('descripcion'),
+            'exp' =>$request->input('exp'),
             'objetivos' => $request->input('resultados'),
             'TEC' => $tec,]);
     
@@ -610,7 +617,7 @@ class AdminController extends Controller
                 }
             }
 
-            return redirect(route('admin.asign_act'))->with('success', 'Creada correctamente');
+            return redirect(route('admin.asign_act'))->with('success', 'Actividad asignada correctamente');
 
         }else{
             for ($i = 0; $i < $tamañoArreglo; $i++) {
@@ -621,7 +628,7 @@ class AdminController extends Controller
                         'estado' => "Asignada",
                         'id_proyecto' => $request->input('proyecto')]);
             }
-            return redirect(route('admin.asign_act'))->with('success', 'Creada correctamente');
+            return redirect(route('admin.asign_act'))->with('success', 'Actividad asignada correctamente');
         }
     }
 
@@ -1324,6 +1331,10 @@ class AdminController extends Controller
         $actividades = DB::table('actividades')
             ->where('id_categoria', $request->input('categoriaId'))
             ->whereNotNull('TEC')
+            ->where(function($query) {
+                $query->where('tipo', 0)
+                      ->orWhere('tipo', Auth::user()->sede);
+            })
             ->get();
 
         return response()->json($actividades);
@@ -1338,6 +1349,10 @@ class AdminController extends Controller
         $actividades = DB::table('actividades')
             ->where('id_subcategoria', $request->input('subcategoriaId'))
             ->whereNotNull('TEC')
+            ->where(function($query) {
+                $query->where('tipo', 0)
+                      ->orWhere('tipo', Auth::user()->sede);
+            })
             ->get();
 
         return response()->json($actividades);
