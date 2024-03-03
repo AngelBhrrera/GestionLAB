@@ -2,8 +2,8 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-    <li class="breadcrumb-item"><a href="{{route('admin.prestadorHub')}}">Prestadores</a></li>
-    <li class="breadcrumb-item active" aria-current="page">General</li>
+    <li class="breadcrumb-item"><a href="{{route('admin.gestHub')}}">Gestion</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Usuarios</li>
 @endsection
 
 @section('subcontent')
@@ -13,8 +13,6 @@
                 <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> General Usuarios</h3>
             </div>
     <input id="searchInput" type="text" placeholder="Buscar...">
-    <button id="resetButton">Restablecer búsqueda</button>
-
     <div id="players"></div>
 </div>
 
@@ -28,11 +26,15 @@
             var table = new Tabulator("#players", {
                 height: "100%",
                 data: users,
-                layout: "fitColumns",
-                pagination: "local",
-                resizableColumns: false,  
                 paginationSize: 20,
-                tooltips: true,
+
+                pagination: "local",
+                layout: "fitDataFill",
+                resizableColumns:false,
+                height: "100%",
+                //responsiveLayout:"collapse",
+                layoutColumnsOnNewData:true,
+                virtualDomHoz:true,
 
                 headerFilterPlaceholder: "Buscar..",
                 headerFilterLiveFilter: false,
@@ -77,38 +79,23 @@
                 ],
             });
 
-
             document.addEventListener('DOMContentLoaded', function() {
 
-                // Función para aplicar el filtro de búsqueda
                 function applyCustomFilter(value) {
-                // Convertir el valor de búsqueda a minúsculas y remover caracteres especiales y números
-                var searchValue = value.toLowerCase().replace(/[^a-z0-9áéíóúüñ]/g, '');
+                    var searchValue = value.toLowerCase().replace(/[^a-z0-9áéíóúüñ]/g, '');
 
-                // Aplicar el filtro a las columnas "codigo", "name", "apellido" y "correo"
-                table.setFilter(function(row) {
-                    return (row.codigo && row.codigo.toString().toLowerCase().includes(searchValue)) || 
-                        (row.name && row.name.toLowerCase().includes(searchValue)) || 
-                        (row.apellido && row.apellido.toLowerCase().includes(searchValue)) || 
-                        (row.correo && row.correo.toLowerCase().includes(searchValue));
-                });
+                    table.setFilter(function(row) {
+                        return (row.codigo && row.codigo.toString().toLowerCase().includes(searchValue)) || 
+                            (row.name && row.name.toLowerCase().includes(searchValue)) || 
+                            (row.apellido && row.apellido.toLowerCase().includes(searchValue)) || 
+                            (row.correo && row.correo.toLowerCase().includes(searchValue));
+                    });
                 }
 
-                    // Evento de cambio en el input de búsqueda
-                    document.getElementById("searchInput").addEventListener("input", function(e) {
+                document.getElementById("searchInput").addEventListener("input", function(e) {
                     var value = e.target.value.trim();
                     applyCustomFilter(value);
-                    });
-
-                    function resetSearch() {
-                        table.clearFilter();
-                        document.getElementById("searchInput").value = ""; // Limpiar el campo de búsqueda
-                        }
-
-                        // Evento de clic en un botón para restablecer la búsqueda
-                        document.getElementById("resetButton").addEventListener("click", function() {
-                        resetSearch();
-                        });
+                });
 
             });
             

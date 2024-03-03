@@ -2,7 +2,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-    <li class="breadcrumb-item"><a>Mostrar</a></li>
+    <li class="breadcrumb-item"><a href="{{route('admin.printHub')}}">Gestion</a></li>
     <li class="breadcrumb-item active" aria-current="page">Impresiones</li>
 @endsection
 
@@ -30,12 +30,16 @@
             var table = new Tabulator("#players", {
                 
                 data: printers,
-                paginationSize: 24,
-                tooltips: true,
+                paginationSize: 20,
+
                 pagination: "local",
                 layout: "fitDataFill",
                 resizableColumns:false,
                 height: "100%",
+                //responsiveLayout:"collapse",
+                layoutColumnsOnNewData:true,
+                virtualDomHoz:true,
+
                 columns: [{
                     title: "ID",
                         field: "id",

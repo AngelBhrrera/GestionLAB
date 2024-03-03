@@ -11,6 +11,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
 
 /*
 use Illuminate\Support\Facades\Hash;
@@ -35,8 +36,8 @@ class AdminController extends Controller
 
 
         $sqlproy = DB::table('proyectos as p')
-            ->where('p.id_area', Auth::user()->area)
-            ->where('p.estado', '!=', 'finalizado');
+            ->join('areas as a', 'p.id_area', '=', 'a.id')
+            ->where('p.estado', '==', 'finalizado');
         $sqlactsp  =DB::table('actividades_prestadores as ap')
             ->select('ap.id')
             ->join('users as u', 'ap.id_prestador', '=', 'u.id')
@@ -45,31 +46,50 @@ class AdminController extends Controller
             ->select('ap.id')
             ->join('users as u', 'ap.id_prestador', '=', 'u.id')
             ->where('ap.estado', 'Aprobada');
-           
+        $totalExp = DB::table('lb_w as w') 
+            ->join('users as u', 'w.id_prestador', '=', 'u.id');
 
+        if(Auth::user()->tipo == 'jefe sede' ){
+            $sqlproy->where('a.id_sede', Auth::user()->horario);
+            $sqlactsp ->where('u.sede', Auth::user()->sede);
+            $sqlactst ->where('u.sede', Auth::user()->sede);
+            $totalExp->where('w.id_sede', Auth::user()->sede);
+        }  
+        if(Auth::user()->tipo == 'coordinador' || Auth::user()->tipo == 'jefe area' ){
+            $sqlproy->where('p.id_area', Auth::user()->area);
+            $sqlactsp ->where('u.area', Auth::user()->area);
+            $sqlactst ->where('u.area', Auth::user()->area);
+            $totalExp->where('w.id_area', Auth::user()->area);
+        }
         if(Auth::user()->horario != 'No Aplica'){
             $sqlproy->where('p.turno', Auth::user()->horario);
             $sqlactsp ->where('u.horario', Auth::user()->horario);
             $sqlactst ->where('u.horario', Auth::user()->horario);
         }
-        $sqlproy = $sqlproy->get();
+        //$sqlproy = $sqlproy->get();
 
         $proys = $sqlproy->count();
         $actsP = $sqlactsp->count();
         $actsT = $sqlactst->count();
+        $totalExp = $totalExp->sum('total_exp');
 
-        return view("admin.homeA",compact('proys','actsP','actsT'));
+        $exp = strval($totalExp);
+
+        return view("admin/homeA",compact('proys','actsP','actsT','exp'));
     }
 
     public function firmas(){
-        
         $sql = DB::table('registros_checkin as r')
             ->select('r.*', 'u.codigo')
             ->join('users as u', 'r.idusuario', '=', 'u.id')
-            ->where('u.area', Auth::user()->area)
-            ->orderBy('fecha_actual', 'desc')
-            ->get();
+            ->orderBy('fecha_actual', 'desc');
 
+        if(Auth::user()->tipo == "jefe sede"){
+            $sql->where('u.sede', Auth::user()->sede);
+        }else{
+            $sql->where('u.area', Auth::user()->area);
+        }
+        $sql = $sql->get();
 
         if(Auth::user()->tipo == "coordinador"){
             return view("admin.ver_asistencias_encargado", ['datos' => json_encode($sql)]);
@@ -215,8 +235,8 @@ class AdminController extends Controller
     {
         $data = DB::table('prestadores_servicio_concluido');
         if( auth()->user()->tipo == 'coordinador'){
-            $data->where('area', Auth::user()->area);
-            return view('admin/servicioConcluido', ['datos' => json_encode($data)]);
+            $data = $data->where('area', Auth::user()->area)->get();
+            return view('admin/ver_servicioConcluido', ['datos' => json_encode($data)]);
         }else  if( auth()->user()->tipo == 'jefe area'){
             $data->where('area', Auth::user()->area);
         }else  if( auth()->user()->tipo == 'jefe sede'){
@@ -246,7 +266,7 @@ class AdminController extends Controller
         if( auth()->user()->tipo == 'coordinador'){
             $data->where('area', Auth::user()->area);
             $data = $data->get();
-            return view('admin/prestadoresInactivos', ['datos' => json_encode($data)]);
+            return view('admin/ver_prestadoresInactivos', ['datos' => json_encode($data)]);
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $data->where('sede',  Auth::user()->sede);
         }
@@ -397,9 +417,7 @@ class AdminController extends Controller
 
             $this->expUser($id);
         }
-
         return 0;
-
     }
 
     public function expUser($id){
@@ -431,36 +449,33 @@ class AdminController extends Controller
 
     public function actividades(){
 
+        $data = DB::table('seguimiento_actividades');
+
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
-            $data = DB::table('seguimiento_actividades')
-            ->whereIn('id_proyecto', function ($query) {
+            $data->whereIn('id_proyecto', function ($query) {
                 $query->select('id')
                     ->from('proyectos')
                     ->where('id_area', auth()->user()->area);
-            })
-            ->get();
+            });
         }else  if( auth()->user()->tipo == 'jefe sede'){
-            $data = DB::table('seguimiento_actividades')
-            ->whereIn('id_proyecto', function ($query) {
+            $data->whereIn('id_proyecto', function ($query) {
                 $query->select('id')
-                      ->from('proyectos')
-                      ->whereIn('id_area', function ($subquery) {
-                          $subquery->select('id_sede')
-                                   ->from('areas')
-                                   ->where('id_sede', auth()->user()->sede);
-                      });
-            })
-            ->get();
-        }else{
-            $data = DB::table('seguimiento_actividades')
-            ->get();
+                    ->from('proyectos')
+                    ->whereIn('id_area', function ($subquery) {
+                        $subquery->select('id_sede')
+                                ->from('areas')
+                                ->where('id_sede', auth()->user()->sede);
+                    });
+            });
         }
+        $data = $data->orderByDesc('fecha')->get();
+
         return view( 'admin/ver_todasActividades', [ 'data' =>json_encode($data)]);
     }
 
     public function reviewActs(){
         $data = DB::table('seguimiento_actividades')
-        ->whereIn('estado', ['En revision', 'Error']);
+            ->whereIn('estado', ['En revision', 'Error']);
 
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $data->whereIn('id_proyecto', function ($query) {
@@ -479,6 +494,7 @@ class AdminController extends Controller
                       });
             });
         }
+
         $data = $data->get();
         
         return view( 'admin/calificar_actividades', [ 'data' =>json_encode($data)]);
@@ -637,6 +653,15 @@ class AdminController extends Controller
         return redirect(route('admin.create_proy'))->with('success', 'Asignaciones realizadas con exito');
     }
 
+    public function eliminarAct($id) {
+        
+        DB::table('actividades')
+            ->where('id', $id)
+            ->delete();
+    
+        return response()->json(['message' => 'Actividad eliminada']);
+    }
+
     //PROYECTOS
 
     public function create_proy() {
@@ -667,6 +692,11 @@ class AdminController extends Controller
  
         $categorias = DB::table('categorias')->get();
         $proyectos = DB::table('proyectos')->get();
+        if(auth()->user()->area == 0){
+
+        }else{
+            $turnos = $this->filtroArea(auth()->user()->area);
+        }
 
         return view('/admin/asignar_actividad_proyecto', compact( 'categorias', 'proyectos'));
     }
@@ -674,7 +704,6 @@ class AdminController extends Controller
     public function make_proy(Request $request){
 
         $request->validate([
-            'particular' => 'integer',
             'area' => 'integer',
             'prestadores_seleccionados' => 'required|array',
             'prestadores_seleccionados.*' => 'integer',
@@ -711,6 +740,16 @@ class AdminController extends Controller
     
     public function view_details_proy($id){
 
+        if(auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
+            $proy = DB::table('proyectos')
+                ->where('id',$id)
+                ->where('id_area',auth()->user()->area)
+                ->exists();
+                if(!$proy){
+                    return redirect(route('admin.view_proys'));
+                }
+        }
+
         $proyecto = DB::table('proyectos')
             ->select('titulo')->where('id',$id)
             ->get();
@@ -723,13 +762,14 @@ class AdminController extends Controller
             ->select('actividad_id','actividad', 'estado', 'prestador')
             ->where('id_proyecto', $id)
             ->get();
+
         
         return view('admin.ver_detalles_proyecto', compact('proyecto','prestadores', 'actividades'));
     }
 
     public function view_details_act($id)
     {
-
+    
         $detalles = DB::table('actividades')
             ->select('actividades.*', 'categorias.nombre AS nombre_categoria', 'subcategorias.nombre AS nombre_subcategoria')
             ->join('categorias', 'actividades.id_categoria', '=', 'categorias.id')
@@ -749,6 +789,13 @@ class AdminController extends Controller
             ->get();
 
         return response()->json($prestadores);
+    }
+
+    public function filtroArea($id){
+        $turno = DB::table('areas')
+        ->where('id', $id)
+        ->get();
+        return response()->json($turno);
     }
 
     //IMPRESORAS
@@ -1006,6 +1053,11 @@ class AdminController extends Controller
 
     //CONTROL DE SEDES
 
+    
+    public function gestHub(){
+        return view('admin/gestion_hub');
+    }
+
     public function gestionSedes(){
         $sedes = DB::table('sedes_areas');
         $s = DB::table('sedes');
@@ -1101,7 +1153,7 @@ class AdminController extends Controller
         return view('admin.registro_festivos',['no_laboral' =>json_encode($no_laboral)]);
     }
 
-    public function guardarFestivos(Request $request)
+    public function guardarfestivos(Request $request)
     {   
         $request->validate([
             'descripcion' => 'string|max:500',
@@ -1131,7 +1183,7 @@ class AdminController extends Controller
             );
         }
         
-        return redirect()->route('admin.registro_festivos')->with('success','Agregado correctamente');
+        return redirect()->route('admin.diasfestivos')->with('success','Agregado correctamente');
     }
 
     public function editardiafestivo(Request $request)
@@ -1371,4 +1423,5 @@ class AdminController extends Controller
 
         return redirect()->route('login', ['success'=>'Actualización de credenciales, inicia sesión de nuevo']);
     }
+
 }

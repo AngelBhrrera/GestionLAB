@@ -190,12 +190,14 @@
                         @endif
                     </a>
                 </li>
+                @if (Auth::user()->tipo != "coordinador")
                 <li>
                     <a href="{{route('admin.reportes_parciales')}}" class="side-menu">
                         <div class="side-menu__icon"> <i data-lucide="file"></i> </div>
                         <div class="side-menu__title">Autorizar documentos del Servicio Social</div>
                     </a>
                 </li>
+                @endif
                 @if ($filtro->visitas == 1)
                     <li>
                         <a href="{{ route('admin.clientes') }}" class="side-menu">

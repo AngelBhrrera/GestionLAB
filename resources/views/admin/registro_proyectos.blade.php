@@ -106,10 +106,10 @@
         let dlb2 = new DualListbox('.select2', {
             availableTitle: 'Prestadores disponibles',
             selectedTitle: 'Prestadores seleccionados',
-            addButtonText: '🡺',
-            removeButtonText: '🡸',
-            addAllButtonText: '>>',
-            removeAllButtonText: '<<',
+            addButtonText: 'Agregar',
+            removeButtonText: 'Quitar',
+            addAllButtonText: 'Agregar todos',
+            removeAllButtonText: 'Quitar todos',
             searchPlaceholder: 'Buscar prestadores'
         });
         dlb2.addEventListener('added', function(event) {

@@ -2,7 +2,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-    <li class="breadcrumb-item">Actividades</li>
+    <li class="breadcrumb-item"><a href="{{route('admin.proyHub')}}">Proyecto</a></li>
     <li class="breadcrumb-item active" aria-current="page">Ver detalles de proyecto</li>
 @endsection
 
@@ -41,9 +41,11 @@
                 </tbody>
             </table>
             <br>
-            <h3 class="text-xl font-medium leading-none mt-3">Actividades</h3>
-            <div class="text-center mx-auto" style="padding-left: 10px" id="actividades"></div>
+            <button id="agregarPrestadorBtn" class="btn btn-primary">Agregar Integrante</button>
+
         @endif
+        <h3 class="text-xl font-medium leading-none mt-3">Actividades</h3>
+        <div class="text-center mx-auto" style="padding-left: 10px" id="actividades"></div>
 
         
     </div>
@@ -54,12 +56,15 @@
     <script type="text/javascript">
             var actividades = {!! $actividades!!};
             var table = new Tabulator("#actividades", {
-                height:"100%",
+
                 data: actividades,
-                resizableColumns: "false",
-                layout: "fitColumns",
-                pagination: "local",
                 paginationSize: 20,
+                pagination: "local",
+                layout: "fitDataFill",
+                resizableColumns:false,
+                height: "100%",
+                //responsiveLayout:"collapse",
+                layoutColumnsOnNewData:true,
 
                 columns: [{
                         title: "ID",
@@ -107,8 +112,8 @@
                         }, 
                     },
                 ],
-            });
-            
+            });  
     </script>
+
     
 @endsection

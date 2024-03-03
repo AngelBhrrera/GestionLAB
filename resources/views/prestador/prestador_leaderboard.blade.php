@@ -28,7 +28,7 @@
 
 <ul class="nav nav-tabs nav-justified" role="tablist">
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#filtro-area">Área</a>
+        <a class="nav-link active" data-toggle="tab" href="#filtro-area">Área</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#filtro-sede">Sede</a>
@@ -36,7 +36,7 @@
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane" id="filtro-area">
+    <div class="tab-pane active" id="filtro-area">
         <ul class="nav nav-tabs nav-justified" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#semanal-area">Semana</a>
@@ -53,7 +53,7 @@
     <div class="tab-pane" id="filtro-sede">
         <ul class="nav nav-tabs nav-justified" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#semanal-sede">Semana</a>
+                <a class="nav-link" data-toggle="tab" href="#semanal-sede">Semana</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#mensual-sede">Mes</a>

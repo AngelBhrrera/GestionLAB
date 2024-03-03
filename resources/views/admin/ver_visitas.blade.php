@@ -1,8 +1,8 @@
 @extends('layouts/admin-layout')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Clientes</a></li>
+    <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
+    <li class="breadcrumb-item"><a href="{{route('admin.home')}}">Clientes</a></li>
     <li class="breadcrumb-item active" aria-current="page">Ver registro visitas</li>
 @endsection
 

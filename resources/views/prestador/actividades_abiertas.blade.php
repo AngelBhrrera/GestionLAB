@@ -13,6 +13,12 @@
 
 @section('subcontent')
 
+    @if (!$activo)
+        <div class="alert alert-danger-soft show flex items-center mb-2" role="alert">
+            <i data-lucide="alert-octagon" class="w-6 h-6 mr-2"></i> Para tomar una actividad del pull debes hacer Check-in
+        </div>
+    @endif
+
     <div class="contenedor-actividades">
     @if(isset($actividades))
         @foreach ($actividades as $actividad)

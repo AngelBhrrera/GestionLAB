@@ -15,7 +15,7 @@
 @endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
+    <li class="breadcrumb-item"><a href="{{route('admin.home')}}">Admin</a></li>
     <li class="breadcrumb-item"><a>Registro</a></li>
     <li class="breadcrumb-item active" aria-current="page">Impresion</li>
 @endsection

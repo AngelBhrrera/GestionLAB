@@ -11,6 +11,7 @@
             <div class="card card-primary">
                 <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Administradores</h3>
             </div>
+    <input id="searchInput" type="text" placeholder="Buscar...">
     <div id="players"></div>
 </div>
 @endsection
@@ -70,10 +71,32 @@
                         headerFilter: "input",
                     }, 
                 ],
-                //rowClick: function(e, row) {
-                //    alert("Row " + row.getData().playerid + " Clicked!!!!");
-                //},
+
             });
-            
+
+            document.addEventListener('DOMContentLoaded', function() {
+
+                function applyCustomFilter(value) {
+                var searchValue = value.toLowerCase().replace(/[^a-z0-9áéíóúüñ]/g, '');
+
+                    table.setFilter(function(row) {
+                        return (row.codigo && row.codigo.toString().toLowerCase().includes(searchValue)) || 
+                            (row.name && row.name.toLowerCase().includes(searchValue)) || 
+                            (row.apellido && row.apellido.toLowerCase().includes(searchValue)) || 
+                            (row.sede && row.sede.toLowerCase().includes(searchValue)) || 
+                            (row.area && row.area.toLowerCase().includes(searchValue)) || 
+                            (row.tipo && row.tipo.toLowerCase().includes(searchValue)) || 
+                            (row.horario && row.horario.toLowerCase().includes(searchValue)) || 
+                            (row.correo && row.correo.toLowerCase().includes(searchValue));
+                    });
+                }
+
+                document.getElementById("searchInput").addEventListener("input", function(e) {
+                    var value = e.target.value.trim();
+                    applyCustomFilter(value);
+                });
+
+            });
     </script>
+    
 @endsection

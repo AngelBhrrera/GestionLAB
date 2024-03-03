@@ -105,6 +105,9 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
                 Route::middleware('role:jefe area,jefe sede,Superadmin')->group(function() {
 
+                    Route::get('/admin/gestion', 'gestHub')->name('gestHub');
+
+
                     Route::get('/admin/premios', 'premios')->name('premios');
                     Route::get('/admin/premios_tabulador', 'gestor_premios')->name('gestor_premios');
                     Route::get('admin/eliminar_premio/{value}', 'eliminar_premio')->name('eliminar_premio');
@@ -149,10 +152,12 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     //MODULO CALENDARIO
                     Route::get('/admin/faltas', 'faltas')->name('faltas');
                     Route::get('/admin/horarios', 'horarios')->name('horarios');
+
+                    Route::get('/admin/Dias_no_laborables', 'diasfestivos')->name('diasfestivos');
+                    Route::post('/admin/agregar_festivos', 'guardarfestivos')->name('agregar_festivos');
                     Route::get('admin/eliminarFestivo/{id}', 'eliminardiafestivo')->name('eliminarFestivo');
                     Route::post('admin/editarFestivo', 'editardiafestivo')->name('editarFestivo');
-                    Route::get('/admin/Dias_no_laborables', 'diasfestivos')->name('diasfestivos');
-                    Route::post('/admin/agregar_festivos', 'guardarFestivos')->name('agregar_festivos');
+
                     //MODULO CATEGORIAS
                     Route::get('/admin/categorias', 'categorias')->name('categorias');
                     Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
@@ -160,7 +165,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 });
             });
 
-            Route::get('/admin/home', 'home')->name('homeA');
+            Route::get('/admin/home', 'home')->name('home');
             Route::get('/admin/firmas', 'firmas')->name('firmas');
             Route::get('admin/check-in', 'checkin')->name('checkin');
             //FILTROS PARA ACTIVIDADES
@@ -276,6 +281,8 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
             Route::get('admin/califAct/{id}/{value}', 'actstate')->name('actstate');
             
+            Route::post('/admin/registrarvisitas', 'registrarVisita')->name('registrarVisita');
+
             Route::middleware('role:jefe area,jefe sede,Superadmin')->group(function() {
                 //API PRESTADOR
                 Route::get('admin/liberar_prestador/{value}', 'liberar')->name('liberar');
@@ -286,6 +293,10 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::get('admin/activar_area/{id}/{campo}', 'activate_area')->name('activatearea');
 
                 Route::get('admin/changeHrs/{id}/{value}', 'modifHoras')->name('modifHoras');
+
+                Route::get('admin/eliminar_actividad/{value}', 'eliminarAct')->name('eliminarAct');
+
+                Route::post('/guardar-clave', 'guardarClave')->name('guardar-clave');
                
             });
             /*
@@ -368,6 +379,7 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::post('prestador/subir_reporte_parcial', 'subir_reportes_parciales')->name('subirReporte');
         Route::get('prestador/eliminar_reporte_parcial/{id}', 'eliminar_reportes_parciales')->name('eliminarReporte');
         //MODULO IMPRESIONES
+        Route::get('prestador/impresiones', 'printHub')->name('printHub');
         Route::get('prestador/registro_impresion', 'create_imps')->name('create_imps');
         Route::post('prestador/registrar_impresion', 'register_imps')->name('register_imps');
         Route::get('prestador/mostrar_mis_impresiones', 'show_imps')->name('show_imps');
@@ -397,7 +409,7 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::get('prestador/miProyecto','myProject')->name('myProject');
         Route::get('prestador/detalles_actividad/{val}','detallesActividad')->name('detallesActividad');
         Route::get('prestador/observaciones_actividad/{id}/{val}', 'detail_act')->middleware('role:prestador,practicante,voluntario')->name('detail_act');
-        Route::get('admnin/observaciones_actividad/{id}/{val}', 'detail_act')->middleware('role:coordinador,jefe area,jefe sede')->name('detail_act');
+        Route::get('admin/observaciones_actividad/{id}/{val}', 'detail_act')->middleware('role:coordinador,jefe area,jefe sede')->name('detail_act');
         //MODULO GAMIFICACION
         Route::get('prestador/nivel', 'level_progress')->name('level');
         Route::get('prestador/leaderboard', 'leaderboard_area')->name('leaderboard_area');

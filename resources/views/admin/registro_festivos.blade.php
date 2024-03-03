@@ -2,7 +2,8 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Home</li>
+    <li class="breadcrumb-item"><a href="{{route('admin.gestHub')}}">Gestion</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Festivos</li>
 @endsection
 
 @section('subcontent')

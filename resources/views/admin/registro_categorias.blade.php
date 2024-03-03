@@ -1,8 +1,8 @@
 @extends('layouts/admin-layout')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
-    <li class="breadcrumb-item"><a>Crear</a></li>
+    <li class="breadcrumb-item"><a href="{{route('admin.home')}}">Admin</a></li>
+    <li class="breadcrumb-item"><a href="{{route('admin.gestHub')}}">Gestion</a></li>
     <li class="breadcrumb-item active" aria-current="page">Categorias</li>
 @endsection
 

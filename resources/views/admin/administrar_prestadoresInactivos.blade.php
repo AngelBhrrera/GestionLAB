@@ -33,25 +33,21 @@
                         field: "name",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Apellido",
                         field: "apellido",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Correo",
                         field: "correo",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Codigo",
                         field: "codigo",
                         sorter: "number",
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "",
                         field: "id",
@@ -66,9 +62,7 @@
                             });
                             return button;
                         }, 
-                        hozAlign: "center",
-                    },
-                    {
+                    }, {
                         title: "",
                         field: "id",
                         formatter: function (cell, formatterParams, onRendered) {
@@ -82,7 +76,6 @@
                             });
                             return button;
                         }, 
-                        hozAlign: "center",
                     },
                 ],
             });

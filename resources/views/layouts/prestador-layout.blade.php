@@ -67,19 +67,19 @@
                                 <li>
                                     <a href="{{route('horas')}}" class="side-menu">
                                         <div class="side-menu__icon"> <i data-lucide="clock"></i> </div>
-                                        <div class="side-menu__title">  Registro de horas </div>
+                                        <div class="side-menu__title">  Registro de Horas </div>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="{{route('parciales')}}" class="side-menu">
                                         <div class="side-menu__icon"> <i data-lucide="file"></i> </div>
-                                        <div class="side-menu__title">Reportes</div>
+                                        <div class="side-menu__title">Documentos del SS</div>
                                     </a>
                                 </li>
                                 <li>
                                 <a href="{{route('horario')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="calendar"></i> </div>
-                                    <div class="side-menu__title">Horario prestador</div>
+                                    <div class="side-menu__title">Calendario Prestador</div>
                                 </a>
                                 </li>                             
                             </ul>
