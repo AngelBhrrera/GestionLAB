@@ -159,7 +159,7 @@
             <div class="flex items-center">
                 <div class="font-medium text-lg">9. Carta de recomendación (sólo prestadores destacados)</div>
             </div>
-            <div class="mt-3">Carta otorgada a los prestadores de servicio destacados que tengan menos de 3 faltas 
+            <div class="mt-3">Carta otorgada a los prestadores de servicio destacados que tengan menos de 5 faltas 
                 y hayan realizado al menos 2 actividades por cada día de servicio.</div>
         </div>
     </div>

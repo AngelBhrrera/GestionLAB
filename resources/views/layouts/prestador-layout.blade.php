@@ -73,7 +73,7 @@
                                 <li>
                                     <a href="{{route('parciales')}}" class="side-menu">
                                         <div class="side-menu__icon"> <i data-lucide="file"></i> </div>
-                                        <div class="side-menu__title">Reportes</div>
+                                        <div class="side-menu__title">Documentos del SS</div>
                                     </a>
                                 </li>
                                 <li>
