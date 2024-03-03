@@ -21,13 +21,15 @@
     <script type="text/javascript">
             var proyectos = {!! $tabla_proy !!};
             var table = new Tabulator("#proyectos", {
-                height:"100%",
                 data: proyectos,
-                resizableColumns: "false",
-                layout: "fitColumns",
+                paginationSize: 20,
                 pagination: "local",
-                paginationSize: 10,
-                tooltips: true,
+                layout: "fitDataFill",
+                resizableColumns:false,
+                height: "100%",
+                //responsiveLayout:"collapse",
+                layoutColumnsOnNewData:true,
+                virtualDomHoz:true,
                 columns: [{
                         title: "ID",
                         field: "id",
@@ -86,7 +88,6 @@
                             button.textContent = "Detalles";
                             button.title = "";
                             button.addEventListener("click", function() {
-                                // Modificar la URL de redirección según la ruta deseada
                                 window.location.href = 'ver_detalles_proyecto/'+ value;
                             });
                             return button;

@@ -295,6 +295,8 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::get('admin/changeHrs/{id}/{value}', 'modifHoras')->name('modifHoras');
 
                 Route::get('admin/eliminar_actividad/{value}', 'eliminarAct')->name('eliminarAct');
+
+                Route::post('/guardar-clave', 'guardarClave')->name('guardar-clave');
                
             });
             /*

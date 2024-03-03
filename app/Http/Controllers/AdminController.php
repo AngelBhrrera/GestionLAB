@@ -11,6 +11,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
 
 /*
 use Illuminate\Support\Facades\Hash;
@@ -739,6 +740,16 @@ class AdminController extends Controller
     
     public function view_details_proy($id){
 
+        if(auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
+            $proy = DB::table('proyectos')
+                ->where('id',$id)
+                ->where('id_area',auth()->user()->area)
+                ->exists();
+                if(!$proy){
+                    return redirect(route('admin.view_proys'));
+                }
+        }
+
         $proyecto = DB::table('proyectos')
             ->select('titulo')->where('id',$id)
             ->get();
@@ -751,13 +762,14 @@ class AdminController extends Controller
             ->select('actividad_id','actividad', 'estado', 'prestador')
             ->where('id_proyecto', $id)
             ->get();
+
         
         return view('admin.ver_detalles_proyecto', compact('proyecto','prestadores', 'actividades'));
     }
 
     public function view_details_act($id)
     {
-
+    
         $detalles = DB::table('actividades')
             ->select('actividades.*', 'categorias.nombre AS nombre_categoria', 'subcategorias.nombre AS nombre_subcategoria')
             ->join('categorias', 'actividades.id_categoria', '=', 'categorias.id')
@@ -1411,4 +1423,5 @@ class AdminController extends Controller
 
         return redirect()->route('login', ['success'=>'Actualización de credenciales, inicia sesión de nuevo']);
     }
+
 }

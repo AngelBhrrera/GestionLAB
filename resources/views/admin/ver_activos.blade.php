@@ -22,9 +22,9 @@
 
             var table = new Tabulator("#players", {
                 data: users, 
-                paginationSize: 20,
                 groupBy: "nombre_area",
 
+                paginationSize: 20,
                 pagination: "local",
                 layout: "fitDataFill",
                 resizableColumns:false,

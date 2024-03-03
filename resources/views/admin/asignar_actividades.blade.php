@@ -47,17 +47,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        <label for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
-                        <div class="form-group" id="duelist_box">
-                            <select class="select2" name="prestadores_seleccionados[]" id="prestadores_seleccionados" multiple>  
-                                @if (isset($prestadores))
-                                @foreach ($prestadores as $prestador)
-                                    <option value="{{$prestador->id}}">{{$prestador->name." ".$prestador->apellido}}</option>
-                                @endforeach
-                                @endif
-                            </select>
-                        </div>
-                        <small id="Help" class="form-text text-muted">Selecciona a los prestadores para realizar la actividad</small>
                         <div class="form-group" id="asignar">
                             <label for="tipo_categoria">Filtro por categoría</label>
                             <select class="form-control" id="tipo_categoria" name="tipo_categoria" onchange="filtrarCategorias()">
@@ -83,6 +72,17 @@
                                 @endforeach
                             </select>
                         </div>
+                        <label for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
+                        <div class="form-group" id="duelist_box">
+                            <select class="select2" name="prestadores_seleccionados[]" id="prestadores_seleccionados" multiple>  
+                                @if (isset($prestadores))
+                                @foreach ($prestadores as $prestador)
+                                    <option value="{{$prestador->id}}">{{$prestador->name." ".$prestador->apellido}}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                        </div>
+                        <small id="Help" class="form-text text-muted">Selecciona a los prestadores para realizar la actividad</small>
                     </div>
 
                     <div class="col-md-8" id="boton_asignar"> <!-- Ancho ajustado para el botón -->
