@@ -20,8 +20,7 @@
 @endsection
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Torneo</li>
-    <li class="breadcrumb-item active" aria-current="page">Nivel</li>
+    <li class="breadcrumb-item active" aria-current="page"> Nivel de prestador</li>
 @endsection
 
 @section('subcontent')

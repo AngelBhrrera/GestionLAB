@@ -81,7 +81,7 @@
             <a href="{{ route('admin.proy_acts') }}" class="box">
                 <div class="box-content">Asignar Actividades a Proyecto</div>
             </a>
-            <a href="{{ route('admin.add_to_proy') }}" class="box">
+            <a href="{{ route('admin.add_to_proys') }}" class="box">
                 <div class="box-content">Asignar Prestadores a Proyecto</div>
             </a>
 

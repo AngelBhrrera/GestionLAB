@@ -43,7 +43,7 @@
                 </tbody>
             </table>
             <br>
-            <a href="{{ route('admin.add_to_proy') }}">
+            <a href="{{ route('admin.add_to_proy', ['proyectoId' => $proyectoId]) }}">
                 <button id="agregarPrestadorBtn" class="btn btn-primary">Agregar Integrante</button>
             </a>
 
@@ -59,6 +59,7 @@
 
 @section('script')
     <script type="text/javascript">
+
             var actividades = {!! $actividades!!};
             var table = new Tabulator("#actividades", {
 

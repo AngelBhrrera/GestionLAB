@@ -680,7 +680,7 @@ class AdminController extends Controller
             }
         }
 
-        return redirect(route('admin.add_to_proy'))->with('success', 'Prestadores agregados al proyecto con exito');
+        return redirect(route('admin.add_to_proys'))->with('success', 'Prestadores agregados al proyecto con exito');
     }
 
     public function eliminarAct($id) {
@@ -719,7 +719,7 @@ class AdminController extends Controller
         return view('/admin/registro_proyectos', compact('prestadores', 'areas'));
     }
 
-    public function add_to_proy() {
+    public function add_to_proys() {
 
         $prestadores = DB::table('solo_prestadores');
         $proyectos = DB::table('seguimiento_proyecto3')
@@ -742,6 +742,31 @@ class AdminController extends Controller
         $prestadores= $prestadores->get();
         $proyectos = $proyectos->get();
 
+        return view('/admin/registro_prestadores_proyecto', compact('prestadores', 'proyectos'));
+    }
+
+    public function add_to_proy($idP) {
+        $proyectos = DB::table('seguimiento_proyecto3')
+            ->select('titulo','id')
+            ->where('id', $idP)
+            ->get();
+        $prestadores = DB::table('solo_prestadores')
+                ->whereNotIn('id', function($query) use ($idP) {
+                    $query->select('id_prestador')
+                        ->from('proyectos_prestadores')
+                        ->where('id_proyecto', $idP);
+                });
+        if( auth()->user()->tipo == 'coordinador'){
+            $prestadores->where('id_area', auth()->user()->area)
+                ->where('horario', auth()->user()->horario)
+                ->where('tipo', '!=', 'coordinador');
+        } else if(auth()->user()->tipo == 'jefe area'){
+            $prestadores->where('id_area', auth()->user()->area);
+        } else if( auth()->user()->tipo == 'jefe sede'){
+            $prestadores->where('id_sede', auth()->user()->sede);   
+        }
+        $prestadores = $prestadores->get();
+    
         return view('/admin/registro_prestadores_proyecto', compact('prestadores', 'proyectos'));
     }
 
@@ -821,8 +846,9 @@ class AdminController extends Controller
             ->select('actividad_id','actividad', 'estado', 'prestador')
             ->where('id_proyecto', $id)
             ->get();
+        $proyectoId = $id;
 
-        return view('admin.ver_detalles_proyecto', compact('proyecto','prestadores', 'actividades'));
+        return view('admin.ver_detalles_proyecto', compact('proyecto','prestadores', 'actividades', 'proyectoId'));
     }
 
     public function view_details_act($id)

@@ -1,26 +1,26 @@
 @extends('layouts/prestador-layout')
 
 @section('subhead')
-<style>
-.square-box {
-    width: 150px; /* Ajusta el ancho a tu preferencia */
-    height: 150px; /* Ajusta la altura a tu preferencia */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    border: 1px solid #ccc; /* Puedes ajustar el estilo del borde */
-}
-.square-box img {
-    max-width: 100%; /* Asegura que la imagen se ajuste al contenedor */
-    max-height: 100%; /* Asegura que la imagen se ajuste al contenedor */
-}
-</style>
+    <style>
+        .square-box {
+            width: 150px; /* Ajusta el ancho a tu preferencia */
+            height: 150px; /* Ajusta la altura a tu preferencia */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 1px solid #ccc; /* Puedes ajustar el estilo del borde */
+        }
+        .square-box img {
+            max-width: 100%; /* Asegura que la imagen se ajuste al contenedor */
+            max-height: 100%; /* Asegura que la imagen se ajuste al contenedor */
+        }
+    </style>
 @endsection
+
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Torneo</li>
     <li class="breadcrumb-item active" aria-current="page">Leaderboard</li>
 @endsection
 

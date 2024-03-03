@@ -430,6 +430,10 @@ class PrestadorController extends Controller
 
     //SISTEMA DE ACTIVIDADES GAMIFICADO
 
+    public function actHub(){
+        return view('prestador/activities_hub');
+    }
+
     private function obtenerActividadesAsignadas(){
         $proys = DB::table('proyectos_prestadores')
             ->where('id_prestador', auth()->user()->id)

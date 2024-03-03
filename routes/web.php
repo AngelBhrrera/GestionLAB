@@ -196,7 +196,10 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/C_proyectos', 'create_proy')->name('create_proy');
             Route::get('/admin/A_proyectos', 'proy_acts')->name('proy_acts');
             Route::post('/admin/M_proyecto', 'make_proy')->name('make_proy');
-            Route::get('/admin/agregar_proyecto', 'add_to_proy')->name('add_to_proy');
+
+            Route::get('/admin/agregar_proyecto', 'add_to_proys')->name('add_to_proys');
+            Route::get('/admin/agregar_proyecto/{proyectoId}', 'add_to_proy')->name('add_to_proy');
+
 
             Route::post('/admin/asign', 'asign')->name('asign');
             Route::post('/admin/asign2', 'asign2')->name('asign2');
@@ -396,6 +399,8 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::get('prestador/horario', 'horario')->name('horario');
         Route::get('/prestador/asistencias', 'asistencias')->name('asistencias');
         //FILTROS RUTAS ACTIVIDADES
+
+        Route::get('prestador/actividades', 'actHub')->name('actHub');
         Route::get('prestador/obtenerActividades', 'obtenerActividades')->name('obtenerActividades');
         Route::get('prestador/obtenerActividadesB', 'obtenerActividadesB')->name('obtenerActividadesB');
         Route::get('prestador/obtenerSubcategoria', 'obtenerSubcategorias')->name('obtenerSubcategorias');
