@@ -98,7 +98,6 @@ class PrestadorController extends Controller
 
         $fecha_inicial = new DateTime($primerCheck->fecha); // Fecha inicial específica
         $fecha_actual = new DateTime();
-        $fecha_actual->modify("+1 day");
         $fechas = [];
         $ultimoCheck = DB::table('registros_checkin')
             ->where('idusuario', Auth::user()->id)
@@ -813,11 +812,6 @@ class PrestadorController extends Controller
 
     public function horario()
     {   
-        $primerCheck = DB::table('registros_checkin')
-        ->select('fecha')
-        ->where('idusuario', Auth::user()->id)
-        ->orderBy('fecha')->first();
-
         $festivos = DB::table('eventos')
             ->where('sede', Auth::user()->sede)
             ->where('area', Auth::user()->area)
@@ -856,7 +850,7 @@ class PrestadorController extends Controller
         }
         
 
-        return view('/prestador/horario_prestador', compact('asistencias', 'festivos', 'primerCheck', 'fechasFaltas'));
+        return view('/prestador/horario_prestador', compact('asistencias', 'festivos', 'fechasFaltas'));
     }
     //REPORTES
 
