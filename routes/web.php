@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
         //pd2. pura clika 14 alv
         //pd3. Uwu
 
-//Estimado prestador de servicio al que le toco continuar con este proyecto... [Febrero, 2024]
+//Estimado prestador de servicio al que le toco continuar con este proyecto... [Marzo, 2024]
         //Asi como los de sistemas, nosotros tambien empezamos sin saber nada de Laravel, Migraciones, AJAX y Tailwind
         //Sin embargo tratamos de darle un mejor orden. No es perfecto, pero es trabajo honesto
         //Como dijo un gran ingeniero:
@@ -28,7 +28,7 @@ Auth::routes([
 ]);
 
 Route::get('/spiderw', function(){
-    return view('/TEST/spider');
+    return view('/spider');
 })->name('spider');
 
 Route::group(['middleware'=>'auth'], function (){
