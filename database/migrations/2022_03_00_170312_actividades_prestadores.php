@@ -32,7 +32,7 @@ class ActividadesPrestadores extends Migration
             $table->string('estado', 50)->default("Creada");
             $table->string('hora_refs',50)->nullable();
             $table->unsignedBigInteger('id_premio')->nullable();
-            $table->foreign('id_premio')->references('id')->on('premio')->onUpdate('cascade');
+            $table->foreign('id_premio')->references('id')->on('premios')->onUpdate('cascade');
         });
     }
 

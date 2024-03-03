@@ -98,7 +98,6 @@ class PrestadorController extends Controller
 
         $fecha_inicial = new DateTime($primerCheck->fecha); // Fecha inicial específica
         $fecha_actual = new DateTime();
-        $fecha_actual->modify("+1 day");
         $fechas = [];
         $ultimoCheck = DB::table('registros_checkin')
             ->where('idusuario', Auth::user()->id)

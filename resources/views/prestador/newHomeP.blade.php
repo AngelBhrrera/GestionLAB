@@ -291,6 +291,7 @@
                         field: "estado",
                         headerFilter: true,
                         headerFilterParams: {
+                            "": "", 
                             "autorizado": "autorizado",
                             "pendiente": "pendiente",
                             "denegado": "denegado",

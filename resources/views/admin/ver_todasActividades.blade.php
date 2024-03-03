@@ -52,6 +52,7 @@
                         sorter: "string",
                         headerFilter: "select",
                         headerFilterParams: {
+                            "": "", 
                             "Asignada": "Asignada",
                             "En proceso": "En Proceso",
                             "En revision": "En revision",
