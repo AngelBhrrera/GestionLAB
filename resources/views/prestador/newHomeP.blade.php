@@ -93,6 +93,10 @@
                         <div class="ml-4">Faltas totales</div>
                         <div class="ml-auto">{{$faltas}}</div>
                     </div>
+                    <a href="{{ route('actividadesAsignadas') }}" class="flex items-center mt-5 sm:w-50">
+                        <div style="color: blue;" class="ml-4">Numero de actividades pendientes</div>
+                        <div style="color: blue;" class="ml-auto">{{$nActividades}}</div>
+                    </a>
                 </div>
             </div>
             
@@ -135,20 +139,21 @@
                             </tr>
                         </thead>
                         <tbody>
+                        <?php $bandera = false; ?>
                             @foreach ($leaderboard as $top)
                             @if ($top->codigo == Auth::user()->codigo)
-                                        <?php $bandera = true; ?>
-                                        <td><strong><p style="color: #0023FF;">{{$top->Posicion}}</p></strong></td>
-                                        
-                                        <td>
-                                            <div class="w-10 h-10 image-fit">
-                                                <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" width="40" height="40" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" 
-                                                 src="{{route('obtenerImagen', ['nombreArchivo' => (Auth::user()->imagen_perfil != null) ? Auth::user()->imagen_perfil : 'false'])}}">
-                                            </div>
-                                            <strong><p style="color: #0023FF"> {{$top->Inventor}}</p></strong></td>
-                                        <td><strong><p style="color: #0023FF">{{$top->total_exp}}</p></strong></td>
-                                        <td>{{ $top->semanas_actividad }}</td>
-                                        <td><img src="{{asset('build/assets/'.$usuarioMedalla->ruta)}}"  width="40" height="80" alt=""></td>  
+                                <?php $bandera = true; ?>
+                                <td><strong><p style="color: #0023FF;">{{$top->Posicion}}</p></strong></td>
+                                
+                                <td>
+                                    <div class="w-10 h-10 image-fit">
+                                        <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" width="40" height="40" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" 
+                                            src="{{route('obtenerImagen', ['nombreArchivo' => (Auth::user()->imagen_perfil != null) ? Auth::user()->imagen_perfil : 'false'])}}">
+                                    </div>
+                                    <strong><p style="color: #0023FF"> {{$top->Inventor}}</p></strong></td>
+                                <td><strong><p style="color: #0023FF">{{$top->total_exp}}</p></strong></td>
+                                <td>{{ $top->semanas_actividad }}</td>
+                                <td><img src="{{asset('build/assets/'.$usuarioMedalla->ruta)}}"  width="40" height="80" alt=""></td>  
                             @else
                                         
                                         <td>{{$top->Posicion}}</td>
@@ -166,14 +171,14 @@
                             @endforeach
                             @if (!$bandera)
                                 <tr>
-                                    <td> <p style="color: #0023FF"><strong>{{$posicionUsuario}} </strong> </p></td>
+                                    <td> <p style="color: #0023FF"><strong>{{$posicionUsuarioA}} </strong> </p></td>
                                     <td>
                                     <div class="w-10 h-10 image-fit">
                                         <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" width="40" height="40" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" 
                                         src="{{route('obtenerImagen', ['nombreArchivo' => (Auth::user()->imagen_perfil != null) ? Auth::user()->imagen_perfil : 'false'])}}">
                                     </div>    
                                     <p style="color: #0023FF"><strong> {{Auth::user()->name}}</strong></p> </td>
-                                    <td> <p style="color: #0023FF"><strong>{{Auth::user()->total_exp}}</strong></p> </td>
+                                    <td> <p style="color: #0023FF"><strong>{{Auth::user()->experiencia}}</strong></p> </td>
                                     <td>{{ $top->semanas_actividad }}</td>
                                     <td><img src="{{asset('build/assets/'.$usuarioMedalla->ruta)}}" width="40" height="80"alt=""></td>
                                 </tr>
@@ -195,6 +200,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                        <?php $bandera = false; ?>
                         @foreach ($leaderboardSede as $top)
                                     @if ($top->codigo == Auth::user()->codigo)
                                         <?php $bandera = true; ?>
@@ -228,14 +234,14 @@
                             @endforeach
                             @if (!$bandera)
                                 <tr>
-                                    <td> <p style="color: #0023FF"><strong>{{$posicionUsuario}} </strong> </p></td>
+                                    <td> <p style="color: #0023FF"><strong>{{$posicionUsuarioS}} </strong> </p></td>
                                     <td>
                                     <div class="w-10 h-10 image-fit">
                                         <img class="rounded-full border-2 border-slate-100 border-opacity-10 shadow-lg" width="40" height="40" alt="{{Auth::user()->name.' '.Auth::user()->apellido}}" 
                                         src="{{route('obtenerImagen', ['nombreArchivo' => (Auth::user()->imagen_perfil != null) ? Auth::user()->imagen_perfil : 'false'])}}">
                                     </div>    
                                     <p style="color: #0023FF"><strong> {{Auth::user()->name}}</strong></p> </td>
-                                    <td> <p style="color: #0023FF"><strong>{{Auth::user()->total_exp}}</strong></p> </td>
+                                    <td> <p style="color: #0023FF"><strong>{{Auth::user()->experiencia}}</strong></p> </td>
                                     <td>{{ $top->semanas_actividad }}</td>
                                     <td><img src="{{asset('build/assets/'.$usuarioMedalla->ruta)}}" width="40" height="80"alt=""></td>
                                 </tr>

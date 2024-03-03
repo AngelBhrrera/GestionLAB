@@ -107,19 +107,19 @@
             <div class="flex items-center">
                 <div class="font-medium text-lg">1. Orden de pago con comprobante.</div>
             </div>
-            <div class="mt-3">Orden de pago generada en la plataforma de servicio social con su comprobante correspondiente</div>
+            <div class="mt-3">Orden de pago generada en la plataforma de servicio social con su comprobante correspondiente.</div>
         </div>
         <div class="alert @if($imss) alert-secondary @else alert-success-soft @endif show mb-2" role="alert">
             <div class="flex items-center">
                 <div class="font-medium text-lg">2. Constancia del IMSS</div>       
             </div>
-            <div class="mt-3">Constancia de vigencia de derechos que puedes obtener en la página del Instituto Mexicano del Seguro Social (IMSS)</div>
+            <div class="mt-3">Constancia de vigencia de derechos que puedes obtener en la página del Instituto Mexicano del Seguro Social (IMSS).</div>
         </div>
         <div class="alert @if($oficio) alert-secondary @else alert-success-soft @endif show mb-2" role="alert">
             <div class="flex items-center">
                 <div class="font-medium text-lg">3. Oficio de comisión</div>
             </div>
-            <div class="mt-3">Documento que te entregan en la unidad de servicio social para dar comenzar tu servicio.</div>
+            <div class="mt-3">Documento que te entregan en la unidad de servicio social para dar comenzar a tu servicio.</div>
         </div>
         <div class="alert @if($reporte1) alert-secondary @else alert-success-soft @endif show mb-2" role="alert">
             <div class="flex items-center">
@@ -157,10 +157,10 @@
         </div>
         <div class="alert @if($carta) alert-secondary @else alert-success-soft @endif show mb-2" role="alert">
             <div class="flex items-center">
-                <div class="font-medium text-lg">9. Carta de recomentdación (sólo prestadores destacados)</div>
+                <div class="font-medium text-lg">9. Carta de recomendación (sólo prestadores destacados)</div>
             </div>
             <div class="mt-3">Carta otorgada a los prestadores de servicio destacados que tengan menos de 3 faltas 
-                y hayan realizado al menos 2 actividaes por cada día de servicio.</div>
+                y hayan realizado al menos 2 actividades por cada día de servicio.</div>
         </div>
     </div>
     <!-- Modal para subir archivo -->

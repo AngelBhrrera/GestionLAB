@@ -27,7 +27,7 @@
                                     <div class="form-group row justify-content-center">
                                         <label  class="col-md-3 col-form-label text-md-right text-lg">{{ __('Check-In') }}</label>
                                         <div class="col-md-6">
-                                            <input id="codigo" class="form-control form-control-lg" name="codigo">
+                                            <input id="codigo" class="form-control form-control-lg" name="codigo" placeholder="Ingresa tu codigo UDG">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-0">

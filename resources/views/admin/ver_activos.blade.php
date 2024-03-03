@@ -12,7 +12,6 @@
     </h2>
 
     <input id="searchInput" type="text" placeholder="Buscar...">
-    <button id="resetButton">Restablecer búsqueda</button>
     <div id="players"></div>
 @endsection
 
@@ -209,14 +208,6 @@
                 document.getElementById("searchInput").addEventListener("input", function(e) {
                     var value = e.target.value.trim();
                     applyCustomFilter(value);
-                });
-
-                function resetSearch() {
-                        table.clearFilter();
-                        document.getElementById("searchInput").value = ""; // Limpiar el campo de búsqueda
-                }
-                document.getElementById("resetButton").addEventListener("click", function() {
-                        resetSearch();
                 });
 
             });

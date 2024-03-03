@@ -31,16 +31,22 @@ class PrestadorController extends Controller
         $llamadaRachaFaltas = $this->racha_asistencias_faltas();
         $racha = $llamadaRachaFaltas[0];
         $faltas = $llamadaRachaFaltas[1];
-        //$fechas_faltas = $this->racha_asistencias_faltas()[2];
+        $actividades = $this->obtenerActividadesAsignadas();
+        $nActividades = $actividades->count();
+
+
 
         $leaderboard = $this->consultarLeaderboard('lb_at', Auth::user()->area, 'area',10);
         $leaderboardSede = $this->consultarLeaderboard('lb_at', Auth::user()->sede, 'sede',10);
-
         $usuarioMedalla = $this->prestador_level();
+
+        $posicionUsuarioA = $this->consultarPosicion('lb_at', Auth::user()->area, 'area');
+        $posicionUsuarioS = $this->consultarPosicion('lb_at', Auth::user()->sede, 'sede');
+
         return view(
             'prestador/newHomeP',  
-            compact('horasAutorizadas', 'horasPendientes', 'horasTotales', 'horasRestantes',  
-            'leaderboard', 'leaderboardSede', 'usuarioMedalla','racha','faltas')
+            compact('horasAutorizadas', 'horasPendientes', 'horasTotales', 'horasRestantes', 'nActividades',
+            'leaderboard', 'leaderboardSede', 'usuarioMedalla','racha','faltas','posicionUsuarioA','posicionUsuarioS')
         )->with('asistencias', json_encode($asistencias));
     }
 
@@ -410,15 +416,27 @@ class PrestadorController extends Controller
         return view('/prestador/mi_proyecto_prestador', compact('prestadores', 'actividades', 'proyecto'));
     }
 
+    public function checkinValidator(){
+        $fechaActual = date('d/m/Y');
+        $registroCheck = DB::table('registros_checkin')
+            ->select('fecha')
+            ->where('fecha', $fechaActual)
+            ->where('idusuario', auth()->user()->id)
+            ->where('hora_salida', null)->get();
+        $activo = (count($registroCheck) > 0) ? true : false;
+
+        return $activo;
+
+    }
+
     //SISTEMA DE ACTIVIDADES GAMIFICADO
 
-    public function actividadesAsignadas()
-    {
+    private function obtenerActividadesAsignadas(){
         $proys = DB::table('proyectos_prestadores')
             ->where('id_prestador', auth()->user()->id)
             ->pluck('id_proyecto');
 
-        $actividades = DB::table('seguimiento_actividades')
+        return DB::table('seguimiento_actividades')
             ->where('id_prestador', auth()->user()->id)
             ->whereNotIn('estado', ['Aprobada'])
             ->orWhere(function($query) use ($proys) {
@@ -428,9 +446,14 @@ class PrestadorController extends Controller
             ->orderByDesc('fecha')
             ->get();
 
-        $fechaActual = date('d/m/Y');
-        $registroCheck = DB::table('registros_checkin')->select('fecha')->where('fecha', $fechaActual)->where('hora_salida', null)->get();
-        $activo = (count($registroCheck) > 0) ? true : false;
+    }
+
+    public function actividadesAsignadas()
+    {
+        
+        $actividades = $this->obtenerActividadesAsignadas();
+        $activo = $this->checkinValidator();
+        
         return view('/prestador/actividades_asignadas',compact('actividades', 'activo'));
     }
 
@@ -441,12 +464,14 @@ class PrestadorController extends Controller
             ->whereNull('proyectos_prestadores.id_proyecto')
             ->pluck('proyectos.id');
 
-        $acts = DB::table('seguimiento_actividades')
+        $actividades = DB::table('seguimiento_actividades')
             ->where('id_prestador', 0)
             ->whereIn('id_proyecto', $proys)
             ->get();
 
-        return view('/prestador/actividades_abiertas', ['actividades' =>$acts]);
+        $activo = $this->checkinValidator();
+
+        return view('/prestador/actividades_abiertas', compact('actividades', 'activo'));
     }
 
     public function startAct($id, $teu){
@@ -547,7 +572,7 @@ class PrestadorController extends Controller
 
         DB::table('actividades_prestadores')
             ->where('id', $found)
-            ->update(['estado' => 'Bloqueada']);
+            ->update(['estado' => 'Bloqueada', 'detalles' => 'Salida de Checkin']);
 
         return 0;
     }
@@ -701,6 +726,10 @@ class PrestadorController extends Controller
     }
 
     //IMPRESIONES PRESTADOR
+
+    public function printHub(){
+        return view('prestador/print_hub');
+    }
 
     public function create_imps()
     {
@@ -977,6 +1006,19 @@ class PrestadorController extends Controller
             ->orderByDesc("$tabla.total_exp")
             ->limit($limit)
             ->get();
+    }
+
+    private function consultarPosicion($tabla, $filtro,$zona)
+    {
+        $pos = DB::table($tabla)
+            ->selectRaw('ROW_NUMBER() OVER (ORDER BY '.$tabla.'.total_exp DESC) AS Posicion, '.$tabla.'.id_prestador')
+            ->from(DB::raw("$tabla, solo_prestadores"))
+            ->where('solo_prestadores.id_'.$zona.'', $filtro)
+            ->whereColumn('solo_prestadores.id', '=', "$tabla.id_prestador")
+            ->orderByDesc("$tabla.total_exp")
+            ->pluck('Posicion', 'id_prestador');
+    
+        return $userPosition = $pos[Auth::user()->id] ?? null;
     }
 
     public function leaderboard_area(){

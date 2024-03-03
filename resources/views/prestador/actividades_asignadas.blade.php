@@ -15,13 +15,6 @@
 
 <div>
 
-    <div class="grid grid-cols-12 gap-6 mt-5" id="alerta">
-        <div class="intro-y col-span-12 lg:col-span-6">
-            @if(session('warning'))
-                <h6 class="alert alert-danger">{{session('warning')}}</h6>  
-            @endif
-        </div>
-    </div>
     @if (!$activo)
         <div class="alert alert-danger-soft show flex items-center mb-2" role="alert">
             <i data-lucide="alert-octagon" class="w-6 h-6 mr-2"></i> Para iniciar actividades debes hacer Check-in
@@ -49,13 +42,6 @@
                 <span class="subtitulo">Fecha:</span> {{ $actividad->fecha }} 
             </div>
             <div class="detalle">
-                <span class="tec">Tiempo Esperado:</span>  
-                @php
-                    $tiempo_en_minutos = $actividad->TEC;
-                    $horas = floor($tiempo_en_minutos / 60);
-                    $minutos = $tiempo_en_minutos % 60;
-                    echo $horas . " h " . $minutos . " m";
-                @endphp
                 <br>
                 <span class="tr">Tiempo Invertido:</span> 
                 @php
@@ -76,11 +62,11 @@
                         <input id= "minutos_{{ $actividad->id }}" name="minutos_{{ $actividad->id }}"  style="width: 125px;" type="text" disabled class="form-control sm:w-56" value= "{{ $minutos . ' m '}}" >
                     </div>
                 @else
+                    <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
                     <div class="col-md-6">
                         <input id = "horas_{{ $actividad->id }}" name="horas_{{ $actividad->id }}"  style="width: 125px;" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" >
                         <input id= "minutos_{{ $actividad->id }}" name="minutos_{{ $actividad->id }}"  style="width: 125px;" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" >
                     </div>
-                    <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
                 @endif
                 @if($actividad->estado == 'En Proceso')
                     <br>

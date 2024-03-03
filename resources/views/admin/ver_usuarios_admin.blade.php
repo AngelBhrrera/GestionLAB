@@ -2,8 +2,8 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-    <li class="breadcrumb-item" aria-current="page"><a href="{{route('admin.general')}}">Usuarios</a></li>
-    <li class="breadcrumb-item active" aria-current="page">General</li>
+    <li class="breadcrumb-item"><a href="{{route('admin.gestHub')}}">Gestion</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Usuarios</li>
 @endsection
 
 @section('subcontent')
@@ -26,13 +26,19 @@
             var users = {!! $datos !!};
 
             var table = new Tabulator("#players", {
-                height: "100%",
+
                 data: users,
-                layout: "fitColumns",
-                pagination: "local",
-                resizableColumns: false,  
                 paginationSize: 20,
-                tooltips: true,
+                groupBy: "nombre_area",
+
+                pagination: "local",
+                layout: "fitDataFill",
+                resizableColumns:false,
+                height: "100%",
+                //responsiveLayout:"collapse",
+                layoutColumnsOnNewData:true,
+                virtualDomHoz:true,
+
                 groupStartOpen: true,
                 groupBy:"nombre_area",
 

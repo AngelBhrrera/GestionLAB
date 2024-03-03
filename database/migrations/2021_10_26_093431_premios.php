@@ -19,7 +19,6 @@ class Premios extends Migration
             $table->date('inicioVigencia');
             $table->date('finVigencia');
             $table->integer('limite');
-            $table->id('id_actividad');
         });
     }
 

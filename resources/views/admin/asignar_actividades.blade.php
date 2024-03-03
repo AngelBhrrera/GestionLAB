@@ -29,7 +29,7 @@
         </div>
         <div class="card">
             <div class="card card-primary" id="titulo_asignar">
-                <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Asignar Actividades </h3>
+                <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Asignar Actividades a Prestador</h3>
             </div>
             <div class="card-body">
                 <form id="asign" method="POST" action="{{route('admin.asign')}}">
@@ -113,10 +113,10 @@
     let dlb2 = new DualListbox('.select2', {
         availableTitle: 'Prestadores disponibles',
         selectedTitle: 'Prestadores seleccionados',
-        addButtonText: '🡺',
-        removeButtonText: '🡸',
-        addAllButtonText: '>>',
-        removeAllButtonText: '<<',
+        addButtonText: 'Agregar',
+        removeButtonText: 'Quitar',
+        addAllButtonText: 'Agregar todos',
+        removeAllButtonText: 'Quitar todos',
         searchPlaceholder: 'Buscar prestadores'
     });
     dlb2.addEventListener('added', function(event) {

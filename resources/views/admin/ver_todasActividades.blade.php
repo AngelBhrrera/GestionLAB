@@ -10,7 +10,9 @@
 <h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
     Todas las actividades.
 </h2>
+<input id="searchInput" type="text" placeholder="Buscar...">
 <div id="players"></div>
+<div style="height: 65px;"></div>
 @endsection
 
 @section('script')
@@ -19,13 +21,18 @@
             var visits = {!! $data !!};
 
             var table = new Tabulator("#players", {
-                height: "100%",
+
                 data: visits,
-                layout: "fitColumns",
-                pagination: "local",
-                resizableColumns: "false",
                 paginationSize: 20,
-                tooltips: true,
+
+                pagination: "local",
+                layout: "fitDataFill",
+                resizableColumns:false,
+                height: "100%",
+                //responsiveLayout:"collapse",
+                layoutColumnsOnNewData:true,
+                virtualDomHoz:true,
+
                 columns: [{
                     title: "ID",
                         field: "id",
@@ -34,13 +41,11 @@
                     },{
                         title: "Prestador",
                         field: "prestador",
-                        sorter: "string",
                         width: 170,
                     }, {
                         title: "Titulo Act",
                         field: "actividad",
                         sorter: "string",
-                        headerFilter: "input",
                     }, {
                         title: "Estado",
                         field: "estado",
@@ -58,12 +63,10 @@
                         title: "Proyecto",
                         field: "proyecto_origen",
                         sorter: "string",
-                        headerFilter: "input",
                     }, {
                         title: "Fecha",
                         field: "fecha",
                         sorter: "string",
-                        headerFilter: "input",
                     }, {
                         title: "Duracion",
                         field: "duracion",
@@ -80,9 +83,6 @@
                     },
                     
                 ],
-                //rowClick: function(e, row) {
-                //    alert("Row " + row.getData().playerid + " Clicked!!!!");
-                //},
             });
 
             function agregarObservaciones(id, value) {
@@ -96,7 +96,6 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-
                     console.log('Observaciones de actividad cambiada', data);
                 })
                 .catch(error => {
@@ -104,6 +103,24 @@
                 });
             } 
 
-            
+            document.addEventListener('DOMContentLoaded', function() {
+
+                function applyCustomFilter(value) {
+                    var searchValue = value.toLowerCase().replace(/[^a-z0-9áéíóúüñ]/g, '');
+
+                    table.setFilter(function(row) {
+                        return (row.codigo && row.codigo.toString().toLowerCase().includes(searchValue)) || 
+                            (row.prestador && row.prestador.toLowerCase().includes(searchValue)) || 
+                            (row.actividad && row.actividad.toLowerCase().includes(searchValue)) || 
+                            (row.estado && row.estado.toLowerCase().includes(searchValue)) || 
+                            (row.proyecto && row.proyecto.toLowerCase().includes(searchValue));
+                    });
+                }
+
+                document.getElementById("searchInput").addEventListener("input", function(e) {
+                    var value = e.target.value.trim();
+                    applyCustomFilter(value);
+                });
+            });
     </script>
 @endsection

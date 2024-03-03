@@ -3,7 +3,7 @@
 @section('breadcrumb')
     <nav aria-label="breadcrumb" class="-intro-x hidden xl:flex">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{route('admin.homeA')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
+            <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
             <li class="breadcrumb-item active" aria-current="page">Home</li>
         </ol>
     </nav>
@@ -13,7 +13,7 @@
 
     <div class="col-span-12 2xl:col-span-9 pt-4">
         <div class="intro-y block sm:flex items-center h-10">
-            <h2 class="text-lg font-medium truncate mr-5 text-align center">REPORTE DE COORDINADOR</h2>
+            <h2 class="text-lg font-medium truncate mr-5 text-align center">REPORTE DE DESEMPEÑO</h2>
         </div>
         <div class="grid grid-cols-12">
 
@@ -61,7 +61,7 @@
                                         <i data-lucide="pie-chart"></i>
                                     </div>
                             </div>
-                            <div class="text-2xl font-medium leading-7 mt-6"></div>
+                            <div class="text-2xl font-medium leading-7 mt-6">{{$exp}}</div>
                             <div class="text-slate-500 mt-1 text-align center">EXPERIENCIA DE LA SEMANA</div>
                         </div>
                         
