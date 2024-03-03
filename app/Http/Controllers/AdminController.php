@@ -653,6 +653,36 @@ class AdminController extends Controller
         return redirect(route('admin.create_proy'))->with('success', 'Asignaciones realizadas con exito');
     }
 
+    public function asign3(Request $request){
+
+        $request->validate([
+            'proyecto' => 'integer',
+            'prestadores_seleccionados' => 'required|array',
+            'prestadores_seleccionados.*' => 'integer',
+        ]);
+            
+        $prestadoresSeleccionados = $request->input('prestadores_seleccionados');
+        if ($prestadoresSeleccionados != null){
+
+            foreach ($prestadoresSeleccionados as $idp) {
+
+                $registrado = DB::table('proyectos_prestadores')
+                    ->where('id_prestador', $idp)
+                    ->where('id_proyecto',  $request->input('proyecto'))
+                    ->exists();
+
+                if(!$registrado){
+                    DB::table('proyectos_prestadores')->insert([
+                        'id_prestador' => $idp,
+                        'id_proyecto' => $request->input('proyecto')
+                    ]);
+                }
+            }
+        }
+
+        return redirect(route('admin.add_to_proy'))->with('success', 'Prestadores agregados al proyecto con exito');
+    }
+
     public function eliminarAct($id) {
         
         DB::table('actividades')
@@ -682,9 +712,37 @@ class AdminController extends Controller
             $prestadores->where('id_sede', auth()->user()->sede);    
             $areas->where('id_sede', auth()->user()->sede);
         }
+        
+
         $areas = $areas->get();
         $prestadores= $prestadores->get();
         return view('/admin/registro_proyectos', compact('prestadores', 'areas'));
+    }
+
+    public function add_to_proy() {
+
+        $prestadores = DB::table('solo_prestadores');
+        $proyectos = DB::table('seguimiento_proyecto3')
+            ->where('particular',1);
+
+        if( auth()->user()->tipo == 'coordinador'){
+            $prestadores->where('id_area', auth()->user()->area)
+                ->where('horario', auth()->user()->horario)
+                ->where('tipo', '!=', 'coordinador');
+            $proyectos->where('id_area', auth()->user()->area)
+                ->where('turno', auth()->user()->horario);
+        }else if(auth()->user()->tipo == 'jefe area'){
+            $prestadores->where('id_area', auth()->user()->area);
+            $proyectos->where('id_area',auth()->user()->area);
+        }else  if( auth()->user()->tipo == 'jefe sede'){
+            $prestadores->where('id_sede', auth()->user()->sede);   
+            $proyectos->where('id_sede',auth()->user()->sede); 
+        }
+        
+        $prestadores= $prestadores->get();
+        $proyectos = $proyectos->get();
+
+        return view('/admin/registro_prestadores_proyecto', compact('prestadores', 'proyectos'));
     }
 
     
@@ -692,11 +750,6 @@ class AdminController extends Controller
  
         $categorias = DB::table('categorias')->get();
         $proyectos = DB::table('proyectos')->get();
-        if(auth()->user()->area == 0){
-
-        }else{
-            $turnos = $this->filtroArea(auth()->user()->area);
-        }
 
         return view('/admin/asignar_actividad_proyecto', compact( 'categorias', 'proyectos'));
     }
@@ -732,8 +785,14 @@ class AdminController extends Controller
     }
 
     public function view_proys(){
-        $tabla_proy = DB::table('seguimiento_proyecto')
-        ->get();
+        $tabla_proy = DB::table('seguimiento_proyecto3');
+
+        if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area' ){
+            $tabla_proy->where('id_area', auth()->user()->area);
+        }else  if( auth()->user()->tipo == 'jefe sede'){
+            $tabla_proy->where('id_sede', auth()->user()->sede);    
+        }
+        $tabla_proy =  $tabla_proy->get();
         
         return view('admin.ver_proyectos', ['tabla_proy' => $tabla_proy]);
     }
@@ -763,7 +822,6 @@ class AdminController extends Controller
             ->where('id_proyecto', $id)
             ->get();
 
-        
         return view('admin.ver_detalles_proyecto', compact('proyecto','prestadores', 'actividades'));
     }
 
@@ -777,7 +835,7 @@ class AdminController extends Controller
             ->where('actividades.id', $id)
             ->first();
 
-        return view('/admin/admin_detalles_actividad', [ 'detalle' => $detalles]);
+        return view('/admin/ver_detalles_actividad', [ 'detalle' => $detalles]);
     }
 
     public function obtenerPrestadores(Request $request)
@@ -791,11 +849,22 @@ class AdminController extends Controller
         return response()->json($prestadores);
     }
 
+    public function removefromProy($proyectoId, $prestadorId)
+    {
+        $sql = DB::table('proyectos_prestadores')->where('id_proyecto', $proyectoId)
+            ->where('id_prestador', $prestadorId)
+            ->delete();
+
+        return response()->json($sql);
+       
+    }
+
     public function filtroArea($id){
-        $turno = DB::table('areas')
-        ->where('id', $id)
-        ->get();
-        return response()->json($turno);
+       
+        return  $turno = DB::table('areas')
+            ->where('id', $id)
+            ->get();
+            dd($turno);
     }
 
     //IMPRESORAS

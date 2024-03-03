@@ -118,6 +118,7 @@
                         editor: "select",
                         headerFilter: true,
                         headerFilterParams: {
+                            "": "", 
                             "Filamento": "Filamento",
                             "Resina": "Resina",
                         },

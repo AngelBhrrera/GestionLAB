@@ -100,6 +100,7 @@
                         sorter: "string",
                         headerFilter: "select",
                         headerFilterParams: {
+                            "": "", 
                             "Exitoso": "Exitoso",
                             "En Proceso": "En Proceso",
                             "Fallido": "Fallido",

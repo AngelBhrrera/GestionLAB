@@ -134,14 +134,17 @@
                             <div class="side-menu__title">Modificar area</div>
                         </a>
                     </li>
-                    @endif
-                    @if (Auth::user()->tipo == "jefe sede" || Auth::user()->tipo == "Superadmin")
-                    <li>
-                        <a href="{{route('admin.sede')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
-                            <div class="side-menu__title">Modificar sede</div>
-                        </a>
-                    </li>
+                    @else
+                        <li>
+                            <a href="{{route('admin.sede')}}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
+                                @if (Auth::user()->tipo == "jefe sede")
+                                <div class="side-menu__title">Modificar sede / Agregar areas</div>
+                                @else
+                                <div class="side-menu__title">Modificar / agregar sedes / areas</div>
+                                @endif
+                            </a>
+                        </li>
                     @endif
                     <li>
                         <a href="{{route('admin.categorias')}}" class="side-menu">

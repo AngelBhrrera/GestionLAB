@@ -13,6 +13,7 @@
         <h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
             Lista de proyectos
         </h2>
+        <input id="searchInput" type="text" placeholder="Buscar...">
         <div class="text-center mx-auto" style="padding-left: 10px" id="proyectos"></div>
     </div>
 @endsection
@@ -38,47 +39,55 @@
                     }, {
                         title: "Título",
                         field: "titulo",
-                        headerFilter: "input",
-                        sorter: "string",
-                        editor: "input",
-                        width: 300,
-                        cellEdited: function (cell) {
-                            var row = cell.getRow();
-                            var id = row.getData().id;
-                            var value = cell.getValue();
-                            nuevoNombreSede(id, value);
-                        },
-                    },{
+                    }, {
                         title: "Estado",
                         field: "estado",
-                        headerFilter: "input",
-                        sorter: "string",
-                        editor: "input",
-                        width: 150,
-                        cellEdited: function (cell) {
-                            var row = cell.getRow();
-                            var id = row.getData().id;
-                            var value = cell.getValue();
-                            nuevoNombreArea(id, value);
+                        editor: "select",
+                        editorParams: {
+                            values: {
+                                "creado": "creado",
+                                "en desarrollo": "en desarrollo",
+                                "finalizado": "finalizado",
+                                "cancelado": "cancelado",
+                            }
+                        },
+                        headerFilter: "select",
+                        headerFilterParams: {
+                            "": "", 
+                            "creado": "creado",
+                            "en desarrollo": "en desarrollo",
+                            "finalizado": "finalizado",
+                            "cancelado": "cancelado",
                         },
                     }, {
                         title: "Fecha inicio",
                         field: "fecha_inicio",
-                    },
-                    {
+                    }, {
                         title: "Fecha final",
                         field: "fecha_fin",
-                    },
-                    {
+                    },  {
+                        title: "Turno",
+                        field: "turno",
+                        headerFilter:"select",
+                        headerFilterParams: {
+                            "": "", 
+                            "matutino": "Matutino",
+                            "mediodia": "Mediodia",
+                            "vespertino": "Vespertino",
+                            "sabatino": "Sabatino",
+                            "no aplica": "No Aplica",
+                        },
+                    },{
                         title: "Colaboradores",
                         field: "n_prestadores",
 
-                    },
-                    {
-                        title: "Actividades",
+                    }, {
+                        title: "Totales",
                         field: "n_acts",
-                    },
-                    {
+                    },  {
+                        title: "Completadas",
+                        field: "conteo_terminado",
+                    },{
                         title: "",
                         field: "id",
                         formatter: function (cell, formatterParams, onRendered) {
@@ -95,6 +104,24 @@
                     },
                 ],
             });
+
+            document.addEventListener('DOMContentLoaded', function() {
+                function applyCustomFilter(value) {
+                    var searchValue = value.toLowerCase().replace(/[^a-z0-9áéíóúüñ]/g, '');
+
+                    table.setFilter(function(row) {
+                        return (row.titulo && row.titulo.toString().toLowerCase().includes(searchValue)) || 
+                            (row.fecha_fin && row.fecha_fin.toLowerCase().includes(searchValue)) || 
+                            (row.fecha_inicio && row.fecha_inicio.toLowerCase().includes(searchValue));
+                    });
+                }
+
+                document.getElementById("searchInput").addEventListener("input", function(e) {
+                    var value = e.target.value.trim();
+                    applyCustomFilter(value);
+                });
+
+                });
             
     </script>
     

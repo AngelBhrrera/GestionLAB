@@ -54,6 +54,7 @@
                         },
                         headerFilter: true,
                         headerFilterParams: {
+                            "": "", 
                             "aprobado": "aprobado",
                             "revision": "revision",
                             "error": "error",

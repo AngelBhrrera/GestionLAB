@@ -196,11 +196,16 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/C_proyectos', 'create_proy')->name('create_proy');
             Route::get('/admin/A_proyectos', 'proy_acts')->name('proy_acts');
             Route::post('/admin/M_proyecto', 'make_proy')->name('make_proy');
+            Route::get('/admin/agregar_proyecto', 'add_to_proy')->name('add_to_proy');
+
             Route::post('/admin/asign', 'asign')->name('asign');
             Route::post('/admin/asign2', 'asign2')->name('asign2');
+            Route::post('/admin/asign3', 'asign3')->name('asign3');
             Route::get('/admin/ver_proyectos', 'view_proys')->name('view_proys');
             Route::get('/admin/ver_detalles_proyecto/{id}', 'view_details_proy')->name('view_details_proy');
             Route::get('/admin/ver_detalles_proyecto/ver_detalles_actividad/{id}', 'view_details_act')->name('view_details_act');
+
+            Route::post('admin/removerProyecto/{proyectoId}/{prestadorId}', 'removefromProy')->name('removefromProy');
             
             //MODULO IMPRESIONES
             Route::get('/admin/ver_impresoras', 'control_print')->name('control_print');

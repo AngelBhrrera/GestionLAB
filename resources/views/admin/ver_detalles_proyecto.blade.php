@@ -27,6 +27,7 @@
                         <th class="whitespace-nowrap">Prestador</th>
                         <th class="whitespace-nowrap">Correo</th>
                         <th class="whitespace-nowrap">Teléfono</th>
+                        <th class="whitespace-nowrap"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,12 +37,16 @@
                             <td>{{$prestador->name." ".$prestador->apellido}}</td>
                             <td>{{$prestador->correo}}</td>
                             <td>{{$prestador->telefono}}</td>
+                            <td><a href="#" class="btn btn-danger btnEliminar" data-id="{{$prestador->id_prestador}}">Eliminar del proyecto</a></td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
             <br>
-            <button id="agregarPrestadorBtn" class="btn btn-primary">Agregar Integrante</button>
+            <a href="{{ route('admin.add_to_proy') }}">
+                <button id="agregarPrestadorBtn" class="btn btn-primary">Agregar Integrante</button>
+            </a>
+
 
         @endif
         <h3 class="text-xl font-medium leading-none mt-3">Actividades</h3>
@@ -112,8 +117,37 @@
                         }, 
                     },
                 ],
-            });  
-    </script>
+            });
 
-    
+    document.querySelectorAll('.btnEliminar').forEach(btn => {
+        btn.addEventListener('click', function(event) {
+            event.preventDefault(); 
+            let prestadorId = this.getAttribute('data-id');
+            let proyectoUrl = window.location.href; 
+            let proyectoId = proyectoUrl.split('/').pop();
+
+            fetch(`{{ url('admin/removerProyecto') }}/${proyectoId}/${prestadorId}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}', 
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log(response);
+                    
+                location.reload(); 
+                } else {
+                    console.error('Error al eliminar el prestador del proyecto.');
+                }
+            })
+            .catch(error => {
+                console.error('Error en la solicitud AJAX:', error);
+            });
+        });
+    });
+
+
+    </script>
 @endsection

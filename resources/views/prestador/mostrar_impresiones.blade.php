@@ -96,6 +96,7 @@
                         width: 130,
                         headerFilter: true,
                         headerFilterParams: {
+                            "": "", 
                             "Exitoso": "Exitoso",
                             "En Proceso": "En Proceso",
                             "Fallido": "Fallido",
