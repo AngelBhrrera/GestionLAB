@@ -29,7 +29,6 @@
     <div id="asistencias" data-asistencias="{{json_encode($asistencias)}}"></div>
     <div id="faltas" data-faltas="{{json_encode($fechasFaltas)}}"></div>
     <div id="festivos" data-festivos="{{json_encode($festivos)}}"></div>
-    <div id="primerCheck" data-check="{{json_encode($primerCheck)}}"></div>
     <div id="horario" data-horario="{{json_encode(Auth::user()->horario)}}"></div>
 @endsection
 
@@ -48,7 +47,6 @@
       var asistencias = document.getElementById("asistencias").getAttribute('data-asistencias');
       var festivos = document.getElementById("festivos").getAttribute('data-festivos');
       var fechasFaltas = document.getElementById("faltas").getAttribute('data-faltas');
-      var primerCheck = convertirFormatoFecha(JSON.parse(document.getElementById("primerCheck").getAttribute('data-check')).fecha);
       var horario = JSON.parse(document.getElementById('horario').getAttribute('data-horario'));
       var arrayAsist = JSON.parse(asistencias);
       var arrayFest = JSON.parse(festivos);
@@ -97,64 +95,6 @@
           });
       })
 
-      function obtenerDiasLaborablesDelMes(mes, año) {
-          const diasLaborables = [];
-          const primerDiaMes = new Date(año, mes, 1);
-          const ultimoDiaMes = new Date(año, mes + 1, 0);
-
-        for (let dia = 1; dia <= ultimoDiaMes.getDate(); dia++) {
-            const fecha = new Date(año, mes, dia);
-            const diaSemana = fecha.getDay();
-
-            if (diaSemana >= 1 && diaSemana <= 5) { // Si es de lunes a viernes
-                diasLaborables.push(fecha.toISOString().slice(0,10)); // Formato YYYY-MM-DD
-            }
-        }
-        return diasLaborables;
-      }
-
-      function contarFaltas() {
-        var asistencias = document.getElementById("asistencias").getAttribute('data-asistencias');
-        var festivos = document.getElementById("festivos").getAttribute('data-festivos');
-        var arrayAsist = JSON.parse(asistencias);
-        var arrayFest = JSON.parse(festivos);
-
-        const diasLaborables = obtenerDiasLaborablesDelMes(mesActual, añoActual);
-        const diasLaborablesNoFestivos = diasLaborables.filter(dia => !arrayFest.includes(dia) && new Date(dia) <= fechaActual);
-        let faltas = 0;
-        diasLaborablesNoFestivos.forEach(diaLaborable => {
-          const asistenciaEnDia = arrayAsist.find(asistencia => asistencia === diaLaborable);
-          if (!asistenciaEnDia && (diaLaborable > primerCheck)) {
-            console.log(diaLaborable);
-            faltas++;
-            faltasCalendario.push({
-              start: diaLaborable,
-              end: diaLaborable,
-              backgroundColor: "red",
-              display: "background"
-            });
-          }
-        });
-        return faltas;
-      }
-
-      function convertirFormatoFecha(fecha) {
-          // Dividir la cadena de fecha en día, mes y año
-          var partes = fecha.split("/");
-          var day = partes[0];
-          var month = partes[1];
-          var year = partes[2];
-
-          // Crear una nueva cadena de fecha en el formato "aaaa-mm-dd"
-          var nuevaFecha = year + "-" + month + "-" + day;
-
-          return nuevaFecha;
-      }
-
-      //faltas = contarFaltas();
-      //console.log(faltas);
-      //console.log(faltasCalendario);
-
       var calendarEl = document.getElementById('calendar');
       var calendar = new FullCalendar.Calendar(calendarEl, {
         eventOverlap: false,
@@ -163,7 +103,6 @@
             ...a,
             ...fest,
             ...faltas
-            //...faltasCalendario
           ],
 
       });

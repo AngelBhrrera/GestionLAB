@@ -816,11 +816,6 @@ class PrestadorController extends Controller
 
     public function horario()
     {   
-        $primerCheck = DB::table('registros_checkin')
-        ->select('fecha')
-        ->where('idusuario', Auth::user()->id)
-        ->orderBy('fecha')->first();
-
         $festivos = DB::table('eventos')
             ->where('sede', Auth::user()->sede)
             ->where('area', Auth::user()->area)
@@ -831,14 +826,12 @@ class PrestadorController extends Controller
             ->where('idusuario', Auth::user()->id)
             ->where('horas', '>=', 3)
             ->pluck('fecha');
-        
         $asistencias = [];
         foreach ($asists as &$asist) {
             $fechaObjeto = DateTime::createFromFormat('d/m/Y', $asist);
             $asistenciaFormateada = $fechaObjeto->format('Y-m-d');
             $asistencias[] = $asistenciaFormateada;
         }
-
 
         foreach($festivos as $festivo){
 
@@ -848,7 +841,6 @@ class PrestadorController extends Controller
             $fechaObjeto = DateTime::createFromFormat('Y-m-d H:i:s', $festivo->final);
             $festivo->final = $fechaObjeto->format('Y-m-d');
         }
-
         $faltas = $this->racha_asistencias_faltas()[2];
         $fechasFaltas= [];
         foreach($faltas as $falta){
@@ -857,10 +849,9 @@ class PrestadorController extends Controller
             $falta = $fechaObjeto->format('Y-m-d');
             $fechasFaltas[] = $falta;
         }
-        
-
-        return view('/prestador/horario_prestador', compact('asistencias', 'festivos', 'primerCheck', 'fechasFaltas'));
+        return view('/prestador/horario_prestador', compact('asistencias', 'festivos', 'fechasFaltas'));
     }
+
     //REPORTES
 
     public function show_reportes(){
