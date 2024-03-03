@@ -253,7 +253,7 @@
 @endsection
 
 @section('script')
-
+     
     <script type="text/javascript">
 
             var assist = {!! $asistencias !!};
@@ -266,7 +266,13 @@
                 columns: [{
                         title: "Fecha",
                         field: "fecha",
-                        sorter: "joiningdate",
+                        sorter: "date",
+                        formatter: "datetime",
+                        formatterParams: {
+                            inputFormat: "DD/MM/YYYY",
+                            outputFormat: "DD/MM/YYYY", 
+                            invalidPlaceholder: "(Fecha inválida)",
+                        },
                         headerFilter: "input",
                         width: 120,
                     }, {

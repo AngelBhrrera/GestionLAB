@@ -458,3 +458,7 @@ Route::get('/bot', function () {
     return view('boot');
 });
 
+Route::any('{any}', function () {
+    return redirect('/');
+})->where('any', '.*');
+
