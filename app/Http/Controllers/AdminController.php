@@ -31,6 +31,36 @@ class AdminController extends Controller
 
     //ADMIN HOME
 
+    public function home(){
+
+
+        $sqlproy = DB::table('proyectos as p')
+            ->where('p.id_area', Auth::user()->area)
+            ->where('p.estado', '!=', 'finalizado');
+        $sqlactsp  =DB::table('actividades_prestadores as ap')
+            ->select('ap.id')
+            ->join('users as u', 'ap.id_prestador', '=', 'u.id')
+            ->whereNotIn('estado', ['Creada','Aprobada', 'Asignada']);
+        $sqlactst = DB::table('actividades_prestadores as ap')
+            ->select('ap.id')
+            ->join('users as u', 'ap.id_prestador', '=', 'u.id')
+            ->where('ap.estado', 'Aprobada');
+           
+
+        if(Auth::user()->horario != 'No Aplica'){
+            $sqlproy->where('p.turno', Auth::user()->horario);
+            $sqlactsp ->where('u.horario', Auth::user()->horario);
+            $sqlactst ->where('u.horario', Auth::user()->horario);
+        }
+        $sqlproy = $sqlproy->get();
+
+        $proys = $sqlproy->count();
+        $actsP = $sqlactsp->count();
+        $actsT = $sqlactst->count();
+
+        return view("admin.homeA",compact('proys','actsP','actsT'));
+    }
+
     public function firmas(){
         
         $sql = DB::table('registros_checkin as r')
@@ -42,9 +72,9 @@ class AdminController extends Controller
 
 
         if(Auth::user()->tipo == "coordinador"){
-            return view("admin.asistencias_encargado", ['datos' => json_encode($sql)]);
+            return view("admin.ver_asistencias_encargado", ['datos' => json_encode($sql)]);
         }else{
-            return view("admin.asistencias_admin", ['datos' => json_encode($sql)]);
+            return view("admin.ver_asistencias_admin", ['datos' => json_encode($sql)]);
         }
     }    
 
@@ -64,7 +94,7 @@ class AdminController extends Controller
     return response()->json(['message' => 'Activado exitosamente' . $id]);
 }
 
-    //ADMINSITRADOR DE PRESTADORES / VOLUNTARIOS / PRACTICANTES
+    //ADMINISTRADOR DE PRESTADORES / VOLUNTARIOS / PRACTICANTES
 
     public function registro()
     {
@@ -106,22 +136,22 @@ class AdminController extends Controller
 
     public function general()
     {
+        
         $data = DB::table('users')
             ->select('users.id','users.name', 'users.apellido', 'users.correo', 'users.codigo', 'users.tipo', 'users.telefono', 'areas.nombre_area')
-            ->whereNotIn('users.tipo', ['Superadmin'])
             ->join('areas', 'users.area', '=', 'areas.id');
 
         if (auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area') {
             $data->where('users.area', auth()->user()->area);
             $data = $data->get();
-            return view('admin/general_users', ['datos' => json_encode($data)]);
+            return view('admin/ver_usuarios', ['datos' => json_encode($data)]);
         } else if (auth()->user()->tipo == 'jefe sede') {
             $data->where('users.sede', auth()->user()->sede);
         }
 
         $data = $data->get();
 
-        return view('admin/admin_general_users', ['datos' => json_encode($data)]);
+        return view('admin/ver_usuarios_admin', ['datos' => json_encode($data)]);
     }
 
     public function administradores()
@@ -142,7 +172,7 @@ class AdminController extends Controller
 
         $data = $data->get();
 
-        return view('admin/admins', ['datos' => json_encode($data)]);
+        return view('admin/ver_admins', ['datos' => json_encode($data)]);
     }
 
     public function clientes()
@@ -150,6 +180,10 @@ class AdminController extends Controller
         $data = DB::table('solo_clientes')
         ->get();
         return view('admin/lista_clientes', ['datos' => json_encode($data)]);
+    }
+
+    public function prestadorHub(){
+        return view('admin/prestadores_hub');
     }
 
     public function prestadores()
@@ -161,7 +195,7 @@ class AdminController extends Controller
             $data->where('id_sede', Auth::user()->sede);
         }
         $data = $data->get();
-        return view('admin/activos', ['datos' => json_encode($data)]);
+        return view('admin/ver_activos', ['datos' => json_encode($data)]);
     }
 
     public function prestadores_pendientes()
@@ -174,7 +208,7 @@ class AdminController extends Controller
         }
         $data = $data->get();
 
-        return view('admin/prestadoresPendientes', ['datos' => json_encode($data)]);
+        return view('admin/ver_prestadoresPendientes', ['datos' => json_encode($data)]);
     }
 
     public function prestadores_terminados()
@@ -203,7 +237,7 @@ class AdminController extends Controller
             $data->where('sede',  Auth::user()->sede);
         }
         $data = $data->get();
-        return view('admin/servicioLiberado', ['datos' => json_encode($data)]);
+        return view('admin/ver_servicioLiberado', ['datos' => json_encode($data)]);
     }
 
     public function prestadores_inactivos()
@@ -323,6 +357,14 @@ class AdminController extends Controller
     }
 
     // ACTIVIDADES Y PROYECTOS
+
+    public function actHub(){
+        return view('admin/actividades_hub');
+    }
+
+    public function proyHub(){
+        return view('admin/proyectos_hub');
+    }
 
     public function actstate($id, $state) {
         DB::table('actividades_prestadores')
@@ -544,6 +586,7 @@ class AdminController extends Controller
                 if($check){
                     DB::table('actividades_prestadores')->insert([
                         'id_prestador' => $idp,
+                        'estado' => "Asignada",
                         'id_actividad' => $request->input('tipo_actividad'),
                         'id_proyecto' => $request->input('proyecto')]);
                 }else{
@@ -559,6 +602,7 @@ class AdminController extends Controller
                     DB::table('actividades_prestadores')->insert([
                         'id_prestador' => $idp,
                         'id_actividad' => $request->input('tipo_actividad'),
+                        'estado' => "Asignada",
                         'id_proyecto' => $request->input('proyecto')]);
             }
             return redirect(route('admin.asign_act'))->with('success', 'Creada correctamente');
@@ -715,7 +759,7 @@ class AdminController extends Controller
             ->join('users', 'ver_impresiones.id_Prestador', '=', 'users.id')
             ->where('sede', auth()->user()->sede)
             ->get();
-        return view( 'admin/mostrar_impresiones', [ 'impresiones' =>json_encode($data)]);
+        return view( 'admin/ver_impresiones', [ 'impresiones' =>json_encode($data)]);
     }
 
     public function control_print()
@@ -785,7 +829,7 @@ class AdminController extends Controller
             ->select('subcategorias.*', 'categorias.nombre AS categoria')
             ->join('categorias', 'subcategorias.categoria', '=', 'categorias.id')
             ->get();
-        return view("admin.categorias", ['categoria'=>$categ, 'tabla_subcategorias' => json_encode($subcateg) ]);
+        return view('admin.registro_categorias', ['categoria'=>$categ, 'tabla_subcategorias' => json_encode($subcateg) ]);
     }
 
     public function nuevaCateg(Request $request){
@@ -798,9 +842,9 @@ class AdminController extends Controller
         if (count($buscarCat)==0){
             $nombre=$request->input("nombreCateg");
             DB::insert("INSERT INTO categorias (nombre) Values('$nombre')");
-            return redirect(route('admin.categorias'))->with('success', 'Creada correctamente');
+            return redirect(route('admin.registro_categorias'))->with('success', 'Creada correctamente');
         }else{
-            return redirect(route('admin.categorias'))->with('warning', "Ya existe una categoria con ese nombre");
+            return redirect(route('admin.registro_categorias'))->with('warning', "Ya existe una categoria con ese nombre");
         }
 
     }
@@ -816,9 +860,9 @@ class AdminController extends Controller
         $subcateg=$request->input("nombreSubc");
         $sql = DB::insert("INSERT INTO subcategorias (nombre, categoria) Values('$subcateg', '$categ')");
         if ( $sql == 1){
-            return redirect(route('admin.categorias'))->with('success', 'Creada correctamente');
+            return redirect(route('admin.registro_categorias'))->with('success', 'Creada correctamente');
         }else{
-            return redirect(route('admin.categorias'))->with('warning', "No se puedo crear la subcategoria");
+            return redirect(route('admin.registro_categorias'))->with('warning', "No se puedo crear la subcategoria");
         }
     
     }
@@ -957,7 +1001,7 @@ class AdminController extends Controller
         $vmodificar->fecha_salida = $newDateTime2;
 
         $vmodificar->save();
-        return redirect()->route('admin.visitas');
+        return redirect()->route('admin.ver_visitas');
     }
 
     //CONTROL DE SEDES
@@ -975,7 +1019,7 @@ class AdminController extends Controller
         $sedes = $sedes->get();
         $s = $s->get();
 
-        return view("admin.sedes", ['s'=>$s, 'tabla_sedes' => json_encode($sedes)]);
+        return view("admin.registro_sedes", ['s'=>$s, 'tabla_sedes' => json_encode($sedes)]);
     }
 
     public function activate_area($id, $campo)
@@ -1054,7 +1098,7 @@ class AdminController extends Controller
             $valor->final = $fechaObjeto->format('d-m-Y');
         }
 
-        return view('admin.dias_festivos',['no_laboral' =>json_encode($no_laboral)]);
+        return view('admin.registro_festivos',['no_laboral' =>json_encode($no_laboral)]);
     }
 
     public function guardarFestivos(Request $request)
@@ -1087,7 +1131,7 @@ class AdminController extends Controller
             );
         }
         
-        return redirect()->route('admin.diasfestivos')->with('success','Agregado correctamente');
+        return redirect()->route('admin.registro_festivos')->with('success','Agregado correctamente');
     }
 
     public function editardiafestivo(Request $request)
@@ -1114,7 +1158,7 @@ class AdminController extends Controller
             ->where('id', $id_festivo)
             ->update(['evento'=>$descripcion, 'inicio'=>$inicio, 'final'=>$fin]);
 
-        return redirect()->route('admin.diasfestivos')->with('success', 'Modificado correctamente');
+        return redirect()->route('admin.registro_festivos')->with('success', 'Modificado correctamente');
     }
 
     public function eliminardiafestivo($id)
@@ -1254,7 +1298,7 @@ class AdminController extends Controller
         }
         $prestadores = $prestadores->get();
 
-        return view("admin.premios", compact('prestadores', 'premios'));
+        return view("admin.registro_premios", compact('prestadores', 'premios'));
     }
 
     public function guardar_premio(Request $request){
@@ -1291,12 +1335,12 @@ class AdminController extends Controller
             ]);
            
         }
-        return redirect(route("admin.gestor_premios"))->with("Exito",);
+        return redirect(route("admin.ver_premios"))->with("Exito",);
     }
 
     public function gestor_premios(){
         $datos = DB::select("SELECT * FROM seguimiento_premios");
-        return view("admin.Premios_tabulador", ["datosJson" => json_encode($datos)]);
+        return view('admin.ver_premios', ["datosJson" => json_encode($datos)]);
     }
 
     public function eliminar_premio($id){

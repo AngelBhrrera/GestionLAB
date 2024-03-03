@@ -51,13 +51,16 @@
             var printers = {!! $impresiones !!};
 
             var table = new Tabulator("#players", {
-                height: "100%",
                 data: printers,
-                resizableColumns: "false",
-                layout: "fitColumns",
+                paginationSize: 20,
+
                 pagination: "local",
-                paginationSize: 15,
-                tooltips: true,
+                layout: "fitDataFill",
+                resizableColumns:false,
+                height: "100%",
+                layoutColumnsOnNewData:true,
+                virtualDomHoz:true,
+
                 columns: [{
                     title: "ID",
                         field: "id",
@@ -67,8 +70,6 @@
                         title: "Impresora",
                         field: "impresora",
                         sorter: "string",
-                        width: 150,
-                        headerFilter: "input",
                     }, {
                         title: "Proyecto",
                         field: "proyecto",
@@ -81,7 +82,6 @@
                         title: "Modelo",
                         field: "nombre_modelo_stl",
                         sorter: "string",
-                        headerFilter: "input"
                     }, {
                         title: "Duracion",
                         field: "tiempo_impresion",
@@ -90,7 +90,6 @@
                         title: "Color",
                         field: "color",
                         sorter: "string",
-                        headerFilter: "input"
                     },  {
                         title: "Piezas",
                         field: "piezas",
@@ -99,7 +98,7 @@
                         title: "Estado",
                         field: "estado",
                         sorter: "string",
-                        headerFilter: true,
+                        headerFilter: "select",
                         headerFilterParams: {
                             "Exitoso": "Exitoso",
                             "En Proceso": "En Proceso",

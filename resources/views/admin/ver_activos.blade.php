@@ -2,17 +2,18 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-    <li class="breadcrumb-item" aria-current="page"><a href="{{route('admin.general')}}">Usuarios</a></li>
+    <li class="breadcrumb-item"><a href="{{route('admin.prestadorHub')}}">Prestadores</a></li>
     <li class="breadcrumb-item active" aria-current="page">Prestadores Activos</li>
 @endsection
 
 @section('subcontent')
-<h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
-    Prestadores Activos
-</h2>
+    <h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
+        Prestadores Activos
+    </h2>
 
-<div id="players"></div>
-<div style="height: 65px;"></div>
+    <input id="searchInput" type="text" placeholder="Buscar...">
+    <button id="resetButton">Restablecer búsqueda</button>
+    <div id="players"></div>
 @endsection
 
 @section('script')
@@ -29,37 +30,36 @@
                 layout: "fitDataFill",
                 resizableColumns:false,
                 height: "100%",
-                responsiveLayout:"collapse",
+                //responsiveLayout:"collapse",
                 layoutColumnsOnNewData:true,
                 virtualDomHoz:true,
+
+                headerFilterPlaceholder: "Buscar..",
+                headerFilterLiveFilter: false,
 
                 columns: [{
                         title: "Nombre",
                         field: "name",
                         sorter: "string",
-                        headerFilter: "input",
                       
                     }, {
                         title: "Apellido",
                         field: "apellido",
                         sorter: "string",
-                        headerFilter: "input",
                       
                     }, {
                         title: "Correo",
                         field: "correo",
-                        sorter: "string",
-                        headerFilter: "input",
-                      
+                        sorter: "string",                 
                     }, {
                         title: "Tipo",
                         field: "tipo",
                         editor: "select",
                         editorParams: {
                             values: {
-                                    "prestador": "prestador",
-                                    "coordinador": "coordinador",
-                                }
+                                "prestador": "prestador",
+                                "coordinador": "coordinador",
+                            }
                         },
                       
                     },{
@@ -174,7 +174,6 @@
                 });
             } 
 
-            
             function desactivarPrestador(value) {
                 const token = document.head.querySelector('meta[name="csrf-token"]').content;
                 fetch(`desactivar_prestador/${value}`, {
@@ -196,6 +195,30 @@
                 });
             } 
 
-            
+            document.addEventListener('DOMContentLoaded', function() {
+
+                function applyCustomFilter(value) {
+                    var searchValue = value.toLowerCase().replace(/[^a-z0-9áéíóúüñ]/g, '');
+                    table.setFilter(function(row) {
+                        return (row.codigo && row.codigo.toString().toLowerCase().includes(searchValue)) || 
+                            (row.name && row.name.toLowerCase().includes(searchValue)) || 
+                            (row.apellido && row.apellido.toLowerCase().includes(searchValue)) || 
+                            (row.correo && row.correo.toLowerCase().includes(searchValue));
+                    });
+                }
+                document.getElementById("searchInput").addEventListener("input", function(e) {
+                    var value = e.target.value.trim();
+                    applyCustomFilter(value);
+                });
+
+                function resetSearch() {
+                        table.clearFilter();
+                        document.getElementById("searchInput").value = ""; // Limpiar el campo de búsqueda
+                }
+                document.getElementById("resetButton").addEventListener("click", function() {
+                        resetSearch();
+                });
+
+            });
     </script>
 @endsection

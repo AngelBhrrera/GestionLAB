@@ -86,23 +86,25 @@
             var printers = {!! $impresiones !!};
 
             var table = new Tabulator("#players", {
-                height: "100%",
                 data: printers,
+                paginationSize: 10,
                 pagination: "local",
-                paginationSize: 20,
+                layout: "fitDataFill",
                 resizableColumns:false,
-                tooltips: true,
+                height: "100%",
+                //responsiveLayout:"collapse",
+                layoutColumnsOnNewData:true,
+                virtualDomHoz:true,
+
                 columns: [{
                         title: "Nombre",
                         field: "nombre",
                         sorter: "string",
-                        headerFilter: "input",
                         width: 150,
                     }, {
                         title: "Marca",
                         field: "marca",
                         sorter: "string",
-                        headerFilter: "input",
                         width: 150,
                     }, {
                         title: "Ultimo Uso",
