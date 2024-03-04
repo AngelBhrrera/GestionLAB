@@ -34,8 +34,6 @@ class PrestadorController extends Controller
         $actividades = $this->obtenerActividadesAsignadas();
         $nActividades = $actividades->count();
 
-
-
         $leaderboard = $this->consultarLeaderboard('lb_at', Auth::user()->area, 'area',10);
         $leaderboardSede = $this->consultarLeaderboard('lb_at', Auth::user()->sede, 'sede',10);
         $usuarioMedalla = $this->prestador_level();
@@ -270,6 +268,10 @@ class PrestadorController extends Controller
 
     public function marcar(Request $request)
     {
+        $request->validate([
+            'codigo' => 'integer | max:10 | required',
+        ]);
+
         $codigo = $request->input('codigo');
         $refArea =  DB::table('users')
             ->where('codigo', $codigo)
@@ -628,8 +630,8 @@ class PrestadorController extends Controller
             }else if($mode == 3){
 
                 $timeRef = DB::table('actividades_prestadores')
-                ->where('id', $id)
-                ->value('hora_refs');
+                    ->where('id', $id)
+                    ->value('hora_refs');
                 $timeRef2 = date('H:i:s');
     
                 $tiempoInvertido = DB::table('actividades_prestadores')
@@ -675,6 +677,14 @@ class PrestadorController extends Controller
 
     public function make_act(Request $request)
     {
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'tipo_actividad' => 'required | integer',
+            'tipo_categoria' => 'requried | integer',
+            'recursos' => 'required|string', 
+            'descripcion' => 'required|string|max:500',
+            'objetivos' => 'required|string', 
+        ]);
 
         $subcategoria = $request->input('tipo_subcategoria');
         if($subcategoria == '')
@@ -695,6 +705,10 @@ class PrestadorController extends Controller
 
     public function obtenerActividades(Request $request)
     {
+        $request->validate([
+            'categoriaId' => 'required|integer',
+        ]);
+
         $actividades = DB::table('actividades')
             ->where('id_categoria', $request->input('categoriaId'))
             ->get();
@@ -704,6 +718,10 @@ class PrestadorController extends Controller
 
     public function obtenerActividadesB(Request $request)
     {
+        $request->validate([
+            'subcategoriaId' => 'required|integer',
+        ]);
+
         $actividades = DB::table('actividades')
             ->where('id_subcategoria', $request->input('subcategoriaId'))
             ->get();
@@ -713,6 +731,10 @@ class PrestadorController extends Controller
 
     public function obtenerSubcategorias(Request $request)
     {
+        $request->validate([
+            'categoriaId' => 'required|integer',
+        ]);
+
         $subcateg = DB::table('subcategorias')
             ->where('categoria', $request->input('categoriaId'))
             ->get();
@@ -750,18 +772,44 @@ class PrestadorController extends Controller
 
     public function register_imps(Request $request)
     {
-
+        $request->validate([
+            'horas' => 'integer',
+            'minutos' => 'integer',
+            'imp_id' => 'required|integer',
+            'proyect' => 'required|integer',
+            'color' => 'string | max:100',
+            'weight' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'model' => 'string | max:100',
+            'pieces' => 'required|integer',
+        ]);
+        
         $tiempo = $this->format_time($request->input('horas'), $request->input('minutos'));
 
         DB::table('seguimiento_impresiones')->insert([['id_Prestador' =>Auth::user()->id, 
         'id_Impresora' => $request->input('imp_id'), 'id_Proyecto' =>$request->input('proyect'), 
         'nombre_modelo_stl' => $request->input('model'), 'color' => $request->input('color'), 
         'piezas' => $request->input('pieces'), 'peso' => $request->input('weight'), 'tiempo_impresion' => $tiempo]]);
-        if(Auth::user()->sede == 1){
+
+        $actImp = DB::table('impresoras')
+            ->where('id', $request->input('imp_id'))
+            ->whereNotNull('act_impresion')
+            ->exists();
+
+        if($actImp){
+            $idA = DB::table('impresoras')
+                ->where('id', $request->input('imp_id'))
+                ->value('act_impresion');
+
+            $TEC = DB::table('actividades')
+                ->where('id', $idA)
+                ->value('TEC');
+
+
             DB::table('actividades_prestadores')->insert([
                 'id_prestador' => Auth::user()->id, 
-                'id_actividad' => 1,
+                'id_actividad' => $idA,
                 'estado' => "En revision",
+                'Tiempo_Invertido' => $TEC,
                 'id_proyecto' => $request->input('proyecto')]);
         }
         
@@ -803,6 +851,7 @@ class PrestadorController extends Controller
     }
 
     public function printstate($id, $state) {
+
 
         DB::table('seguimiento_impresiones')
             ->where('id', $id)

@@ -22,7 +22,7 @@
                     @csrf
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
                             <label for="from-group" class="form-label">Impresora</label>
-                            <select class="form-control" name="imp_id" id="imp_id">
+                            <select class="form-control" name="imp_id" id="imp_id" required>
                             @if (isset($imps))
                                 <option id="" value="{{null}}" >Selecciona la impresora</option>
                                 @foreach ($imps as $dato)
@@ -34,8 +34,8 @@
 
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
                             <label for="from-group" class="form-label">Proyecto</label>
-                            <select class="form-control" name="proyect" id="proyect">
-                                <option id="null_proyect" value="{{null}}" >Selecciona el proyecto (omitir en caso de interno) </option>
+                            <select class="form-control" name="proyect" id="proyect" required>
+                                <option id="null_proyect" value="{{null}}" >Selecciona el proyecto </option>
                                 @if (isset($proys))
                                     @foreach ($proys as $dato )
                                         <option id="{{$dato->id}}" value="{{$dato->id}}">{{$dato->titulo }} </option>
@@ -47,7 +47,7 @@
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
                             <label for="">Nombre del modelo .stl</label>
                             <input type="text"  class="form-control @error('model') is-invalid @enderror"
-                                name="model" id="model" value="{{old('model')}}">
+                                name="model" id="model" value="{{old('model')}}" required>
                             @error('model')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -58,19 +58,19 @@
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
                             <label for="">Color</label>
                             <input type="text"  class="form-control"
-                                name="color" id="color" value="{{old('color')}}">
+                                name="color" id="color" value="{{old('color')}}" required>
                         </div>
 
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
                             <label for="">Piezas</label>
                             <input  type="text" class="form-control"
-                                name="pieces" id="pieces" value="{{old('pieces')}}">
+                                name="pieces" id="pieces" value="{{old('pieces')}}" required>
                         </div>
 
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
                             <label for="">Peso</label>
                             <input  type="text" class="form-control"
-                                name="weight" id="weight" value="{{old('weight')}}">
+                                name="weight" id="weight" value="{{old('weight')}}" required>
                         </div>
 
                         <div class="form-group row">

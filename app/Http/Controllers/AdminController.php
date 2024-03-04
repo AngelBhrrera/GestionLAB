@@ -34,7 +34,6 @@ class AdminController extends Controller
 
     public function home(){
 
-
         $sqlproy = DB::table('proyectos as p')
             ->join('areas as a', 'p.id_area', '=', 'a.id')
             ->where('p.estado', '==', 'finalizado');
@@ -74,6 +73,11 @@ class AdminController extends Controller
         $totalExp = $totalExp->sum('total_exp');
 
         $exp = strval($totalExp);
+
+        
+        $rendimiento =  DB::table('rendimiento')
+            ->where('id_usuario', auth()->user()->id )
+            ->get();
 
         return view("admin/homeA",compact('proys','actsP','actsT','exp'));
     }
@@ -599,6 +603,11 @@ class AdminController extends Controller
         $prestadoresSeleccionados = $request->input('prestadores_seleccionados');
         $tamañoArreglo = count($prestadoresSeleccionados);
 
+        DB::table('proyectos')
+        ->where('id', $request->input('proyecto'))
+        ->update([
+            'estado' => "En desarrollo",]);
+
         if(!$generic){
             for ($i = 0; $i < $tamañoArreglo; $i++) {
                 $idp = $prestadoresSeleccionados[$i];
@@ -657,6 +666,11 @@ class AdminController extends Controller
                 'id_proyecto' => $request->input('proyecto')]);
         }
 
+        DB::table('proyectos')
+        ->where('id', $request->input('proyecto'))
+        ->update([
+            'estado' => "En desarrollo",]);
+
         return redirect(route('admin.create_proy'))->with('success', 'Asignaciones realizadas con exito');
     }
 
@@ -686,6 +700,11 @@ class AdminController extends Controller
                 }
             }
         }
+
+        DB::table('proyectos')
+        ->where('id', $request->input('proyecto'))
+        ->update([
+            'estado' => "En desarrollo",]);
 
         return redirect(route('admin.add_to_proys'))->with('success', 'Prestadores agregados al proyecto con exito');
     }
@@ -901,6 +920,53 @@ class AdminController extends Controller
     }
 
     //IMPRESORAS
+
+    public function module_print(){
+
+        $actI = DB::table('actividades')
+        ->where('id_categoria',6)
+        ->whereNotNull('TEC')
+            ->where(function($query) {
+                $query->where('tipo', 0)
+                      ->orWhere('tipo', Auth::user()->sede);
+            })
+        ->get();
+        
+        $actM = DB::table('actividades')
+        ->where('id_categoria', 3)
+        ->whereNotNull('TEC')
+            ->where(function($query) {
+                $query->where('tipo', 0)
+                      ->orWhere('tipo', Auth::user()->sede);
+            })
+        ->get();
+
+        return view( 'admin/registro_modulo_impresion', compact('actI', 'actM'));
+    }
+
+    public function set_print_act(Request $request){
+        $request->validate([
+            'actI' => ' integer|required',
+        ]);
+
+        DB::table('impresoras')
+            ->where('id_area',  Auth::user()->area)
+            ->update(['act_impresion'=> $request->input('actI')]);
+
+        return redirect()->back()->with('success', 'Actividad asignada correctamente');
+    }
+
+    public function set_mainteneance_act(Request $request){
+        $request->validate([
+            'actM' => ' integer|required',
+        ]);
+
+        DB::table('impresoras')
+            ->where('id_area',  Auth::user()->area)
+            ->update(['act_mantenimiento'=> $request->input('actM')]);
+
+        return redirect()->back()->with('success', 'Actividad asignada correctamente');
+    }
 
     public function watch_prints()
     {

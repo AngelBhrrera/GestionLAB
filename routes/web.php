@@ -162,6 +162,10 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     Route::get('/admin/categorias', 'categorias')->name('categorias');
                     Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
                     Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg'); 
+
+                    Route::get('/admin/gestion_impresion', 'module_print')->name('module_print');
+                    Route::post('/admin/set_imp_act', 'set_print_act')->name('set_print_act'); 
+                    Route::post('/admin/set_mant_act', 'set_mainteneance_act')->name('set_mainteneance_act'); 
                 });
             });
 
