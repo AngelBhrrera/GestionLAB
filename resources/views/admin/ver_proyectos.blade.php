@@ -45,19 +45,19 @@
                         editor: "select",
                         editorParams: {
                             values: {
-                                "creado": "creado",
-                                "en desarrollo": "en desarrollo",
-                                "finalizado": "finalizado",
-                                "cancelado": "cancelado",
+                                "Creado": "Creado",
+                                "En Desarrollo": "En desarrollo",
+                                "Finalizado": "Finalizado",
+                                "Cancelado": "Cancelado",
                             }
                         },
                         headerFilter: "select",
                         headerFilterParams: {
                             "": "", 
-                            "creado": "creado",
-                            "en desarrollo": "en desarrollo",
-                            "finalizado": "finalizado",
-                            "cancelado": "cancelado",
+                            "Creado": "Creado",
+                            "En Desarrollo": "En desarrollo",
+                            "Finalizado": "Finalizado",
+                            "Cancelado": "Cancelado",
                         },
                     }, {
                         title: "Fecha inicio",

@@ -24,7 +24,6 @@ class CreateProyectosTable extends Migration
             $table->integer('id_area');
             $table->integer('id_cliente')->nullable()->default(null);
             $table->string('turno', 50)->default('No Aplica');
-           
         });
     }
 

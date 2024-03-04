@@ -32,7 +32,7 @@ class Cuentahoras extends Migration
         FROM
             `users`
         LEFT JOIN `registros_checkin` ON `users`.`id` = `registros_checkin`.`idusuario`
-                                        AND `registros_checkin`.`estado` = 'autorizado' -- Condición adicional
+                                        AND `registros_checkin`.`estado` = 'autorizado'
         WHERE
             `users`.`tipo` IN ('prestador', 'coordinador', 'practicante', 'voluntario')
         GROUP BY

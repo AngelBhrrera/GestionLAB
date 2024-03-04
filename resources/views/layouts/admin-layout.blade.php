@@ -353,9 +353,17 @@
                         <li>
                             <a href="{{route('admin.watch_prints')}}" class="side-menu">
                             <div class="side-menu__icon"> <i><img src="{{asset('build/assets/images/3d-printer.png')}}"  class="blanco"  width="24" height="24" alt=""></i> </div>
-                                <div class="side-menu__title">Gestión Impresiones</div>
+                                <div class="side-menu__title">Registro Impresiones</div>
                             </a>
                         </li>
+                        @if (Auth::user()->tipo == "jefe area")
+                        <li>
+                            <a href="{{route('admin.module_print')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i><img src="{{asset('build/assets/images/3d-printer.png')}}"  class="blanco"  width="24" height="24" alt=""></i> </div>
+                                <div class="side-menu__title">Gestion Modulo Impresion</div>
+                            </a>
+                        </li>
+                        @endif
                         {{--
                         <li>
                             <a href="{{ route('admin.prestadoresProyectos') }}" class="side-menu">

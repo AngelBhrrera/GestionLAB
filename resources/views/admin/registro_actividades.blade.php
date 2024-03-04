@@ -121,6 +121,15 @@
                             <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
                     </div>
 
+                    <div class="form-group row">
+                        <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Experiencia</label>
+                            <div class="col-md-6">
+                                <input name="exp" type="number" class="form-control sm:w-56" min="5" max="100" required>
+                    
+                            </div>
+                            <small id="Help" class="form-text text-muted">Ingresa la cantidad de experiencia que puede ganar el prestador en caso de un trabajo óptimo</small>
+                    </div>
+
 
                     <div class="col-md-12 text-right">
                         <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits ">Crear</button>

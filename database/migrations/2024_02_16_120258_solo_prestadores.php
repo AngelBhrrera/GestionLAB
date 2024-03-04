@@ -28,7 +28,7 @@ class Soloprestadores extends Migration
                 `users`.`horario` AS `horario`,
                 `users`.`carrera` AS `carrera`,
                 `users`.`horas` AS `horas`,
-                `semanas_prestador`.`semanas_actividad`,
+                IFNULL(`semanas_prestador`.`semanas_actividad`, 0) AS `semanas_actividad`,
                 `user_level`.`max_nivel`,
                 `user_level`.`ruta`,
                 `users`.`imagen_perfil`,

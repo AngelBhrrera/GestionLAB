@@ -65,21 +65,27 @@
 @endsection
 
 @section('breadcrumb')
-<li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
+<li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
 <li class="breadcrumb-item active" aria-current="page">Actividades</li>
 @endsection
 
 @section('subcontent')
     <div class="containerH">
         <div class="gridH">
-            <a href="{{ route('create_imps') }}" class="boxH">
-                <div class="box-contentH">Registrar Nueva Impresion</div>
+            <a href="{{ route('create_act') }}" class="boxH">
+                <div class="box-contentH">Proponer Nueva Actividad</div>
             </a>
-            <a href="{{ route('show_imps') }}" class="boxH">
-                <div class="box-contentH">Ver Todos Mis Impresiones</div>
+            <a href="{{ route('asign_act') }}" class="boxH">
+                <div class="box-contentH">Ver Actividades Asignadas</div>
             </a>
-            <a href="{{ route('show_all_imps') }}" class="boxH">
-                <div class="box-contentH">Ver Todas las Impresiones</div>
+            <a href="{{ route('misActividades') }}" class="boxH">
+                <div class="box-contentH">Ver Todas Mis Actividades</div>
+            </a>
+            <a href="{{ route('actPull') }}" class="boxH">
+                <div class="box-contentH">Pull de Actividades Abiertas</div>
+            </a>
+            <a href="{{ route('myProject') }}" class="boxH">
+                <div class="box-contentH">Mi Proyecto</div>
             </a>
          </div>
     </div>

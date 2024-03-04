@@ -20,7 +20,10 @@ class CreateImpresorasTable extends Migration
             $table->string("tipo", 100);
             $table->boolean("estado")->default(1);
             $table->dateTime("ultimo_uso")->nullable();
+            $table->dateTime("ultimo_mantenimiento")->nullable();
             $table->integer("id_area");
+            $table->integer("act_impresion")->nullable();
+            $table->integer("act_mantenimiento")->nullable();
         });
     }
 

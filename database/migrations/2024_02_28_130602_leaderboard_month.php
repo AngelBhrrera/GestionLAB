@@ -39,15 +39,10 @@ class leaderboardMonth extends Migration
 
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     *
-     * @return void
-     */
+
     public function down()
     {
-        DB::statement("DROP VIEW lb_w");
+        DB::statement("DROP VIEW lb_m");
         DB::statement("DROP VIEW full_leaderboard_month");
     }
 }

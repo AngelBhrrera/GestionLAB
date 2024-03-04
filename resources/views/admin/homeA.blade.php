@@ -1,4 +1,31 @@
+<?php
+
+$datos = array(
+    array("fecha" => "2024-03-01", "temperatura" => 20),
+    array("fecha" => "2024-03-02", "temperatura" => 22),
+    array("fecha" => "2024-03-03", "temperatura" => 24),
+);
+
+$fechas = array();
+$temperaturas = array();
+foreach ($datos as $dato) {
+    $fechas[] = $dato['fecha'];
+    $temperaturas[] = $dato['temperatura'];
+}
+?>
+
 @extends('layouts/admin-layout')
+
+@section('subhead')
+<style>
+#graficaContainer {
+    width: 600px;
+    height: 250px;
+    border: 1px solid #ccc; /* Añade un borde para visualizar el contenedor */
+}
+</style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+@endsection
 
 @section('breadcrumb')
     <nav aria-label="breadcrumb" class="-intro-x hidden xl:flex">
@@ -69,6 +96,17 @@
                 </div>
             </div>
             <br>
+            @if(isset($rendimiento))
+                <div id="graficaContainer"  style="width: 800px; height: 350px;">
+                    <canvas id="myChart"></canvas>
+                </div>
+            @else
+                <div id="graficaContainer" style="width: 800px; height: 350px;">
+                    <canvas id="myChart"></canvas>
+                </div>
+                <button id="report-make" style="background-color: blue; color: white; border: 1px solid white; padding: 5px 15px; border-radius: 5px; font-size: 16px;"> Crear reporte </button>
+            @endif
+
             @if (isset($leaderboard))
             <!-- BEGIN: leaderboard -->
             <div class="xl:px-6 mt-2.5">
@@ -220,6 +258,34 @@
 
 @section('script')
 
+<script>
 
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        ctx.width = 600;
+        ctx.height = 250;
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: <?php echo json_encode($fechas); ?>,
+                datasets: [{
+                    label: 'Temperatura',
+                    data: <?php echo json_encode($temperaturas); ?>,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
 
 @endsection

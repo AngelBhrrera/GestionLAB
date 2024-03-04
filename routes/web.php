@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
         //pd2. pura clika 14 alv
         //pd3. Uwu
 
-//Estimado prestador de servicio al que le toco continuar con este proyecto... [Febrero, 2024]
+//Estimado prestador de servicio al que le toco continuar con este proyecto... [Marzo, 2024]
         //Asi como los de sistemas, nosotros tambien empezamos sin saber nada de Laravel, Migraciones, AJAX y Tailwind
         //Sin embargo tratamos de darle un mejor orden. No es perfecto, pero es trabajo honesto
         //Como dijo un gran ingeniero:
@@ -28,7 +28,7 @@ Auth::routes([
 ]);
 
 Route::get('/spiderw', function(){
-    return view('/TEST/spider');
+    return view('/spider');
 })->name('spider');
 
 Route::group(['middleware'=>'auth'], function (){
@@ -162,6 +162,10 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     Route::get('/admin/categorias', 'categorias')->name('categorias');
                     Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
                     Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg'); 
+
+                    Route::get('/admin/gestion_impresion', 'module_print')->name('module_print');
+                    Route::post('/admin/set_imp_act', 'set_print_act')->name('set_print_act'); 
+                    Route::post('/admin/set_mant_act', 'set_mainteneance_act')->name('set_mainteneance_act'); 
                 });
             });
 
@@ -196,7 +200,10 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/C_proyectos', 'create_proy')->name('create_proy');
             Route::get('/admin/A_proyectos', 'proy_acts')->name('proy_acts');
             Route::post('/admin/M_proyecto', 'make_proy')->name('make_proy');
-            Route::get('/admin/agregar_proyecto', 'add_to_proy')->name('add_to_proy');
+
+            Route::get('/admin/agregar_proyecto', 'add_to_proys')->name('add_to_proys');
+            Route::get('/admin/agregar_proyecto/{proyectoId}', 'add_to_proy')->name('add_to_proy');
+
 
             Route::post('/admin/asign', 'asign')->name('asign');
             Route::post('/admin/asign2', 'asign2')->name('asign2');
@@ -396,6 +403,8 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::get('prestador/horario', 'horario')->name('horario');
         Route::get('/prestador/asistencias', 'asistencias')->name('asistencias');
         //FILTROS RUTAS ACTIVIDADES
+
+        Route::get('prestador/actividades', 'actHub')->name('actHub');
         Route::get('prestador/obtenerActividades', 'obtenerActividades')->name('obtenerActividades');
         Route::get('prestador/obtenerActividadesB', 'obtenerActividadesB')->name('obtenerActividadesB');
         Route::get('prestador/obtenerSubcategoria', 'obtenerSubcategorias')->name('obtenerSubcategorias');
