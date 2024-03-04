@@ -25,6 +25,29 @@ class CreateActividadesTable extends Migration
             
         });
 
+        DB::table('actividades')->insert([
+            "titulo" =>"Impresion 3D Laboratorio",
+            "id_categoria" => 6,
+            "id_subcategoria" => null,
+            "TEC" => 20,
+            "exp_ref" => 5,
+            "tipo" => 1,
+            "recursos" => "A,B,C,D",
+            "descripcion" => "ejemplo",
+            "objetivos"=> "1,2,3,4",
+        ]);
+        DB::table('actividades')->insert([
+            "titulo" =>"Mantenimiento Impresora 3D Laboratorio",
+            "id_categoria" => 3,
+            "id_subcategoria" => null,
+            "TEC" => 90,
+            "exp_ref" => 10,
+            "tipo" => 1,
+            "recursos" => "A,B,C,D",
+            "descripcion" => "ejemplo",
+            "objetivos"=> "1,2,3,4",
+        ]);
+
     }
 
 

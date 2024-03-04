@@ -757,7 +757,14 @@ class PrestadorController extends Controller
         'id_Impresora' => $request->input('imp_id'), 'id_Proyecto' =>$request->input('proyect'), 
         'nombre_modelo_stl' => $request->input('model'), 'color' => $request->input('color'), 
         'piezas' => $request->input('pieces'), 'peso' => $request->input('weight'), 'tiempo_impresion' => $tiempo]]);
-
+        if(Auth::user()->sede == 1){
+            DB::table('actividades_prestadores')->insert([
+                'id_prestador' => Auth::user()->id, 
+                'id_actividad' => 1,
+                'estado' => "En revision",
+                'id_proyecto' => $request->input('proyecto')]);
+        }
+        
         $actual = DB::table('seguimiento_impresiones')
             ->where('id_Impresora', $request->input('imp_id'))
             ->orderByDesc('fecha')
