@@ -1,5 +1,21 @@
 @extends('layouts/admin-layout')
 
+@section('subhead')
+<style>
+.tooltip {
+    cursor: pointer;
+}
+
+.tooltip-info {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 10px;
+    position: absolute;
+    z-index: 999;
+}
+</style>
+@endsection
+
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
     <li class="breadcrumb-item"><a href="{{route('admin.prestadorHub')}}">Prestadores</a></li>
@@ -10,7 +26,7 @@
     <h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
         Prestadores Activos
     </h2>
-
+    <span class="tooltip" title="Tras hacer un cambio entre las opciones seleccionables de tipo usuario o turno, presiona el boton modificar para guardar los cambios. Nota: Si cambias al prestador a un horario que no corresponde con su area de trabajo, no se realizará el cambio">ℹ️</span>
     <input id="searchInput" type="text" placeholder="Buscar...">
     <div id="players"></div>
 @endsection
@@ -32,7 +48,7 @@
                 //responsiveLayout:"collapse",
                 layoutColumnsOnNewData:true,
                 virtualDomHoz:true,
-
+                tooltips: true,
                 headerFilterPlaceholder: "Buscar..",
                 headerFilterLiveFilter: false,
 
@@ -98,7 +114,7 @@
                     },{
                         title: "Modificar",
                         field: "id",
-                        width: 120,
+                        headerTooltip: "Tras seleccionar el cambio de tipo usuario o turno, presiona este boton para guardar los cambios. Nota: Si cambias al prestador a un horario que no corresponde con su area de trabajo, no se realizará el cambio",
                         formatter: function (cell, formatterParams, onRendered) {
                             var row = cell.getRow();
                             var id = cell.getValue();
@@ -211,5 +227,11 @@
                 });
 
             });
+
+            $(document).ready(function() {
+            $('.tooltip').click(function() {
+                $('.tooltip-info').toggle();
+            });
+        });
     </script>
 @endsection
