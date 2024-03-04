@@ -11,7 +11,7 @@
     Todas las actividades.
 </h2>
 <div class="w-[350px] relative mx-5 my-5">
-    <input id="searchInput" type="text" class="form-control pl-10" placeholder="Buscar por código">
+    <input id="searchInput" type="text" class="form-control pl-10" placeholder="Buscar">
     <i class="w-5 h-5 absolute inset-y-0 left-0 my-auto text-slate-400 ml-3" data-lucide="search"></i>
 </div>
 <div id="players"></div>
