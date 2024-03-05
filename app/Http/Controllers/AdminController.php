@@ -818,6 +818,7 @@ class AdminController extends Controller
             'titulo' => $request->t_nombre,
             'id_area' => $request->input('area'),
             'particular' => $boolp,
+            'turno' => $request->input('horario'),
         ]);
 
         $prestadoresSeleccionados = $request->input('prestadores_seleccionados');
