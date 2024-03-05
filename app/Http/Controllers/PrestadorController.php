@@ -411,8 +411,9 @@ class PrestadorController extends Controller
         
         foreach($id as $id_proyecto){
             $proyecto[]= DB::table('proyectos')
+            ->select('titulo', 'turno')
             ->where('id',$id_proyecto->id_proyecto)
-            ->value('titulo');
+            ->get();
             
             $prestadores[] = DB::table('proyectos_prestadores')
                 ->select('id_prestador', 'name', 'apellido', 'correo', 'telefono')
@@ -425,7 +426,6 @@ class PrestadorController extends Controller
                 ->where('id_proyecto', $id_proyecto->id_proyecto)
                 ->get();
         }
-        
         
         return view('/prestador/mi_proyecto_prestador', compact('prestadores', 'actividades', 'proyecto'));
     }
