@@ -269,7 +269,7 @@ class PrestadorController extends Controller
     public function marcar(Request $request)
     {
         $request->validate([
-            'codigo' => 'integer | max:10 | required',
+            'codigo' => 'max:10 | required',
         ]);
 
         $codigo = $request->input('codigo');
