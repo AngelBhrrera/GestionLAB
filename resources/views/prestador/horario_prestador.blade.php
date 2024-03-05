@@ -15,15 +15,37 @@
 @section('breadcrumb')
     <nav aria-label="breadcrumb" class="-intro-x hidden xl:flex">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{route('homeP')}}">Prestador</a></li>
+            <li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
             <li class="breadcrumb-item active" aria-current="page">Horario prestador</li>
         </ol>
     </nav>
 @endsection
 
 @section('subcontent')
+    <div class="text-center">
+        
+      <a href="javascript:;" data-theme="light" data-tooltip-content="#chart-tooltip"  class="tooltip btn btn-primary" title="This is awesome tooltip example!"><i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+      class="lucide lucide-help-circle"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+      <path d="M12 17h.01"/></svg></i>{{__(' Ayuda')}}</a>
+    </div>
+    <!-- END: Custom Tooltip Toggle -->
+    <!-- BEGIN: Custom Tooltip Content -->
+    <div class="tooltip-content">
+        <div id="chart-tooltip" class="py-1">
+            <div class="font-medium dark:text-slate-200">Código de colores</div>
+                <div class="block w-8 h-8 cursor-pointer rounded-full " style="background: #0056A6"></div>Festivos/No laborables
+                <br>
+                <div class="block w-8 h-8 cursor-pointer bg-[#00195f] rounded-full" style="background: #00FFF0"></div>
+                Asistencias
+                <br>
+                <div class="block w-8 h-8 cursor-pointer bg-[#00195f] rounded-full" style="background: red"></div>
+                Faltas
+            </div>
+        </div>
+    </div>
     <div id='container'>
-        <div id='calendar' style='width: 100%; height: 100%;'></div>
+        <div id='calendar' style='width: auto; height: auto;'></div>
     </div>
     <div id="asistencias" data-asistencias="{{json_encode($asistencias)}}"></div>
     <div id="faltas" data-faltas="{{json_encode($fechasFaltas)}}"></div>
