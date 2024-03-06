@@ -798,13 +798,13 @@ class PrestadorController extends Controller
     public function register_imps(Request $request)
     {
         $request->validate([
-            'horas' => 'integer',
-            'minutos' => 'integer',
+            'horas' => ['required_without:minutos', 'integer'],
+            'minutos' => ['required_without:horas', 'integer'],
             'imp_id' => 'required|integer',
             'proyect' => 'required|integer',
             'color' => 'string | max:100',
-            'weight' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'model' => 'string | max:100',
+            'weight' => 'required|regex:#^\d+(\.\d{1,2})?$#',
+            'model' => 'required | string | max:100',
             'pieces' => 'required|integer',
         ]);
         

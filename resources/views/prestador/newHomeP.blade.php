@@ -273,9 +273,13 @@
 
             var table = new Tabulator("#players", {
                 data: assist,
-                layout: "fitColumns",
-                resizableColumns: false,  
+                layout: "fitDataFill",
+                resizableColumns:false,
+                //responsiveLayout:"collapse",
+                layoutColumnsOnNewData:true,
+                virtualDomHoz:true,
                 tooltips: true,
+
                 columns: [{
                         title: "Fecha",
                         field: "fecha",
