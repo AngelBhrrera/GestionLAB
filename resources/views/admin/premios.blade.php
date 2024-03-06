@@ -67,6 +67,7 @@
                         <div class="intro-y col-span-12 sm:col-span-6">
                             <label for="tipo" class="form-label">Tipo *</label>
                                 <select class="form-control" name="tipo" id="tipo">
+                                    <option id="1" value='publico'>Selecciona una opcion</option>
                                     <option id="1" value='horas'>Horas</option>
                                     <option id="2" value='insignias'>Insignia</option>
                                     <option id="3" value='otro'>Otro</option>
@@ -76,6 +77,42 @@
                             <label for="horas" class="form-label"> Horas *</label>
                             <input id="horas" type="text" class="form-control @if(old('opc')=='1') @error('horas') is-invalid @enderror @endif" name="horas" required autocomplete="off" placeholder="horas">
                             @error('horas')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="intro-y col-span-12 sm:col-span-6">
+                            <label for="visibilidad" class="form-label">Visibilidad *</label>
+                                <select class="form-control" name="visibilidad" id="visibilidad">
+                                    <option id="1" value='default'>Selecciona una opcion</option>
+                                    <option id="1" value='publico'>Publico</option>
+                                    <option id="2" value='privado'>Privado</option>
+                    
+                                </select>
+                        </div>
+                        <div class="intro-y col-span-12 sm:col-span-6">
+                            <label for="fechaInicio" class="form-label"> Fecha de Inicio*</label>
+                            <input id="fechaInicio" type="text" class="form-control @if(old('opc')=='1') @error('fechaInicio') is-invalid @enderror @endif" name="fechaInicio" required autocomplete="off" placeholder="Ingresa la fecha de inicio">
+                            @error('fechaInicio')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="intro-y col-span-12 sm:col-span-6">
+                            <label for="fechaFin" class="form-label"> Fecha de Fin*</label>
+                            <input id="fechaFin" type="text" class="form-control @if(old('opc')=='1') @error('fechaFin') is-invalid @enderror @endif" name="fechaFin" required autocomplete="off" placeholder="ingresa la fecha de fin">
+                            @error('fechaFin')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="intro-y col-span-12 sm:col-span-6">
+                            <label for="limite" class="form-label">Disponibilidad *</label>
+                            <input id="limite" type="text" class="form-control @if(old('opc')=='1') @error('limite') is-invalid @enderror @endif" name="limite" required autocomplete="off" placeholder="Ingresa la cantidad de cupos disponibles">
+                            @error('Disponibilidad')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -162,7 +199,23 @@
 @section('script')
 <script>
 
-    
+    function visibilidad(){
+        var selectElement = document.getElementById("visibilidad");
+        var selectedValue = selectElement.value;
+        alert(selectedValue);
+        if (selectedValue == "privado"){
+            document.getElementById("fechaInicio").disabled = true;
+            document.getElementById("fechaFin").disabled = true;
+            document.getElementById("limite").disabled = true;
+        }else{
+            document.getElementById("fechaInicio").disabled = false;
+            document.getElementById("fechaFin").disabled = false;
+            document.getElementById("limite").disabled = false;
+        }
+    }
+    document.getElementById("visibilidad").addEventListener("change", visibilidad);
+
+
     document.getElementById('asign').addEventListener('submit', function(event) {
         
         const prestadorSelect = document.getElementById('prestadores_seleccionados');
@@ -188,6 +241,7 @@
     dlb2.addEventListener('removed', function(event) {
         console.log(event);
     });
-
+    
 </script>
+
 @endsection

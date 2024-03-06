@@ -137,6 +137,12 @@
                                     <div class="side-menu__title"> Pull de actividades abiertas </div>
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{route('premios_pull')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="clipboard-list"></i> </div>
+                                    <div class="side-menu__title"> Premios de actividades </div>
+                                </a>
+                            </li>
                         </ul>
                     </li>
 

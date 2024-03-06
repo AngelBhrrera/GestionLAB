@@ -118,6 +118,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     Route::get('admin/eliminar_premio/{value}', 'eliminar_premio')->name('eliminar_premio');
                     Route::post("admin/a_premio", "asignar_premio")->name("asignar_premio");
                     Route::get('/admin/verpremios', 'gestor_premios')->name('gestor_premios');
+                    
                     //MODULO REPORTES
                     Route::get('admin/ver_reportes_parciales', 'ver_reportes_parciales')->name('reportes_parciales');
                     Route::get('admin/ver_reportes_parciales/busqueda', 'busqueda_reportes_parciales')->name('busqueda_reportes_parciales');
@@ -380,7 +381,8 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         //MODULO GAMIFICACION
         Route::get('prestador/nivel', 'level_progress')->name('level');
         Route::get('prestador/leaderboard', 'leaderboard_area')->name('leaderboard_area');
-
+        //MODULO PREMIOS
+        Route::get('/prestadores/premios', 'premios_pull')->name('premios_pull');
 
         Route::post('prestador/completar_impresion','completar_impresion')->name('completar_impresion');
         Route::post('prestador/completar_actividad', 'completar_actividad')->name('completar_actividad');

@@ -913,6 +913,13 @@ class PrestadorController extends Controller
         return view('prestador/prestador_levels',compact('nivel','percent'));
     }
 
+    // PREMIOS
+     public function premios_pull(){
+        $premios = DB::Select("SELECT * FROM premios");
+        return view("prestador.premios_pull", ["datosJson" => json_encode($premios)]);
+     }
+
+
     //TERRITORIOS DESCONOCIDOS 
     /*
 
