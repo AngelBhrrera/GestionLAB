@@ -26,8 +26,11 @@
     <h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
         Prestadores Activos
     </h2>
-    <span class="tooltip" title="Tras hacer un cambio entre las opciones seleccionables de tipo usuario o turno, presiona el boton modificar para guardar los cambios. Nota: Si cambias al prestador a un horario que no corresponde con su area de trabajo, no se realizará el cambio">ℹ️</span>
-    <input id="searchInput" type="text" placeholder="Buscar...">
+    <div class="w-[350px] relative mx-5 my-5">
+        <input id="searchInput" type="text" class="form-control pl-10" placeholder="Buscar">
+        <i class="w-5 h-5 absolute inset-y-0 left-0 my-auto text-slate-400 ml-3" data-lucide="search"></i>
+    </div>
+
     <div id="players"></div>
 @endsection
 

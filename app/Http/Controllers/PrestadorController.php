@@ -267,9 +267,12 @@ class PrestadorController extends Controller
     }
 
     public function marcar(Request $request)
-    {
+    {   
         $request->validate([
-            'codigo' => 'max:10 | required',
+            'codigo' => 'integer | max:9999999999 | required',
+        ],[
+            'codigo.integer' => "Debe introducir un código (sólo dígitos)",
+            'codigo.max' => "El código debe tener menos de 10 dígitos"            
         ]);
 
         $codigo = $request->input('codigo');
@@ -399,21 +402,31 @@ class PrestadorController extends Controller
     public function myProject()
     {
         $id = DB::table('proyectos_prestadores')
+            ->select('id_proyecto')
             ->where('id_prestador', auth()->user()->id)
-            ->value('id_proyecto');
-        $proyecto = DB::table('proyectos')
-            ->where('id',$id)
+            ->get();
+        $proyecto=[];
+        $prestadores=[];
+        $actividades=[];
+        
+        foreach($id as $id_proyecto){
+            $proyecto[]= DB::table('proyectos')
+            ->where('id',$id_proyecto->id_proyecto)
             ->value('titulo');
-        $prestadores = DB::table('proyectos_prestadores')
-            ->select('id_prestador', 'name', 'apellido', 'correo', 'telefono')
-            ->where('id_proyecto', $id)
-            ->join('users', 'id_prestador','=','users.id')
-            ->get();
-        $actividades = DB::table('seguimiento_actividades')
-            ->select('actividad_id','actividad', 'estado', 'prestador')
-            ->where('id_proyecto', $id)
-            ->get();
-
+            
+            $prestadores[] = DB::table('proyectos_prestadores')
+                ->select('id_prestador', 'name', 'apellido', 'correo', 'telefono')
+                ->where('id_proyecto', $id_proyecto->id_proyecto)
+                ->join('users', 'id_prestador','=','users.id')
+                ->get();
+            
+            $actividades[] = DB::table('seguimiento_actividades')
+                ->select('actividad_id','actividad', 'estado', 'prestador')
+                ->where('id_proyecto', $id_proyecto->id_proyecto)
+                ->get();
+        }
+        
+        
         return view('/prestador/mi_proyecto_prestador', compact('prestadores', 'actividades', 'proyecto'));
     }
 

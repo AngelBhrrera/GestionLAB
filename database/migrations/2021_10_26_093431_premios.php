@@ -19,6 +19,7 @@ class Premios extends Migration
             $table->date('inicioVigencia');
             $table->date('finVigencia');
             $table->integer('limite');
+            $table->string('ref');
         });
     }
 

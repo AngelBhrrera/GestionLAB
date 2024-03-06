@@ -557,7 +557,7 @@ class AdminController extends Controller
             'tipo' => $tipo,
             'recursos' => $request->input('recursos'),
             'descripcion' =>$request->input('descripcion'),
-            'exp' =>$request->input('exp'),
+            'exp_ref' =>$request->input('exp'),
             'objetivos' => $request->input('resultados'),
             'TEC' => $tec,]);
     

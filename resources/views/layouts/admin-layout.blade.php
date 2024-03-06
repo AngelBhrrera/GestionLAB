@@ -164,7 +164,10 @@
     @section('coordinador')
         <li>
             <a href="#" class="side-menu">
-                <div class="side-menu__icon"> <i data-lucide="clipboard-list"></i> </div>
+                <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+                class="lucide lucide-webhook"><path d="M18 16.98h-5.99c-1.1 0-1.95.94-2.48 1.9A4 4 0 0 1 2 17c.01-.7.2-1.4.57-2"/>
+                <path d="m6 17 3.13-5.78c.53-.97.1-2.18-.5-3.1a4 4 0 1 1 6.89-4.06"/><path d="m12 6 3.13 5.73C15.66 12.7 16.9 13 18 13a4 4 0 0 1 0 8"/></svg></i></div>
                 <div class="side-menu__title">
                     COORDINADOR
                     <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
@@ -440,7 +443,11 @@
                 </li>
                 <li>
                     <a href="javascript:;" class="side-menu">
-                        <div class="side-menu__icon"> <i data-lucide="edit"></i> </div>
+                        <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                        stroke-linejoin="round" class="lucide lucide-folder-kanban">
+                        <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/>
+                        <path d="M8 10v4"/><path d="M12 10v2"/><path d="M16 10v6"/></svg></i> </div>
                         <div class="side-menu__title">
                            PROYECTOS
                             <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
