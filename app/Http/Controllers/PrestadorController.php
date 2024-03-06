@@ -32,6 +32,7 @@ class PrestadorController extends Controller
         $racha = $llamadaRachaFaltas[0];
         $faltas = $llamadaRachaFaltas[1];
         $actividades = $this->obtenerActividadesAsignadas();
+        $terminadas = count($this->obtenerActividadesTerminadas());
         $nActividades = $actividades->count();
 
         $leaderboard = $this->consultarLeaderboard('lb_at', Auth::user()->area, 'area',10);
@@ -43,7 +44,7 @@ class PrestadorController extends Controller
 
         return view(
             'prestador/newHomeP',  
-            compact('horasAutorizadas', 'horasPendientes', 'horasTotales', 'horasRestantes', 'nActividades',
+            compact('horasAutorizadas', 'horasPendientes', 'horasTotales', 'horasRestantes', 'nActividades', 'terminadas',
             'leaderboard', 'leaderboardSede', 'usuarioMedalla','racha','faltas','posicionUsuarioA','posicionUsuarioS')
         )->with('asistencias', json_encode($asistencias));
     }
@@ -451,6 +452,17 @@ class PrestadorController extends Controller
             ->orderByDesc('fecha')
             ->get();
 
+    }
+
+    private function obtenerActividadesTerminadas(){
+        $proys = DB::table('proyectos_prestadores')
+            ->where('id_prestador', auth()->user()->id)
+            ->pluck('id_proyecto');
+        
+        return DB::table('seguimiento_actividades')
+        ->where('id_prestador', auth()->user()->id)
+        ->where('estado', 'Aprobada')
+        ->get();
     }
 
     public function actividadesAsignadas()

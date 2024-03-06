@@ -94,9 +94,16 @@
                         <div class="ml-auto">{{$faltas}}</div>
                     </div>
                     <a href="{{ route('actividadesAsignadas') }}" class="flex items-center mt-5 sm:w-50">
-                        <div style="color: blue;" class="ml-4">Numero de actividades pendientes</div>
+                        <img src="{{asset('build/assets/images/list-collapse.svg')}}" alt="">
+                        <div style="color: blue;" class="ml-4">Actividades pendientes</div>
                         <div style="color: blue;" class="ml-auto">{{$nActividades}}</div>
                     </a>
+                    <a href="{{ route('misActividades') }}" class="flex items-center mt-5 sm:w-50">
+                        <img src="{{asset('build/assets/images/list-checks.svg')}}" alt="">
+                        <div style="color: blue;" class="ml-4">Actividades terminadas</div>
+                        <div style="color: blue;" class="ml-auto">{{$terminadas}}</div>
+                    </a>
+                    
                 </div>
             </div>
             
