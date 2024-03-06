@@ -576,12 +576,26 @@ class AdminController extends Controller
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $prestadores->where('id_sede', auth()->user()->sede);
         }
-            
-        $categorias = DB::table('categorias')->get();
+
+        switch(Auth::user()->tipo){
+            case "coordinador":
+                $proyectos = DB::table('proyectos')
+                ->where('id_area', Auth::user()->area)
+                ->where('horario', '=', Auth::user()->horario)
+                ->orWhere('horario', 'TC')
+                ->orWhere('particular', '0')
+                ->get();
+                break;
+            default:
+                $proyectos = DB::table('proyectos')->get();
+        }
+        
+        $categorias = DB::table('categorias')->
+        get();
         $actividades = DB::table('actividades')
             ->whereNotNull('TEC')
             ->get();
-        $proyectos = DB::table('proyectos')->get();
+        
         $prestadores = $prestadores->get();
     
         return view( 'admin/asignar_actividades', compact('prestadores', 'categorias', 'actividades', 'proyectos'));
@@ -800,7 +814,18 @@ class AdminController extends Controller
     public function proy_acts() {
  
         $categorias = DB::table('categorias')->get();
-        $proyectos = DB::table('proyectos')->get();
+        switch(Auth::user()->tipo){
+            case "coordinador":
+                $proyectos = DB::table('proyectos')
+                ->where('id_area', Auth::user()->area)
+                ->where('horario', '=', Auth::user()->horario)
+                ->orWhere('horario', 'TC')
+                ->orWhere('particular', '0')
+                ->get();
+                break;
+            default:
+                $proyectos = DB::table('proyectos')->get();
+        }
 
         return view('/admin/asignar_actividad_proyecto', compact( 'categorias', 'proyectos'));
     }
@@ -818,7 +843,7 @@ class AdminController extends Controller
             'titulo' => $request->t_nombre,
             'id_area' => $request->input('area'),
             'particular' => $boolp,
-            'turno' => $request->input('horario'),
+            'horario' => $request->input('horario'),
         ]);
 
         $prestadoresSeleccionados = $request->input('prestadores_seleccionados');

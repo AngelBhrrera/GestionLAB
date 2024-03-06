@@ -75,7 +75,7 @@
                 @endif
             </div>
             <div class="detalle botones">
-                @if($actividad->estado == 'Asignada')
+                @if($actividad->estado == 'Asignada' || $actividad->estado == 'Creada')
                     <button class="boton"  onclick="comenzarActividad({{ $actividad->id }})" >Comenzar Actividad</button>
                     <button class="boton boton-inactivo" data-id="{{ $actividad->id }}" disabled>Terminar Actividad</button>
                 @elseif($actividad->estado == 'En Proceso')
