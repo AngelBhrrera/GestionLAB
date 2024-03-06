@@ -9,17 +9,17 @@
 @section('subcontent')
     
         @if(count($proyecto) != 0)
-        
-            @for ($i=0; $i< count($proyecto); $i++)
+            @for ($i=0; $i < count($proyecto); $i++)
             <div class="intro-y box p-5 mt-5">
                 <h2 class="text-2xl font-medium leading-none mt-3" style="padding-top: 20px; padding-bottom: 20px;">
                     Detalles de Proyecto
                 </h2>
-                    <h3 class="text-xl font-medium leading-none">{{$proyecto[$i]}}</h3>
+                    <h3 class="text-xl font-medium leading-none">{{$proyecto[$i][0]->titulo}}</h3><br>
+                    <h3 class="text-xl font-medium leading-none">{{"Turno: ".$proyecto[$i][0]->turno}}</h3>
                     <br>
                     <h3 class="text-xl font-medium leading-none mt-3">--Integrantes--</h3>
                         <div class="overflow-x-auto">
-                            <table class="table">
+                            <table class="table" >
                                 <thead>
                                     <tr>
                                         <th class="whitespace-nowrap">Prestador</th>
@@ -37,10 +37,13 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            <br>
-                            <h3 class="text-xl font-medium leading-none mt-3">Actividades</h3>
+                        </div>
+                        <br>
+                        <h3 class="text-xl font-medium leading-none mt-3">Actividades</h3>
+                        <div class="overflow-x-auto" style="max-height: 250px; overflow-y: auto;">
                             <table class="table">
                                 <thead>
+
                                     <tr>
                                         <th class="whitespace-nowrap">Actividad</th>
                                         <th class="whitespace-nowrap">Estado</th>
@@ -57,6 +60,14 @@
                                             <td><a class ="btn btn-primary" href="{{route('detallesActividad', $actividad->actividad_id)}}">Detalles</a></td>
                                         </tr>
                                     @endforeach
+                                    @for ($x=0; $x < 50; $x++)
+                                        <tr>
+                                            <td>{{$x}}</td>
+                                            <td>{{$x}}</td>
+                                            <td>{{$x}}</td>
+                                            <td><a class ="btn btn-primary" href="#">detalles</a></td>
+                                        </tr>
+                                    @endfor
                                 </tbody>
                             </table>
                         </div>
@@ -64,7 +75,6 @@
                     </div>
                 @endfor
         @else
-        
             <h3 class="text-xl font-medium leading-none">No tienes un proyecto asignado ☹ </h3>
         @endif
     
