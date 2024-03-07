@@ -64,7 +64,7 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6">
                                         <label for="input-wizard-1" class="form-label">Nombre *</label>
-                                        <input id="name" type="text" class="form-control @if(old('opc')=='1') @error('name') is-invalid @enderror @endif" name="name" required autocomplete="name" placeholder="Nombre">
+                                        <input id="name" type="text" class="form-control @if(old('opc')=='1') @error('name') is-invalid @enderror @endif" value="{{old('name')}}" name="name" required autocomplete="name" placeholder="Nombre">
                                                 @error('name')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -73,7 +73,7 @@
                                     </div>
                                     <div class="intro-y col-span-12 sm:col-span-6">
                                         <label for="input-wizard-2" class="form-label">Apellido *</label>
-                                        <input id="apellido" type="text" class="form-control @if(old('opc')=='1') @error('apellido') is-invalid @enderror @endif" name="apellido" required autocomplete="apellido" placeholder="Apellido">
+                                        <input id="apellido" type="text" class="form-control @if(old('opc')=='1') @error('apellido') is-invalid @enderror @endif" value="{{old('apellido')}}" name="apellido" required autocomplete="apellido" placeholder="Apellido">
                                                 @error('apellido')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -82,7 +82,7 @@
                                     </div>
                                     <div class="intro-y col-span-12 sm:col-span-6">
                                         <label for="input-wizard-2" class="form-label">Correo *</label>
-                                        <input id="correo" type="email" class="form-control @if(old('opc')=='1') @error('correo') is-invalid @enderror @endif" name="correo" required="correo" placeholder="Correo">
+                                        <input id="correo" type="email" class="form-control @if(old('opc')=='1') @error('correo') is-invalid @enderror @endif" value="{{old('correo')}}" name="correo" required="correo" placeholder="Correo">
                                                 @error('correo')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -123,7 +123,7 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divTelefono" style="display:none"> 
                                         <label for="input-wizard-2" class="form-label" >Telefono *</label>
-                                        <input id="telefono" type="text" class="form-control @if(old('opc')=='1') @error('telefono') is-invalid @enderror @endif" name="telefono" placeholder="Telefono" maxlength="10">
+                                        <input id="telefono" type="text" class="form-control @if(old('opc')=='1') @error('telefono') is-invalid @enderror @endif"   value="{{ old('telefono')}}"  name="telefono" placeholder="Telefono" maxlength="10">
                                                 @error('telefono') 
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -162,7 +162,7 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divCarrera" style="display:none">
                                         <label for="input-wizard-4" class="form-label">Carrera</label>
-                                            <input id="carrera" type="text" class="form-control @if(old('opc')=='1') @error('carrera') is-invalid @enderror @endif" name="carrera" placeholder="Carrera" >
+                                            <input id="carrera" type="text" class="form-control @if(old('opc')=='1') @error('carrera') is-invalid @enderror @endif" value="{{old('carrera')}}" name="carrera" placeholder="Carrera" >
                                             @error('carrera')
                                                 <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -176,7 +176,7 @@
                                             @if (isset($sede))
                                                 <option id="sede" value="" >Selecciona una sede</option>
                                                 @foreach ($sede as $dato )
-                                                    <option id="{{$dato->id_sede}}" value="{{$dato->id_sede}}" data-nombre="{{$dato->nombre_sede}}">{{$dato->nombre_sede }} </option>
+                                                    <option id="{{$dato->id_sede}}" @selected(old('sede') == {{$dato->nombre_sede}}) data-nombre="{{$dato->nombre_sede}}">{{$dato->nombre_sede }} </option>
                                                 @endforeach
                                             @endif
                                         </select>  
