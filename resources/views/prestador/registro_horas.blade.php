@@ -33,13 +33,12 @@
             var assist = {!! $datos !!};
 
             var table = new Tabulator("#players", {
-                height: "100%",
                 data: assist,
-                layout: "fitColumns",
-                pagination: "local",
-                resizableColumns: false,  
-                paginationSize: 25,
-                tooltips: true,
+                layout: "fitDataFill",
+                resizableColumns:false,
+                //responsiveLayout:"collapse",
+                layoutColumnsOnNewData:true,
+                virtualDomHoz:true,
                 columns: [{
                         title: "Fecha",
                         field: "fecha",

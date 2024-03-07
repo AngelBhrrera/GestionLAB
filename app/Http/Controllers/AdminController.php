@@ -834,11 +834,15 @@ class AdminController extends Controller
 
         $request->validate([
             'area' => 'integer',
-            'prestadores_seleccionados' => 'required|array',
-            'prestadores_seleccionados.*' => 'integer',
         ]);
-            
         $boolp = boolval($request->input('particular'));
+        if($boolp == true){
+            $request->validate([
+                'prestadores_seleccionados' => 'required | array',
+                'prestadores_seleccionados.*' => 'integer',
+            ]);
+        }
+        
         $idpy = DB::table('proyectos')->insertGetId([
             'titulo' => $request->t_nombre,
             'id_area' => $request->input('area'),
