@@ -58,7 +58,7 @@
             },  {
                 title: "Fecha",
                 field: "fecha",
-                sorter: "string",
+                sorter: "date",
             }, {
                 title: "Eliminar",
                 field: "id",

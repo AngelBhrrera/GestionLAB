@@ -143,11 +143,25 @@
                         title: "Inicio",
                         field: "inicio",
                         hozAlign: "center",
+                        sorter: "date",
+                        formatter: "datetime",
+                        formatterParams: {
+                            inputFormat: "DD-MM-YYYY",
+                            outputFormat: "DD-MM-YYYY", 
+                            invalidPlaceholder: "(Fecha inválida)",
+                        },
                         width: 150,
                     },{
                         title: "Fin",
                         field: "final",
                         hozAlign: "center",
+                        sorter: "date",
+                        formatter: "datetime",
+                        formatterParams: {
+                            inputFormat: "DD-MM-YYYY",
+                            outputFormat: "DD-MM-YYYY", 
+                            invalidPlaceholder: "(Fecha inválida)",
+                        },
                         width: 150,
                     },
                     {

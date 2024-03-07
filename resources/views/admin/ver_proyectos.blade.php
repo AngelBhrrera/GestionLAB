@@ -34,6 +34,9 @@
                 //responsiveLayout:"collapse",
                 layoutColumnsOnNewData:true,
                 virtualDomHoz:true,
+                initialSort: [
+                    { column: "fecha_inicio", dir: "desc" } // Ordena la columna "fecha" de forma descendente al cargar la página
+                ],
                 columns: [{
                         title: "ID",
                         field: "id",
@@ -65,9 +68,18 @@
                     }, {
                         title: "Fecha inicio",
                         field: "fecha_inicio",
+                        sorter: "string",
+                        sorterParams: {
+                            direction: "asc"
+                        },
+                        
                     }, {
                         title: "Fecha final",
                         field: "fecha_fin",
+                        sorter: "string",
+                        sorterParams: {
+                            direction: "desc"
+                        },
                     },  {
                         title: "Turno",
                         field: "turno",

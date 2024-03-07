@@ -77,7 +77,7 @@
                     }, {
                         title: "Fecha",
                         field: "fecha",
-                        sorter: "string",
+                        sorter: "date",
                     },  {
                         title: "Modelo",
                         field: "nombre_modelo_stl",
