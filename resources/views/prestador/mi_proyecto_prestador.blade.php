@@ -60,14 +60,6 @@
                                             <td><a class ="btn btn-primary" href="{{route('detallesActividad', $actividad->actividad_id)}}">Detalles</a></td>
                                         </tr>
                                     @endforeach
-                                    @for ($x=0; $x < 50; $x++)
-                                        <tr>
-                                            <td>{{$x}}</td>
-                                            <td>{{$x}}</td>
-                                            <td>{{$x}}</td>
-                                            <td><a class ="btn btn-primary" href="#">detalles</a></td>
-                                        </tr>
-                                    @endfor
                                 </tbody>
                             </table>
                         </div>
