@@ -33,17 +33,16 @@
                 layout: "fitDataFill",
                 resizableColumns:false,
                 height: "100%",
-
+                headerFilterPlaceholder: "Buscar..",
+                headerFilterLiveFilter: false,
                 columns: [{
                         title: "Nombre",
                         field: "name",
                         sorter: "string",
-                        headerFilter: "input",
                     }, {
                         title: "Apellido",
                         field: "apellido",
                         sorter: "string",
-                        headerFilter: "input",
                     }, {
                         title: "Correo",
                         field: "correo",
@@ -56,22 +55,18 @@
                         title: "Sede",
                         field: "sede",
                         sorter: "string",
-                        headerFilter: "input",
                     },  {
                         title: "Area",
                         field: "area",
                         sorter: "string",
-                        headerFilter: "input",
                     },{
                         title: "Tipo",
                         field: "tipo",
                         sorter: "string",
-                        headerFilter: "input",
                     }, {
                         title: "Horario",
                         field: "horario",
                         sorter: "string",
-                        headerFilter: "input",
                     }, 
                 ],
 

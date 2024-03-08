@@ -300,15 +300,7 @@
                     }, {
                         title: "Estado",
                         field: "estado",
-                        headerFilter: true,
-                        headerFilterParams: {
-                            "": "", 
-                            "autorizado": "autorizado",
-                            "pendiente": "pendiente",
-                            "denegado": "denegado",
-                        },
                         formatter: function(cell, formatterParams, onRendered) {
-                            // Mostrar un ícono o texto según el estado
                             var estado = cell.getValue();
                             var icono = "";
 

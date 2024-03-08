@@ -45,7 +45,7 @@
         </div>
     @endif
 
-
+    @if(Auth::user()->tipo == 'Superadmin' || Auth::user()->tipo == 'jefe sede')
         <div class="col-md-6">
             <div class="intro-y box p-5 mt-5">
                 <h3 class="text-2xl mt-5 font-small">Añadir un área</h3>
@@ -70,6 +70,7 @@
                 </form>
             </div>
         </div>
+        @endif
     </div>
 
     <div style="height: 65px;"></div>
@@ -81,13 +82,15 @@
             var sedes = {!! $tabla_sedes !!};
 
             var table = new Tabulator("#sedes", {
-                height:"100%",
                 data: sedes,
-                resizableColumns: "false",
-                layout: "fitColumns",
-                pagination: "local",
-                paginationSize: 15,
-                tooltips: true,
+
+                layout: "fitDataFill",
+                resizableColumns:false,
+
+                //responsiveLayout:"collapse",
+                layoutColumnsOnNewData:true,
+                virtualDomHoz:true,
+
                 columns: [{
                         title: "ID",
                         field: "id",
@@ -96,10 +99,8 @@
                     }, {
                         title: "Nombre Sede",
                         field: "nombre_sede",
-                        headerFilter: "input",
                         sorter: "string",
                         editor: "input",
-                        width: 300,
                         cellEdited: function (cell) {
                             var row = cell.getRow();
                             var id = row.getData().id;
@@ -109,10 +110,8 @@
                     },{
                         title: "Nombre Area",
                         field: "nombre_area",
-                        headerFilter: "input",
                         sorter: "string",
                         editor: "input",
-                        width: 160,
                         cellEdited: function (cell) {
                             var row = cell.getRow();
                             var id = row.getData().id;
@@ -122,12 +121,10 @@
                     },{
                         title: "Asistentes",
                         field: "total_personal",
-                        width: 100,
                         sorter: "string",
                     }, {
                         title: "Estado",
                         field: "activa",
-                        width: 100,
                         formatter: "tickCross",
                         editor: "tickCross",
                         cellClick: function(e, cell) {

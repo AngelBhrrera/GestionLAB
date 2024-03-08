@@ -14,7 +14,10 @@
                 <div class="card-header">
                     <h3  class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;"> Registros de Check - in  </h3>
                 </div>
-
+                <div class="w-[350px] relative mx-5 my-5">
+                    <input id="searchInput" type="text" class="form-control pl-10" placeholder="Buscar">
+                    <i class="w-5 h-5 absolute inset-y-0 left-0 my-auto text-slate-400 ml-3" data-lucide="search"></i>
+                </div>
                 <div class="text-center mx-auto" style="padding-left: 1.5px;" id="players"></div>
             </div>
         </div>
@@ -41,7 +44,8 @@
                 //responsiveLayout:"collapse",
                 layoutColumnsOnNewData:true,
                 virtualDomHoz:true,
-
+                headerFilterPlaceholder: "Buscar..",
+                headerFilterLiveFilter: false,
                 columns: [{
                         title: "ID",
                         field: "id",
@@ -49,17 +53,14 @@
                     },  {
                         title: "Codigo",
                         field: "codigo",
-                        headerFilter: "input",
                     }, {
                         title: "Prestador",
                         field: "origen",
-                        headerFilter: "input",
                         sorter: "string",
                     },{
                         title: "Coordinador",
                         field: "responsable",
                         sorter: "string",
-                        headerFilter: "input",
 
                     },  {
                         title: "Horas",
@@ -72,7 +73,6 @@
                             sorterParams: {
                                 format: "DD/MM/YYYY", 
                             },
-                        headerFilter: "input",
                     }, {
                         title: "Entrada",
                         field: "hora_entrada",
@@ -99,5 +99,25 @@
                 ],
             });
             
+            document.addEventListener('DOMContentLoaded', function() {
+
+                function applyCustomFilter(value) {
+                    var searchValue = value.toLowerCase().replace(/[^a-z0-9áéíóúüñ]/g, '');
+                    table.setFilter(function(row) {
+                        return (row.codigo && row.codigo.toString().toLowerCase().includes(searchValue)) || 
+                            (row.origen && row.origen.toLowerCase().includes(searchValue)) || 
+                            (row.responsable && row.responsable.toLowerCase().includes(searchValue)) || 
+                            (row.tiempo && row.tiempo.toLowerCase().includes(searchValue)) || 
+                            (row.horas && row.horas.toLowerCase().includes(searchValue)) || 
+                            (row.fecha && row.fecha.toLowerCase().includes(searchValue)) || 
+                            (row.correo && row.correo.toLowerCase().includes(searchValue));
+                    });
+                }
+                document.getElementById("searchInput").addEventListener("input", function(e) {
+                    var value = e.target.value.trim();
+                    applyCustomFilter(value);
+                });
+
+            });
     </script>
 @endsection

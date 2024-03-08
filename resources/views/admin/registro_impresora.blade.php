@@ -114,8 +114,7 @@
                         title: "Tipo",
                         field: "tipo",
                         sorter: "string",
-                        editor: "select",
-                        headerFilter: true,
+                        headerFilter: "select",
                         headerFilterParams: {
                             "": "", 
                             "Filamento": "Filamento",
@@ -125,17 +124,6 @@
                     },  {
                         title: "Estado",
                         field: "estado",
-                        formatter: function(cell, formatterParams, onRendered) {
-                            var estado = cell.getValue();
-                            var icono = "";
-                            if (estado == "1") {
-                                icono = "✔️";
-                            } else if (estado == "0") {
-                                icono = "❌";
-                            }
-                            return icono;
-                        },
-                        width: 100,
                     }, {
                         title: "",
                         field: "id",

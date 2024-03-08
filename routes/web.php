@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\MachineLearningController;
+use Illuminate\Support\Facades\DB;
 
 //Estimado prestador de servicio que tiene que dar mantenimiento a esta fregadera [Abril, 2023]
 
@@ -30,6 +32,19 @@ Auth::routes([
 Route::get('/spiderw', function(){
     return view('/spider');
 })->name('spider');
+
+Route::get('/ml', function(){
+
+    $prestadores = DB::table('solo_prestadores')->get();
+    $actividades = DB::table('actividades')
+                ->whereNotNull('TEC')
+                ->get();
+    return view('testApi', compact('prestadores', 'actividades'));
+})->name('ml');
+
+Route::post('/recomendaciones', [MachineLearningController::class, 'obtenerRecomendaciones']);
+Route::post('/actualizar', [MachineLearningController::class, 'obtenerDatosDeSQL']);
+
 
 Route::group(['middleware'=>'auth'], function (){
     Route::controller(App\Http\Controllers\PrestadorController::class)->group(function(){
