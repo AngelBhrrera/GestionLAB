@@ -33,7 +33,10 @@
                     <button class="download-button" id="download-csv">Download CSV</button>
                     <button class="download-button" id="download-xlsx">Download XLSX</button>
                 </div>
-
+                <div class="w-[350px] relative mx-5 my-5">
+                    <input id="searchInput" type="text" class="form-control pl-10" placeholder="Buscar">
+                    <i class="w-5 h-5 absolute inset-y-0 left-0 my-auto text-slate-400 ml-3" data-lucide="search"></i>
+                </div>
                 <div class="text-center mx-auto" style="padding-left: 1.5px;" id="players"></div>
             </div>
         </div>
@@ -52,33 +55,46 @@
                 layout: "fitColumns",
                 pagination: "local",
                 paginationSize: 20,
-                tooltips: true,
                 groupBy: "tipo",
+                headerFilterPlaceholder: "Buscar..",
+                headerFilterLiveFilter: false,
                 columns: [{
                         title: "Nombre",
                         field: "name",
-                        headerFilter: "input",
                         sorter: "string",
                     }, {
                         title: "Apellido",
                         field: "apellido",
-                        headerFilter: "input",
                         sorter: "string",
-                       
                     },{
                         title: "Correo",
                         field: "correo",
                         sorter: "string",
-                        headerFilter: "input",
-                       
                     },  {
                         title: "Telefono",
                         field: "telefono",
                         sorter: "number",
-                       
                     }, 
                 ],
             });
+
+            document.addEventListener('DOMContentLoaded', function() {
+
+                function applyCustomFilter(value) {
+                    var searchValue = value.toLowerCase().replace(/[^a-z0-9áéíóúüñ]/g, '');
+                    table.setFilter(function(row) {
+                        return (row.codigo && row.codigo.toString().toLowerCase().includes(searchValue)) || 
+                            (row.name && row.name.toLowerCase().includes(searchValue)) || 
+                            (row.apellido && row.apellido.toLowerCase().includes(searchValue)) || 
+                            (row.correo && row.correo.toLowerCase().includes(searchValue));
+                    });
+                }
+                document.getElementById("searchInput").addEventListener("input", function(e) {
+                    var value = e.target.value.trim();
+                    applyCustomFilter(value);
+                });
+
+                });
 
             document.getElementById("download-csv").addEventListener("click", function(){
                 table.download("csv", "data.csv");
@@ -89,7 +105,7 @@
             document.getElementById("download-xlsx").addEventListener("click", function(){
                 table.download("xlsx", "data.xlsx", {sheetName:"My Data"});
             });
-
             
+
     </script>
 @endsection

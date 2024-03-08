@@ -94,7 +94,7 @@
                         field: "estado",
                         sorter: "string",
                         width: 130,
-                        headerFilter: true,
+                        headerFilter: "select",
                         headerFilterParams: {
                             "": "", 
                             "Exitoso": "Exitoso",

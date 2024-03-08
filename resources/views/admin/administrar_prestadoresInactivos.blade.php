@@ -10,6 +10,10 @@
 <h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
     Prestadores Inactivos
 </h2>
+<div class="w-[350px] relative mx-5 my-5">
+        <input id="searchInput" type="text" class="form-control pl-10" placeholder="Buscar">
+        <i class="w-5 h-5 absolute inset-y-0 left-0 my-auto text-slate-400 ml-3" data-lucide="search"></i>
+    </div>
 <div id="players"></div>
 @endsection
 
@@ -27,27 +31,24 @@
                 layout: "fitDataFill",
                 resizableColumns:false,
                 height: "100%",
-
+                headerFilterPlaceholder: "Buscar..",
+                headerFilterLiveFilter: false,
                 columns: [{
                         title: "Nombre",
                         field: "name",
                         sorter: "string",
-                        headerFilter: "input",
                     }, {
                         title: "Apellido",
                         field: "apellido",
                         sorter: "string",
-                        headerFilter: "input",
                     }, {
                         title: "Correo",
                         field: "correo",
                         sorter: "string",
-                        headerFilter: "input",
                     }, {
                         title: "Codigo",
                         field: "codigo",
                         sorter: "number",
-                        headerFilter: "input",
                     }, {
                         title: "",
                         field: "id",
@@ -78,6 +79,24 @@
                         }, 
                     },
                 ],
+            });
+
+            document.addEventListener('DOMContentLoaded', function() {
+
+                function applyCustomFilter(value) {
+                    var searchValue = value.toLowerCase().replace(/[^a-z0-9áéíóúüñ]/g, '');
+                    table.setFilter(function(row) {
+                        return (row.codigo && row.codigo.toString().toLowerCase().includes(searchValue)) || 
+                            (row.name && row.name.toLowerCase().includes(searchValue)) || 
+                            (row.apellido && row.apellido.toLowerCase().includes(searchValue)) || 
+                            (row.correo && row.correo.toLowerCase().includes(searchValue));
+                    });
+                }
+                document.getElementById("searchInput").addEventListener("input", function(e) {
+                    var value = e.target.value.trim();
+                    applyCustomFilter(value);
+                });
+
             });
 
             function activarPrestador(value) {

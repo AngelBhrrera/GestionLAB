@@ -52,7 +52,7 @@
                                 "Error": "Error",
                             }
                         },
-                        headerFilter: true,
+                        headerFilter: "select",
                         headerFilterParams: {
                             "": "", 
                             "aprobado": "aprobado",

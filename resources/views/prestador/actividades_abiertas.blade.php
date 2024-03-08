@@ -52,7 +52,7 @@
                     <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
                 </div>
             <div class="detalle botones">
-                @if($actividad->estado == 'Asignada')
+                @if($actividad->estado == 'Asignada' || $actividad->estado == 'Creada')
                     <button class="boton"  onclick="tomarActividad({{ $actividad->id }})" >Tomar Actividad</button>
                 @endif
             </div>

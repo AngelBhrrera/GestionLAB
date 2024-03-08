@@ -106,7 +106,7 @@
                                 "denegado": "denegado",
                             }
                         },
-                        headerFilter: true,
+                        headerFilter: "select",
                         headerFilterParams: {
                             "": "", 
                             "autorizado": "autorizado",

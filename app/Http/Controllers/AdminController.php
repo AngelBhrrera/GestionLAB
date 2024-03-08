@@ -1239,6 +1239,9 @@ class AdminController extends Controller
 
             $sedes->where('id_sede', '=', auth()->user()->sede);
             $s->where('id_sede', '=', auth()->user()->sede);
+            if(auth()->user()->tipo == 'jefe area'){
+                $sedes->where('id', '=', auth()->user()->area);
+            }
         }
 
         $sedes = $sedes->get();

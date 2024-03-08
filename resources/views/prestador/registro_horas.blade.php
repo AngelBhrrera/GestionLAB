@@ -59,7 +59,7 @@
                     }, {
                         title: "Estado",
                         field: "estado",
-                        headerFilter: true,
+                        headerFilter: "select",
                         headerFilterParams: {
                             "": "", 
                             "autorizado": "autorizado",
