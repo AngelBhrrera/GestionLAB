@@ -69,8 +69,10 @@
             <div class="px-5 pb-4 sm:gap-6 border-b border-slate-200/60">
                 <div class="text-center mx-auto" style="padding-left: 10px" id="prestadores"></div>
             </div>
-        </div>    
+        </div>  
     </div>
+
+    <div style="height: 65px;"></div>
 
 @endsection
 

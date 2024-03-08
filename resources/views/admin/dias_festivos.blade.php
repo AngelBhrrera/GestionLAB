@@ -117,14 +117,15 @@
     <script type="text/javascript">
             var sedes = {!! $no_laboral !!};
             var table = new Tabulator("#festivos", {
-                height:"100%",
+
                 data: sedes,
-                layout: "fitColumns",
-                resizableColumns: "false",
-                layout: "fitColumns",
-                pagination: "local",
                 paginationSize: 15,
-                tooltips: true,
+
+                pagination: "local",
+                layout: "fitDataFill",
+                resizableColumns:false,
+                height: "100%",
+
                 columns: [{
                         title: "ID",
                         field: "id",

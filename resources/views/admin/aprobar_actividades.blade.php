@@ -19,13 +19,14 @@
             var acts = {!! $data !!};
 
             var table = new Tabulator("#players", {
-                height: "100%",
+
                 data: acts,
-                layout: "fitColumns",
-                pagination: "local",
-                resizableColumns: "false",
                 paginationSize: 20,
-                tooltips: true,
+                
+                pagination: "local",
+                layout: "fitDataFill",
+                resizableColumns:false,
+                height: "100%",
                 columns: [{
                     title: "ID",
                         field: "id",

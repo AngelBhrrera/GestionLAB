@@ -26,6 +26,17 @@
     <div id='container'>
         <div id='calendar' style='width: auto; height: auto;'></div>
     </div>
+
+    <style>
+  .fc-event-title {
+      color: white;
+      font-style: normal;
+      background: black;
+      border-radius: 5px;
+    }
+
+    
+</style>
     <div id="asistencias" data-asistencias="{{json_encode($asistencias)}}"></div>
     <div id="festivos" data-festivos="{{json_encode($festivos)}}"></div>
 @endsection

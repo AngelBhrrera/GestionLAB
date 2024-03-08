@@ -26,19 +26,18 @@
             var printers = {!! $impresiones !!};
 
             var table = new Tabulator("#players", {
-                height: "100%",
+               
                 data: printers,
-                pagination: "local",
-                fitColumns: "true",
-                paginationSize: 24,
+                paginationSize: 20,
                 tooltips: true,
+                
+                pagination: "local",
+                layout: "fitDataFill",
                 resizableColumns:false,
+                height: "100%",
+                
+               
                 columns: [{
-                    title: "ID",
-                        field: "id",
-                        visible: false,
-                        width: 2,
-                    }, {
                         title: "Nombre de la actividad",
                         field: "titulo",
                         sorter: "string",
@@ -52,60 +51,51 @@
                         title: "Fecha",
                         field: "fecha",
                         sorter: "date",
-                        width: 120,
                     }, {
                         title: "TEC",
                         field: "TEC",
                         sorter: "number",
-                        width: 65,
+                        headerTooltip: "Tiempo Estimado Compromiso que coordinacion valoro para la actividad",
                     },  {
                         title: "TEU",
                         field: "TEU",
                         sorter: "number",
-                        width: 65,
+                        headerTooltip: "Tiempo Estimado del Usuario para terminar la actividad",
                     },  {
-                        title: "Inversion",
+                        title: "TI",
                         field: "Tiempo_Invertido",
+                        headerTooltip: "Total de tiempo invertido en la actividad",
                         sorter: "number",
-                        width: 65,
                     }, {
-                        title: "Tiempo",
+                        title: "TR",
                         field: "Tiempo_Real",
+                        headerTooltip: "Total de tiempo que tomo realizar la actividad",
                         sorter: "number",
-                        width: 65,
                     }, {
-                        title: "Experiencia",
+                        title: "XP",
                         field: "exp",
                         sorter: "number",
-                        width: 75,
-                    },  {
-                        title: "Detalles",
-                        field: "detalles",
-                        editor: "input",
-                        width: 290,
-                        cellEdited: function (cell) {
-                            var row = cell.getRow();
-                            var id = row.getData().id;
-                            var value = cell.getValue();
-                            agregarObservaciones(id, value);
-                        },
+                        headerTooltip: "Calculo en funcion al TEC, TEU y TR de tu rendimiento en la actividad",
                     }, {
                         title: "",
                         field: "id_actividad",
-                        width: 120,
                         formatter: function (cell, formatterParams, onRendered) {
                             var value = cell.getValue();
                             var button = document.createElement("button");
                             button.style = "background-color: blue; color: white; border: 1px solid white; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
-                            button.textContent = "Más Info.";
+                            button.textContent = "+";
                             button.title = "";
                             button.addEventListener("click", function() {
                                 window.location.href = "detalles_actividad/" + value;
                             });
                             return button;
                         }, 
-                      
-                    },
+                    }, {
+                    title: "ID",
+                        field: "id",
+                        visible: false,
+                        width: 2,
+                    }
                 ],
             });
 

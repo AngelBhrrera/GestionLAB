@@ -39,6 +39,8 @@
             </div>
         </div>
     </div>
+    
+    <div style="height: 45px;"></div>
     @endsection
 
     @section('script')
@@ -48,78 +50,67 @@
             var assist = {!! $datos !!};
 
             var table = new Tabulator("#players", {
-                height: "100%",
+
                 data: assist,
-                layout: "fitColumns",  
-                resizableColumns: false,  
+                paginationSize: 12,
+
                 pagination: "local",
-                paginationSize: 20,
-                tooltips: true,
+                layout: "fitDataFill",
+                resizableColumns:false,
+                height: "100%",
+                //responsiveLayout:"collapse",
+                layoutColumnsOnNewData:true,
+                virtualDomHoz:true,
+
                 columns: [{
                         title: "ID",
                         field: "id",
                         visible: false,
-                        width: 2,
                     }, {
                         title: "Prestador",
                         field: "origen",
                         headerFilter: "input",
                         sorter: "string",
-                        hozAlign: "center",
-                        width: 200,
                     },{
                         title: "Coordinador",
                         field: "responsable",
                         sorter: "string",
                         headerFilter: "input",
-                        hozAlign: "center",
-                        width: 200,
 
                     },  {
                         title: "Horas",
                         field: "horas",
                         sorter: "number",
-                        width: 100,
-                        hozAlign: "center",
                     },  {
                         title: "Fecha",
                         field: "fecha",
                         sorter: "date",
-                        width: 120,
                             sorterParams: {
                                 format: "DD/MM/YYYY", 
                             },
                         headerFilter: "input",
-                        hozAlign: "center",
                     }, {
                         title: "Entrada",
                         field: "hora_entrada",
                         sorter: "string", 
-                        width: 100,
                         sorterParams: {
                             format: "HH:mm:ss",
                         },
-                        hozAlign: "center",
-                    },
-                    {
+                    },{
                         title: "Salida",
                         field: "hora_salida",
                         sorter: "string", 
-                        width: 100,
                         sorterParams: {
                             format: "HH:mm:ss",
                         },
-                        hozAlign: "center",
                         editor: "select",
                     }, {
                         title: "Tiempo",
                         field: "tiempo",
                         sorter: "string", 
-                        width: 100,
                         sorterParams: {
                             format: "HH:mm:ss",
                         },
-                        hozAlign: "center",
                     },  
                 ],
             });

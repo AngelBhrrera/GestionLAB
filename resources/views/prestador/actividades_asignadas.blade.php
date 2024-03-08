@@ -22,9 +22,17 @@
             @endif
         </div>
     </div>
+    @if (!$activo)
+        <div class="alert alert-danger-soft show flex items-center mb-2" role="alert">
+            <i data-lucide="alert-octagon" class="w-6 h-6 mr-2"></i> Para iniciar actividades debes hacer Check-in
+        </div>
+    @endif
     
     <div class="contenedor-actividades">
     @if(isset($actividades))
+        @if (count($actividades)==0)
+            <h3 class="text-xl font-medium leading-none">No tienes ninguna actividad asignada ☹ </h3>
+        @endif
         @foreach ($actividades as $actividad)
 
         <div class="actividad">
@@ -74,13 +82,17 @@
                     </div>
                     <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
                 @endif
+                @if($actividad->estado == 'En Proceso')
+                    <br>
+                    <label for="detalles">Comentario (motivo de pausa)</label>
+                    <input class="form-control" type="text" name="detalles" id="detalles" placeholder="Comentario">
+                @endif
             </div>
             <div class="detalle botones">
                 @if($actividad->estado == 'Asignada')
                     <button class="boton"  onclick="comenzarActividad({{ $actividad->id }})" >Comenzar Actividad</button>
                     <button class="boton boton-inactivo" data-id="{{ $actividad->id }}" disabled>Terminar Actividad</button>
                 @elseif($actividad->estado == 'En Proceso')
-
                     <button class="boton" onclick="pausarActividad({{ $actividad->id }})" >Pausar Actividad</button>
                     <button class="boton" onclick="terminarActividad({{ $actividad->id }})" >Terminar Actividad</button>
                 @elseif($actividad->estado == 'Bloqueada')
@@ -107,11 +119,12 @@
         function comenzarActividad(idActividad) {
 
         var id = idActividad;
-
+        
         var nH = "horas_"+id;
         var nM = "minutos_"+id;
         const horasInput = document.getElementById(nH);
         const minutosInput = document.getElementById(nM);
+        
 
             if (horasInput.value || minutosInput.value) {
 
@@ -148,7 +161,7 @@
 
         function continuarActividad(idActividad) {
             const token = document.head.querySelector('meta[name="csrf-token"]').content;
-            fetch(`actividadStatus/${idActividad}/${1}`, {
+            fetch(`actividadStatus/${idActividad}/${1}/Reanudada`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -166,42 +179,54 @@
         } 
 
         function pausarActividad(idActividad) {
-            const token = document.head.querySelector('meta[name="csrf-token"]').content;
-            fetch(`actividadStatus/${idActividad}/${2}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': token,
-                    },
-            })
-            .then(response => response.json())
-            .then(data => {
+            const detallesInput = document.getElementById('detalles');
+            if(detallesInput.value==""){
+                alert("Ingresa un motivo de pausa de la actividad");
+            }else{
+                var comentario = detallesInput.value;
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`actividadStatus/${idActividad}/${2}/${comentario}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': token,
+                        },
+                })
+                .then(response => response.json())
+                .then(data => {
 
-                window.location.reload(); 
-            })
-            .catch(error => {
-                console.error('Error en activacion:', error);
-            });
+                    window.location.reload(); 
+                })
+                .catch(error => {
+                    console.error('Error en activacion:', error);
+                });
+            }
         } 
 
         function terminarActividad(idActividad) {
-            const token = document.head.querySelector('meta[name="csrf-token"]').content;
-            fetch(`actividadStatus/${idActividad}/${3}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': token,
-                    },
-            })
-            .then(response => response.json())
-            .then(data => {
+            const detallesInput = document.getElementById('detalles');
+            if(detallesInput.value==""){
+                alert("Ingresa un comentario para terminar");
+            }else{
+                var comentario = detallesInput.value;
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`actividadStatus/${idActividad}/${3}/${comentario}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': token,
+                        },
+                })
+                .then(response => response.json())
+                .then(data => {
 
-                window.location.reload(); 
-            })
-            .catch(error => {
-                $('#alerta').html('<div class="intro-y col-span-12 lg:col-span-6"><h6 class="alert alert-danger">' + errorMessage + '</h6></div>');
-                console.error('Error en activacion:', error);
-            });
+                    window.location.reload(); 
+                })
+                .catch(error => {
+                    $('#alerta').html('<div class="intro-y col-span-12 lg:col-span-6"><h6 class="alert alert-danger">' + errorMessage + '</h6></div>');
+                    console.error('Error en activacion:', error);
+                });
+            }
         } 
 
 

@@ -31,6 +31,7 @@ class User extends Authenticatable
         'sede',
         'area',
         'horario',
+        'emergencia',
         'can_admin',
     ];
 
