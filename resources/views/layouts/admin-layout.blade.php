@@ -35,6 +35,12 @@
 
     <?php  
         $area = Auth::user()->area;
+        $prestadores = DB::table('users')
+            ->whereIn('tipo', ['prestador', 'voluntario', 'practicante'])
+            ->exists();
+        $proyectos = DB::table('proyectos')
+            ->where('id_area', $area)
+            ->exists();
         $filtro = DB::table('modulos')
             ->where('id', $area)
             ->first();
@@ -66,6 +72,7 @@
                             <div class="side-menu__title">Registrar usuarios</div>
                         </a>
                     </li>
+                    @if(isset ($prestadores))
                     <li>
                         <a href="{{route('admin.general')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="user"></i> </div>
@@ -103,6 +110,7 @@
                             <div class="side-menu__title">Dias no Laborales</div>
                         </a>
                     </li>
+                    @endif
                     {{--<li>
                         <a href="{{route('admin.horarios')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="clock"></i> </div>
@@ -110,14 +118,13 @@
                         </a>
                     </li>
                     --}}
+                    @if (Auth::user()->tipo == "jefe area")
                     <li>
                         <a href="{{route('admin.premios')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="award"></i> </div>
                             <div class="side-menu__title">Registrar premio</div>
                         </a>
                     </li>
-                    </li>
-                    @if (Auth::user()->tipo == "jefe area")
                     <li>
                         <a href="{{route('admin.gestor_premios')}}" class="side-menu">
                             <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
@@ -161,6 +168,7 @@
         @endsection
     @endif
 
+    @if(Auth::user()->tipo == "coordinador" || Auth::user()->tipo == "jefe area")
     @section('coordinador')
         <li>
             <a href="#" class="side-menu">
@@ -180,29 +188,31 @@
                         <div class="side-menu__title">Activar Prestador</div>
                     </a>
                 </li>
-                <li>
-                    <a href="{{route('admin.firmas')}}" class="side-menu">
-                        <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-check">
-                                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
-                                    <line x1="16" x2="16" y1="2" y2="6" />
-                                    <line x1="8" x2="8" y1="2" y2="6" />
-                                    <line x1="3" x2="21" y1="10" y2="10" />
-                                    <path d="m9 16 2 2 4-4" />
-                                </svg></i> </div>
-                        @if (Auth::user()->tipo == "coordinador")
-                        <div class="side-menu__title">Registros Checkin</div>
-                        @else
-                        <div class="side-menu__title">Validar horas</div>
-                        @endif
-                    </a>
-                </li>
-                @if (Auth::user()->tipo != "coordinador")
-                <li>
-                    <a href="{{route('admin.reportes_parciales')}}" class="side-menu">
-                        <div class="side-menu__icon"> <i data-lucide="file"></i> </div>
-                        <div class="side-menu__title">Autorizar documentos del Servicio Social</div>
-                    </a>
-                </li>
+                    @if(isset ($prestadores))
+                    <li>
+                        <a href="{{route('admin.firmas')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-check">
+                                        <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+                                        <line x1="16" x2="16" y1="2" y2="6" />
+                                        <line x1="8" x2="8" y1="2" y2="6" />
+                                        <line x1="3" x2="21" y1="10" y2="10" />
+                                        <path d="m9 16 2 2 4-4" />
+                                    </svg></i> </div>
+                            @if (Auth::user()->tipo == "coordinador")
+                            <div class="side-menu__title">Registros Checkin</div>
+                            @else
+                            <div class="side-menu__title">Validar horas</div>
+                            @endif
+                        </a>
+                    </li>
+                    @if (Auth::user()->tipo != "coordinador")
+                    <li>
+                        <a href="{{route('admin.reportes_parciales')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="file"></i> </div>
+                            <div class="side-menu__title">Autorizar documentos del Servicio Social</div>
+                        </a>
+                    </li>
+                    @endif
                 @endif
                 @if ($filtro->visitas == 1)
                     <li>
@@ -236,7 +246,9 @@
                 @endif
             </ul>
     @endsection
+    @endif
 
+    @if(isset ($prestadores) && Auth::user()->tipo != "Superadmin" )
     @section('prestadores')
         <li>
             <a href="#" class="side-menu">
@@ -286,6 +298,7 @@
             </ul>
         </li>
     @endsection
+    @endif
 
 
     @if ($filtro->visitas == 1)
@@ -336,6 +349,7 @@
     @endif
 
     @if ($filtro->impresiones == 1)
+    @if(isset ($prestadores))
         @if (Auth::user()->tipo == "coordinador" || Auth::user()->tipo == "jefe area")
             @section('impresiones')
                 <li>
@@ -392,9 +406,12 @@
             @endsection
         @endif
     @endif
+    @endif
+
 
     @if ($filtro->gamificacion == 1)
         @if (Auth::user()->tipo == "coordinador" || Auth::user()->tipo == "jefe area")
+            @if(isset ($proyectos))
             @section('actividades')
                 <li>
                     <a href="javascript:;" class="side-menu">
@@ -441,6 +458,8 @@
                         </li>
                     </ul>
                 </li>
+            @endif
+            @if(isset ($prestadores))
                 <li>
                     <a href="javascript:;" class="side-menu">
                         <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
@@ -474,6 +493,7 @@
                         </li>
                     </ul>
                 </li>
+                @endif
             @endsection
         @endif
     @endif

@@ -42,7 +42,7 @@
                     </div>
                     <br>
                     <label class="mr-5" for="descripcion">Descripción</label>
-                    <input class="form-control" type="text" name="descripcion" autocomplete="off">
+                    <input class="form-control" type="text" name="descripcion" required autocomplete="off">
                     <br><br>
                     <button type="submit" class="btn btn-primary">Crear</button>
                 </form>
@@ -62,7 +62,7 @@
                         <input required id="diaFestivo" type="date" class="form-control" name="diaFestivo" placeholder="festivo" style="width: 200px"></div>
                         <br>
                         <label class="mr-5" for="descripcion">Descripción</label>
-                        <input class="form-control" type="text" name="descripcion" autocomplete="off">
+                        <input class="form-control" type="text" name="descripcion" required autocomplete="off">
                         <br><br>
                     <button type="submit" class="btn btn-primary">Crear</button>
                 </form>

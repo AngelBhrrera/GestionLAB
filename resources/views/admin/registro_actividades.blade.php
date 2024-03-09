@@ -30,7 +30,7 @@
                         <label for="nombre" class="col-md-4 col-form-label text-md-right">Nombre de la actividad</label>
 
                         <div class="col-md-6">
-                            <input id="nombre" type="text" class="form-control @error('nombre') is-invalid @enderror" name="nombre" value="{{isset($actm[0]->nombre_act) ? $actm[0]->nombre_act : old('nombre') }}" required autocomplete="nombre" autofocus>
+                            <input id="nombre" type="text" class="form-control @error('nombre') is-invalid @enderror" value="{{old('nombre')}}" name="nombre" value="{{isset($actm[0]->nombre_act) ? $actm[0]->nombre_act : old('nombre') }}" required autocomplete="nombre" autofocus>
                             @error('nombre')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -46,7 +46,7 @@
                             <select class="form-control" id="tipo_categoria" name="tipo_categoria" required onchange="filtrarActividades()">
                                 <option value="">Selecciona una categoría</option>
                                 @foreach ($categorias as $categoria)
-                                    <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+                                    <option @selected(old('tipo_categoria')== {{$categoria->id}}) value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -58,7 +58,7 @@
                             <select class="form-control" id="tipo_subcategoria" name="tipo_subcategoria">
                                 <option value="">Selecciona una subcategoría</option>
                                 @foreach ($subcategorias as $subcategoria)
-                                <option value="{{ $subcategoria->id }}">{{ $subcategoria->nombre }}</option>
+                                <option @selected(old('tipo_subcategoria')== {{$subcategoria->id}}) value="{{ $subcategoria->id }}">{{ $subcategoria->nombre }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -70,15 +70,15 @@
                             <div class="col">
                                 <select class="form-control" name="tipo_actividad">
                                     <option value="{{null}}">Selecciona un tipo de actividad</option>
-                                    <option value="generica">Genérica</option>
-                                    <option value="particular">Particular</option>
+                                    <option  value="generica" @selected(old('tipo_actividad')== "generica")>Genérica</option>
+                                    <option  value="particular" @selected(old('tipo_actividad')== "particular")>Particular</option>
                                 </select>
                             </div>
                         </div>
                         <br>
                         <div class="col-md-6">
                         <label for="recursos">Recursos necesarios - entradas</label>
-                            <textarea id="recursos" type="text" class="form-control" name="recursos" placeholder="Ingrese los datos separados por comas (impresora, filamento, papel, agua)"></textarea>
+                            <textarea id="recursos" type="text" class="form-control" name="recursos" placeholder="Ingrese los datos separados por comas (impresora, filamento, papel, agua)">{{old('recursos')}}</textarea>
 
                             @error('descripcion')
                             <span class="invalid-feedback" role="alert">
@@ -93,7 +93,7 @@
                         <label for="descripcion" class="col-md-4 col-form-label text-md-right">Descripción del trabajo a realizar - procesos</label>
 
                         <div class="col-md-6">
-                            <textarea id="descripcion" type="text" class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" required>@if(isset($actm)){{$actm[0]->descripcion}}@endif</textarea>
+                            <textarea id="descripcion" type="text" class="form-control @error('descripcion') is-invalid @enderror" value="{{old('descripcion')}}" name="descripcion" required>{{old('descripcion')}}</textarea>
 
                             @error('descripcion')
                             <span class="invalid-feedback" role="alert">
@@ -107,7 +107,7 @@
                         <label for="resultados" class="col-md-4 col-form-label text-md-right">Objetivos, resultados que se esperan - salidas</label>
 
                         <div class="col-md-6">
-                            <textarea id="resultados" type="text" class="form-control" name="resultados" placeholder="Ingrese los datos separados por comas (imprimir, diseñar, pintar)" required></textarea>
+                            <textarea id="resultados" type="text" class="form-control" value="{{old('resultados')}}" name="resultados" placeholder="Ingrese los datos separados por comas (imprimir, diseñar, pintar)" required>{{old('resultados')}}</textarea>
 
                         </div>
                     </div>
@@ -118,13 +118,20 @@
                                     <input name="horas" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" required value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
                                     <input name="minutos" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" required value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
                             </div>
+                            @error('horas')
+                                <strong>{{$message}}</strong>
+                            @enderror
+                            @error('minutos')
+                                <strong>{{$message}}</strong>
+                            @enderror
+                            <br>
                             <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
                     </div>
 
                     <div class="form-group row">
                         <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Experiencia</label>
                             <div class="col-md-6">
-                                <input name="exp" type="number" class="form-control sm:w-56" min="5" max="100" required>
+                                <input name="exp" type="number" class="form-control sm:w-56" min="5" max="100" value="{{old('exp')}}" required>
                     
                             </div>
                             <small id="Help" class="form-text text-muted">Ingresa la cantidad de experiencia que puede ganar el prestador en caso de un trabajo óptimo</small>

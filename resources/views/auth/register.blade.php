@@ -14,9 +14,7 @@
         <div class="intro-y box py-30  mt-">
 
             @if(session('alert-type'))
-                <div class="alert alert-{{ session('alert-type') }}">
-                    {{ session('alert-message') }}
-                </div>
+                {{ session('alert-message') }}
             @endif
 
             <div style="display: flex;">
@@ -111,7 +109,7 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6"  id="divCode" style="display:none">
                                         <label for="input-wizard-1" class="form-label"  >Codigo</label>
-                                        <input id="codigo" type="text" class="form-control @if(old('opc')=='1') @error('código') is-invalid @enderror @endif"  name="codigo"  value="{{ old('opc')=='1' ? old('codigo') : '' }}" placeholder="Código"  maxlength="9">    
+                                        <input id="codigo" type="text" class="form-control @if(old('opc')=='1') @error('código') is-invalid @enderror @endif"  name="codigo"  value="{{ old('codigo')}}" placeholder="Código"  maxlength="9">    
                                             @if(old('opc')=='1')
                                                 @error('codigo')
                                                 <span class="invalid-feedback" role="alert">
@@ -176,7 +174,7 @@
                                             @if (isset($sede))
                                                 <option id="sede" value="" >Selecciona una sede</option>
                                                 @foreach ($sede as $dato )
-                                                    <option id="{{$dato->id_sede}}" @selected(old('sede') == {{$dato->nombre_sede}}) data-nombre="{{$dato->nombre_sede}}">{{$dato->nombre_sede }} </option>
+                                                    <option id="{{$dato->id_sede}}"  value="{{$dato->id_sede}}" @selected(old('sede') == {{$dato->id_sede}}) data-nombre="{{$dato->nombre_sede}}">{{$dato->nombre_sede }} </option>
                                                 @endforeach
                                             @endif
                                         </select>  
