@@ -35,6 +35,13 @@
 
     <?php  
         $area = Auth::user()->area;
+        $prestadores = DB::table('users')
+            ->whereIn('tipo', ['prestador', 'voluntario', 'practicante'])
+            ->exists();
+        $proyectos = DB::table('proyectos')
+            ->where('id_area', $area)
+            ->exists();
+
         $filtro = DB::table('modulos')
             ->where('id', $area)
             ->first();
@@ -66,6 +73,7 @@
                             <div class="side-menu__title">Registrar usuarios</div>
                         </a>
                     </li>
+                    @if($prestadores)
                     <li>
                         <a href="{{route('admin.general')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="user"></i> </div>
@@ -103,6 +111,7 @@
                             <div class="side-menu__title">Dias no Laborales</div>
                         </a>
                     </li>
+                    @endif
                     {{--<li>
                         <a href="{{route('admin.horarios')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="clock"></i> </div>
@@ -110,24 +119,7 @@
                         </a>
                     </li>
                     --}}
-                    <li>
-                        <a href="{{route('admin.premios')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="award"></i> </div>
-                            <div class="side-menu__title">Registrar premio</div>
-                        </a>
-                    </li>
-                    </li>
                     @if (Auth::user()->tipo == "jefe area")
-                    <li>
-                        <a href="{{route('admin.gestor_premios')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
-                            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-badge">
-                            <path d="M12 22h6a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                            <path d="M5 17a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M7 16.5 8 22l-3-1-3 1 1-5.5"/></svg></i></div>
-                            <div class="side-menu__title">Ver premios</div>
-                        </a>
-                    </li>
                     <li>
                         <a href="{{route('admin.sede')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
@@ -161,6 +153,7 @@
         @endsection
     @endif
 
+    @if(Auth::user()->tipo == "coordinador" || Auth::user()->tipo == "jefe area")
     @section('coordinador')
         <li>
             <a href="#" class="side-menu">
@@ -180,29 +173,43 @@
                         <div class="side-menu__title">Activar Prestador</div>
                     </a>
                 </li>
-                <li>
-                    <a href="{{route('admin.firmas')}}" class="side-menu">
-                        <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-check">
-                                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
-                                    <line x1="16" x2="16" y1="2" y2="6" />
-                                    <line x1="8" x2="8" y1="2" y2="6" />
-                                    <line x1="3" x2="21" y1="10" y2="10" />
-                                    <path d="m9 16 2 2 4-4" />
-                                </svg></i> </div>
-                        @if (Auth::user()->tipo == "coordinador")
-                        <div class="side-menu__title">Registros Checkin</div>
-                        @else
-                        <div class="side-menu__title">Validar horas</div>
-                        @endif
-                    </a>
-                </li>
-                @if (Auth::user()->tipo != "coordinador")
-                <li>
-                    <a href="{{route('admin.reportes_parciales')}}" class="side-menu">
-                        <div class="side-menu__icon"> <i data-lucide="file"></i> </div>
-                        <div class="side-menu__title">Autorizar documentos del Servicio Social</div>
-                    </a>
-                </li>
+                    @if(isset ($prestadores))
+                    <li>
+                        <a href="{{route('admin.prestadores')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="user-check"></i> </div>
+                            <div class="side-menu__title">Ver prestadores activos</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.firmas')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-check">
+                                        <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+                                        <line x1="16" x2="16" y1="2" y2="6" />
+                                        <line x1="8" x2="8" y1="2" y2="6" />
+                                        <line x1="3" x2="21" y1="10" y2="10" />
+                                        <path d="m9 16 2 2 4-4" />
+                                    </svg></i> </div>
+                            @if (Auth::user()->tipo == "coordinador")
+                            <div class="side-menu__title">Registros Checkin</div>
+                            @else
+                            <div class="side-menu__title">Validar horas</div>
+                            @endif
+                        </a>
+                    </li>
+                    @if (Auth::user()->tipo != "coordinador")
+                    <li>
+                        <a href="{{route('admin.reportes_parciales')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="file"></i> </div>
+                            <div class="side-menu__title">Autorizar documentos del Servicio Social</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.premios')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="award"></i> </div>
+                            <div class="side-menu__title">Premios</div>
+                        </a>
+                    </li>
+                    @endif
                 @endif
                 @if ($filtro->visitas == 1)
                     <li>
@@ -236,57 +243,7 @@
                 @endif
             </ul>
     @endsection
-
-    @section('prestadores')
-        <li>
-            <a href="#" class="side-menu">
-                <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-user-round">
-                            <path d="M18 21a6 6 0 0 0-12 0" />
-                            <circle cx="12" cy="11" r="4" />
-                            <rect width="18" height="18" x="3" y="3" rx="2" />
-                        </svg></i> </div>
-                <div class="side-menu__title">
-                    PRESTADORES
-                    <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
-                </div>
-            </a>
-            <ul class="">
-                
-                <li>
-                    <a href="{{route('admin.prestadores')}}" class="side-menu">
-                        <div class="side-menu__icon"> <i data-lucide="user-check"></i> </div>
-                        <div class="side-menu__title">Ver prestadores activos</div>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{route('admin.prestadores_inactivos')}}" class="side-menu">
-                        <div class="side-menu__icon"> <i data-lucide="user-x"></i> </div>
-                        <div class="side-menu__title">Ver prestadores inactivos</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('admin.prestadores_terminados')}}" class="side-menu">
-                        <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-badge-check">
-                                    <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
-                                    <path d="m9 12 2 2 4-4" />
-                                </svg></i> </div>
-                        <div class="side-menu__title">Ver prestadores con servicio concluido</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('admin.prestadores_liberados')}}" class="side-menu">
-                        <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark-check">
-                                    <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z" />
-                                    <path d="m9 10 2 2 4-4" />
-                                </svg></i> </div>
-                        <div class="side-menu__title">Ver prestadores con servicio liberado</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-    @endsection
-
+    @endif
 
     @if ($filtro->visitas == 1)
         @if (Auth::user()->tipo == "coordinador" || Auth::user()->tipo == "jefe area" )
@@ -336,6 +293,7 @@
     @endif
 
     @if ($filtro->impresiones == 1)
+    @if($prestadores)
         @if (Auth::user()->tipo == "coordinador" || Auth::user()->tipo == "jefe area")
             @section('impresiones')
                 <li>
@@ -392,9 +350,12 @@
             @endsection
         @endif
     @endif
+    @endif
+
 
     @if ($filtro->gamificacion == 1)
         @if (Auth::user()->tipo == "coordinador" || Auth::user()->tipo == "jefe area")
+            @if($proyectos)
             @section('actividades')
                 <li>
                     <a href="javascript:;" class="side-menu">
@@ -441,6 +402,8 @@
                         </li>
                     </ul>
                 </li>
+            @endif
+            @if($prestadores)
                 <li>
                     <a href="javascript:;" class="side-menu">
                         <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
@@ -474,6 +437,7 @@
                         </li>
                     </ul>
                 </li>
+                @endif
             @endsection
         @endif
     @endif

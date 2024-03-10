@@ -143,7 +143,7 @@ class AdminController extends Controller
             $users[] = ['id' => "RBadmin", 'value' => 'jefe area', 'name' => 'Jefe de area'];
         }else if (Auth::user()->tipo == 'Superadmin'){
             $users[] = ['id' => "RBadmin", 'value' => 'jefe area', 'name' => 'Jefe de area'];
-            $users[] = ['id' => "RBadminsede", 'value' => 'jefe sede', 'name' => 'Jefe de Sede'];
+            $users[] = ['id' => "RBadminsede", 'value' => 'jefe sede', 'name' => 'Jefe de sede'];
         }
 
         $sedes = $sedes->get();
@@ -213,20 +213,37 @@ class AdminController extends Controller
     public function prestadores()
     {
         $data = DB::table('solo_prestadores');
+        $dataI = DB::table('prestadores_inactivos');
+        $dataL = DB::table('prestadores_servicio_liberado');
+        $dataT = DB::table('prestadores_servicio_concluido');
+
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $data->where('id_area', Auth::user()->area);
+            $dataI->where('area', Auth::user()->area);
+            $dataL->where('area', Auth::user()->area);
+            $dataT->where('area', Auth::user()->area);
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $data->where('id_sede', Auth::user()->sede);
+            $dataI->where('sede',  Auth::user()->sede);
+            $dataL->where('sede',  Auth::user()->sede);
+            $dataT->where('sede',  Auth::user()->sede);
         }
+
         $data = $data->get();
-        return view('admin/ver_activos', ['datos' => json_encode($data)]);
+        $dataI = $dataI->get();
+        $dataL = $dataL->get();
+        $dataT = $dataT->get();
+
+        return view('admin/ver_prestadores', ['datos' => json_encode($data),
+        'datosI' => json_encode($dataI),   'datosL' => json_encode($dataL),
+        'datosT' => json_encode($dataT) ]);
     }
 
     public function prestadores_pendientes()
     {
-        $data = DB::table('prestadores_pendientes');
+       
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
-            $data->where('area', Auth::user()->area);
+           
         }else if(auth()->user()->tipo == 'jefe sede'){
             $data->where('sede',  Auth::user()->sede);
         }
@@ -252,31 +269,6 @@ class AdminController extends Controller
             
     }
 
-    public function prestadores_liberados()
-    {
-        $data = DB::table('prestadores_servicio_liberado');
-        if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
-            $data->where('area', Auth::user()->area);
-        }else  if( auth()->user()->tipo == 'jefe sede'){
-            $data->where('sede',  Auth::user()->sede);
-        }
-        $data = $data->get();
-        return view('admin/ver_servicioLiberado', ['datos' => json_encode($data)]);
-    }
-
-    public function prestadores_inactivos()
-    {
-        $data = DB::table('prestadores_inactivos');
-        if( auth()->user()->tipo == 'coordinador'){
-            $data->where('area', Auth::user()->area);
-            $data = $data->get();
-            return view('admin/ver_prestadoresInactivos', ['datos' => json_encode($data)]);
-        }else  if( auth()->user()->tipo == 'jefe sede'){
-            $data->where('sede',  Auth::user()->sede);
-        }
-        $data = $data->get();
-        return view('admin/administrar_prestadoresInactivos', ['datos' => json_encode($data)]);
-    }
 
     //MODIFICACIONES DE USUARIO
 
@@ -533,8 +525,24 @@ class AdminController extends Controller
             'descripcion' => 'string|max:500',
             'objetivos' => 'string', 
             'exp' => 'integer|min:5|max:100',
-            'horas' => 'integer|min:1|max:60', 
-            'minutos' => 'integer|min:1|max:60',
+            'horas' => [
+                'integer',
+                function ($attribute, $value, $fail) use ($request) {
+                    $minutos = $request->input('minutos');
+                    if ($value == 0 && $minutos == 0) {
+                        $fail('Las horas y los minutos no pueden ser ambos 0.');
+                    }
+                }
+            ],
+            'minutos' => [
+                'integer',
+                function ($attribute, $value, $fail) use ($request) {
+                    $horas = $request->input('horas');
+                    if ($value == 0 && $horas == 0) {
+                        $fail('Las horas y los minutos no pueden ser ambos 0.');
+                    }
+                }
+            ]
         ]);
 
         $subcategoria = $request->input('tipo_subcategoria');
@@ -722,6 +730,7 @@ class AdminController extends Controller
 
     public function create_proy() {
 
+        $tabla_proy = DB::table('seguimiento_proyecto3');
         $prestadores = DB::table('solo_prestadores');
         $areas = DB::table('areas')
             ->select('id', 'nombre_area');
@@ -731,18 +740,22 @@ class AdminController extends Controller
                 ->where('horario', auth()->user()->horario)
                 ->where('tipo', '!=', 'coordinador');
             $areas->where('id', auth()->user()->area);
+            $tabla_proy->where('id_area', auth()->user()->area);
         }else if(auth()->user()->tipo == 'jefe area'){
             $prestadores->where('id_area', auth()->user()->area);
             $areas->where('id', auth()->user()->area);
+            $tabla_proy->where('id_area', auth()->user()->area);
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $prestadores->where('id_sede', auth()->user()->sede);    
             $areas->where('id_sede', auth()->user()->sede);
+            $tabla_proy->where('id_sede', auth()->user()->sede);    
         }
-        
-
+        $tabla_proy =  $tabla_proy->get();
+        $categorias = DB::table('categorias')->get();
+        $proyectos = DB::table('proyectos')->get();
         $areas = $areas->get();
         $prestadores= $prestadores->get();
-        return view('/admin/registro_proyectos', compact('prestadores', 'areas'));
+        return view('/admin/proyectos', compact('prestadores', 'areas', 'categorias', 'proyectos', 'tabla_proy'));
     }
 
     public function add_to_proys() {
@@ -985,11 +998,17 @@ class AdminController extends Controller
     public function control_print()
     {
         $data = DB::table('impresoras')
-        ->where('id_area', auth()->user()->area)
-        ->get();
+            ->where('id_area', auth()->user()->area)
+            ->get();
 
-        return view('admin/registro_impresora',
-            [ 'impresiones' =>json_encode($data)
+        $dataP = DB::table('ver_impresiones')
+            ->join('users', 'ver_impresiones.id_Prestador', '=', 'users.id')
+            ->where('sede', auth()->user()->sede)
+            ->get();
+
+        return view('admin/modulo_impresiones',
+            [ 'impresoras' =>json_encode($data),
+            'impresiones' =>json_encode($dataP)
         ]);
     }
 
@@ -1023,8 +1042,8 @@ class AdminController extends Controller
     {
         $request->validate([
             'nombre' => 'string|max:255',
-            'nombre' => 'string|max:255',
-            'nombre' => 'string|max:255',
+            'marca' => 'string|max:255',
+            'tipo' => 'string|max:255',
         ]);
 
 
@@ -1526,7 +1545,10 @@ class AdminController extends Controller
             ->where('ref', auth()->user()->area)
             ->get();
         $prestadores = DB::table('solo_prestadores');
-
+        $datos = DB::table('seguimiento_premios')
+            ->join('premios', 'seguimiento_premios.id', '=', 'premios.id')
+            ->where('premios.ref', auth()->user()->area)
+            ->get();
         if( auth()->user()->tipo == 'jefe area'){
             $prestadores->where('id_area', auth()->user()->area);
         }else  if( auth()->user()->tipo == 'jefe sede'){
@@ -1534,7 +1556,12 @@ class AdminController extends Controller
         }
         $prestadores = $prestadores->get();
 
-        return view("admin.registro_premios", compact('prestadores', 'premios'));
+
+        return view("admin.premios", [
+            'prestadores' => $prestadores,
+            'premios' => $premios,
+            'datos' => json_encode($datos)
+        ]);
     }
 
     public function guardar_premio(Request $request){
@@ -1572,11 +1599,6 @@ class AdminController extends Controller
            
         }
         return redirect(route("admin.ver_premios"))->with("Exito",);
-    }
-
-    public function gestor_premios(){
-        $datos = DB::select("SELECT * FROM seguimiento_premios");
-        return view('admin.ver_premios', ["datosJson" => json_encode($datos)]);
     }
 
     public function eliminar_premio($id){

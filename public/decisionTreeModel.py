@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Importar las bibliotecas necesarias
 from sklearn import datasets
 from sklearn.model_selection import train_test_split
