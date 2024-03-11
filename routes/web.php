@@ -164,6 +164,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg'); 
                     //ADMINISTRACION DEL MODULO DE IMPRESION
                     Route::get('/admin/gestion_impresion', 'module_print')->name('module_print');
+                    Route::post('/admin/registrar_impresoras', 'make_print')->name('make_print');
                     Route::post('/admin/set_imp_act', 'set_print_act')->name('set_print_act'); 
                     Route::post('/admin/set_mant_act', 'set_mainteneance_act')->name('set_mainteneance_act'); 
                     //CAMBIO PASSWORD
