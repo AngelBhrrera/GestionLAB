@@ -7,14 +7,72 @@
 @endsection
 
 @section('subcontent')
-<h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
-  Registro de Visitas en {{ $sede }}
-</h2>
-<div class="w-[350px] relative mx-5 my-5">
-    <input id="searchInput" type="text" class="form-control pl-10" placeholder="Buscar">
-    <i class="w-5 h-5 absolute inset-y-0 left-0 my-auto text-slate-400 ml-3" data-lucide="search"></i>
+
+<div class="container" style="padding-top: 20px; padding-left: 20px;">
+    <div class="grid grid-cols-12 gap-6 mt-5">
+        <div class="intro-y ml-5 col-span-12 lg:col-span-6 flex justify-center" id="alerta">
+            @if (session('success'))
+                <div class="alert alert-success w-full px-4">{{session('success')}}</div>
+            @endif
+            @if(session('warning'))
+                <div class="alert alert-warning w-full px-4">{{session('warning')}}</div>
+            @endif
+            @error('nombre')
+                <div class="alert alert-danger w-full px-4">{{$message}}</div>
+            @enderror
+                </div>
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs nav-justified" role="tablist">  
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#vcli">Lista de clientes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="vvis">Lista de visitas</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#chkv">Checkin Visitante</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#lisc">Lista de solicitudes por confirmar</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#lisp">Lista de solicitudes programadas</a>
+        </li>
+        
+    </ul>
+
+    <div class="tab-content">
+
+        <div class="tab-pane active" id="vcli">
+            <div class="w-[350px] relative mx-5 my-5">
+                <input id="searchInput" type="text" class="form-control pl-10" placeholder="Buscar">
+                <i class="w-5 h-5 absolute inset-y-0 left-0 my-auto text-slate-400 ml-3" data-lucide="search"></i>
+            </div>
+            <div id="players"></div>
+        </div>
+        <div class="tab-pane active" id="vvis">
+            <h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
+                Registro de Visitas en {{ $sede }}
+            </h2>
+        </div>
+        <div class="tab-pane active" id="chkv">
+        </div>
+        <div class="tab-pane active" id="lisc">
+            <h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
+               Solicitudes por confirmar (En desarrollo)
+            </h2>
+        </div>
+        <div class="tab-pane active" id="lisp">
+            <h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
+               Solicitudes programadas (En desarrollo)
+            </h2>
+        </div>
+    </div>
 </div>
-<div id="players"></div>
+
+
 @endsection
 
 @section('script')

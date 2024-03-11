@@ -241,32 +241,15 @@ class AdminController extends Controller
 
     public function prestadores_pendientes()
     {
-       
+        $data = DB::table('prestadores_pendientes');
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
-           
+            $data->where('area', Auth::user()->area);
         }else if(auth()->user()->tipo == 'jefe sede'){
             $data->where('sede',  Auth::user()->sede);
         }
         $data = $data->get();
 
         return view('admin/ver_prestadoresPendientes', ['datos' => json_encode($data)]);
-    }
-
-    public function prestadores_terminados()
-    {
-        $data = DB::table('prestadores_servicio_concluido');
-        if( auth()->user()->tipo == 'coordinador'){
-            $data = $data->where('area', Auth::user()->area)->get();
-            return view('admin/ver_servicioConcluido', ['datos' => json_encode($data)]);
-        }else  if( auth()->user()->tipo == 'jefe area'){
-            $data->where('area', Auth::user()->area);
-        }else  if( auth()->user()->tipo == 'jefe sede'){
-            $data->where('sede',  Auth::user()->sede);
-        }
-        $data = $data->get();
-
-        return view('admin/administrar_servicioConcluido', ['datos' => json_encode($data)]);
-            
     }
 
 
@@ -809,15 +792,6 @@ class AdminController extends Controller
         return view('/admin/registro_prestadores_proyecto', compact('prestadores', 'proyectos'));
     }
 
-    
-    public function proy_acts() {
- 
-        $categorias = DB::table('categorias')->get();
-        $proyectos = DB::table('proyectos')->get();
-
-        return view('/admin/asignar_actividad_proyecto', compact( 'categorias', 'proyectos'));
-    }
-
     public function make_proy(Request $request){
 
         $request->validate([
@@ -853,19 +827,6 @@ class AdminController extends Controller
         return redirect(route('admin.create_proy'))->with('success', 'Creada correctamente');
     }
 
-    public function view_proys(){
-        $tabla_proy = DB::table('seguimiento_proyecto3');
-
-        if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area' ){
-            $tabla_proy->where('id_area', auth()->user()->area);
-        }else  if( auth()->user()->tipo == 'jefe sede'){
-            $tabla_proy->where('id_sede', auth()->user()->sede);    
-        }
-        $tabla_proy =  $tabla_proy->get();
-        
-        return view('admin.ver_proyectos', ['tabla_proy' => $tabla_proy]);
-    }
-    
     public function view_details_proy($id){
 
         if(auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
@@ -939,62 +900,6 @@ class AdminController extends Controller
 
     //IMPRESORAS
 
-    public function module_print(){
-
-        $actI = DB::table('actividades')
-        ->where('id_categoria',6)
-        ->whereNotNull('TEC')
-            ->where(function($query) {
-                $query->where('tipo', 0)
-                      ->orWhere('tipo', Auth::user()->sede);
-            })
-        ->get();
-        
-        $actM = DB::table('actividades')
-        ->where('id_categoria', 3)
-        ->whereNotNull('TEC')
-            ->where(function($query) {
-                $query->where('tipo', 0)
-                      ->orWhere('tipo', Auth::user()->sede);
-            })
-        ->get();
-
-        return view( 'admin/registro_modulo_impresion', compact('actI', 'actM'));
-    }
-
-    public function set_print_act(Request $request){
-        $request->validate([
-            'actI' => ' integer|required',
-        ]);
-
-        DB::table('impresoras')
-            ->where('id_area',  Auth::user()->area)
-            ->update(['act_impresion'=> $request->input('actI')]);
-
-        return redirect()->back()->with('success', 'Actividad asignada correctamente');
-    }
-
-    public function set_mainteneance_act(Request $request){
-        $request->validate([
-            'actM' => ' integer|required',
-        ]);
-
-        DB::table('impresoras')
-            ->where('id_area',  Auth::user()->area)
-            ->update(['act_mantenimiento'=> $request->input('actM')]);
-
-        return redirect()->back()->with('success', 'Actividad asignada correctamente');
-    }
-
-    public function watch_prints()
-    {
-        $data = DB::table('ver_impresiones')
-            ->join('users', 'ver_impresiones.id_Prestador', '=', 'users.id')
-            ->where('sede', auth()->user()->sede)
-            ->get();
-        return view( 'admin/ver_impresiones', [ 'impresiones' =>json_encode($data)]);
-    }
-
     public function control_print()
     {
         $data = DB::table('impresoras')
@@ -1057,6 +962,53 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
+    public function module_print(){
+
+        $actI = DB::table('actividades')
+        ->where('id_categoria',6)
+        ->whereNotNull('TEC')
+            ->where(function($query) {
+                $query->where('tipo', 0)
+                      ->orWhere('tipo', Auth::user()->sede);
+            })
+        ->get();
+        
+        $actM = DB::table('actividades')
+        ->where('id_categoria', 3)
+        ->whereNotNull('TEC')
+            ->where(function($query) {
+                $query->where('tipo', 0)
+                      ->orWhere('tipo', Auth::user()->sede);
+            })
+        ->get();
+
+        return view( 'admin/registro_modulo_impresion', compact('actI', 'actM'));
+    }
+
+    public function set_print_act(Request $request){
+        $request->validate([
+            'actI' => ' integer|required',
+        ]);
+
+        DB::table('impresoras')
+            ->where('id_area',  Auth::user()->area)
+            ->update(['act_impresion'=> $request->input('actI')]);
+
+        return redirect()->back()->with('success', 'Actividad asignada correctamente');
+    }
+
+    public function set_mainteneance_act(Request $request){
+        $request->validate([
+            'actM' => ' integer|required',
+        ]);
+
+        DB::table('impresoras')
+            ->where('id_area',  Auth::user()->area)
+            ->update(['act_mantenimiento'=> $request->input('actM')]);
+
+        return redirect()->back()->with('success', 'Actividad asignada correctamente');
+    }
+
     //CATEGORIAS Y SUBCATEGORIAS
 
     public function categorias(){
@@ -1068,7 +1020,8 @@ class AdminController extends Controller
             ->select('subcategorias.*', 'categorias.nombre AS categoria')
             ->join('categorias', 'subcategorias.categoria', '=', 'categorias.id')
             ->get();
-        return view('admin.registro_categorias', ['categoria'=>$categ, 'tabla_subcategorias' => json_encode($subcateg) ]);
+
+        return view('admin.control_actividades', ['categoria'=>$categ, 'tabla_subcategorias' => json_encode($subcateg) ]);
     }
 
     public function nuevaCateg(Request $request){
@@ -1081,9 +1034,9 @@ class AdminController extends Controller
         if (count($buscarCat)==0){
             $nombre=$request->input("nombreCateg");
             DB::insert("INSERT INTO categorias (nombre) Values('$nombre')");
-            return redirect(route('admin.registro_categorias'))->with('success', 'Creada correctamente');
+            return redirect()->back()->with('success', 'Creada correctamente');
         }else{
-            return redirect(route('admin.registro_categorias'))->with('warning', "Ya existe una categoria con ese nombre");
+            return redirect()->back()->with('warning', "No se puedo crear la subcategoria");
         }
 
     }
@@ -1099,9 +1052,9 @@ class AdminController extends Controller
         $subcateg=$request->input("nombreSubc");
         $sql = DB::insert("INSERT INTO subcategorias (nombre, categoria) Values('$subcateg', '$categ')");
         if ( $sql == 1){
-            return redirect(route('admin.registro_categorias'))->with('success', 'Creada correctamente');
+            return redirect()->back()->with('success', 'Creada correctamente');
         }else{
-            return redirect(route('admin.registro_categorias'))->with('warning', "No se puedo crear la subcategoria");
+            return redirect()->back()->with('warning', "No se puedo crear la subcategoria");
         }
     
     }
@@ -1207,10 +1160,14 @@ class AdminController extends Controller
         $n_sede = DB::table('sedes')
             ->where('id_sede', Auth::user()->sede)
             ->value('nombre_sede');
-        $data = DB::table('visitas')
+        $dataV = DB::table('visitas')
             ->orderBy('id', 'DESC')
             ->get();
-        return view('/admin/ver_visitas', ['datos' => json_encode($data), 'sede' => $n_sede]);
+        $dataC = DB::table('solo_clientes')
+            ->get();
+          
+        return view('/admin/modulo_visitas', ['datosV' => json_encode($dataV), 
+        'sede' => $n_sede, 'datosC' => json_encode($dataC)]);
     }
     
     public function motivo($id, $value)
@@ -1266,7 +1223,7 @@ class AdminController extends Controller
         $sedes = $sedes->get();
         $s = $s->get();
 
-        return view("admin.registro_sedes", ['s'=>$s, 'tabla_sedes' => json_encode($sedes)]);
+        return view("admin.control_sedes_areas", ['s'=>$s, 'tabla_sedes' => json_encode($sedes)]);
     }
 
     public function activate_area($id, $campo)
@@ -1345,7 +1302,7 @@ class AdminController extends Controller
             $valor->final = $fechaObjeto->format('d-m-Y');
         }
 
-        return view('admin.registro_festivos',['no_laboral' =>json_encode($no_laboral)]);
+        return view('admin.modulo_fechas',['no_laboral' =>json_encode($no_laboral)]);
     }
 
     public function guardarfestivos(Request $request)
@@ -1598,7 +1555,7 @@ class AdminController extends Controller
             ]);
            
         }
-        return redirect(route("admin.ver_premios"))->with("Exito",);
+        return redirect(route("admin.premios"))->with("Exito",);
     }
 
     public function eliminar_premio($id){

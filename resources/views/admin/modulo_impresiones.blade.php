@@ -80,7 +80,7 @@
                     </div>
 
                     <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits">
-                        Enviar
+                        Registrar
                     </button>
 
                 </form>
@@ -178,6 +178,17 @@
                     },  {
                         title: "Estado",
                         field: "estado",
+                        formatter: function(cell, formatterParams, onRendered) {
+                            var estado = cell.getValue();
+                            var icono = "";
+
+                            if (estado === 0) {
+                                icono = "Inactivo";
+                            } else if (estado === 1) {
+                                icono = "Activo";
+                            } 
+                            return icono;
+                        },
                     }, {
                         title: "",
                         field: "id",

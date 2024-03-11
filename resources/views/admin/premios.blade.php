@@ -186,13 +186,14 @@
                 }
         });
 
+
         let dlb2 = new DualListbox('.select2', {
-            availableTitle: 'Prestadores',
+            availableTitle: 'Prestadores disponibles',
             selectedTitle: 'Prestadores seleccionados',
-            addButtonText: '🡺',
-            removeButtonText: '🡸',
-            addAllButtonText: '>>',
-            removeAllButtonText: '<<',
+            addButtonText: '<span style="color:black;">Agregar</span>',
+            removeButtonText: '<span style="color:black;">Quitar</span>',
+            addAllButtonText: '<span style="color:black;">Agregar todos</span>',
+            removeAllButtonText: '<span style="color:black;">Quitar todos</span>',
             searchPlaceholder: 'Buscar prestadores'
         });
         dlb2.addEventListener('added', function(event) {
@@ -201,6 +202,14 @@
         dlb2.addEventListener('removed', function(event) {
             console.log(event);
         });
+
+        let searchInputs = document.querySelectorAll('.dual-listbox__search');
+        if (searchInputs) {
+            searchInputs.forEach(function(searchInput) {
+                searchInput.style.color = 'black';
+            });
+        }
+        
     </script>
 
     <script type="text/javascript">

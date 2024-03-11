@@ -24,7 +24,7 @@
                 </div>
             @endif
             <div>
-                <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">Ajustes de Perfil </h3>        
+                <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">Registrar Nuevo Usuario </h3>        
 
                     <div class="intro-y col-span-12 sm:col-span-6">
                         <label for="tipo" class="form-label">Tipo</label>
