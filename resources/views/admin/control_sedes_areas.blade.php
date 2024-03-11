@@ -387,7 +387,7 @@
 
         function nuevoNombreArea(id, campo) {
             const token = document.head.querySelector('meta[name="csrf-token"]').content;
-            fetch(`activar_area/${id}/${campo}`, {
+            fetch(`area_edit/${id}/${campo}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -403,6 +403,26 @@
                 console.error('Error en activacion:', error);
             });
         } 
+
+        function nuevoNombreSede(id, campo) {
+            const token = document.head.querySelector('meta[name="csrf-token"]').content;
+            fetch(`sede_edit/${id}/${campo}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token,
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+
+                //window.location.reload(); 
+            })
+            .catch(error => {
+                console.error('Error en activacion:', error);
+            });
+        } 
+
 
     </script>
     

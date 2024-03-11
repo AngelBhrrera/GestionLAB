@@ -122,6 +122,9 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     
                     Route::middleware('role:Superadmin')->group(function() {
                         Route::get('/superadmin/gestion', 'gestionViews')->name('gestionViews');
+                        Route::get('/area_edit/{id}/{value}', 'editA')->name('editA');
+                        Route::get('/sede_edit/{id}/{value}', 'editS')->name('editS');
+
                     });
 
                     Route::get('/admin/gestion', 'gestHub')->name('gestHub');
@@ -198,7 +201,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/proyectos', 'proyHub')->name('proyHub');
             Route::get('/admin/C_proyectos', 'create_proy')->name('create_proy');
             Route::post('/admin/M_proyecto', 'make_proy')->name('make_proy');
-            
+
             Route::get('/admin/agregar_proyecto', 'add_to_proys')->name('add_to_proys');
             Route::get('/admin/agregar_proyecto/{proyectoId}', 'add_to_proy')->name('add_to_proy');
 

@@ -482,8 +482,8 @@ class AdminController extends Controller
     public function create_act()
     {
         $prestadores = DB::table('solo_prestadores');
-        $categorias = DB::table('categorias')->get();
-        $subcategorias = DB::table('subcategorias')->get();
+        $categorias = DB::table('categorias')->orderBy('nombre')->get();
+        $subcategorias = DB::table('subcategorias')->orderBy('nombre')->get();
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $prestadores->where('id_area', auth()->user()->area)
                 ->where('horario', auth()->user()->horario);
@@ -568,7 +568,7 @@ class AdminController extends Controller
             $prestadores->where('id_sede', auth()->user()->sede);
         }
             
-        $categorias = DB::table('categorias')->get();
+        $categorias = DB::table('categorias')->orderBy('nombre')->get();
         $actividades = DB::table('actividades')
             ->whereNotNull('TEC')
             ->get();
@@ -722,7 +722,6 @@ class AdminController extends Controller
             $prestadores->where('id_area', auth()->user()->area)
                 ->where('horario', auth()->user()->horario)
                 ->where('tipo', '!=', 'coordinador');
-            $areas->where('id', auth()->user()->area);
             $tabla_proy->where('id_area', auth()->user()->area);
         }else if(auth()->user()->tipo == 'jefe area'){
             $prestadores->where('id_area', auth()->user()->area);
@@ -734,10 +733,11 @@ class AdminController extends Controller
             $tabla_proy->where('id_sede', auth()->user()->sede);    
         }
         $tabla_proy =  $tabla_proy->get();
-        $categorias = DB::table('categorias')->get();
+        $categorias = DB::table('categorias') ->orderBy('nombre')->get();
         $proyectos = DB::table('proyectos')->get();
         $areas = $areas->get();
         $prestadores= $prestadores->get();
+
         return view('/admin/proyectos', compact('prestadores', 'areas', 'categorias', 'proyectos', 'tabla_proy'));
     }
 
@@ -1014,6 +1014,7 @@ class AdminController extends Controller
     public function categorias(){
 
         $categ = DB::table('categorias')
+            ->orderBy('nombre')
             ->get();
 
         $subcateg = DB::table('subcategorias')
@@ -1240,6 +1241,21 @@ class AdminController extends Controller
         return response()->json(['message' => $sql]);
     }
 
+    public function editA($id, $campo){
+        $sql = DB::table('areas')
+        ->where('id', $id)
+        ->update(['nombre_area' => $campo]);
+
+        return response()->json(['message' => $sql]);
+    }
+
+    public function editS($id, $campo){
+        $sql = DB::table('sedes')
+        ->where('id_sede', $id)
+        ->update(['nombre_sede' => $campo]);
+        return response()->json(['message' => $sql]);
+    }
+
     public function nuevaSede(Request $request){
         $request->validate([
             'nombreSede' => 'required|max:255',
@@ -1439,8 +1455,8 @@ class AdminController extends Controller
             return redirect()->back()->with("Error",);
         }else{
             $categ = DB::table('categorias')
-            ->where('id', $actividad->id_categoria)
-            ->value('nombre');
+                ->where('id', $actividad->id_categoria)
+                ->value('nombre');
             $subcateg = DB::table('subcategorias')
                 ->where('id', $actividad->id_subcategoria)
                 ->value('nombre');
