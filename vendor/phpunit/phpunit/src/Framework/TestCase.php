@@ -313,7 +313,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private $snapshot;
 
     /**
-     * @var Prophet
+     * @var \Prophecy\Prophet
      */
     private $prophet;
 
@@ -2185,8 +2185,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
 
             if (isset($passed[$dependencyTarget])) {
-                if ($passed[$dependencyTarget]['size'] != TestUtil::UNKNOWN &&
-                    $this->getSize() != TestUtil::UNKNOWN &&
+                if ($passed[$dependencyTarget]['size'] != \PHPUnit\Util\Test::UNKNOWN &&
+                    $this->getSize() != \PHPUnit\Util\Test::UNKNOWN &&
                     $passed[$dependencyTarget]['size'] > $this->getSize()) {
                     $this->result->addError(
                         $this,
