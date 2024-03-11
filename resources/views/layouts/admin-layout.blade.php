@@ -126,16 +126,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('admin.gestor_premios')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
-                            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-badge">
-                            <path d="M12 22h6a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                            <path d="M5 17a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M7 16.5 8 22l-3-1-3 1 1-5.5"/></svg></i></div>
-                            <div class="side-menu__title">Ver premios</div>
-                        </a>
-                    </li>
-                    <li>
                         <a href="{{route('admin.sede')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
                             <div class="side-menu__title">Modificar area</div>
@@ -216,31 +206,50 @@
                 @endif
                 @if ($filtro->visitas == 1)
                     <li>
-                        <a href="{{ route('admin.clientes') }}" class="side-menu">
-                            <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-user">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <circle cx="12" cy="10" r="3" />
-                                        <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662" />
-                                    </svg></i> </div>
-                            <div class="side-menu__title">Visitantes y clientes</div>
+                        <a href="{{route('admin.prestadores')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="user-check"></i> </div>
+                            <div class="side-menu__title">Ver prestadores activos</div>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.visitas') }}" class="side-menu">
-                            <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-check">
-                                        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-                                        <path d="m9 9.5 2 2 4-4" />
+                        <a href="{{route('admin.firmas')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-check">
+                                        <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+                                        <line x1="16" x2="16" y1="2" y2="6" />
+                                        <line x1="8" x2="8" y1="2" y2="6" />
+                                        <line x1="3" x2="21" y1="10" y2="10" />
+                                        <path d="m9 16 2 2 4-4" />
                                     </svg></i> </div>
-                            <div class="side-menu__title">Check-in Visitas</div>
+                            @if (Auth::user()->tipo == "coordinador")
+                            <div class="side-menu__title">Registros Checkin</div>
+                            @else
+                            <div class="side-menu__title">Validar horas</div>
+                            @endif
                         </a>
                     </li>
+                    @if (Auth::user()->tipo != "coordinador")
+                    <li>
+                        <a href="{{route('admin.reportes_parciales')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="file"></i> </div>
+                            <div class="side-menu__title">Autorizar documentos del Servicio Social</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.premios')}}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="award"></i> </div>
+                            <div class="side-menu__title">Premios</div>
+                        </a>
+                    </li>
+                    @endif
+                @endif
+                @if ($filtro->visitas == 1)
                     <li>
                         <a href="{{ route('admin.visitas_reg') }}" class="side-menu">
                             <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-check">
                                         <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
                                         <path d="m9 9.5 2 2 4-4" />
                                     </svg></i> </div>
-                            <div class="side-menu__title">Registro de visitas</div>
+                            <div class="side-menu__title">Gestion de Visitantes</div>
                         </a>
                     </li>
                 @endif
@@ -367,12 +376,6 @@
                                 <div class="side-menu__title">Gestión Impresoras</div>
                             </a>
                         </li>
-                        <li>
-                            <a href="{{route('admin.watch_prints')}}" class="side-menu">
-                            <div class="side-menu__icon"> <i><img src="{{asset('build/assets/images/3d-printer.png')}}"  class="blanco"  width="24" height="24" alt=""></i> </div>
-                                <div class="side-menu__title">Registro Impresiones</div>
-                            </a>
-                        </li>
                         @if (Auth::user()->tipo == "jefe area")
                         <li>
                             <a href="{{route('admin.module_print')}}" class="side-menu">
@@ -417,11 +420,20 @@
                     <a href="javascript:;" class="side-menu">
                         <div class="side-menu__icon"> <i data-lucide="edit"></i> </div>
                         <div class="side-menu__title">
-                            ACTIVIDADES
+                            PROYECTOS Y ACTIVIDADES
                             <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                         </div>
                     </a>
                     <ul class="">
+                        @if($prestadores)
+                        <li>
+                            <a href="{{ route('admin.create_proy') }}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="package-plus"></i> </div>
+                                <div class="side-menu__title">Proyectos</div>
+                            </a>
+                        </li>
+                        @endif
+                        @if($proyectos)
                         <li>
                             <a href="{{ route('admin.create_act')}}" class="side-menu">
                                 <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
@@ -456,6 +468,7 @@
                                 <div class="side-menu__title"> Actividades propuestas por Prestador</div>
                             </a>
                         </li>
+                        @endif
                     </ul>
                 </li>
             @endif
@@ -497,6 +510,8 @@
             @endsection
         @endif
     @endif
+
+
 @endsection
 
 @section('structure')

@@ -132,6 +132,7 @@
                     <a class="nav-link" data-toggle="tab" href="#sede">Sede</a>
                 </li>
             </ul>
+            
             <div class="tab-content">
                 <div class="tab-pane active" id="area">
                 <ul class="nav nav-tabs nav-justified " style="overflow-x: auto; padding-bottom: 10px;" role="tablist">

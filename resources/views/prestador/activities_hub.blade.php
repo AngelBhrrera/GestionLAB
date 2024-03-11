@@ -75,7 +75,7 @@
             <a href="{{ route('create_act') }}" class="boxH">
                 <div class="box-contentH">Proponer Nueva Actividad</div>
             </a>
-            <a href="{{ route('asign_act') }}" class="boxH">
+            <a href="{{ route('actividadesAsignadas') }}" class="boxH">
                 <div class="box-contentH">Ver Actividades Asignadas</div>
             </a>
             <a href="{{ route('misActividades') }}" class="boxH">

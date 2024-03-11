@@ -195,11 +195,13 @@ class MachineLearningController extends Controller
         $t = $request->input('otro_dato');
         $this->obtenerActividad($id);
         $this->obtenerPrestadores($t);
-
-        $scriptPath = "C:/laragon/www/GestionLAB/public/decisionTreeModel.py";
+        
+        $rutaPublic = public_path();
+        // Agrega la ruta relativa al archivo deseado dentro de "public"
+        $scriptPath  = $rutaPublic . '/decisionTreeModel.py';
 
         try {
-            $scriptPath = "C:/laragon/www/GestionLAB/public/decisionTreeModel.py";
+          
             $command = 'python ' . $scriptPath;
             $output = shell_exec($command . ' 2>&1');
             // Decodificar la salida JSON del script Python

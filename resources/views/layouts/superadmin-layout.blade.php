@@ -21,9 +21,7 @@
                     @yield('scroll-menu')
                     @yield('gestion')
                     @yield('coordinador')
-                    @yield('prestadores')
                     @yield('impresiones')
-                    @yield('contacto')
                     @yield('actividades')
                 </ul>
             </div>

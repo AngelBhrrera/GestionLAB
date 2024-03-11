@@ -15,24 +15,24 @@
 
 @section('subcontent')
 <div style="display: flex;">
-
-            
-
+    <form method="POST" action="{{ route('registrar') }}">
+    @csrf
         <div class="px-5 sm:px-20 pt-10 border-t border-slate-200/60 dark:border-darkmode-400">
             @if(session('alert-type'))
-                {{ session('alert-message') }}
+                <div class="alert alert-{{ session('alert-type') }}">
+                    {{ session('alert-message') }}
+                </div>
             @endif
             <div>
-                <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">Ajustes de Perfil </h3>        
-                <form method="POST" action="{{ route('registrar') }}">
-                @csrf
+                <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">Registrar Nuevo Usuario </h3>        
+
                     <div class="intro-y col-span-12 sm:col-span-6">
                         <label for="tipo" class="form-label">Tipo</label>
                         <select class="form-control" name="tipo" id="tipo" onchange="mostrarCampos(this.value)">
                             @if (isset($users))
                                 <option id="0" value="">Selecciona un tipo de usuario</option>
                                     @foreach ($users as $dato )
-                                    <option value="{{ $dato['value'] }}" @selected(old('tipo') == {{$dato['value']}}) data-nombre="{{ $dato['name'] }}" id="{{ $dato['id'] }}">
+                                    <option value="{{ $dato['value'] }}" data-nombre="{{ $dato['name'] }}" id="{{ $dato['id'] }}">
                                         {{ $dato['name'] }}
                                     </option>
                                     @endforeach
@@ -52,7 +52,7 @@
                         </div>
                         <div class="intro-y col-span-12 sm:col-span-6">
                             <label id="apellido" for="apellido" class="form-label">Apellido</label>
-                            <input id="apellido" type="text" class="form-control @if(old('opc')=='1') @error('apellido') is-invalid @enderror @endif" value="{{old('apellido')}}" name="apellido" required autocomplete="off" placeholder="Apellido">
+                            <input id="apellido" type="text" class="form-control @if(old('opc')=='1') @error('apellido') is-invalid @enderror @endif" name="apellido" required autocomplete="off" placeholder="Apellido">
                             @error('apellido')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -61,7 +61,7 @@
                         </div>
                         <div class="intro-y col-span-12 sm:col-span-6">
                             <label  id="correo" for="correo" class="form-label">Correo</label>
-                            <input id="correo" type="email" class="form-control @if(old('opc')=='1') @error('correo') is-invalid @enderror @endif" value="{{old('correo')}}" name="correo" required="correo" placeholder="Correo">
+                            <input id="correo" type="email" class="form-control @if(old('opc')=='1') @error('correo') is-invalid @enderror @endif" name="correo" required="correo" placeholder="Correo">
                             @error('correo')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -86,7 +86,7 @@
                     <div class="col-span-12 sm:col-span-4">
                         <div class="intro-y col-span-12 sm:col-span-6" id="divCode">
                             <label id="codigo" for="codigo" class="form-label">Codigo</label>
-                            <input id="codigo" maxlength="10" type="text" class="form-control @if(old('opc')=='1') @error('código') is-invalid @enderror @endif" name="codigo" value="{{old('codigo')}}" placeholder="Código">
+                            <input id="codigo" maxlength="10" type="text" class="form-control @if(old('opc')=='1') @error('código') is-invalid @enderror @endif" name="codigo" value="{{ old('opc')=='1' ? old('codigo') : '' }}" placeholder="Código">
                             @if(old('opc')=='1')
                             @error('codigo')
                             <span class="invalid-feedback" role="alert">
@@ -97,7 +97,7 @@
                         </div>
                         <div class="intro-y col-span-12 sm:col-span-6" id="divTelefono">
                             <label id="telefono" for="telefono" class="form-label">Telefono</label>
-                            <input id="telefono" maxlength="10" type="text" class="form-control @if(old('opc')=='1') @error('telefono') is-invalid @enderror @endif" value="{{old('telefono')}}" name="telefono" placeholder="Telefono">
+                            <input id="telefono" maxlength="10" type="text" class="form-control @if(old('opc')=='1') @error('telefono') is-invalid @enderror @endif" name="telefono" placeholder="Telefono">
                             @error('telefono')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -133,7 +133,7 @@
                         </div>
                         <div class="intro-y col-span-12 sm:col-span-6" id="divCarrera">
                             <label  id="carrera" for="carrera" class="form-label">Carrera</label>
-                            <input id="carrera" type="text" class="form-control @if(old('opc')=='1') @error('carrera') is-invalid @enderror @endif" value="{{old('carrera')}}" name="carrera" placeholder="Carrera">
+                            <input id="carrera" type="text" class="form-control @if(old('opc')=='1') @error('carrera') is-invalid @enderror @endif" name="carrera" placeholder="Carrera">
                             @error('carrera')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -156,7 +156,7 @@
 
                         <div class="intro-y col-span-12 sm:col-span-6" id="divArea">
                             <label  id="area" for="area" class="form-label">Área de trabajo</label>
-                            <select class="form-control" id="areaSelect" name="area" disabled onchange="filtroArea()">
+                            <select class="form-control" name="area"  id="areaSelect" disabled onchange="filtroArea()">
                                 <option id="0" value="">Selecciona una sede primero</option>    
                             </select>
                         </div>
@@ -179,9 +179,8 @@
                     Registrar
                 </button>
             </div>
-            </form>
         </div>
-    
+    </form>
 </div>
 
 <div style="height: 65px;"></div>
@@ -199,9 +198,9 @@
         });
         var selects = document.querySelectorAll('select');
         selects.forEach(function(select) {
-            select.selectedIndex = 0;
+            select.selectedIndex = 0; 
         });
-    }
+    };
 
     function mostrarCampos(tipoUsuario) {
         
