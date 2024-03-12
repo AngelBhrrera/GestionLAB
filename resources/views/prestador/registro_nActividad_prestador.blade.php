@@ -2,7 +2,8 @@
 
 @section('breadcrumb')
         <li class="breadcrumb-item"><a href="{{route('homeP')}}">Prestador</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Crear actividad</li>
+        <li class="breadcrumb-item"><a href="{{route('actHub')}}">Actividades</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Propuesta</li>
 @endsection
 
 @section('subcontent')

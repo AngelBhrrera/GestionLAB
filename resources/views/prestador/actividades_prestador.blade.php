@@ -6,8 +6,8 @@
     <nav aria-label="breadcrumb" class="-intro-x hidden xl:flex">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{route('homeP')}}">Prestador</a></li>
-            <li class="breadcrumb-item active">Actividades</li>
-            <li class="breadcrumb-item active" aria-current="page">Mis actividades</li>
+            <li class="breadcrumb-item"><a href="{{route('actHub')}}">Actividades</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Lista</li>
         </ol>
     </nav>
 @endsection

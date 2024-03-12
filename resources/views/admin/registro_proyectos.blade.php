@@ -1,12 +1,25 @@
 @extends('layouts/admin-layout')
 @section('subhead')
+<style>
+.tooltip {
+    cursor: pointer;
+}
 
+.tooltip-info {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 10px;
+    position: absolute;
+    z-index: 999;
+}
+</style>
 <link rel="stylesheet" href="{{asset('build/assets/css/registro_proyecto_actividadess.css')}}">
 @endsection
+
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-<li class="breadcrumb-item"><a href="{{route('homeP')}}">Registro</a></li>
-<li class="breadcrumb-item active" aria-current="page">Actividades</li>
+<li class="breadcrumb-item"><a href="{{route('admin.proyHub')}}">Proyecto</a></li>
+<li class="breadcrumb-item active" aria-current="page">Crear</li>
 @endsection
 
 @section('subcontent')
@@ -39,27 +52,38 @@
                     @endif
 
                     <div class="form-group row" >
-                        <label for="nombre" class="col-md-4 col-form-label text-md-right">Titulo del proyecto</label>
+                        <label style="font-weight: bold; font-size: 1.2em;" for="nombre" class="col-md-4 col-form-label text-md-right">Titulo del proyecto</label>
                         <div class="col-md-8">
-                            <textarea id="t_proyecto" name="t_nombre" type="text" class="form-control"  placeholder="Ingresa el titulo del proyecto" required></textarea>
+                            <input id="t_proyecto" name="t_nombre" type="text" class="form-control"  placeholder="Ingresa el titulo del proyecto" required></input>
                         </div>
                     </div>
                     <div class="form-group">
-                            <label for="tipo_categoria">Seleccionar area</label>
-                            <select class="form-control" id="area" name="area" required>
+                            <label style="font-weight: bold; font-size: 1.2em;" for="tipo_categoria">Seleccionar area</label>
+                            <span class="tooltip" title="Los proyectos deben formar parte de un area de trabajo, tus areas de trabajo estan limitadas por tu rol en el sistema. No puedes crear proyectos en areas o sedes a las que no perteneces">ℹ️</span>
+                            <select class="form-control" id="area" name="area" required  onchange="filtroArea()">
                                 <option value="">Selecciona el area de trabajo donde estará principalmente el proyecto</option>
                                 @foreach ($areas as $area)
                                 <option value="{{ $area->id }}">{{ $area->nombre_area }}</option>
                                 @endforeach
                             </select>
                     </div>
-                    <div class="form-check mt-2" >
-                        <input id="checkbox" name="particular" class="form-check-input" type="checkbox" checked>
-                        <label class="form-check-label" for="checkbox-switch-1">Particular</label>
-                    </div>
+                    <div class="form-group">
+                        <label style="font-weight: bold; font-size: 1.2em;" for="horarios" class="form-label">Turno</label>
+                        <span class="tooltip" title="Incluir un turno para el proyecto permite clasificar los proyectos por el horario en el que se trabaja en cada uno">ℹ️</span>
+                          
+                            <select class="form-control" name="horario" id="horarios" disabled>
+                                <option selected id="0" value="">Seleccione un turno</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label style="font-weight: bold; font-size: 1.2em;" for="horarios" class="form-label">Particular</label>
+                            <span class="tooltip" title="Los proyectos particulares tienen un numero finito de prestadores que lo conforman y solo se le pueden asignar actividades a esos prestadores. Use un proyecto no particular cuando se realicen actividades generales que cualquier prestador podria realizar.">ℹ️</span>
+                            <br>
+                            <input id="checkbox" name="particular" class="form-check-input" type="checkbox" checked>
+                        </div>
                     <div class="container" id="card_duelist_box">
                         <div class="row justify-content-center">
-                            <label for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
+                            <label style="font-weight: bold; font-size: 1.2em;" for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
                             <div class="col-md-8"> 
                                 <select class="select2" name="prestadores_seleccionados[]" id="prestadores_seleccionados" multiple>  
                                     @if (isset($prestadores))
@@ -69,7 +93,7 @@
                                     @endif
                                 </select>
                             </div>
-                            <small id="Help" class="form-text text-muted">Selecciona a los prestadores para realizar la actividad</small>
+                            <small id="Help" class="form-text text-muted">Selecciona a los prestadores que formaran parte del proyecto</small>
                         </div>
                         <button id="boton_crear" type="submit" class="btn btn-primary from-prevent-multiple-submits">Crear proyecto</button>
                     </div>
@@ -106,10 +130,10 @@
         let dlb2 = new DualListbox('.select2', {
             availableTitle: 'Prestadores disponibles',
             selectedTitle: 'Prestadores seleccionados',
-            addButtonText: '🡺',
-            removeButtonText: '🡸',
-            addAllButtonText: '>>',
-            removeAllButtonText: '<<',
+            addButtonText: '<span style="color:black;">Agregar</span>',
+            removeButtonText: '<span style="color:black;">Quitar</span>',
+            addAllButtonText: '<span style="color:black;">Agregar todos</span>',
+            removeAllButtonText: '<span style="color:black;">Quitar todos</span>',
             searchPlaceholder: 'Buscar prestadores'
         });
         dlb2.addEventListener('added', function(event) {
@@ -118,6 +142,76 @@
         dlb2.addEventListener('removed', function(event) {
 
         });
+
+        $(document).ready(function() {
+            $('.tooltip').click(function() {
+                $('.tooltip-info').toggle();
+            });
+        });
+
+        function filtroArea() {
+        var areaSelect = document.getElementById('area');
+        var horarioSelect = document.getElementById('horarios');
+
+        var area = areaSelect.value;
+        horarioSelect.innerHTML = '<option value="">Selecciona un horario</option>';
+
+        var horariosMapping = {
+            'turnoMatutino': 'Matutino',
+            'turnoMediodia': 'Mediodia',
+            'turnoVespertino': 'Vespertino',
+            'turnoSabatino': 'Sabatino',
+            'turnoTiempoCompleto': 'TC'
+        };
+
+        if (area === '') {
+            horarioSelect.disabled = true;
+        } else {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var horariosArea = JSON.parse(xhr.responseText);
+                        horarioSelect.disabled = false;
+                        if (horariosArea[0].turnoMatutino === 1) {
+                            var option1 = document.createElement('option');
+                            option1.value = 'Matutino';
+                            option1.text = 'Matutino';
+                            horarioSelect.appendChild(option1);
+                        }
+                        if (horariosArea[0].turnoMediodia === 1) {
+                            var option1 = document.createElement('option');
+                            option1.value = 'Mediodia';
+                            option1.text = 'Mediodia';
+                            horarioSelect.appendChild(option1);
+                        }
+                        if (horariosArea[0].turnoVespertino === 1) {
+                            var option1 = document.createElement('option');
+                            option1.value = 'Vespertino';
+                            option1.text = 'Vespertino';
+                            horarioSelect.appendChild(option1);
+                        }
+                        if (horariosArea[0].turnoSabatino === 1) {
+                            var option1 = document.createElement('option');
+                            option1.value = 'Sabatino';
+                            option1.text = 'Sabatino';
+                            horarioSelect.appendChild(option1);
+                        }
+                        if (horariosArea[0].turnoTiempoCompleto === 1) {
+                            var option1 = document.createElement('option');
+                            option1.value = 'TC';
+                            option1.text = 'TC';
+                            horarioSelect.appendChild(option1);
+                        }
+                    } else {
+                        console.error('Error al obtener horarios');
+                    }
+                }
+            };
+            xhr.open('GET', 'area/' + area); 
+            xhr.send();
+        }
+    }
 
     </script>
 

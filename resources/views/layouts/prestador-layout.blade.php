@@ -67,19 +67,19 @@
                                 <li>
                                     <a href="{{route('horas')}}" class="side-menu">
                                         <div class="side-menu__icon"> <i data-lucide="clock"></i> </div>
-                                        <div class="side-menu__title">  Registro de horas </div>
+                                        <div class="side-menu__title">  Registro de Horas </div>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="{{route('parciales')}}" class="side-menu">
                                         <div class="side-menu__icon"> <i data-lucide="file"></i> </div>
-                                        <div class="side-menu__title">Reportes</div>
+                                        <div class="side-menu__title">Documentos del SS</div>
                                     </a>
                                 </li>
                                 <li>
                                 <a href="{{route('horario')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="calendar"></i> </div>
-                                    <div class="side-menu__title">Horario prestador</div>
+                                    <div class="side-menu__title">Calendario Prestador</div>
                                 </a>
                                 </li>                             
                             </ul>
@@ -96,6 +96,15 @@
                             </div>
                         </a>
                         <ul class="submenu">
+                        <li>
+                                <a href="{{route('actividadesAsignadas')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                                    stroke-linejoin="round" class="lucide lucide-list-todo"><rect x="3" y="5" width="6" height="6"
+                                     rx="1"/><path d="m3 17 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg></i> </div>
+                                    <div class="side-menu__title"> Actividades asignadas </div>
+                                </a>
+                            </li>
                             <li>
                                 <a href="{{route('create_act')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
@@ -107,11 +116,10 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{route('myProject')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="package"></i> </div>
-                                    <div class="side-menu__title">Mi proyecto</div>
+                                <a href="{{route('actPull')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="clipboard-list"></i> </div>
+                                    <div class="side-menu__title"> Pull de actividades abiertas </div>
                                 </a>
-                            </li>
                             </li>
                             <li>
                                 <a href="{{route('misActividades')}}" class="side-menu">
@@ -123,18 +131,43 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{route('actividadesAsignadas')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
-                                    stroke-linejoin="round" class="lucide lucide-list-todo"><rect x="3" y="5" width="6" height="6"
-                                     rx="1"/><path d="m3 17 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg></i> </div>
-                                    <div class="side-menu__title"> Actividades asignadas </div>
+                                <a href="{{route('myProject')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="package"></i> </div>
+                                    <div class="side-menu__title">Mi proyecto</div>
+                                </a>
+                            </li>
+                           
+                        </ul>
+                    </li>
+                    @endif
+
+                @if ($filtro->impresiones == 1)
+                    <li>
+                        <a href="javascript:;" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="hard-drive"></i> </div>
+                            <div class="side-menu__title">
+                                IMPRESIONES
+                                <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                            </div>
+                        </a>
+        
+                        <ul class="submenu">
+                            <li>
+                                <a href="{{route('create_imps')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="plus-circle"></i> </div>
+                                    <div class="side-menu__title"> Crear impresión </div>
                                 </a>
                             </li>
                             <li>
-                                <a href="{{route('actPull')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="clipboard-list"></i> </div>
-                                    <div class="side-menu__title"> Pull de actividades abiertas </div>
+                                <a href="{{route('show_imps')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i><img src="{{asset('build/assets/images/3d-printer.png')}}" width="24" height="24" alt=""></i> </div>
+                                    <div class="side-menu__title">  Mostrar mis impresiones </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{route('show_all_imps')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i><img src="{{asset('build/assets/images/3d-printer-gear.png')}}" width="24" height="24" alt=""></i> </div>
+                                    <div class="side-menu__title">  Ver todas las impresiones </div>
                                 </a>
                             </li>
                             <li>
@@ -145,7 +178,9 @@
                             </li>
                         </ul>
                     </li>
-
+                @endif
+                
+                @if ($filtro->gamificacion == 1)
                     <li>
                         <a href="#" class="side-menu">
                             <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
@@ -188,39 +223,6 @@
                     </li>
 
                 @endif
-
-                @if ($filtro->impresiones == 1)
-                    <li>
-                        <a href="javascript:;" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="hard-drive"></i> </div>
-                            <div class="side-menu__title">
-                                IMPRESIONES
-                                <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
-                            </div>
-                        </a>
-        
-                        <ul class="submenu">
-                            <li>
-                                <a href="{{route('create_imps')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="plus-circle"></i> </div>
-                                    <div class="side-menu__title"> Crear impresión </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{route('show_imps')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i><img src="{{asset('build/assets/images/3d-printer.png')}}" width="24" height="24" alt=""></i> </div>
-                                    <div class="side-menu__title">  Mostrar mis impresiones </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{route('show_all_imps')}}" class="side-menu">
-                                    <div class="side-menu__icon"> <i><img src="{{asset('build/assets/images/3d-printer-gear.png')}}" width="24" height="24" alt=""></i> </div>
-                                    <div class="side-menu__title">  Ver todas las impresiones </div>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                @endif
                 </ul>
             </div>
         <!-- END: Side Menu -->
@@ -258,7 +260,7 @@
                     </div>
 
                     <div class="intro-x relative ml-auto flex sm:mx-auto">
-                            <img class="ml-5"width="50" heigth="30" src="{{asset('build/assets/'.$nivel->ruta)}}" alt="medalla">
+                            <a title="Ver avance de nivel" href="{{route('level')}}"><img class="ml-5"width="50" heigth="30" src="{{asset('build/assets/'.$nivel->ruta)}}" alt="medalla"></a>
                     </div>
 
                     <div class="intro-x dropdown h-10">
@@ -297,7 +299,6 @@
                     </div>
                 </div>
             <div  class="container" style="padding: 20px 15px 0px 15px">
-                
                 @yield('subcontent')
             </div>
 

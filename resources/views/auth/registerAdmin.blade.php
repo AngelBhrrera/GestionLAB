@@ -7,8 +7,8 @@
 @section('breadcrumb')
 
 <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-<li class="breadcrumb-item"><a>Registro</a></li>
-<li class="breadcrumb-item active" aria-current="page">Usuarios</li>
+<li class="breadcrumb-item"><a href="{{route('admin.gestHub')}}">Gestion</a></li>
+<li class="breadcrumb-item active" aria-current="page">Registro Usuarios</li>
 
 @endsection
 
@@ -16,16 +16,33 @@
 @section('subcontent')
 <div style="display: flex;">
     <form method="POST" action="{{ route('registrar') }}">
+    @csrf
         <div class="px-5 sm:px-20 pt-10 border-t border-slate-200/60 dark:border-darkmode-400">
-            <div id="formOne">
-                <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">Ajustes de Perfil </h3>
-                <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5">
-                    @csrf
-                    <!-- Sección 1 -->
-                    @csrf
+            @if(session('alert-type'))
+                <div class="alert alert-{{ session('alert-type') }}">
+                    {{ session('alert-message') }}
+                </div>
+            @endif
+            <div>
+                <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">Registrar Nuevo Usuario </h3>        
+
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="tipo" class="form-label">Tipo</label>
+                        <select class="form-control" name="tipo" id="tipo" onchange="mostrarCampos(this.value)">
+                            @if (isset($users))
+                                <option id="0" value="">Selecciona un tipo de usuario</option>
+                                    @foreach ($users as $dato )
+                                    <option value="{{ $dato['value'] }}" data-nombre="{{ $dato['name'] }}" id="{{ $dato['id'] }}">
+                                        {{ $dato['name'] }}
+                                    </option>
+                                    @endforeach
+                            @endif
+                        </select>
+                    </div>
+                <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5" id=form_rest>
                     <div class="col-span-12 sm:col-span-4">
                         <div class="intro-y col-span-12 sm:col-span-6">
-                            <label for="name" class="form-label">Nombre *</label>
+                            <label id="name" for="name" class="form-label">Nombre</label>
                             <input id="name" type="text" class="form-control @if(old('opc')=='1') @error('name') is-invalid @enderror @endif" name="name" required autocomplete="off" placeholder="Nombre">
                             @error('name')
                             <span class="invalid-feedback" role="alert">
@@ -34,7 +51,7 @@
                             @enderror
                         </div>
                         <div class="intro-y col-span-12 sm:col-span-6">
-                            <label for="apellido" class="form-label">Apellido *</label>
+                            <label id="apellido" for="apellido" class="form-label">Apellido</label>
                             <input id="apellido" type="text" class="form-control @if(old('opc')=='1') @error('apellido') is-invalid @enderror @endif" name="apellido" required autocomplete="off" placeholder="Apellido">
                             @error('apellido')
                             <span class="invalid-feedback" role="alert">
@@ -43,7 +60,7 @@
                             @enderror
                         </div>
                         <div class="intro-y col-span-12 sm:col-span-6">
-                            <label for="correo" class="form-label">Correo *</label>
+                            <label  id="correo" for="correo" class="form-label">Correo</label>
                             <input id="correo" type="email" class="form-control @if(old('opc')=='1') @error('correo') is-invalid @enderror @endif" name="correo" required="correo" placeholder="Correo">
                             @error('correo')
                             <span class="invalid-feedback" role="alert">
@@ -51,22 +68,8 @@
                             </span>
                             @enderror
                         </div>
-                        <div class="intro-y col-span-12 sm:col-span-6">
-                            <label for="tipo" class="form-label">Tipo</label>
-                            <select class="form-control" name="tipo" id="tipo" onchange= "filtroTipo()">
-                                @if (isset($users))
-                                    <option id="0" value="">Selecciona un tipo de usuario</option>
-                                        @foreach ($users as $dato )
-                                        <option value="{{ $dato['value'] }}" data-nombre="{{ $dato['name'] }}" id="{{ $dato['id'] }}">
-                                            {{ $dato['name'] }}
-                                        </option>
-                                        @endforeach
-                                @endif
-                            </select>
-                        </div>
-
                         <div class="intro-y col-span-12 sm:col-span-6" id="divPW">
-                            <label for="password" class="form-label">Contraseña *</label>
+                            <label  id="password" for="password" class="form-label">Contraseña</label>
                             <input id="password" type="password" class="form-control @if(old('opc')=='1') @error('password') is-invalid @enderror @endif" name="password" autocomplete="new-password" required autocomplete="password" placeholder="Contraseña">
                             @error('password')
                             <span class="invalid-feedback" role="alert">
@@ -74,13 +77,16 @@
                             </span>
                             @enderror
                         </div>
-
+                        <div class="intro-y col-span-12 sm:col-span-6" id="divPW2">
+                            <label id="password-confirm" for="password-confirm" class="form-label">Confirmar Contraseña</label>
+                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password" required autocomplete="new-password" placeholder="Confirmar contraseña">
+                        </div>
                     </div>
-                    <!-- Sección 2 -->
+
                     <div class="col-span-12 sm:col-span-4">
                         <div class="intro-y col-span-12 sm:col-span-6" id="divCode">
-                            <label for="codigo" class="form-label">Codigo</label>
-                            <input id="codigo" type="text" class="form-control @if(old('opc')=='1') @error('código') is-invalid @enderror @endif" name="codigo" value="{{ old('opc')=='1' ? old('codigo') : '' }}" placeholder="Código">
+                            <label id="codigo" for="codigo" class="form-label">Codigo</label>
+                            <input id="codigo" maxlength="10" type="text" class="form-control @if(old('opc')=='1') @error('código') is-invalid @enderror @endif" name="codigo" value="{{ old('opc')=='1' ? old('codigo') : '' }}" placeholder="Código">
                             @if(old('opc')=='1')
                             @error('codigo')
                             <span class="invalid-feedback" role="alert">
@@ -90,8 +96,8 @@
                             @endif
                         </div>
                         <div class="intro-y col-span-12 sm:col-span-6" id="divTelefono">
-                            <label for="telefono" class="form-label">Telefono *</label>
-                            <input id="telefono" type="text" class="form-control @if(old('opc')=='1') @error('telefono') is-invalid @enderror @endif" name="telefono" placeholder="Telefono">
+                            <label id="telefono" for="telefono" class="form-label">Telefono</label>
+                            <input id="telefono" maxlength="10" type="text" class="form-control @if(old('opc')=='1') @error('telefono') is-invalid @enderror @endif" name="telefono" placeholder="Telefono">
                             @error('telefono')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -99,7 +105,7 @@
                             @enderror
                         </div>
                         <div class="intro-y col-span-12 sm:col-span-6" id="divEscuela">
-                            <label for="centro" class="form-label">Escuela *</label>
+                            <label id="centro" for="centro" class="form-label">Escuela </label>
                             <select class="form-control" name="centro" id="centro">
                                 <option selected id="1" value='null'>Seleccione un centro</option>
                                 <option id="1" value='CUCEI'>CUCEI</option>
@@ -128,7 +134,7 @@
                             @endif
                         </div>
                         <div class="intro-y col-span-12 sm:col-span-6" id="divCarrera">
-                            <label for="carrera" class="form-label">Carrera</label>
+                            <label  id="carrera" for="carrera" class="form-label">Carrera</label>
                             <input id="carrera" type="text" class="form-control @if(old('opc')=='1') @error('carrera') is-invalid @enderror @endif" name="carrera" placeholder="Carrera">
                             @error('carrera')
                             <span class="invalid-feedback" role="alert">
@@ -136,17 +142,10 @@
                             </span>
                             @enderror
                         </div>
-
-                        <div class="intro-y col-span-12 sm:col-span-6" id="divPW2">
-                            <label for="password-confirm" class="form-label">Confirmar Contraseña *</label>
-                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password" required autocomplete="new-password" placeholder="Confirmar contraseña">
-                        </div>
-
                     </div>
-                    <!-- Sección 3 -->
-                    <div class="col-span-12 sm:col-span-4" id="ajustesPrestador">
+                    <div class="col-span-12 sm:col-span-4">
                         <div class="intro-y col-span-12 sm:col-span-6" id="divSede">
-                            <label for="sedeSelect" class="form-label">Sede</label>
+                            <label  id="sede" for="sede" class="form-label">Sede</label>
                             <select class="form-control" name="sede" id="sedeSelect" onchange="filtroSede()">
                                 @if (isset($sedes))
                                 <option id="sede" value="">Selecciona una sede</option>
@@ -158,23 +157,22 @@
                         </div>
 
                         <div class="intro-y col-span-12 sm:col-span-6" id="divArea">
-                            <label for="area" class="form-label">Área de trabajo</label>
-                            <select class="form-control" id="area" name="area" disabled onchange="filtroArea()">
-                                <option id="0" value="">Selecciona un área de trabajo</option>    
+                            <label  id="area" for="area" class="form-label">Área de trabajo</label>
+                            <select class="form-control" name="area"  id="areaSelect" disabled onchange="filtroArea()">
+                                <option id="0" value="">Selecciona una sede primero</option>    
                             </select>
                         </div>
 
                         <div class="intro-y col-span-12 sm:col-span-6" id="divTurno">
-                            <label for="horarios" class="form-label">Turno</label>
-                            <select class="form-control" name="horario" id="horarios" disabled>
-                                <option selected id="0" value="">Seleccione un turno</option>
+                            <label id="turno" for="turno" class="form-label">Turno</label>
+                            <select class="form-control" name="horario" id="turnoSelect" disabled>
+                                <option selected id="0" value="">Selecciona una area primero</option>
                             </select>
                         </div>
                         <div class="intro-y col-span-12 sm:col-span-6" id="divHoras">
-                            <label for="horas" class="form-label">Horas de Servicio *</label>
-                            <input id="horas" type="number" class="form-control @if(old('opc')=='1') @error('horas') is-invalid @enderror @endif " name="horas" value="{{old('horas')}}" placeholder="Horas de servicio">
+                            <label id="horas" for="horas" class="form-label">Horas de Servicio</label>
+                            <input id="horasSelect" type="number" class="form-control @if(old('opc')=='1') @error('horas') is-invalid @enderror @endif " name="horas" value="{{old('horas')}}" placeholder="Horas de servicio">
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -182,11 +180,11 @@
                 <button id="btn-log" class="btn btn-outline-secondary w-full mt-3" type="submit">
                     Registrar
                 </button>
+            </div>
+        </div>
     </form>
 </div>
-</div>
 
-</div>
 <div style="height: 65px;"></div>
 
 @endsection
@@ -195,36 +193,105 @@
 
 <script type="text/javascript">
 
-    function filtroTipo(){
-        if ((document.getElementById('clientA').selected) || (document.getElementById('clientM').selected) || (document.getElementById('ext').selected)){
-            document.getElementById('sedeSelect').disabled = true;
-            document.getElementById('area').disabled = true;
-            document.getElementById('horarios').disabled = true;
-            document.getElementById('horas').disabled = true;
+    window.onload = function() {
+        var inputs = document.querySelectorAll('input:not([name="_token"])');
+        inputs.forEach(function(input) {
+            input.value = '';
+        });
+        var selects = document.querySelectorAll('select');
+        selects.forEach(function(select) {
+            select.selectedIndex = 0; 
+        });
+    };
 
-            var divAjustesPrestador = document.getElementById('ajustesPrestador');
-            var inputs = divAjustesPrestador.getElementsByTagName('select');
-            for (var i = 0; i < inputs.length; i++) {
-                inputs[i].value = "";
+    function mostrarCampos(tipoUsuario) {
+        
+        var todosLosCampos = Array.from(document.querySelectorAll('input, select')).map(el => el.id);
+        todosLosCampos.forEach(function (campo) {
+            var campoElement = document.getElementById(campo);
+            if (campoElement) {
+                campoElement.disabled = false;
             }
-            document.getElementsById('horas').value = "";
+        });
+
+        var asteriscosExistentes = document.querySelectorAll('.asterisco');
+        asteriscosExistentes.forEach(function (asterisco) {
+            asterisco.remove();
+        });
+
+        if (tipoUsuario == 'coordinador' || tipoUsuario == 'voluntario' || tipoUsuario == 'prestador' || tipoUsuario == 'practicante') {
+            var camposObligatorios = ['name', 'apellido', 'correo', 'password', 'password-confirm', 'sede', 'area', 'codigo', 'telefono', 'centro', 'carrera', 'turno', 'horas'];
+            aplicarCamposObligatorios(camposObligatorios);
+        }else if (tipoUsuario == 'jefe area'){
+            var camposObligatorios = ['name', 'apellido', 'correo', 'password', 'password-confirm', 'sede', 'area'];
+            var camposOpcionales =  ['telefono', 'codigo', 'centro', 'carrera', 'turno', 'horas' ];
+            var camposBloqueados = ['turnoSelect', 'horasSelect'];
+            aplicarCamposObligatorios(camposObligatorios);
+            aplicarCamposOpcionales(camposOpcionales);
+            aplicarCamposBloqueados(camposBloqueados);
+        }else if (tipoUsuario == 'jefe sede'){
+            var camposObligatorios = ['name', 'apellido', 'correo', 'password', 'password-confirm', 'sede'];
+            var camposOpcionales =  ['telefono', 'codigo', 'centro', 'carrera', 'area', 'horas', 'turno' ];
+            var camposBloqueados = ['turnoSelect', 'horasSelect', 'areaSelect'];
+            aplicarCamposObligatorios(camposObligatorios);
+            aplicarCamposOpcionales(camposOpcionales);
+            aplicarCamposBloqueados(camposBloqueados);
         }else{
-            document.getElementById('sedeSelect').disabled = false;
-            document.getElementById('area').disabled = false;
-            document.getElementById('horarios').disabled = false;
-            document.getElementById('horas').disabled = false;
+            var camposObligatorios = ['name', 'apellido', 'correo', 'password', 'password-confirm',  'telefono'];
+            var camposOpcionales =  ['codigo', 'centro', 'carrera', 'area', 'horas', 'turno', 'sede'];
+            var camposBloqueados = ['turnoSelect', 'horasSelect', 'sedeSelect', 'areaSelect'];
+            aplicarCamposObligatorios(camposObligatorios);
+            aplicarCamposOpcionales(camposOpcionales);
+            aplicarCamposBloqueados(camposBloqueados);
         }
+    }
+
+    function aplicarCamposObligatorios(camposObligatorios){
+        camposObligatorios.forEach(function (campo) {
+            document.getElementById(campo).required = true;
+            document.getElementById(campo).classList.add('font-bold');
+            var labelElement = document.querySelector("label[for='" + campo + "']");
+            if (labelElement) {
+                var asteriscoElement = document.createElement('span');
+                asteriscoElement.textContent = '*';
+                asteriscoElement.classList.add('asterisco'); 
+                labelElement.appendChild(asteriscoElement);
+            }
+        });
+    }
+
+    function aplicarCamposBloqueados(camposBloqueados){
+        camposBloqueados.forEach(function (campo) {
+            document.getElementById(campo).value = '';
+            document.getElementById(campo).disabled = true;
+            document.getElementById(campo).classList.remove('font-bold');
+        });
+    }
+
+    function aplicarCamposOpcionales(camposOpcionales){
+        camposOpcionales.forEach(function (campo) {
+            document.getElementById(campo).value = ''; 
+            document.getElementById(campo).classList.remove('font-bold');
+            var asteriscoElement = document.getElementById(campo).parentNode.querySelector('.asterisco');
+            if (asteriscoElement) {
+                asteriscoElement.remove();
+            }
+        });
     }
 
     function filtroSede() {
         var sedeSelect = document.getElementById('sedeSelect');
-        var areaSelect = document.getElementById('area');
-        
+        var areaSelect = document.getElementById('areaSelect');
+        var turnoSelect = document.getElementById('turnoSelect');
+
         var sedeId = sedeSelect.value;
         areaSelect.innerHTML = '<option value=""> Selecciona un área de trabajo</option>';
 
         if (sedeId === '') {
+            areaSelect.innerHTML = '<option value=""> Selecciona una sede primero</option>';
             areaSelect.disabled = true;
+            turnoSelect.innerHTML = '<option value="">Selecciona una area primero</option>';
+            turnoSelect.disabled = true;
             return;
         }else{
             var xhr = new XMLHttpRequest();
@@ -250,13 +317,14 @@
     }
 
     function filtroArea() {
-        var areaSelect = document.getElementById('area');
-        var horarioSelect = document.getElementById('horarios');
-
+        var areaSelect = document.getElementById('areaSelect');
+        var turnoSelect = document.getElementById('turnoSelect');
+        var tipoSelect = document.getElementById('tipo');
+        var tipo = tipoSelect.value;
         var area = areaSelect.value;
-        horarioSelect.innerHTML = '<option value="">Selecciona un horario</option>';
+        turnoSelect.innerHTML = '<option value="">Selecciona un horario</option>';
 
-        var horariosMapping = {
+        var turnoMapping = {
             'turnoMatutino': 'Matutino',
             'turnoMediodia': 'Mediodia',
             'turnoVespertino': 'Vespertino',
@@ -265,52 +333,57 @@
         };
 
         if (area === '') {
-            horarioSelect.disabled = true;
+            turnoSelect.innerHTML = '<option value="">Selecciona una area primero</option>';
+            turnoSelect.disabled = true;
         } else {
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        var horariosArea = JSON.parse(xhr.responseText);
-                        horarioSelect.disabled = false;
-                        //console.log(horariosArea);
-                        if (horariosArea[0].turnoMatutino === 1) {
-                            var option1 = document.createElement('option');
-                            option1.value = 'Matutino';
-                            option1.text = 'Matutino';
-                            horarioSelect.appendChild(option1);
+            if(tipo != 'jefe area' && tipo != 'jefe sede'){
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            var turnoArea = JSON.parse(xhr.responseText);
+                            turnoSelect.disabled = false;
+                            //console.log(turnoArea);
+                            if (turnoArea[0].turnoMatutino === 1) {
+                                var option1 = document.createElement('option');
+                                option1.value = 'Matutino';
+                                option1.text = 'Matutino';
+                                turnoSelect.appendChild(option1);
+                            }
+                            if (turnoArea[0].turnoMediodia === 1) {
+                                var option1 = document.createElement('option');
+                                option1.value = 'Mediodia';
+                                option1.text = 'Mediodia';
+                                turnoSelect.appendChild(option1);
+                            }
+                            if (turnoArea[0].turnoVespertino === 1) {
+                                var option1 = document.createElement('option');
+                                option1.value = 'Vespertino';
+                                option1.text = 'Vespertino';
+                                turnoSelect.appendChild(option1);
+                            }
+                            if (turnoArea[0].turnoSabatino === 1) {
+                                var option1 = document.createElement('option');
+                                option1.value = 'Sabatino';
+                                option1.text = 'Sabatino';
+                                turnoSelect.appendChild(option1);
+                            }
+                            if (turnoArea[0].turnoTiempoCompleto === 1) {
+                                var option1 = document.createElement('option');
+                                option1.value = 'TC';
+                                option1.text = 'TC';
+                                turnoSelect.appendChild(option1);
+                            }
+                        } else {
+                            console.error('Error al obtener turno');
                         }
-                        if (horariosArea[0].turnoMediodia === 1) {
-                            var option1 = document.createElement('option');
-                            option1.value = 'Mediodia';
-                            option1.text = 'Mediodia';
-                            horarioSelect.appendChild(option1);
-                        }
-                        if (horariosArea[0].turnoVespertino === 1) {
-                            var option1 = document.createElement('option');
-                            option1.value = 'Vespertino';
-                            option1.text = 'Vespertino';
-                            horarioSelect.appendChild(option1);
-                        }
-                        if (horariosArea[0].turnoSabatino === 1) {
-                            var option1 = document.createElement('option');
-                            option1.value = 'Sabatino';
-                            option1.text = 'Sabatino';
-                            horarioSelect.appendChild(option1);
-                        }
-                        if (horariosArea[0].turnoTiempoCompleto === 1) {
-                            var option1 = document.createElement('option');
-                            option1.value = 'TC';
-                            option1.text = 'TC';
-                            horarioSelect.appendChild(option1);
-                        }
-                    } else {
-                        console.error('Error al obtener horarios');
                     }
-                }
-            };
-            xhr.open('GET', 'area/' + area); 
-            xhr.send();
+                };
+                xhr.open('GET', 'area/' + area); 
+                xhr.send();
+            }else{
+                turnoSelect.innerHTML = '<option value="">Los jefes de area / sede no requieren turno</option>';
+            }
         }
     }
 

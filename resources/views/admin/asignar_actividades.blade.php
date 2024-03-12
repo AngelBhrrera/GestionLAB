@@ -6,8 +6,8 @@
 
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-<li class="breadcrumb-item"><a href="{{route('admin.home')}}">Registro</a></li>
-<li class="breadcrumb-item active" aria-current="page">Actividades</li>
+<li class="breadcrumb-item"><a href="{{route('admin.actHub')}}">Actividad</a></li>
+<li class="breadcrumb-item active" aria-current="page">Asignar a prestador</li>
 @endsection
 
 @section('subcontent')
@@ -29,7 +29,7 @@
         </div>
         <div class="card">
             <div class="card card-primary" id="titulo_asignar">
-                <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Asignar Actividades </h3>
+                <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Asignar Actividades a Prestador</h3>
             </div>
             <div class="card-body">
                 <form id="asign" method="POST" action="{{route('admin.asign')}}">
@@ -47,17 +47,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        <label for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
-                        <div class="form-group" id="duelist_box">
-                            <select class="select2" name="prestadores_seleccionados[]" id="prestadores_seleccionados" multiple>  
-                                @if (isset($prestadores))
-                                @foreach ($prestadores as $prestador)
-                                    <option value="{{$prestador->id}}">{{$prestador->name." ".$prestador->apellido}}</option>
-                                @endforeach
-                                @endif
-                            </select>
-                        </div>
-                        <small id="Help" class="form-text text-muted">Selecciona a los prestadores para realizar la actividad</small>
                         <div class="form-group" id="asignar">
                             <label for="tipo_categoria">Filtro por categoría</label>
                             <select class="form-control" id="tipo_categoria" name="tipo_categoria" onchange="filtrarCategorias()">
@@ -83,6 +72,17 @@
                                 @endforeach
                             </select>
                         </div>
+                        <label for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
+                        <div class="form-group" id="duelist_box">
+                            <select class="select2" name="prestadores_seleccionados[]" id="prestadores_seleccionados" multiple>  
+                                @if (isset($prestadores))
+                                @foreach ($prestadores as $prestador)
+                                    <option value="{{$prestador->id}}">{{$prestador->name." ".$prestador->apellido}}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                        </div>
+                        <small id="Help" class="form-text text-muted">Selecciona a los prestadores para realizar la actividad</small>
                     </div>
 
                     <div class="col-md-8" id="boton_asignar"> <!-- Ancho ajustado para el botón -->
@@ -113,10 +113,10 @@
     let dlb2 = new DualListbox('.select2', {
         availableTitle: 'Prestadores disponibles',
         selectedTitle: 'Prestadores seleccionados',
-        addButtonText: '🡺',
-        removeButtonText: '🡸',
-        addAllButtonText: '>>',
-        removeAllButtonText: '<<',
+        addButtonText: 'Agregar',
+        removeButtonText: 'Quitar',
+        addAllButtonText: 'Agregar todos',
+        removeAllButtonText: 'Quitar todos',
         searchPlaceholder: 'Buscar prestadores'
     });
     dlb2.addEventListener('added', function(event) {

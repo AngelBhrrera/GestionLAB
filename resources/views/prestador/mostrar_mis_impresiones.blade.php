@@ -2,8 +2,8 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-    <li class="breadcrumb-item"><a>Mostrar</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Impresiones</li>
+    <li class="breadcrumb-item"><a href="{{route('printHub')}}">Impresion</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Mostrar mias</li>
 @endsection
 
 @section('subcontent')
@@ -14,6 +14,10 @@
         <div class="card card-primary">
                 <div class="card-header">
                     <h3  class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;"> Mis impresiones </h3>
+                </div>
+                <div class="w-[350px] relative mx-5 my-5">
+                    <input id="searchInput" type="text" class="form-control pl-10" placeholder="Buscar">
+                    <i class="w-5 h-5 absolute inset-y-0 left-0 my-auto text-slate-400 ml-3" data-lucide="search"></i>
                 </div>
                 <div class="text-center mx-auto" style="padding-left: 1.5px;" id="players"></div>
             </div>
@@ -32,9 +36,10 @@
                 data: printers,
                 pagination: "local",
                 paginationSize: 24,
-                tooltips: true,
                 resizableColumns:false,
                 fitColumns: true,
+                headerFilterPlaceholder: "Buscar..",
+                headerFilterLiveFilter: false,
                 columns: [{
                     title: "ID",
                         field: "id",
@@ -45,7 +50,6 @@
                         field: "impresora",
                         sorter: "string",
                         width: 100,
-                        headerFilter: "input",
                     }, {
                         title: "Proyecto",
                         field: "proyecto",
@@ -60,7 +64,6 @@
                         title: "Modelo",
                         field: "nombre_modelo_stl",
                         sorter: "string",
-                        headerFilter: "input",
                         width: 100,
                     }, {
                         title: "Tiempo Impresion",
@@ -71,7 +74,6 @@
                         title: "Color",
                         field: "color",
                         sorter: "string",
-                        headerFilter: "input",
                         width: 100,
                     },  {
                         title: "Piezas",
@@ -84,8 +86,9 @@
                         sorter: "string",
                         editor: "select",
                         width: 130,
-                        headerFilter: true,
+                        headerFilter: "select",
                         headerFilterParams: {
+                            "": "", 
                             "Exitoso": "Exitoso",
                             "En Proceso": "En Proceso",
                             "Fallido": "Fallido",
@@ -122,9 +125,28 @@
                         },
                     },
                 ],
-                //rowClick: function(e, row) {
-                //    alert("Row " + row.getData().playerid + " Clicked!!!!");
-                //},
+            });
+
+            document.addEventListener('DOMContentLoaded', function() {
+
+                function applyCustomFilter(value) {
+                    var searchValue = value.toLowerCase().replace(/[^a-z0-9áéíóúüñ]/g, '');
+                    table.setFilter(function(row) {
+                        return (row.impresora && row.impresora.toString().toLowerCase().includes(searchValue)) || 
+                            (row.proyecto && row.proyecto.toLowerCase().includes(searchValue)) || 
+                            (row.fecha && row.fecha.toLowerCase().includes(searchValue)) || 
+                            (row.peso && row.peso.toLowerCase().includes(searchValue)) || 
+                            (row.estado && row.estado.toLowerCase().includes(searchValue)) || 
+                            (row.piezas && row.piezas.toLowerCase().includes(searchValue)) || 
+                            (row.color && row.color.toLowerCase().includes(searchValue)) || 
+                            (row.nombre_modelo_stl && row.nombre_modelo_stl.toLowerCase().includes(searchValue));
+                    });
+                }
+                document.getElementById("searchInput").addEventListener("input", function(e) {
+                    var value = e.target.value.trim();
+                    applyCustomFilter(value);
+                });
+
             });
 
             function cambiarEstadoImpresion(id, value) {

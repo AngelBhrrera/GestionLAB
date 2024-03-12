@@ -22,12 +22,18 @@
                     <div class="col-md-8">
                         <div class="card">
                             <div class="card-body">
+                                @error('codigo')
+                                <div class="alert alert-error alert-dismissible fade show auto-fade-out" role="alert" id="alert">
+                                    <i class="fa fa-exclamation-triangle" style="margin-right: 10px"></i>
+                                    <strong>{{$message}}</strong>
+                                </div>
+                                @enderror
                                 <form method="POST" id="envio" action="{{ route('api.marcar') }}">
                                     @csrf
                                     <div class="form-group row justify-content-center">
                                         <label  class="col-md-3 col-form-label text-md-right text-lg">{{ __('Check-In') }}</label>
                                         <div class="col-md-6">
-                                            <input id="codigo" class="form-control form-control-lg" name="codigo">
+                                            <input id="codigo" class="form-control form-control-lg" name="codigo" placeholder="Ingresa tu codigo UDG">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-0">

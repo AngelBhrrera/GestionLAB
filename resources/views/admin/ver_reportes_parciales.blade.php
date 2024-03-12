@@ -66,6 +66,10 @@
             <div class="flex gap-y-3 items-center px-5 pt-5 border-b border-slate-200/60 dark:border-darkmode-400 mb-4 pb-5">
                  <h3 class="text-2xl mt-5 font-small">Lista de prestadores</h3>
             </div>
+            <div class="w-[350px] relative mx-5 my-5">
+                <input id="searchInput" type="text" class="form-control pl-10" placeholder="Buscar">
+                <i class="w-5 h-5 absolute inset-y-0 left-0 my-auto text-slate-400 ml-3" data-lucide="search"></i>
+            </div>
             <div class="px-5 pb-4 sm:gap-6 border-b border-slate-200/60">
                 <div class="text-center mx-auto" style="padding-left: 10px" id="prestadores"></div>
             </div>
@@ -97,20 +101,28 @@
             }, {
                 title: "Prestador",
                 field: "prestador",
-                headerFilter: "input",
                 sorter: "string",
             },{
                 title: "Codigo",
                 field: "codigo",
-                headerFilter: "input",
-                sorter: "string",
-            },{
-                title: "Ver Reportes",
-                field: "total_personal",
-                width: 100,
                 sorter: "string",
             },
         ],
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        function applyCustomFilter(value) {
+            var searchValue = value.toLowerCase().replace(/[^a-z0-9áéíóúüñ]/g, '');
+            table.setFilter(function(row) {
+                return (row.prestador && row.prestador.toString().toLowerCase().includes(searchValue)) || 
+                    (row.codigo && row.codigo.toLowerCase().includes(searchValue));
+            });
+        }
+        document.getElementById("searchInput").addEventListener("input", function(e) {
+            var value = e.target.value.trim();
+            applyCustomFilter(value);
+        });
+    });
+
     </script>
 @endsection

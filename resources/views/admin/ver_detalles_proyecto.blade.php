@@ -2,7 +2,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-    <li class="breadcrumb-item">Actividades</li>
+    <li class="breadcrumb-item"><a href="{{route('admin.proyHub')}}">Proyecto</a></li>
     <li class="breadcrumb-item active" aria-current="page">Ver detalles de proyecto</li>
 @endsection
 
@@ -27,6 +27,7 @@
                         <th class="whitespace-nowrap">Prestador</th>
                         <th class="whitespace-nowrap">Correo</th>
                         <th class="whitespace-nowrap">Teléfono</th>
+                        <th class="whitespace-nowrap"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,14 +37,20 @@
                             <td>{{$prestador->name." ".$prestador->apellido}}</td>
                             <td>{{$prestador->correo}}</td>
                             <td>{{$prestador->telefono}}</td>
+                            <td><a href="#" class="btn btn-danger btnEliminar" data-id="{{$prestador->id_prestador}}">Eliminar del proyecto</a></td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
             <br>
-            <h3 class="text-xl font-medium leading-none mt-3">Actividades</h3>
-            <div class="text-center mx-auto" style="padding-left: 10px" id="actividades"></div>
+            <a href="{{ route('admin.add_to_proy', ['proyectoId' => $proyectoId]) }}">
+                <button id="agregarPrestadorBtn" class="btn btn-primary">Agregar Integrante</button>
+            </a>
+
+
         @endif
+        <h3 class="text-xl font-medium leading-none mt-3">Actividades</h3>
+        <div class="text-center mx-auto" style="padding-left: 10px" id="actividades"></div>
 
         
     </div>
@@ -52,14 +59,18 @@
 
 @section('script')
     <script type="text/javascript">
+
             var actividades = {!! $actividades!!};
             var table = new Tabulator("#actividades", {
-                height:"100%",
+
                 data: actividades,
-                resizableColumns: "false",
-                layout: "fitColumns",
-                pagination: "local",
                 paginationSize: 20,
+                pagination: "local",
+                layout: "fitDataFill",
+                resizableColumns:false,
+                height: "100%",
+                //responsiveLayout:"collapse",
+                layoutColumnsOnNewData:true,
 
                 columns: [{
                         title: "ID",
@@ -108,7 +119,36 @@
                     },
                 ],
             });
-            
+
+    document.querySelectorAll('.btnEliminar').forEach(btn => {
+        btn.addEventListener('click', function(event) {
+            event.preventDefault(); 
+            let prestadorId = this.getAttribute('data-id');
+            let proyectoUrl = window.location.href; 
+            let proyectoId = proyectoUrl.split('/').pop();
+
+            fetch(`{{ url('admin/removerProyecto') }}/${proyectoId}/${prestadorId}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}', 
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log(response);
+                    
+                location.reload(); 
+                } else {
+                    console.error('Error al eliminar el prestador del proyecto.');
+                }
+            })
+            .catch(error => {
+                console.error('Error en la solicitud AJAX:', error);
+            });
+        });
+    });
+
+
     </script>
-    
 @endsection

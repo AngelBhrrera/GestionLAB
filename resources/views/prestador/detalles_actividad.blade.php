@@ -1,16 +1,15 @@
 @extends('layouts/prestador-layout')
-@section('content')
 
+@section('subhead')
+    <link rel="stylesheet" href="{{asset('build/assets/css/detalles_actividad.css')}}">
+@endsection
 
 @section('breadcrumb')
-    <nav aria-label="breadcrumb" class="-intro-x hidden xl:flex">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{route('homeP')}}">Prestador</a></li>
-            <li class="breadcrumb-item active">Actividades</li>
+
+            <li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
+            <li class="breadcrumb-item"><a href="{{route('actHub')}}">Actividades</a></li>
             <li class="breadcrumb-item active" aria-current="page">Detalle Actividad</li>
-        </ol>
-    </nav>
-    <link rel="stylesheet" href="{{asset('build/assets/css/detalles_actividad.css')}}">
+   
 @endsection
 
 @section('subcontent')
@@ -51,7 +50,3 @@
 </div>
 @endsection
 
-
-@section('script')
-
-@endsection

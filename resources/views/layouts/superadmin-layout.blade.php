@@ -20,13 +20,9 @@
                 <ul class="scrollable__content">
                     @yield('scroll-menu')
                     @yield('gestion')
-                    @yield('asistencias')
-                    @yield('prestadores_admin')
-                    @yield('prestadores')
-                    @yield('contacto_admin')
-                    @yield('contacto')
-                    @yield('actividades')
+                    @yield('coordinador')
                     @yield('impresiones')
+                    @yield('actividades')
                 </ul>
             </div>
             <div style="height: 65px;"></div>

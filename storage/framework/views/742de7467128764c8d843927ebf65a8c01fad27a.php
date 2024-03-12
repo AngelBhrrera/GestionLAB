@@ -24,6 +24,12 @@
                             <h6 class="alert alert-danger"><?php echo e(session('FAIL')); ?></h6>
                         </div>
                     <?php endif; ?>
+                    <?php if(session('MADE')): ?>
+                    <div class="alert alert-primary">
+                        <?php echo e(session('MADE')); ?>
+
+                    </div>
+                    <?php endif; ?>
                     <div class="container pt-3">
                     <form method="POST" id="login-form">
                         <?php echo csrf_field(); ?>

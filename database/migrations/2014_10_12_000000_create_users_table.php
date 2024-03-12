@@ -43,34 +43,10 @@ class CreateUsersTable extends Migration
             $table->timestamps();
             //$table->boolean('can_admin')->nullable()->default(0);
         });
-
-        DB::table('users')->insert([
-            "name" =>"admin",
-            "apellido" => "admin",
-            "correo" => "admin@admin.com",
-            "codigo" => null,
-            "tipo" => "Superadmin",
-            "telefono" => null,
-            "email_verified_at" => null,
-            "password" => Hash::make('123'),
-            "remember_token"=> null,
-            "horas"=>null,
-            "sede"=>0,
-            "area"=>0,
-            "centro"=> null,
-            "carrera"=> "INCO",
-            "fecha_salida" => null,
-            "imagen_perfil" => null,
-            "experiencia" => null
-        ]);
         
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
+
     public function down()
     {
         Schema::dropIfExists('users');

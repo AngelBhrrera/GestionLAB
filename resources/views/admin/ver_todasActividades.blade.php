@@ -2,7 +2,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Actividades</a></li>
+    <li class="breadcrumb-item"><a href="{{route('admin.actHub')}}">Actividad</a></li>
     <li class="breadcrumb-item active" aria-current="page">Ver todas</li>
 @endsection
 
@@ -10,7 +10,12 @@
 <h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
     Todas las actividades.
 </h2>
+<div class="w-[350px] relative mx-5 my-5">
+    <input id="searchInput" type="text" class="form-control pl-10" placeholder="Buscar">
+    <i class="w-5 h-5 absolute inset-y-0 left-0 my-auto text-slate-400 ml-3" data-lucide="search"></i>
+</div>
 <div id="players"></div>
+<div style="height: 65px;"></div>
 @endsection
 
 @section('script')
@@ -19,13 +24,18 @@
             var visits = {!! $data !!};
 
             var table = new Tabulator("#players", {
-                height: "100%",
+
                 data: visits,
-                layout: "fitColumns",
-                pagination: "local",
-                resizableColumns: "false",
                 paginationSize: 20,
-                tooltips: true,
+
+                pagination: "local",
+                layout: "fitDataFill",
+                resizableColumns:false,
+                height: "100%",
+                //responsiveLayout:"collapse",
+                layoutColumnsOnNewData:true,
+                virtualDomHoz:true,
+
                 columns: [{
                     title: "ID",
                         field: "id",
@@ -34,19 +44,18 @@
                     },{
                         title: "Prestador",
                         field: "prestador",
-                        sorter: "string",
                         width: 170,
                     }, {
                         title: "Titulo Act",
                         field: "actividad",
                         sorter: "string",
-                        headerFilter: "input",
                     }, {
                         title: "Estado",
                         field: "estado",
                         sorter: "string",
                         headerFilter: "select",
                         headerFilterParams: {
+                            "": "", 
                             "Asignada": "Asignada",
                             "En proceso": "En Proceso",
                             "En revision": "En revision",
@@ -58,12 +67,10 @@
                         title: "Proyecto",
                         field: "proyecto_origen",
                         sorter: "string",
-                        headerFilter: "input",
                     }, {
                         title: "Fecha",
                         field: "fecha",
                         sorter: "string",
-                        headerFilter: "input",
                     }, {
                         title: "Duracion",
                         field: "duracion",
@@ -80,14 +87,11 @@
                     },
                     
                 ],
-                //rowClick: function(e, row) {
-                //    alert("Row " + row.getData().playerid + " Clicked!!!!");
-                //},
             });
 
             function agregarObservaciones(id, value) {
                 const token = document.head.querySelector('meta[name="csrf-token"]').content;
-                fetch(`motivo_visita/${id}/${value}`, {
+                fetch(`observaciones_actividad/${id}/${value}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -96,14 +100,31 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-
-                    console.log('Estado de impresion cambiado', data);
+                    console.log('Observaciones de actividad cambiada', data);
                 })
                 .catch(error => {
                     console.error('Error al cambiar de estado de impresion:', error);
                 });
             } 
 
-            
+            document.addEventListener('DOMContentLoaded', function() {
+
+                function applyCustomFilter(value) {
+                    var searchValue = value.toLowerCase().replace(/[^a-z0-9áéíóúüñ]/g, '');
+
+                    table.setFilter(function(row) {
+                        return (row.codigo && row.codigo.toString().toLowerCase().includes(searchValue)) || 
+                            (row.prestador && row.prestador.toLowerCase().includes(searchValue)) || 
+                            (row.actividad && row.actividad.toLowerCase().includes(searchValue)) || 
+                            (row.estado && row.estado.toLowerCase().includes(searchValue)) || 
+                            (row.proyecto && row.proyecto.toLowerCase().includes(searchValue));
+                    });
+                }
+
+                document.getElementById("searchInput").addEventListener("input", function(e) {
+                    var value = e.target.value.trim();
+                    applyCustomFilter(value);
+                });
+            });
     </script>
 @endsection

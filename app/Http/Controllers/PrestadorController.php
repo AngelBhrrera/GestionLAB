@@ -28,18 +28,135 @@ class PrestadorController extends Controller
             ->orderBy('fecha_actual', 'desc')
             ->limit(5)
             ->get();
+        $llamadaRachaFaltas = $this->racha_asistencias_faltas();
+        $racha = $llamadaRachaFaltas[0];
+        $faltas = $llamadaRachaFaltas[1];
+        $actividades = $this->obtenerActividadesAsignadas();
+        $terminadas = count($this->obtenerActividadesTerminadas());
+        $nActividades = $actividades->count();
 
-
-        $leaderboard = $this->consultarLeaderboard('lb_at', Auth::user()->area, 'area',10); 
+        $leaderboard = $this->consultarLeaderboard('lb_at', Auth::user()->area, 'area',10);
         $leaderboardSede = $this->consultarLeaderboard('lb_at', Auth::user()->sede, 'sede',10);
-
         $usuarioMedalla = $this->prestador_level();
+
+        $posicionUsuarioA = $this->consultarPosicion('lb_at', Auth::user()->area, 'area');
+        $posicionUsuarioS = $this->consultarPosicion('lb_at', Auth::user()->sede, 'sede');
 
         return view(
             'prestador/newHomeP',  
-            compact('horasAutorizadas', 'horasPendientes', 'horasTotales', 'horasRestantes',  
-            'leaderboard', 'leaderboardSede', 'usuarioMedalla')
+            compact('horasAutorizadas', 'horasPendientes', 'horasTotales', 'horasRestantes', 'nActividades', 'terminadas',
+            'leaderboard', 'leaderboardSede', 'usuarioMedalla','racha','faltas','posicionUsuarioA','posicionUsuarioS')
         )->with('asistencias', json_encode($asistencias));
+    }
+
+    public function racha_asistencias_faltas(){
+        $primerCheck = DB::table('registros_checkin')
+        ->select('fecha')
+        ->where('idusuario', Auth::user()->id)
+        ->orderByRaw("STR_TO_DATE(fecha, '%d/%m/%Y')")->first();
+        
+        if($primerCheck){
+            $primerCheck->fecha = DateTime::createFromFormat('d/m/Y', $primerCheck->fecha)->format('d-m-Y');
+        }else{
+            return [0,0,[]];
+        }
+        //Días festivos
+        $festivos = DB::table('eventos')
+            ->where('sede', Auth::user()->sede)
+            ->where('area', Auth::user()->area)
+            ->orWhere('area', 0)
+            ->get();
+
+        $diasFestivos = [];
+        foreach($festivos as $festivo){
+            $fechaInicio = DateTime::createFromFormat('Y-m-d H:i:s', $festivo->inicio);
+            $festivo->inicio = $fechaInicio->format('d/m/Y');
+            
+            $fechaFinal = DateTime::createFromFormat('Y-m-d H:i:s', $festivo->final);
+            $festivo->final = $fechaFinal->format('d/m/Y');
+            //dd($fechaInicio->modify("+1 day"), $fechaFinal->modify("+1 day"));
+            if($festivo->tipo == "vacaciones"){
+                while($fechaInicio <= $fechaFinal){
+                    $diasFestivos[] = $fechaInicio->format('d/m/Y');
+                    $fechaInicio->modify("+1 day");
+                    
+                }
+            }else{
+                $diasFestivos[] = $festivo->inicio;
+            }
+        }
+        //dd($primerCheck); 
+        $asist = DB::table('registros_checkin')
+        ->select('fecha')
+        ->where('idusuario', Auth::user()->id)
+        ->where('horas', '>=', 3)
+        ->orderByRaw("STR_TO_DATE(fecha, '%d/%m/%Y')")
+        ->pluck('fecha')
+        ->toArray();
+        //dd($asist);
+
+        $fecha_inicial = new DateTime($primerCheck->fecha); // Fecha inicial específica
+        $fecha_actual = new DateTime();
+        $fechas = [];
+        $ultimoCheck = DB::table('registros_checkin')
+            ->where('idusuario', Auth::user()->id)
+            ->where('fecha', $fecha_actual->format('d/m/Y'))
+            ->where('horas', '>=' , '3')->get();
+        
+        
+        if(Auth::user()->horario == "Sabatino"){
+            if(count($ultimoCheck) == 0){
+                $fecha_actual->modify("-1 day");
+            }
+            while ($fecha_inicial <= $fecha_actual) {
+                if($fecha_inicial->format('w') == 6){
+                    //Sabados
+                $fechas[] = $fecha_inicial->format('d/m/Y');
+                }
+                
+                $fecha_inicial->modify('+1 day');
+            }
+            //dd($fechas);
+        }else{
+            if(count($ultimoCheck) == 0){
+                $fecha_actual->modify("-1 day");
+            }
+            while ($fecha_inicial <= $fecha_actual) {
+                if($fecha_inicial->format('w') > 0 && $fecha_inicial->format('w') < 6){
+                    //De lunes a viernes
+                $fechas[] = $fecha_inicial->format('d/m/Y');
+                }
+                $fecha_inicial->modify('+1 day');
+            }
+        }
+        
+        //Calculo para rachas de asistencias
+        $racha = 0;
+        foreach ($fechas as $fecha) {
+            if (in_array($fecha, $asist)) {
+                
+                $racha++;
+            } else {
+                if(!in_array($fecha, $diasFestivos)){
+                    $racha = 0;
+                }
+            }
+        }
+
+        //Calculo de faltas
+        $faltas = 0;
+        $fechas_faltas = [];
+        
+        foreach ($fechas as $fecha) {
+            if (!in_array($fecha, $asist) && !in_array($fecha, $diasFestivos)) {
+                $fechas_faltas[]=$fecha;
+                $faltas++;
+            }
+        }
+
+        return [$racha, $faltas, $fechas_faltas];
+        
+        
     }
     
     public function horas()
@@ -151,7 +268,14 @@ class PrestadorController extends Controller
     }
 
     public function marcar(Request $request)
-    {
+    {   
+        $request->validate([
+            'codigo' => 'integer | max:9999999999 | required',
+        ],[
+            'codigo.integer' => "Debe introducir un código (sólo dígitos)",
+            'codigo.max' => "El código debe tener menos de 10 dígitos"            
+        ]);
+
         $codigo = $request->input('codigo');
         $refArea =  DB::table('users')
             ->where('codigo', $codigo)
@@ -279,33 +403,59 @@ class PrestadorController extends Controller
     public function myProject()
     {
         $id = DB::table('proyectos_prestadores')
+            ->select('id_proyecto')
             ->where('id_prestador', auth()->user()->id)
-            ->value('id_proyecto');
-        $proyecto = DB::table('proyectos')
-            ->where('id',$id)
-            ->value('titulo');
-        $prestadores = DB::table('proyectos_prestadores')
-            ->select('id_prestador', 'name', 'apellido', 'correo', 'telefono')
-            ->where('id_proyecto', $id)
-            ->join('users', 'id_prestador','=','users.id')
             ->get();
-        $actividades = DB::table('seguimiento_actividades')
-            ->select('actividad_id','actividad', 'estado', 'prestador')
-            ->where('id_proyecto', $id)
+        $proyecto=[];
+        $prestadores=[];
+        $actividades=[];
+        
+        foreach($id as $id_proyecto){
+            $proyecto[]= DB::table('proyectos')
+            ->select('titulo', 'turno')
+            ->where('id',$id_proyecto->id_proyecto)
             ->get();
-
+            
+            $prestadores[] = DB::table('proyectos_prestadores')
+                ->select('id_prestador', 'name', 'apellido', 'correo', 'telefono')
+                ->where('id_proyecto', $id_proyecto->id_proyecto)
+                ->join('users', 'id_prestador','=','users.id')
+                ->get();
+            
+            $actividades[] = DB::table('seguimiento_actividades')
+                ->select('actividad_id','actividad', 'estado', 'prestador')
+                ->where('id_proyecto', $id_proyecto->id_proyecto)
+                ->get();
+        }
+        
         return view('/prestador/mi_proyecto_prestador', compact('prestadores', 'actividades', 'proyecto'));
+    }
+
+    public function checkinValidator(){
+        $fechaActual = date('d/m/Y');
+        $registroCheck = DB::table('registros_checkin')
+            ->select('fecha')
+            ->where('fecha', $fechaActual)
+            ->where('idusuario', auth()->user()->id)
+            ->where('hora_salida', null)->get();
+        $activo = (count($registroCheck) > 0) ? true : false;
+
+        return $activo;
+
     }
 
     //SISTEMA DE ACTIVIDADES GAMIFICADO
 
-    public function actividadesAsignadas()
-    {
+    public function actHub(){
+        return view('prestador/activities_hub');
+    }
+
+    private function obtenerActividadesAsignadas(){
         $proys = DB::table('proyectos_prestadores')
             ->where('id_prestador', auth()->user()->id)
             ->pluck('id_proyecto');
 
-        $actividades = DB::table('seguimiento_actividades')
+        return DB::table('seguimiento_actividades')
             ->where('id_prestador', auth()->user()->id)
             ->whereNotIn('estado', ['Aprobada'])
             ->orWhere(function($query) use ($proys) {
@@ -315,9 +465,25 @@ class PrestadorController extends Controller
             ->orderByDesc('fecha')
             ->get();
 
-        $fechaActual = date('d/m/Y');
-        $registroCheck = DB::table('registros_checkin')->select('fecha')->where('fecha', $fechaActual)->where('hora_salida', null)->get();
-        $activo = (count($registroCheck) > 0) ? true : false;
+    }
+
+    private function obtenerActividadesTerminadas(){
+        $proys = DB::table('proyectos_prestadores')
+            ->where('id_prestador', auth()->user()->id)
+            ->pluck('id_proyecto');
+        
+        return DB::table('seguimiento_actividades')
+        ->where('id_prestador', auth()->user()->id)
+        ->where('estado', 'Aprobada')
+        ->get();
+    }
+
+    public function actividadesAsignadas()
+    {
+        
+        $actividades = $this->obtenerActividadesAsignadas();
+        $activo = $this->checkinValidator();
+        
         return view('/prestador/actividades_asignadas',compact('actividades', 'activo'));
     }
 
@@ -328,12 +494,14 @@ class PrestadorController extends Controller
             ->whereNull('proyectos_prestadores.id_proyecto')
             ->pluck('proyectos.id');
 
-        $acts = DB::table('seguimiento_actividades')
+        $actividades = DB::table('seguimiento_actividades')
             ->where('id_prestador', 0)
             ->whereIn('id_proyecto', $proys)
             ->get();
 
-        return view('/prestador/actividades_abiertas', ['actividades' =>$acts]);
+        $activo = $this->checkinValidator();
+
+        return view('/prestador/actividades_abiertas', compact('actividades', 'activo'));
     }
 
     public function startAct($id, $teu){
@@ -434,7 +602,7 @@ class PrestadorController extends Controller
 
         DB::table('actividades_prestadores')
             ->where('id', $found)
-            ->update(['estado' => 'Bloqueada']);
+            ->update(['estado' => 'Bloqueada', 'detalles' => 'Salida de Checkin']);
 
         return 0;
     }
@@ -487,8 +655,8 @@ class PrestadorController extends Controller
             }else if($mode == 3){
 
                 $timeRef = DB::table('actividades_prestadores')
-                ->where('id', $id)
-                ->value('hora_refs');
+                    ->where('id', $id)
+                    ->value('hora_refs');
                 $timeRef2 = date('H:i:s');
     
                 $tiempoInvertido = DB::table('actividades_prestadores')
@@ -534,6 +702,14 @@ class PrestadorController extends Controller
 
     public function make_act(Request $request)
     {
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'tipo_actividad' => 'required | integer',
+            'tipo_categoria' => 'requried | integer',
+            'recursos' => 'required|string', 
+            'descripcion' => 'required|string|max:500',
+            'objetivos' => 'required|string', 
+        ]);
 
         $subcategoria = $request->input('tipo_subcategoria');
         if($subcategoria == '')
@@ -554,6 +730,10 @@ class PrestadorController extends Controller
 
     public function obtenerActividades(Request $request)
     {
+        $request->validate([
+            'categoriaId' => 'required|integer',
+        ]);
+
         $actividades = DB::table('actividades')
             ->where('id_categoria', $request->input('categoriaId'))
             ->get();
@@ -563,6 +743,10 @@ class PrestadorController extends Controller
 
     public function obtenerActividadesB(Request $request)
     {
+        $request->validate([
+            'subcategoriaId' => 'required|integer',
+        ]);
+
         $actividades = DB::table('actividades')
             ->where('id_subcategoria', $request->input('subcategoriaId'))
             ->get();
@@ -572,6 +756,10 @@ class PrestadorController extends Controller
 
     public function obtenerSubcategorias(Request $request)
     {
+        $request->validate([
+            'categoriaId' => 'required|integer',
+        ]);
+
         $subcateg = DB::table('subcategorias')
             ->where('categoria', $request->input('categoriaId'))
             ->get();
@@ -589,6 +777,10 @@ class PrestadorController extends Controller
 
     //IMPRESIONES PRESTADOR
 
+    public function printHub(){
+        return view('prestador/print_hub');
+    }
+
     public function create_imps()
     {
         $impresoras = DB::table('impresoras')
@@ -605,7 +797,17 @@ class PrestadorController extends Controller
 
     public function register_imps(Request $request)
     {
-
+        $request->validate([
+            'horas' => ['required_without:minutos', 'integer'],
+            'minutos' => ['required_without:horas', 'integer'],
+            'imp_id' => 'required|integer',
+            'proyect' => 'required|integer',
+            'color' => 'string | max:100',
+            'weight' => 'required|regex:#^\d+(\.\d{1,2})?$#',
+            'model' => 'required | string | max:100',
+            'pieces' => 'required|integer',
+        ]);
+        
         $tiempo = $this->format_time($request->input('horas'), $request->input('minutos'));
 
         DB::table('seguimiento_impresiones')->insert([['id_Prestador' =>Auth::user()->id, 
@@ -613,6 +815,29 @@ class PrestadorController extends Controller
         'nombre_modelo_stl' => $request->input('model'), 'color' => $request->input('color'), 
         'piezas' => $request->input('pieces'), 'peso' => $request->input('weight'), 'tiempo_impresion' => $tiempo]]);
 
+        $actImp = DB::table('impresoras')
+            ->where('id', $request->input('imp_id'))
+            ->whereNotNull('act_impresion')
+            ->exists();
+
+        if($actImp){
+            $idA = DB::table('impresoras')
+                ->where('id', $request->input('imp_id'))
+                ->value('act_impresion');
+
+            $TEC = DB::table('actividades')
+                ->where('id', $idA)
+                ->value('TEC');
+
+
+            DB::table('actividades_prestadores')->insert([
+                'id_prestador' => Auth::user()->id, 
+                'id_actividad' => $idA,
+                'estado' => "En revision",
+                'Tiempo_Invertido' => $TEC,
+                'id_proyecto' => $request->input('proyecto')]);
+        }
+        
         $actual = DB::table('seguimiento_impresiones')
             ->where('id_Impresora', $request->input('imp_id'))
             ->orderByDesc('fecha')
@@ -652,6 +877,7 @@ class PrestadorController extends Controller
 
     public function printstate($id, $state) {
 
+
         DB::table('seguimiento_impresiones')
             ->where('id', $id)
             ->update(['estado' => $state]);
@@ -671,7 +897,6 @@ class PrestadorController extends Controller
 
     public function horario()
     {   
-
         $festivos = DB::table('eventos')
             ->where('sede', Auth::user()->sede)
             ->where('area', Auth::user()->area)
@@ -680,9 +905,9 @@ class PrestadorController extends Controller
 
         $asists = DB::table('registros_checkin')
             ->where('idusuario', Auth::user()->id)
+            ->where('horas', '>=', 3)
             ->pluck('fecha');
         $asistencias = [];
-        
         foreach ($asists as &$asist) {
             $fechaObjeto = DateTime::createFromFormat('d/m/Y', $asist);
             $asistenciaFormateada = $fechaObjeto->format('Y-m-d');
@@ -697,8 +922,15 @@ class PrestadorController extends Controller
             $fechaObjeto = DateTime::createFromFormat('Y-m-d H:i:s', $festivo->final);
             $festivo->final = $fechaObjeto->format('Y-m-d');
         }
+        $faltas = $this->racha_asistencias_faltas()[2];
+        $fechasFaltas= [];
+        foreach($faltas as $falta){
 
-        return view('/prestador/horario_prestador', compact('asistencias', 'festivos'));
+            $fechaObjeto = DateTime::createFromFormat('d/m/Y', $falta);
+            $falta = $fechaObjeto->format('Y-m-d');
+            $fechasFaltas[] = $falta;
+        }
+        return view('/prestador/horario_prestador', compact('asistencias', 'festivos', 'fechasFaltas'));
     }
 
     //REPORTES
@@ -849,6 +1081,19 @@ class PrestadorController extends Controller
             ->orderByDesc("$tabla.total_exp")
             ->limit($limit)
             ->get();
+    }
+
+    private function consultarPosicion($tabla, $filtro,$zona)
+    {
+        $pos = DB::table($tabla)
+            ->selectRaw('ROW_NUMBER() OVER (ORDER BY '.$tabla.'.total_exp DESC) AS Posicion, '.$tabla.'.id_prestador')
+            ->from(DB::raw("$tabla, solo_prestadores"))
+            ->where('solo_prestadores.id_'.$zona.'', $filtro)
+            ->whereColumn('solo_prestadores.id', '=', "$tabla.id_prestador")
+            ->orderByDesc("$tabla.total_exp")
+            ->pluck('Posicion', 'id_prestador');
+    
+        return $userPosition = $pos[Auth::user()->id] ?? null;
     }
 
     public function leaderboard_area(){

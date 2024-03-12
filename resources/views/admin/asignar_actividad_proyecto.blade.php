@@ -5,8 +5,8 @@
 @endsection
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-<li class="breadcrumb-item"><a href="{{route('homeP')}}">Registro</a></li>
-<li class="breadcrumb-item active" aria-current="page">Actividades</li>
+<li class="breadcrumb-item"><a href="{{route('admin.proyHub')}}">Proyecto</a></li>
+<li class="breadcrumb-item active" aria-current="page">Asignar actividades</li>
 @endsection
 
 @section('subcontent')
@@ -71,7 +71,7 @@
                                     <select class="form-control" id="tipo_actividad" name="module-0" required>
                                         <option value="" >Asignar actividad</option>
                                     </select>
-                                    <button type="button" onclick="removeModule(0)">Eliminar</button>
+                                    <button type="button" class="btn btn-danger"  onclick="removeModule(0)">-</button>
                                 </div>
                             </div>
                             <button type="submit"  class="btn btn-primary from-prevent-multiple-submits" id="add-module-btn">+</button>
@@ -229,7 +229,7 @@
         <select class="form-control" id="tipo_actividad"  name="module-${moduleId}" required>
             <option value="" >Asignar actividad</option>
         </select>
-        <button type="button" onclick="removeModule(${moduleId})"">Eliminar</button>
+        <button type="button" class="btn btn-danger" onclick="removeModule(${moduleId})""> - </button>
     `;
     
 

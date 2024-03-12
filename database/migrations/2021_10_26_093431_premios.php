@@ -6,11 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class Premios extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+
     public function up()
     {
         Schema::create('premios', function (Blueprint $table) {
@@ -23,16 +19,10 @@ class Premios extends Migration
             $table->date('inicioVigencia');
             $table->date('finVigencia');
             $table->integer('limite');
-            $table->id('id_actividad');
-  
+            $table->string('ref');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('premios');

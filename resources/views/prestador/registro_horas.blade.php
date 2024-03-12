@@ -22,13 +22,6 @@
     <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
         <h2 class="text-lg font-medium mr-auto">REGISTRO DE HORAS</h2>
     </div>
-    <br>
-    <div class="table-controls pl-10">
-                    <button class="download-button" id="download-json">Download JSON</button>
-                    <button class="download-button" id="download-csv">Download CSV</button>
-                    <button class="download-button" id="download-xlsx">Download XLSX</button>
-    </div>
-    <br>
     <div id="players"></div>
 
 @endsection
@@ -40,20 +33,25 @@
             var assist = {!! $datos !!};
 
             var table = new Tabulator("#players", {
-                height: "100%",
                 data: assist,
-                layout: "fitColumns",
-                pagination: "local",
-                resizableColumns: false,  
-                paginationSize: 25,
-                tooltips: true,
+                layout: "fitDataFill",
+                resizableColumns:false,
+                //responsiveLayout:"collapse",
+                layoutColumnsOnNewData:true,
+                virtualDomHoz:true,
                 columns: [{
                         title: "Fecha",
                         field: "fecha",
-                        sorter: "joiningdate",
+                        sorter: "date",
+                        formatter: "datetime",
+                        formatterParams: {
+                            inputFormat: "DD/MM/YYYY",
+                            outputFormat: "DD/MM/YYYY", 
+                            invalidPlaceholder: "(Fecha inválida)",
+                        },
                         headerFilter: "input",
                         width: 120,
-                    }, {
+                    },  {
                         title: "Horas",
                         field: "horas",
                         sorter: "number",
@@ -61,8 +59,9 @@
                     }, {
                         title: "Estado",
                         field: "estado",
-                        headerFilter: true,
+                        headerFilter: "select",
                         headerFilterParams: {
+                            "": "", 
                             "autorizado": "autorizado",
                             "pendiente": "pendiente",
                             "denegado": "denegado",
@@ -100,16 +99,6 @@
                     },  
                     
                 ],
-            });
-
-            document.getElementById("download-csv").addEventListener("click", function(){
-                table.download("csv", "data.csv");
-            });
-            document.getElementById("download-json").addEventListener("click", function(){
-                table.download("json", "data.json");
-            });
-            document.getElementById("download-xlsx").addEventListener("click", function(){
-                table.download("xlsx", "data.xlsx", {sheetName:"My Data"});
             });
             
     </script>

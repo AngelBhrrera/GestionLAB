@@ -64,7 +64,7 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6">
                                         <label for="input-wizard-1" class="form-label">Nombre *</label>
-                                        <input id="name" type="text" class="form-control @if(old('opc')=='1') @error('name') is-invalid @enderror @endif" value="{{old('name')}}" name="name" required autocomplete="name" placeholder="Nombre">
+                                        <input id="name" type="text" class="form-control @if(old('opc')=='1') @error('name') is-invalid @enderror @endif" name="name" required autocomplete="name" placeholder="Nombre">
                                                 @error('name')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -90,7 +90,7 @@
                                                 @enderror
                                     </div>
                                     <div class="intro-y col-span-12 sm:col-span-6">
-                                        <label for="input-wizard-3" class="form-label">Tipo</label>
+                                        <label for="input-wizard-3" class="form-label">Tipo *</label>
                                             <select class="form-control" name="tipo" id="tipo" onchange="usrNav()">
                                                 <option selected id="RBprestador" value='prestadorp'>Prestador Servicio Social</option>
                                                 <option id="RBpracticante" value='practicantep'>Practicas Profesionales</option>
@@ -110,7 +110,7 @@
                                     
 
                                     <div class="intro-y col-span-12 sm:col-span-6"  id="divCode" style="display:none">
-                                        <label for="input-wizard-1" class="form-label"  >Codigo</label>
+                                        <label for="input-wizard-1" class="form-label">Codigo *</label>
                                         <input id="codigo" type="text" class="form-control @if(old('opc')=='1') @error('código') is-invalid @enderror @endif"  name="codigo"  value="{{ old('opc')=='1' ? old('codigo') : '' }}" placeholder="Código"  maxlength="9">    
                                             @if(old('opc')=='1')
                                                 @error('codigo')
@@ -161,7 +161,7 @@
                                     </div>
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divCarrera" style="display:none">
-                                        <label for="input-wizard-4" class="form-label">Carrera</label>
+                                        <label for="input-wizard-4" class="form-label">Carrera *</label>
                                             <input id="carrera" type="text" class="form-control @if(old('opc')=='1') @error('carrera') is-invalid @enderror @endif" name="carrera" placeholder="Carrera" >
                                             @error('carrera')
                                                 <span class="invalid-feedback" role="alert">
@@ -171,7 +171,7 @@
                                     </div>
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divSede" style="display:none">
-                                        <label for="input-wizard-3" class="form-label">Sede</label>
+                                        <label for="input-wizard-3" class="form-label">Sede *</label>
                                         <select class="form-control" name="sede" id="sedeSelect"  onchange="filtroSede()">
                                             @if (isset($sede))
                                                 <option id="sede" value="" >Selecciona una sede</option>
@@ -183,14 +183,14 @@
                                     </div>
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divArea" style="display:none">
-                                        <label for="input-wizard-3" class="form-label">Área de trabajo</label>
+                                        <label for="input-wizard-3" class="form-label">Área de trabajo *</label>
                                         <select class="form-control" id="area" name="area" required disabled  onchange="filtroArea()">
                                             <option id="0" value="">Selecciona un área de trabajo</option>
                                         </select>
                                     </div>
 
                                     <div class="intro-y col-span-12 sm:col-span-6" id="divTurno" style="display:none">
-                                        <label for="input-wizard-4" class="form-label">Turno</label>
+                                        <label for="input-wizard-4" class="form-label">Turno *</label>
                                         <select class="form-control" name="horario" id="horarios" disabled>
                                             <option selected id="0" value="">Seleccione un turno</option> 
                                         </select>
@@ -359,12 +359,15 @@
         function filtroSede() {
         var sedeSelect = document.getElementById('sedeSelect');
         var areaSelect = document.getElementById('area');
+        var horarioSelect = document.getElementById('horarios');
         
         var sedeId = sedeSelect.value;
         areaSelect.innerHTML = '<option value=""> Selecciona un área de trabajo</option>';
 
         if (sedeId === '') {
             areaSelect.disabled = true;
+            horarioSelect.disabled = true;
+            horarioSelect.innerHTML = '<option value="">Selecciona un horario</option>';
             return;
         }else{
             var xhr = new XMLHttpRequest();

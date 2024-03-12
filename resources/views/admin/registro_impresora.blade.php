@@ -2,8 +2,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
-    <li class="breadcrumb-item"><a>Gestion</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Impresora</li>
+    <li class="breadcrumb-item active" aria-current="page">Registro Impresora</li>
 @endsection
 
 @section('subcontent')
@@ -86,22 +85,25 @@
             var printers = {!! $impresiones !!};
 
             var table = new Tabulator("#players", {
-                height: "100%",
                 data: printers,
+                paginationSize: 10,
                 pagination: "local",
-                paginationSize: 5,
-                tooltips: true,
+                layout: "fitDataFill",
+                resizableColumns:false,
+                height: "100%",
+                //responsiveLayout:"collapse",
+                layoutColumnsOnNewData:true,
+                virtualDomHoz:true,
+
                 columns: [{
                         title: "Nombre",
                         field: "nombre",
                         sorter: "string",
-                        headerFilter: "input",
                         width: 150,
                     }, {
                         title: "Marca",
                         field: "marca",
                         sorter: "string",
-                        headerFilter: "input",
                         width: 150,
                     }, {
                         title: "Ultimo Uso",
@@ -112,9 +114,9 @@
                         title: "Tipo",
                         field: "tipo",
                         sorter: "string",
-                        editor: "select",
-                        headerFilter: true,
+                        headerFilter: "select",
                         headerFilterParams: {
+                            "": "", 
                             "Filamento": "Filamento",
                             "Resina": "Resina",
                         },
@@ -122,17 +124,6 @@
                     },  {
                         title: "Estado",
                         field: "estado",
-                        formatter: function(cell, formatterParams, onRendered) {
-                            var estado = cell.getValue();
-                            var icono = "";
-                            if (estado == "1") {
-                                icono = "✔️";
-                            } else if (estado == "0") {
-                                icono = "❌";
-                            }
-                            return icono;
-                        },
-                        width: 100,
                     }, {
                         title: "",
                         field: "id",

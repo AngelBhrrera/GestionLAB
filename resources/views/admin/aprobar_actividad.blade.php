@@ -2,8 +2,8 @@
 
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-<li class="breadcrumb-item"><a href="">Aprobar</a></li>
-<li class="breadcrumb-item active" aria-current="page">Actividad</li>
+<li class="breadcrumb-item"><a href="{{route('admin.actHub')}}">Actividad</a></li>
+<li class="breadcrumb-item active" aria-current="page">Propuestas de prestador</li>
 @endsection
 
 @section('subcontent')
@@ -59,7 +59,13 @@
                         <div class="row text-center">
                             <div class="col">
                                 <select class="form-control" name="tipo_actividad">
-                                    <option value="{{null}}">Selecciona un tipo de actividad</option>
+                                    <option selected value="{{ $actividad->tipo }}">  
+                                        @if($actividad->tipo == 0)
+                                            Genérica
+                                        @else
+                                            Particular
+                                        @endif
+                                    </option>
                                     <option value="generica">Genérica</option>
                                     <option value="particular">Particular</option>
                                 </select>

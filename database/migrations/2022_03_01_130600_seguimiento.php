@@ -52,7 +52,7 @@ class Seguimiento extends Migration
 
         DB::statement("
         CREATE VIEW seguimiento_proyecto AS 
-            SELECT proyectos.id, proyectos.titulo, proyectos.estado, proyectos.fecha_inicio, proyectos.fecha_final,
+            SELECT proyectos.*,
             COALESCE(pp.n_prestadores, 0) as n_prestadores,
             COALESCE(ap.n_acts, 0) as n_acts
             FROM proyectos
@@ -81,9 +81,11 @@ class Seguimiento extends Migration
 
         DB::statement("
         CREATE VIEW seguimiento_proyecto3 AS 
-            SELECT sp2.duracion, sp2.conteo_terminado
+            SELECT sp2.duracion, sp2.conteo_terminado, a.nombre_area, s.id_sede, s.nombre_sede, sp.*
             FROM seguimiento_proyecto sp 
             INNER JOIN seguimiento_proyecto2 sp2 ON sp.id = sp2.id
+            LEFT JOIN areas a ON a.id = sp.id_area
+            LEFT JOIN sedes s ON s.id_sede = a.id_sede
         ");
     }
 
