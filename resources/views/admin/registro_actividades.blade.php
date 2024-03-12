@@ -108,7 +108,6 @@
 
                         <div class="col-md-6">
                             <textarea id="resultados" type="text" class="form-control" value="{{old('resultados')}}" name="resultados" placeholder="Ingrese los datos separados por comas (imprimir, diseñar, pintar)" required>{{old('resultados')}}</textarea>
-
                         </div>
                     </div>
 

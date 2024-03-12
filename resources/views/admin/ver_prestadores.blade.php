@@ -37,6 +37,20 @@
             <a class="nav-link" data-toggle="tab" href="#SSL">Servicio Liberado</a>
         </li>
     </ul>
+    <div class="grid grid-cols-12 gap-6 mt-5">
+        <div class="intro-y ml-5 col-span-12 lg:col-span-6 flex justify-center" id="alerta">
+            @if (session('success'))
+                <div class="alert alert-success w-full px-4">{{session('success')}}</div>
+            @endif
+            @if(session('warning'))
+                <div class="alert alert-warning w-full px-4">{{session('warning')}}</div>
+            @endif
+            @if(session('error'))
+                <div class="alert alert-danger w-full px-4">{{session('error')}}</div>
+            @endif
+            </div>
+        </div>
+    </div>
     <div class="w-[350px] relative mx-5 my-5">
         <input id="searchInput" type="text" class="form-control pl-10" placeholder="Buscar">
         <i class="w-5 h-5 absolute inset-y-0 left-0 my-auto text-slate-400 ml-3" data-lucide="search"></i>
@@ -84,6 +98,57 @@
             <div class="col-span-12 sm:col-span-4">
                 <div class="intro-y col-span-12 sm:col-span-6">
                     <div id="lib4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- BEGIN: Modal Content -->
+    <div id="static-backdrop-modal-preview" id="editarFestivo"class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body px-5 py-10">
+                    <div class="text-center">
+                        <div class="mb-5"></div>
+                        <h2 class="text-2xl mt-5 font-small">Modificar horario/tipo de prestador</h2><br>
+                        <label for="nombre">Nombre</label>
+                        <input id="nombre" readonly value="" type="text" class="form-control" name="nombre" placeholder="nombre" style="width: 200px">
+                        <br><label for="apellido">Apellido</label>
+                        <input id="apellido" readonly value="" type="text" class="form-control mt-5" name="apellido" placeholder="apellido" style="width: 200px">
+                        
+                        
+                        <form action="{{route('api.modificar_prestador')}}" method="POST">
+                            @csrf
+                            <label for="codigo">Código</label>
+                            <input id="codigo" readonly value="" type="text" class="form-control mt-5" name="codigo" placeholder="codigo" style="width: 200px">
+                            <div class="intro-y col-span-12 sm:col-span-6" id="divCarrera">
+                                <br>
+                                <label class="mr-5" for="tipo_prest">Tipo</label>
+                                <select class="form-control" name="tipo_prest" id="tipo_prest" style="width: 200px">
+                                    <option id="prestador" value="prestador">Prestador</option>
+                                    <option id="coordinador" value="coordinador">Coordinador</option>
+                                    <option id="voluntario" value="voluntario">Voluntario</option>
+                                    <option id="practicante" value="practicante">Practicante</option>
+                                </select>
+                                <br><br>
+                                <label  for="horario_prest">Horario</label>
+                                <select class="form-control" name="horario_prest" id="horario_prest" style="width: 200px">
+                                    @foreach ($horariosValidos as $horario )
+                                        @if ($horario)
+                                            <option value="{{$horario}}" id="{{$horario}}">{{$horario}}</option>
+                                        @endif
+                                        
+                                    @endforeach
+                                </select>
+                                <br>
+                                <br><br>
+                                <div class="text-center">
+                                    <button type="button" data-tw-dismiss="modal" class="btn btn-danger w-24">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary w-24">Guardar</button>
+                                </div>
+                                
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -137,32 +202,17 @@
                     }, {
                         title: "Tipo",
                         field: "tipo",
-                        editor: "select",
-                        editorParams: {
-                            values: {
-                                "prestador": "prestador",
-                                "coordinador": "coordinador",
-                            }
-                        },
+                        sorter: "string",
                     },{
                         title: "Codigo",
                         field: "codigo",
+                        sorter: "number",
                       
                     },  {
                         title: "Horario",
                         field: "horario",
                         sorter: "string",
-                      
-                        editor: "select",
-                        editorParams: {
-                            values: {
-                                "Matutino": "Matutino",
-                                "Mediodia": "Mediodia",
-                                "Vespertino": "Vespertino",
-                                "Tiempo Completo": "Tiempo Completo",
-                                "Sabatino": "Sabatino",
-                            }
-                        },
+
                     }, {
                         title: "Cumplidas",
                         field: "horas_cumplidas",
@@ -180,23 +230,9 @@
                       
                     },{
                         title: "Modificar",
-                        field: "id",
+                        field: "datos",
                         headerTooltip: "Tras seleccionar el cambio de tipo usuario o turno, presiona este boton para guardar los cambios. Nota: Si cambias al prestador a un horario que no corresponde con su area de trabajo, no se realizará el cambio",
-                        formatter: function (cell, formatterParams, onRendered) {
-                            var row = cell.getRow();
-                            var id = cell.getValue();
-                            var button = document.createElement("button");
-                            button.style = "background-color: blue; color: white; border: 1px solid white; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
-                            button.textContent = "Modificar";
-                            button.title = "";
-                            button.addEventListener("click", function() {
-                                var value = row.getData().horario;
-                                var value2 = row.getData().tipo;
-                                modificarHPrestador(id, value);
-                                modificarTPrestador(id, value2);
-                            });
-                            return button;
-                        }, 
+                        formatter: customButtonFormatter, 
                       
                     }, {
                         title: "Desactivar",
@@ -353,6 +389,74 @@
                     console.log('Usuario activado:', data);
                 });
             }
+            function customButtonFormatter(cell, formatterParams, onRendered) {
+            var div = document.createElement("div");
+            div.classList.add("text-center");
+            
+            var a = document.createElement("a");
+            a.href = "javascript:;";
+            a.setAttribute("data-tw-toggle", "modal");
+            a.setAttribute("data-tw-target", "#static-backdrop-modal-preview");
+            a.classList.add("btn", "btn-primary");
+            a.textContent = "Modificar";
+
+            div.appendChild(a);
+            a.addEventListener('click', function(){
+                var data = cell.getRow().getData();
+                document.getElementById('nombre').value = data.name;
+                document.getElementById('apellido').value = data.apellido;
+                document.getElementById('codigo').value = data.codigo;
+                const tipo_prest = document.getElementById('prestador');//Opción Prestador
+                const tipo_coord = document.getElementById('coordinador');//Opción coordinador
+                const tipo_vol = document.getElementById('voluntario');//Opción Voluntario  
+                const tipo_pract = document.getElementById('practicante');//Opción Practicante
+                if( tipo_prest.value == data.tipo){
+                    tipo_prest.selected = true;
+                }else{
+                    tipo_coord.selected = true;
+                }
+                switch(data.tipo) {
+                    case "prestador":
+                        tipo_prest.selected = true;
+                        break;
+                    case "coordinador":
+                        tipo_coord.selected = true;
+                        break;
+                    case "voluntario":
+                        tipo_vol.selected = true;
+                        break;
+                    case "practicante":
+                        tipo_pract.selected = true;
+                        break;
+                    default:
+                        console.log("Opción no reconocida");
+                }
+
+                const select_horario = document.getElementById('horario');
+                switch(data.horario){
+                    case "Matutino":
+                        document.getElementById('Matutino').selected = true;
+                        break;
+                    case "Mediodia":
+                        document.getElementById('Mediodia').selected = true;
+                        break;
+                    case "Vespertino":
+                        document.getElementById('Vespertino').selected = true;
+                        break;
+                    case "Sabatino":
+                        document.getElementById('Sabatino').selected = true;
+                        break;
+                    case "TC":
+                        document.getElementById('TC').selected = true;
+                        break;
+                    default:
+                        document.getElementById('No Aplica').selected = true;
+                        break;
+                    
+                }
+            });
+            return div;
+        }
 
         document.addEventListener('DOMContentLoaded', function() {
             function applyCustomFilter(value, table) {

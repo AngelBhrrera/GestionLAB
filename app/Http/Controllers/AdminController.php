@@ -216,12 +216,14 @@ class AdminController extends Controller
         $dataI = DB::table('prestadores_inactivos');
         $dataL = DB::table('prestadores_servicio_liberado');
         $dataT = DB::table('prestadores_servicio_concluido');
+        $horarios = DB::Table('areas');
 
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $data->where('id_area', Auth::user()->area);
             $dataI->where('area', Auth::user()->area);
             $dataL->where('area', Auth::user()->area);
             $dataT->where('area', Auth::user()->area);
+            $horarios->where('id', Auth::user()->area);
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $data->where('id_sede', Auth::user()->sede);
             $dataI->where('sede',  Auth::user()->sede);
@@ -233,10 +235,21 @@ class AdminController extends Controller
         $dataI = $dataI->get();
         $dataL = $dataL->get();
         $dataT = $dataT->get();
+        $horarios = $horarios->first();
+        $horariosValidos = [];
+        
+        $horariosValidos[] = ($horarios->turnoMatutino == 1) ? "Matutino": null;
+        $horariosValidos[] = ($horarios->turnoMediodia == 1) ? "Mediodia": null;
+        $horariosValidos[] = ($horarios->turnoVespertino == 1) ? "Vespertino": null;
+        $horariosValidos[] = ($horarios->turnoSabatino == 1) ? "Sabatino": null;
+        $horariosValidos[] = ($horarios->turnoTiempoCompleto == 1) ? "TC": null;
+        $horariosValidos[] = ($horarios->no_Aplica == 1) ? "No Aplica": null;
+
+        
 
         return view('admin/ver_prestadores', ['datos' => json_encode($data),
         'datosI' => json_encode($dataI),   'datosL' => json_encode($dataL),
-        'datosT' => json_encode($dataT) ]);
+        'datosT' => json_encode($dataT), 'horariosValidos' => $horariosValidos ]);
     }
 
     public function prestadores_pendientes()
@@ -353,6 +366,41 @@ class AdminController extends Controller
             ->update(['tipo' => $value]);
 
         return response()->json(['message' => 'Modificado exitosamente']);
+    }
+
+    public function modificar_prestador(Request $request){
+        $horarios = DB::Table('areas');
+        $horarios = $horarios->first();
+        $horariosValidos = [];
+        $horariosValidos[] = ($horarios->turnoMatutino == 1) ? "Matutino": null;
+        $horariosValidos[] = ($horarios->turnoMediodia == 1) ? "Mediodia": null;
+        $horariosValidos[] = ($horarios->turnoVespertino == 1) ? "Vespertino": null;
+        $horariosValidos[] = ($horarios->turnoSabatino == 1) ? "Sabatino": null;
+        $horariosValidos[] = ($horarios->turnoTiempoCompleto == 1) ? "TC": null;
+        $horariosValidos[] = ($horarios->no_Aplica == 1) ? "No Aplica": null;
+
+        if(!in_array($request->horario_prest, $horariosValidos)){
+            return redirect()->route('admin.prestadores')->with('warning', 'El horario seleccionado no es válido');
+        }
+        
+        switch($request->tipo_prest){
+            case "jefe area":
+            case "jefe sede":
+            case "Superadmin":
+            return redirect()->route('admin.prestadores')->with('error', 'Error al modificar, no tienes los permisos necesarios');
+        }
+        
+
+        $id = DB::table('users')
+            ->where('codigo', $request->codigo)
+            ->value('id');
+            
+        $modificar = DB::table('users')
+        ->where('id', $id)
+        ->update(['horario'=>$request->horario_prest, 'tipo'=>$request->tipo_prest]);
+
+        return redirect()->route('admin.prestadores')->with('success', 'Modificado Correctamente');
+        
     }
 
     // ACTIVIDADES Y PROYECTOS
@@ -736,6 +784,7 @@ class AdminController extends Controller
             $prestadores->where('id_area', auth()->user()->area)
                 ->where('horario', auth()->user()->horario)
                 ->where('tipo', '!=', 'coordinador');
+            $areas->where('id', auth()->user()->area);
             $tabla_proy->where('id_area', auth()->user()->area);
         }else if(auth()->user()->tipo == 'jefe area'){
             $prestadores->where('id_area', auth()->user()->area);
@@ -1412,7 +1461,7 @@ class AdminController extends Controller
             ->where('id', $id_festivo)
             ->update(['evento'=>$descripcion, 'inicio'=>$inicio, 'final'=>$fin]);
 
-        return redirect()->route('admin.registro_festivos')->with('success', 'Modificado correctamente');
+        return redirect()->route('admin.diasfestivos')->with('success', 'Modificado correctamente');
     }
 
     public function eliminardiafestivo($id)
