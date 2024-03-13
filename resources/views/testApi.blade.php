@@ -1,47 +1,58 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>API TEST</title>
-    </head>
+@extends('layouts/admin-layout')
 
-    <body>
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
+    <li class="breadcrumb-item"><a href="{{route('admin.gestHub')}}">Gestion</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Sedes</li>
+@endsection
 
-    <form id="miFormulario">
-        @csrf
-        <select name="otro_dato" id="horarioSelect">
-            <option value="">Selecciona un horario</option>
-            <option value="Matutino">Matutino</option>
-            <option value="Mediodia">Mediodia</option>
-            <option value="Vespertino">Vespertino</option>
-            <option value="Sabatino">Sabatino</option>
-        </select>
-        <select name="id">
-        <option value="">Selecciona una actividad</option>
-            @foreach($actividades as $actividad)
-                <option value="{{ $actividad->id }}">{{ $actividad->titulo }}</option>
-            @endforeach
-        </select>
-        <button type="submit">Enviar</button>
-        
-    </form>
+@section('subcontent')
+<div class="grid grid-cols-12 gap-4 gap-y-5 mt-5">
+    <div class="col-span-12 sm:col-span-6">
+        <div class="intro-y box p-5 mt-5">
+            <form id="miFormulario">
+                @csrf
+                <select name="otro_dato" id="horarioSelect">
+                    <option value="">Selecciona un horario</option>
+                    <option value="Matutino">Matutino</option>
+                    <option value="Mediodia">Mediodia</option>
+                    <option value="Vespertino">Vespertino</option>
+                    <option value="Sabatino">Sabatino</option>
+                </select>
+                <select name="id">
+                <option value="">Selecciona una actividad</option>
+                    @foreach($actividades as $actividad)
+                        <option value="{{ $actividad->id }}">{{ $actividad->titulo }}</option>
+                    @endforeach
+                </select>
+                <button type="submit">Enviar</button>
+                
+            </form>
 
-        <table id="prestadoresTable">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Horario</th>
-                    <!-- Agrega más columnas según sea necesario -->
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($prestadores as $prestador)
-                <tr>
-                    <td>{{ $prestador->name.' '.$prestador->apellido }}</td>
-                    <td>{{ $prestador->horario }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+                <table id="prestadoresTable">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Horario</th>
+                            <!-- Agrega más columnas según sea necesario -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($prestadores as $prestador)
+                        <tr>
+                            <td>{{ $prestador->name.' '.$prestador->apellido }}</td>
+                            <td>{{ $prestador->horario }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('script')
+
 
         <script>
         var prestadores = @json($prestadores);
@@ -125,5 +136,4 @@
                 });
             });
         </script>
-    </body>
-</html>
+@endsection

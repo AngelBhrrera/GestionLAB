@@ -108,7 +108,7 @@
                                         <path d="M21 10h-5.5" />
                                         <line x1="2" x2="22" y1="2" y2="22" />
                                     </svg></i> </div>
-                            <div class="side-menu__title">Dias no Laborales</div>
+                            <div class="side-menu__title">Gestionar Vacaciones, Festivos y No Laborales</div>
                         </a>
                     </li>
                     @endif
@@ -123,7 +123,7 @@
                     <li>
                         <a href="{{route('admin.sede')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
-                            <div class="side-menu__title">Modificar area</div>
+                            <div class="side-menu__title">Modificar Area</div>
                         </a>
                     </li>
                     @else
@@ -131,13 +131,14 @@
                             <a href="{{route('admin.sede')}}" class="side-menu">
                                 <div class="side-menu__icon"> <i data-lucide="building"></i> </div>
                                 @if (Auth::user()->tipo == "jefe sede")
-                                <div class="side-menu__title">Modificar sede / Agregar areas</div>
+                                <div class="side-menu__title">Modificar Sede / Agregar Areas</div>
                                 @else
-                                <div class="side-menu__title">Modificar / agregar sedes / areas</div>
+                                <div class="side-menu__title">Modificar / Agregar Sedes / Areas</div>
                                 @endif
                             </a>
                         </li>
                     @endif
+                    @if ($filtro->gamificacion == 1)
                     <li>
                         <a href="{{route('admin.categorias')}}" class="side-menu">
                             <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
@@ -145,9 +146,10 @@
                             stroke-linejoin="round" class="lucide lucide-between-horizontal-start"><rect width="13" 
                             height="7" x="8" y="3" rx="1"/><path d="m2 9 3 3-3 3"/><rect width="13" height="7" 
                             x="8" y="14" rx="1"/></svg></i> </div>
-                            <div class="side-menu__title">Añadir categorias</div>
+                            <div class="side-menu__title">Gestion Actividades, Categorias y Subcategorias</div>
                         </a>
                     </li>
+                    @endif
                 </ul>
             </li>
         @endsection

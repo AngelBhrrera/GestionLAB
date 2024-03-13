@@ -151,16 +151,14 @@
 
 @section('script')
     <script type="text/javascript">
-            var sedes = {!! $no_laboral !!};
+            var dias_especiales = {!! $no_laboral !!};
             var table = new Tabulator("#festivos", {
 
-                data: sedes,
+                data: dias_especiales,
                 paginationSize: 15,
-
                 pagination: "local",
                 layout: "fitDataFill",
                 resizableColumns:false,
-                height: "100%",
 
                 columns: [{
                         title: "ID",

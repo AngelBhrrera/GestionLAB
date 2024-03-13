@@ -1100,12 +1100,28 @@ class AdminController extends Controller
             ->orderBy('nombre')
             ->get();
 
+        $acts = DB::table('actividades')
+            ->select('actividades.id', 'titulo', 'TEC' , 'exp_ref', 'descripcion', 'recursos', 'objetivos', 'categorias.nombre AS categoria', 'subcategorias.nombre AS subcategoria')
+            ->join('categorias', 'id_categoria', '=', 'categorias.id')
+            ->join('subcategorias', 'id_subcategoria', '=', 'subcategorias.id')
+            ->get();
+
+        $cat = DB::table('categorias')
+            ->select('categorias.id', 'categorias.nombre', DB::raw('COUNT(actividades.id) AS total_actividades'), 
+                DB::raw('COUNT(actividades.id) AS total_actividades'),
+                DB::raw('CASE WHEN COUNT(subcategorias.id) > 0 THEN COUNT(subcategorias.id) ELSE "NO APLICA" END AS total_subcategorias'))
+            ->join('actividades', 'categorias.id', '=', 'actividades.id_categoria')
+            ->join('subcategorias', 'categorias.id', '=', 'subcategorias.categoria')
+            ->groupBy('actividades.id_categoria')
+            ->get();
+
         $subcateg = DB::table('subcategorias')
             ->select('subcategorias.*', 'categorias.nombre AS categoria')
             ->join('categorias', 'subcategorias.categoria', '=', 'categorias.id')
             ->get();
 
-        return view('admin.control_actividades', ['categoria'=>$categ, 'tabla_subcategorias' => json_encode($subcateg) ]);
+        return view('admin.control_actividades', ['categoria'=>$categ,  'tabla_actividades' => json_encode($acts),
+        'tabla_subcategorias' => json_encode($subcateg),  'tabla_categorias' => json_encode($cat), ]);
     }
 
     public function nuevaCateg(Request $request){
@@ -1326,16 +1342,20 @@ class AdminController extends Controller
 
     public function editA($id, $campo){
         $sql = DB::table('areas')
-        ->where('id', $id)
-        ->update(['nombre_area' => $campo]);
-
-        return response()->json(['message' => $sql]);
+            ->where('id', $id)
+            ->update(['nombre_area' => $campo]);
+    
+        if ($sql) {
+            return response()->json(['message' => 'Área actualizada correctamente']);
+        } else {
+            return response()->json(['message' => 'Error al actualizar el área'], 500);
+        }
     }
 
     public function editS($id, $campo){
         $sql = DB::table('sedes')
-        ->where('id_sede', $id)
-        ->update(['nombre_sede' => $campo]);
+            ->where('id_sede', $id)
+            ->update(['nombre_sede' => $campo]);
         return response()->json(['message' => $sql]);
     }
 
