@@ -1407,10 +1407,12 @@ class AdminController extends Controller
     public function guardarfestivos(Request $request)
     {   
         $request->validate([
-            'descripcion' => 'string|max:500',
-            'tipo' => 'string | max:100',
+            'descripcion' => 'required|string|max:500',
+            'tipo' => 'required | string | max:100',
             'sede' =>  'integer',
             'area' => 'integer',
+        ],[
+            'descripcion.required' => "El campo justificación es obligatorio",
         ]);
 
         if($request->input('tipo')=='vacaciones'){
