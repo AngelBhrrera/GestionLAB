@@ -37,22 +37,18 @@
                         title: "Nombre",
                         field: "name",
                         sorter: "string",
-                        hozAlign: "center",
                     }, {
                         title: "Apellido",
                         field: "apellido",
                         sorter: "string",
-                        hozAlign: "center",
                     }, {
                         title: "Correo",
                         field: "correo",
                         sorter: "string",
-                        hozAlign: "center",
                     }, {
                         title: "Codigo",
                         field: "codigo",
                         sorter: "number",
-                        hozAlign: "center",
                     }, {
                         title: "",
                         field: "id",
@@ -67,7 +63,6 @@
                             });
                             return button;
                         }, 
-                        hozAlign: "center",
                     },
                 ],
             });

@@ -1410,8 +1410,6 @@ class AdminController extends Controller
             ->orderBy('inicio')
             ->get();
 
-        //$no_laboral = DB::select("Select * from eventos where sede = $sede and (area = $area or area = 0 ) order by inicio;");
-
         foreach($no_laboral as $valor){
 
             $fechaObjeto = DateTime::createFromFormat('Y-m-d H:i:s', $valor->inicio);

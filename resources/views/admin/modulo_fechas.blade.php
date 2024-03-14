@@ -170,23 +170,19 @@
                         field: "evento",
                         headerFilter: "input",
                         sorter: "string",
-                        hozAlign: "center",
                         width: 300,
                     }, {
                         title: "Inicio",
                         field: "inicio",
-                        hozAlign: "center",
                         width: 150,
                     },{
                         title: "Fin",
                         field: "final",
-                        hozAlign: "center",
                         width: 150,
                     },
                     {
                         title: "Tipo",
                         field: "tipo",
-                        hozAlign: "center",
                         width: 150,
                     },
                     {
