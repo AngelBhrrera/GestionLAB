@@ -1,603 +1,601 @@
-id_actividad,TEC,nombre_categoria,nombre_subcategoria,id_prestador,horario,carrera,experiencia,experiencia_mensual,experiencia_semanal,periodo,resultado
-,15,Disenio,No Aplica,,Vespertino,ROBO,278,59,248,1,5
-,25,Programacion,Software,,Matutino,INNI,205,3,28,1,5
-,25,Programacion,Software,,Sabatino,ICOM,193,68,182,1,5
-,25,Programacion,Software,,Sabatino,INDI,27,1,7,1,-3
-,35,Electronica,No Aplica,,Vespertino,MELE,483,4,43,1,3
-,35,Electronica,No Aplica,,Matutino,MELE,282,78,207,1,5
-,15,Disenio,No Aplica,,Matutino,MELE,414,69,159,2,5
-,15,Disenio,No Aplica,,Matutino,MELE,772,256,475,2,-3
-,15,Disenio,No Aplica,,Vespertino,INDI,1190,211,330,2,5
-,15,Disenio,No Aplica,,Mediodia,MELE,984,695,698,2,5
-,15,Disenio,No Aplica,,Vespertino,INNI,1030,291,325,2,3
-,15,Disenio,No Aplica,,Vespertino,INNI,1030,291,325,2,-3
-,15,Disenio,No Aplica,,Mediodia,INNI,920,249,275,2,3
-,15,Disenio,No Aplica,,Vespertino,MELE,515,163,189,2,5
-,25,Programacion,Software,,Mediodia,ROBO,923,67,79,2,5
-,25,Programacion,Software,,Matutino,MELE,772,256,475,2,3
-,35,Electronica,No Aplica,,Vespertino,ROBO,278,59,248,1,5
-,35,Electronica,No Aplica,,Matutino,MELE,259,49,104,1,3
-,35,Electronica,No Aplica,,Matutino,MELE,259,49,104,1,5
-,35,Electronica,No Aplica,,Matutino,ROBO,251,146,229,1,3
-,35,Electronica,No Aplica,,Sabatino,ICOM,193,68,182,1,-3
-,35,Electronica,No Aplica,,Sabatino,ICOM,193,68,182,1,3
-,35,Electronica,No Aplica,,Matutino,MELE,29,26,28,1,5
-,55,Mantenimiento,Preventivo,,Sabatino,ROBO,486,202,240,1,5
-,55,Mantenimiento,Preventivo,,Vespertino,MELE,479,16,23,1,5
-,55,Mantenimiento,Preventivo,,Matutino,ROBO,251,146,229,1,3
-,15,Disenio,No Aplica,,Mediodia,INDI,680,214,391,3,8
-,15,Disenio,No Aplica,,Matutino,ROBO,579,139,497,3,5
-,15,Disenio,No Aplica,,Matutino,ROBO,535,200,442,3,8
-,15,Disenio,No Aplica,,Mediodia,MELE,387,196,374,3,8
-,25,Programacion,Software,,Vespertino,ROBO,943,143,255,3,10
-,55,Mantenimiento,Preventivo,,Matutino,ICOM,173,31,58,1,3
-,80,Eventos,No Aplica,,Matutino,ROBO,439,136,347,1,8
-,80,Eventos,No Aplica,,Mediodia,INNI,425,163,187,1,8
-,80,Eventos,No Aplica,,Sabatino,INNI,399,18,174,1,8
-,80,Eventos,No Aplica,,Vespertino,ROBO,278,59,248,1,8
-,80,Eventos,No Aplica,,Sabatino,ICOM,193,68,182,1,8
-,80,Eventos,No Aplica,,Mediodia,ROBO,107,4,16,1,8
-,90,Programacion,Web,,Vespertino,ROBO,427,35,35,1,5
-,90,Programacion,Web,,Matutino,INNI,205,3,28,1,5
-,90,Programacion,Web,,Matutino,ICOM,173,31,58,1,5
-,25,Programacion,Software,,Sabatino,ROBO,600,69,127,3,8
-,25,Programacion,Software,,Matutino,ROBO,579,139,497,3,5
-,25,Programacion,Software,,Sabatino,INDI,791,104,149,2,5
-,25,Programacion,Software,,Matutino,ICOM,984,664,733,2,3
-,25,Programacion,Software,,Vespertino,MELE,540,357,407,3,8
-,25,Programacion,Software,,Matutino,ICOM,518,109,223,3,8
-,25,Programacion,Software,,Mediodia,INDI,469,206,286,3,3
-,35,Electronica,No Aplica,,Matutino,INNI,1195,374,749,3,10
-,35,Electronica,No Aplica,,Mediodia,MELE,845,308,362,3,8
-,55,Mantenimiento,Preventivo,,Vespertino,INDI,870,79,293,3,10
-,55,Mantenimiento,Preventivo,,Mediodia,MELE,845,308,362,3,10
-,55,Mantenimiento,Preventivo,,Mediodia,ICOM,826,45,763,3,8
-,55,Mantenimiento,Preventivo,,Vespertino,MELE,520,258,266,3,8
-,55,Mantenimiento,Preventivo,,Sabatino,INDI,462,19,448,3,5
-,55,Mantenimiento,Preventivo,,Matutino,ROBO,415,122,300,3,10
-,55,Mantenimiento,Preventivo,,Matutino,ROBO,415,122,300,3,10
-,80,Eventos,No Aplica,,Vespertino,INDI,870,79,293,3,10
-,80,Eventos,No Aplica,,Mediodia,MELE,845,308,362,3,10
-,80,Eventos,No Aplica,,Mediodia,ICOM,826,45,763,3,10
-,80,Eventos,No Aplica,,Sabatino,ICOM,630,49,347,3,10
-,90,Programacion,Web,,Vespertino,INDI,870,79,293,3,8
-,90,Programacion,Web,,Mediodia,INDI,680,214,391,3,5
-,90,Programacion,Web,,Mediodia,INDI,680,214,391,3,8
-,25,Programacion,Software,,Mediodia,ROBO,438,161,435,2,8
-,25,Programacion,Software,,Vespertino,ICOM,464,0,18,2,5
-,25,Programacion,Software,,Vespertino,MELE,515,163,189,2,5
-,25,Programacion,Software,,Sabatino,MELE,940,101,211,2,3
-,25,Programacion,Software,,Vespertino,ROBO,1067,601,878,2,5
-,55,Mantenimiento,Preventivo,,Mediodia,INNI,1093,84,338,2,5
-,55,Mantenimiento,Preventivo,,Mediodia,ROBO,1040,37,93,2,3
-,55,Mantenimiento,Preventivo,,Vespertino,INDI,1190,211,330,2,5
-,55,Mantenimiento,Preventivo,,Matutino,ROBO,1244,81,646,2,5
-,55,Mantenimiento,Preventivo,,Matutino,ICOM,361,18,92,2,8
-,55,Mantenimiento,Preventivo,,Vespertino,ICOM,464,0,18,2,3
-,80,Eventos,No Aplica,,Mediodia,INNI,1093,84,338,2,5
-,80,Eventos,No Aplica,,Mediodia,INDI,585,27,174,2,8
-,80,Eventos,No Aplica,,Matutino,ICOM,477,208,240,2,5
-,80,Eventos,No Aplica,,Vespertino,INDI,449,335,375,2,8
-,80,Eventos,No Aplica,,Matutino,ICOM,984,664,733,2,5
-,80,Eventos,No Aplica,,Matutino,ROBO,1001,238,786,2,8
-,80,Eventos,No Aplica,,Vespertino,INDI,511,391,414,2,5
-,90,Programacion,Web,,Vespertino,INDI,1190,211,330,2,3
-,90,Programacion,Web,,Mediodia,ROBO,107,4,16,1,3
-,120,IA,Drones,,Sabatino,ROBO,486,202,240,1,10
-,120,IA,Drones,,Sabatino,INNI,399,18,174,1,3
-,120,IA,Drones,,Sabatino,ICOM,344,15,90,1,3
-,120,IA,Drones,,Matutino,MELE,282,78,207,1,5
-,120,IA,Drones,,Vespertino,ROBO,278,59,248,1,8
-,120,IA,Drones,,Vespertino,ROBO,278,59,248,1,8
-,120,IA,Drones,,Matutino,MELE,259,49,104,1,8
-,120,IA,Drones,,Vespertino,MELE,125,37,63,1,8
-,120,IA,Drones,,Sabatino,INDI,27,1,7,1,3
-,120,IA,Drones,,Vespertino,INDI,751,335,520,3,5
-,120,IA,Drones,,Mediodia,ROBO,660,75,108,3,10
-,120,IA,Drones,,Matutino,MELE,364,25,167,3,10
-,125,Administracion,Inventario,,Matutino,INNI,1195,374,749,3,8
-,125,Eventos,No Aplica,,Matutino,ROBO,983,8,71,3,10
-,125,Eventos,No Aplica,,Vespertino,ROBO,879,50,241,3,10
-,125,Eventos,No Aplica,,Vespertino,INDI,870,79,293,3,10
-,125,Administracion,Inventario,,Sabatino,ICOM,557,82,203,3,10
-,125,Administracion,Inventario,,Matutino,ROBO,535,200,442,3,5
-,125,Administracion,Inventario,,Matutino,ICOM,518,109,223,3,8
-,125,Eventos,No Aplica,,Sabatino,INDI,462,19,448,3,10
-,130,Ludica,Videojuegos,,Matutino,MELE,1239,47,266,3,5
-,130,Ludica,Videojuegos,,Sabatino,MELE,1066,264,700,3,8
-,130,Ludica,Videojuegos,,Mediodia,ROBO,660,75,108,3,8
-,90,Programacion,Web,,Sabatino,MELE,940,101,211,2,5
-,120,IA,Drones,,Mediodia,INNI,1093,84,338,2,3
-,120,IA,Drones,,Matutino,INDI,432,23,170,2,5
-,120,IA,Drones,,Matutino,INDI,432,23,170,2,8
-,120,IA,Drones,,Vespertino,INDI,491,32,56,2,8
-,120,IA,Drones,,Vespertino,INNI,1030,291,325,2,5
-,120,IA,Drones,,Vespertino,ICOM,464,0,18,2,5
-,120,IA,Drones,,Matutino,ICOM,753,104,110,2,8
-,125,Eventos,No Aplica,,Matutino,MELE,414,69,159,2,3
-,125,Eventos,No Aplica,,Matutino,INDI,432,23,170,2,8
-,125,Administracion,Inventario,,Matutino,INDI,432,23,170,2,5
-,125,Eventos,No Aplica,,Matutino,ICOM,477,208,240,2,8
-,125,Eventos,No Aplica,,Vespertino,INDI,449,335,375,2,3
-,125,Administracion,Inventario,,Vespertino,INNI,621,166,608,2,5
-,125,Eventos,No Aplica,,Matutino,INNI,534,306,478,2,3
-,125,Administracion,Inventario,,Matutino,INNI,534,306,478,2,8
-,125,Eventos,No Aplica,,Matutino,INNI,534,306,478,2,5
-,125,Administracion,Inventario,,Vespertino,INDI,1190,211,330,2,8
-,125,Administracion,Inventario,,Mediodia,MELE,1088,186,242,2,10
-,125,Eventos,No Aplica,,Vespertino,MELE,1121,183,186,2,5
-,125,Eventos,No Aplica,,Vespertino,MELE,1121,183,186,2,5
-,125,Eventos,No Aplica,,Vespertino,MELE,515,163,189,2,5
-,125,Eventos,No Aplica,,Vespertino,ROBO,1067,601,878,2,10
-,130,Ludica,Videojuegos,,Mediodia,INDI,585,27,174,2,3
-,130,Ludica,Videojuegos,,Matutino,ICOM,780,294,765,2,5
-,130,Ludica,Videojuegos,,Matutino,MELE,772,256,475,2,-3
-,130,Ludica,Videojuegos,,Vespertino,INDI,1190,211,330,2,8
-,130,Ludica,Videojuegos,,Sabatino,INDI,791,104,149,2,5
-,125,Eventos,No Aplica,,Vespertino,MELE,483,4,43,1,10
-,125,Administracion,Inventario,,Vespertino,ROBO,427,35,35,1,8
-,125,Eventos,No Aplica,,Mediodia,INNI,425,163,187,1,10
-,125,Eventos,No Aplica,,Sabatino,INNI,399,18,174,1,10
-,130,Ludica,Videojuegos,,Matutino,ICOM,984,664,733,2,5
-,130,Ludica,Videojuegos,,Matutino,ROBO,1001,238,786,2,10
-,130,Ludica,Videojuegos,,Vespertino,MELE,1121,183,186,2,3
-,130,Ludica,Videojuegos,,Mediodia,MELE,1211,15,172,2,10
-,130,Ludica,Videojuegos,,Matutino,INNI,529,357,365,2,-3
-,140,Programacion,Web,,Matutino,ICOM,477,208,240,2,3
-,140,Programacion,Web,,Mediodia,ROBO,438,161,435,2,8
-,145,Programacion,Web,,Vespertino,INDI,1190,211,330,2,10
-,145,Programacion,Web,,Matutino,ICOM,984,664,733,2,8
-,145,Programacion,Web,,Vespertino,MELE,1121,183,186,2,3
-,145,Programacion,Web,,Matutino,ICOM,1053,405,938,2,3
-,150,Investigacion,No Aplica,,Matutino,MELE,414,69,159,2,3
-,150,Investigacion,No Aplica,,Matutino,INDI,432,23,170,2,5
-,150,Investigacion,No Aplica,,Vespertino,INDI,449,335,375,2,8
-,150,Investigacion,No Aplica,,Vespertino,INDI,491,32,56,2,10
-,150,Investigacion,No Aplica,,Vespertino,MELE,515,163,189,2,-3
-,130,Ludica,Videojuegos,,Sabatino,ICOM,630,49,347,3,10
-,130,Ludica,Videojuegos,,Sabatino,ROBO,600,69,127,3,8
-,130,Ludica,Videojuegos,,Matutino,ROBO,579,139,497,3,8
-,130,Ludica,Videojuegos,,Matutino,ROBO,579,139,497,3,8
-,130,Ludica,Videojuegos,,Matutino,ROBO,535,200,442,3,8
-,130,Ludica,Videojuegos,,Matutino,ICOM,518,109,223,3,8
-,140,Programacion,Web,,Matutino,ICOM,1238,385,602,3,10
-,125,Administracion,Inventario,,Matutino,INNI,205,3,28,1,3
-,125,Administracion,Inventario,,Sabatino,ICOM,193,68,182,1,5
-,125,Eventos,No Aplica,,Vespertino,MELE,125,37,63,1,8
-,125,Administracion,Inventario,,Mediodia,ROBO,107,4,16,1,5
-,125,Administracion,Inventario,,Sabatino,ICOM,32,14,17,1,5
-,125,Eventos,No Aplica,,Sabatino,INDI,27,1,7,1,8
-,130,Ludica,Videojuegos,,Sabatino,ROBO,449,4,20,1,8
-,140,Programacion,Web,,Vespertino,ROBO,879,50,241,3,5
-,140,Programacion,Web,,Mediodia,ICOM,826,45,763,3,10
-,140,Programacion,Web,,Vespertino,ICOM,618,159,240,3,8
-,130,Ludica,Videojuegos,,Matutino,ROBO,439,136,347,1,8
-,130,Ludica,Videojuegos,,Matutino,ROBO,439,136,347,1,8
-,140,Programacion,Web,,Vespertino,MELE,479,16,23,1,3
-,140,Programacion,Web,,Vespertino,ROBO,427,35,35,1,5
-,140,Programacion,Web,,Mediodia,INNI,425,163,187,1,8
-,140,Programacion,Web,,Sabatino,INDI,259,9,102,1,-3
-,190,Ludica,RV,,Mediodia,INNI,1093,84,338,2,8
-,190,Ludica,RV,,Matutino,ICOM,780,294,765,2,10
-,190,Ludica,RV,,Matutino,MELE,772,256,475,2,3
-,190,Ludica,RV,,Matutino,ROBO,1244,81,646,2,-3
-,190,Ludica,RV,,Matutino,ICOM,984,664,733,2,5
-,190,Ludica,RV,,Vespertino,INDI,511,391,414,2,8
-,190,Ludica,RV,,Vespertino,MELE,515,163,189,2,10
-,140,Programacion,Web,,Matutino,INNI,542,321,415,3,8
-,140,Programacion,Web,,Mediodia,INDI,469,206,286,3,3
-,145,Programacion,Web,,Matutino,INNI,1195,374,749,3,10
-,145,Programacion,Web,,Vespertino,ROBO,943,143,255,3,5
-,145,Programacion,Web,,Vespertino,ICOM,618,159,240,3,8
-,145,Programacion,Web,,Vespertino,MELE,520,258,266,3,5
-,145,Programacion,Web,,Vespertino,MELE,520,258,266,3,5
-,145,Programacion,Web,,Matutino,INNI,420,2,237,3,10
-,150,Investigacion,No Aplica,,Mediodia,INDI,680,214,391,3,10
-,150,Investigacion,No Aplica,,Matutino,MELE,364,25,167,3,8
-,190,Ludica,RV,,Sabatino,ICOM,557,82,203,3,8
-,190,Ludica,RV,,Vespertino,MELE,520,258,266,3,10
-,190,Ludica,RV,,Mediodia,MELE,387,196,374,3,8
-,190,Ludica,RV,,Matutino,MELE,364,25,167,3,8
-,205,Administracion,Inventario,,Matutino,ROBO,983,8,71,3,5
-,205,Administracion,Inventario,,Vespertino,ROBO,943,143,255,3,5
-,205,IA,Drones,,Vespertino,ROBO,879,50,241,3,10
-,205,IA,Drones,,Mediodia,INNI,635,237,295,3,10
-,205,IA,Drones,,Mediodia,INDI,469,206,286,3,8
-,140,Programacion,Web,,Sabatino,ICOM,193,68,182,1,8
-,140,Programacion,Web,,Matutino,MELE,29,26,28,1,-3
-,145,Programacion,Web,,Sabatino,ROBO,486,202,240,1,8
-,145,Programacion,Web,,Sabatino,INDI,259,9,102,1,-3
-,145,Programacion,Web,,Matutino,MELE,3,3,3,1,-3
-,150,Investigacion,No Aplica,,Sabatino,ROBO,486,202,240,1,10
-,150,Investigacion,No Aplica,,Sabatino,ICOM,32,14,17,1,5
-,190,Ludica,RV,,Vespertino,ROBO,427,35,35,1,10
-,190,Ludica,RV,,Matutino,ICOM,287,39,110,1,8
-,190,Ludica,RV,,Matutino,ICOM,173,31,58,1,5
-,205,IA,Drones,,Vespertino,MELE,479,16,23,1,3
-,205,Administracion,Inventario,,Vespertino,ROBO,427,35,35,1,8
-,205,IA,Drones,,Sabatino,ICOM,344,15,90,1,8
-,205,IA,Drones,,Mediodia,INNI,1093,84,338,2,5
-,205,Administracion,Inventario,,Matutino,ICOM,477,208,240,2,10
-,205,Administracion,Inventario,,Sabatino,INDI,826,558,653,2,5
-,205,IA,Drones,,Vespertino,INDI,449,335,375,2,10
-,205,Administracion,Inventario,,Vespertino,INNI,621,166,608,2,3
-,205,Administracion,Inventario,,Vespertino,INDI,1190,211,330,2,8
-,205,Administracion,Inventario,,Vespertino,INNI,1030,291,325,2,5
-,205,Administracion,Inventario,,Vespertino,INNI,1030,291,325,2,3
-,205,IA,Drones,,Sabatino,MELE,759,607,611,2,3
-,205,Administracion,Inventario,,Sabatino,MELE,759,607,611,2,-3
-,205,IA,Drones,,Mediodia,ROBO,438,161,435,2,-3
-,205,Administracion,Inventario,,Mediodia,INNI,920,249,275,2,5
-,205,IA,Drones,,Matutino,ICOM,1053,405,938,2,10
-,205,IA,Drones,,Matutino,ROBO,415,122,300,3,10
-,215,Electronica,No Aplica,,Matutino,ROBO,983,8,71,3,10
-,215,Electronica,No Aplica,,Vespertino,ROBO,943,143,255,3,10
-,215,Electronica,No Aplica,,Vespertino,ROBO,879,50,241,3,10
-,215,Electronica,No Aplica,,Vespertino,INDI,870,79,293,3,3
-,215,Electronica,No Aplica,,Mediodia,ICOM,826,45,763,3,10
-,215,Electronica,No Aplica,,Vespertino,INDI,751,335,520,3,8
-,215,Electronica,No Aplica,,Sabatino,ROBO,600,69,127,3,10
-,215,Electronica,No Aplica,,Matutino,INNI,420,2,237,3,5
-,230,Impresion,No Aplica,,Matutino,ROBO,983,8,71,3,8
-,205,IA,Drones,,Vespertino,ROBO,278,59,248,1,5
-,205,IA,Drones,,Matutino,INNI,205,3,28,1,5
-,205,IA,Drones,,Matutino,ICOM,173,31,58,1,5
-,205,IA,Drones,,Matutino,MELE,3,3,3,1,5
-,215,Electronica,No Aplica,,Sabatino,ROBO,486,202,240,1,10
-,215,Electronica,No Aplica,,Sabatino,ROBO,449,4,20,1,10
-,215,Electronica,No Aplica,,Sabatino,INNI,399,18,174,1,5
-,215,Electronica,No Aplica,,Sabatino,INNI,399,18,174,1,5
-,230,Impresion,No Aplica,,Vespertino,ROBO,879,50,241,3,10
-,230,Impresion,No Aplica,,Vespertino,INDI,751,335,520,3,8
-,230,Impresion,No Aplica,,Vespertino,ICOM,618,159,240,3,8
-,230,Impresion,No Aplica,,Matutino,ICOM,536,134,300,3,10
-,230,Impresion,No Aplica,,Vespertino,INNI,527,242,335,3,10
-,230,Impresion,No Aplica,,Mediodia,INDI,469,206,286,3,8
-,215,Electronica,No Aplica,,Matutino,MELE,259,49,104,1,8
-,215,Electronica,No Aplica,,Matutino,INNI,205,3,28,1,3
-,215,Electronica,No Aplica,,Matutino,ICOM,173,31,58,1,3
-,230,Impresion,No Aplica,,Sabatino,INNI,399,18,174,1,10
-,230,Impresion,No Aplica,,Matutino,MELE,282,78,207,1,10
-,230,Impresion,No Aplica,,Matutino,ROBO,251,146,229,1,8
-,230,Impresion,No Aplica,,Mediodia,ROBO,107,4,16,1,8
-,230,Impresion,No Aplica,,Sabatino,INDI,462,19,448,3,10
-,255,Programacion,Base de datos,,Vespertino,ROBO,879,50,241,3,5
-,230,Impresion,No Aplica,,Sabatino,INDI,27,1,7,1,8
-,255,Programacion,Base de datos,,Sabatino,INDI,259,9,102,1,-3
-,265,Disenio,No Aplica,,Vespertino,ROBO,427,35,35,1,5
-,265,Disenio,No Aplica,,Vespertino,MELE,125,37,63,1,-3
-,265,Disenio,No Aplica,,Sabatino,ICOM,32,14,17,1,3
-,285,Investigacion,No Aplica,,Vespertino,MELE,483,4,43,1,10
-,285,Investigacion,No Aplica,,Matutino,ROBO,439,136,347,1,8
-,285,Investigacion,No Aplica,,Vespertino,ROBO,427,35,35,1,10
-,285,Investigacion,No Aplica,,Mediodia,INNI,425,163,187,1,10
-,205,Administracion,Inventario,,Matutino,ICOM,1053,405,938,2,5
-,205,IA,Drones,,Matutino,ICOM,753,104,110,2,5
-,205,Administracion,Inventario,,Vespertino,ROBO,1067,601,878,2,5
-,215,Electronica,No Aplica,,Matutino,MELE,772,256,475,2,-3
-,215,Electronica,No Aplica,,Mediodia,ROBO,438,161,435,2,10
-,215,Electronica,No Aplica,,Matutino,INNI,529,357,365,2,10
-,230,Impresion,No Aplica,,Matutino,MELE,414,69,159,2,8
-,255,Programacion,Base de datos,,Mediodia,ROBO,660,75,108,3,5
-,255,Programacion,Base de datos,,Matutino,ROBO,579,139,497,3,5
-,255,Programacion,Base de datos,,Matutino,ROBO,535,200,442,3,5
-,255,Programacion,Base de datos,,Vespertino,INNI,527,242,335,3,10
-,255,Programacion,Base de datos,,Vespertino,MELE,520,258,266,3,5
-,255,Programacion,Base de datos,,Vespertino,MELE,520,258,266,3,5
-,255,Programacion,Base de datos,,Matutino,ROBO,415,122,300,3,5
-,285,Investigacion,No Aplica,,Sabatino,ICOM,344,15,90,1,10
-,285,Investigacion,No Aplica,,Sabatino,ICOM,344,15,90,1,8
-,285,Investigacion,No Aplica,,Sabatino,ICOM,344,15,90,1,10
-,285,Investigacion,No Aplica,,Vespertino,ROBO,278,59,248,1,5
-,285,Investigacion,No Aplica,,Vespertino,ROBO,278,59,248,1,5
-,285,Investigacion,No Aplica,,Matutino,MELE,259,49,104,1,5
-,230,Impresion,No Aplica,,Vespertino,INDI,449,335,375,2,-3
-,230,Impresion,No Aplica,,Matutino,ROBO,1001,238,786,2,5
-,230,Impresion,No Aplica,,Vespertino,MELE,515,163,189,2,5
-,230,Impresion,No Aplica,,Matutino,INNI,529,357,365,2,8
-,230,Impresion,No Aplica,,Matutino,INNI,529,357,365,2,8
-,255,Programacion,Base de datos,,Matutino,MELE,414,69,159,2,3
-,255,Programacion,Base de datos,,Matutino,ROBO,1244,81,646,2,3
-,255,Programacion,Base de datos,,Vespertino,ROBO,1067,601,878,2,3
-,255,Programacion,Base de datos,,Matutino,MELE,364,25,167,3,3
-,265,Disenio,No Aplica,,Matutino,MELE,1239,47,266,3,-3
-,265,Disenio,No Aplica,,Mediodia,INNI,1063,181,275,3,8
-,265,Disenio,No Aplica,,Mediodia,ICOM,826,45,763,3,5
-,265,Disenio,No Aplica,,Mediodia,ROBO,660,75,108,3,3
-,265,Disenio,No Aplica,,Mediodia,INDI,585,27,174,2,3
-,265,Disenio,No Aplica,,Matutino,INDI,432,23,170,2,3
-,265,Disenio,No Aplica,,Mediodia,MELE,984,695,698,2,5
-,265,Disenio,No Aplica,,Vespertino,INDI,491,32,56,2,5
-,265,Disenio,No Aplica,,Matutino,ROBO,1001,238,786,2,3
-,265,Disenio,No Aplica,,Vespertino,INDI,511,391,414,2,5
-,285,Investigacion,No Aplica,,Mediodia,ROBO,1040,37,93,2,5
-,285,Investigacion,No Aplica,,Sabatino,ROBO,971,777,967,2,5
-,285,Investigacion,No Aplica,,Matutino,ROBO,1244,81,646,2,5
-,285,Investigacion,No Aplica,,Vespertino,INDI,491,32,56,2,5
-,285,Investigacion,No Aplica,,Vespertino,INDI,511,391,414,2,3
-,285,Investigacion,No Aplica,,Sabatino,MELE,1066,264,700,3,5
-,285,Investigacion,No Aplica,,Vespertino,ROBO,943,143,255,3,8
-,285,Investigacion,No Aplica,,Sabatino,ICOM,630,49,347,3,8
-,285,Investigacion,No Aplica,,Vespertino,MELE,540,357,407,3,5
-,285,Investigacion,No Aplica,,Matutino,ICOM,536,134,300,3,5
-,285,Investigacion,No Aplica,,Matutino,ICOM,518,109,223,3,8
-,285,Investigacion,No Aplica,,Matutino,INNI,420,2,237,3,8
-,285,Investigacion,No Aplica,,Matutino,MELE,364,25,167,3,10
-,285,Investigacion,No Aplica,,Matutino,ROBO,251,146,229,1,8
-,285,Investigacion,No Aplica,,Matutino,ICOM,173,31,58,1,3
-,285,Investigacion,No Aplica,,Vespertino,MELE,1121,183,186,2,5
-,285,Investigacion,No Aplica,,Mediodia,ROBO,438,161,435,2,5
-,285,Investigacion,No Aplica,,Vespertino,ROBO,1067,601,878,2,8
-,285,Investigacion,No Aplica,,Vespertino,ROBO,1067,601,878,2,5
-,310,IA,Drones,,Vespertino,MELE,1203,127,183,2,5
-,310,IA,Drones,,Matutino,MELE,772,256,475,2,8
-,310,IA,Drones,,Vespertino,INDI,1190,211,330,2,5
-,310,IA,Drones,,Mediodia,INNI,1121,194,210,2,8
-,310,IA,Drones,,Vespertino,MELE,1121,183,186,2,5
-,310,IA,Drones,,Sabatino,MELE,940,101,211,2,5
-,285,Investigacion,No Aplica,,Matutino,INNI,361,155,271,3,8
-,310,IA,Drones,,Vespertino,INDI,870,79,293,3,3
-,310,IA,Drones,,Mediodia,MELE,845,308,362,3,8
-,310,IA,Drones,,Mediodia,ROBO,660,75,108,3,10
-,310,IA,Drones,,Mediodia,INNI,635,237,295,3,8
-,310,IA,Drones,,Matutino,ROBO,535,200,442,3,10
-,310,IA,Drones,,Vespertino,INNI,527,242,335,3,8
-,310,IA,Drones,,Vespertino,MELE,520,258,266,3,10
-,310,IA,Drones,,Vespertino,MELE,520,258,266,3,8
-,310,IA,Drones,,Sabatino,INDI,462,19,448,3,5
-,315,Ludica,RV,,Sabatino,MELE,1066,264,700,3,8
-,315,Ludica,RV,,Matutino,ROBO,983,8,71,3,8
-,315,Ludica,RV,,Vespertino,ROBO,943,143,255,3,10
-,315,Ludica,RV,,Mediodia,MELE,845,308,362,3,8
-,315,Ludica,RV,,Mediodia,ICOM,826,45,763,3,5
-,285,Investigacion,No Aplica,,Vespertino,MELE,125,37,63,1,5
-,285,Investigacion,No Aplica,,Mediodia,ROBO,107,4,16,1,5
-,310,IA,Drones,,Vespertino,MELE,483,4,43,1,5
-,310,IA,Drones,,Vespertino,MELE,483,4,43,1,8
-,310,IA,Drones,,Vespertino,MELE,479,16,23,1,3
-,315,Ludica,RV,,Vespertino,ICOM,618,159,240,3,10
-,315,Ludica,RV,,Matutino,ROBO,415,122,300,3,8
-,330,Programacion,Movil,,Matutino,ICOM,1238,385,602,3,8
-,330,Programacion,Movil,,Mediodia,INDI,680,214,391,3,3
-,330,Programacion,Movil,,Matutino,ICOM,536,134,300,3,10
-,330,Programacion,Movil,,Vespertino,INNI,527,242,335,3,10
-,315,Ludica,RV,,Vespertino,INDI,449,335,375,2,8
-,315,Ludica,RV,,Vespertino,INDI,449,335,375,2,5
-,315,Ludica,RV,,Vespertino,INDI,1190,211,330,2,5
-,315,Ludica,RV,,Matutino,ROBO,1001,238,786,2,8
-,315,Ludica,RV,,Vespertino,INNI,1030,291,325,2,8
-,330,Programacion,Movil,,Sabatino,INDI,462,19,448,3,3
-,330,Programacion,Movil,,Matutino,ROBO,415,122,300,3,5
-,330,Programacion,Movil,,Matutino,INNI,361,155,271,3,10
-,340,Impresion,No Aplica,,Matutino,INNI,1195,374,749,3,8
-,340,Impresion,No Aplica,,Vespertino,ICOM,618,159,240,3,10
-,340,Impresion,No Aplica,,Sabatino,ROBO,600,69,127,3,10
-,340,Impresion,No Aplica,,Sabatino,ICOM,557,82,203,3,10
-,340,Impresion,No Aplica,,Sabatino,ICOM,557,82,203,3,8
-,340,Impresion,No Aplica,,Mediodia,INDI,469,206,286,3,10
-,310,IA,Drones,,Sabatino,ROBO,449,4,20,1,8
-,310,IA,Drones,,Matutino,INNI,205,3,28,1,3
-,310,IA,Drones,,Sabatino,ICOM,193,68,182,1,5
-,315,Ludica,RV,,Mediodia,INNI,425,163,187,1,5
-,315,Ludica,RV,,Vespertino,MELE,515,163,189,2,5
-,315,Ludica,RV,,Matutino,INNI,529,357,365,2,8
-,330,Programacion,Movil,,Matutino,MELE,772,256,475,2,5
-,340,Impresion,No Aplica,,Matutino,MELE,414,69,159,2,5
-,340,Impresion,No Aplica,,Matutino,ICOM,984,664,733,2,-3
-,370,Electronica,No Aplica,,Matutino,MELE,1239,47,266,3,10
-,370,Electronica,No Aplica,,Matutino,ICOM,1238,385,602,3,3
-,370,Electronica,No Aplica,,Sabatino,MELE,1066,264,700,3,10
-,370,Electronica,No Aplica,,Vespertino,ICOM,618,159,240,3,3
-,375,Eventos,No Aplica,,Sabatino,MELE,1066,264,700,3,10
-,375,Eventos,No Aplica,,Sabatino,MELE,1066,264,700,3,10
-,375,Eventos,No Aplica,,Vespertino,ROBO,879,50,241,3,10
-,375,Mantenimiento,Correctivo,,Mediodia,ICOM,826,45,763,3,3
-,375,Eventos,No Aplica,,Vespertino,ICOM,689,28,38,3,10
-,315,Ludica,RV,,Matutino,ICOM,173,31,58,1,5
-,315,Ludica,RV,,Matutino,MELE,29,26,28,1,5
-,330,Programacion,Movil,,Mediodia,INNI,425,163,187,1,8
-,330,Programacion,Movil,,Sabatino,ICOM,344,15,90,1,8
-,330,Programacion,Movil,,Sabatino,ICOM,344,15,90,1,10
-,330,Programacion,Movil,,Vespertino,MELE,125,37,63,1,3
-,340,Impresion,No Aplica,,Sabatino,ROBO,486,202,240,1,10
-,340,Impresion,No Aplica,,Mediodia,INNI,425,163,187,1,10
-,370,Electronica,No Aplica,,Sabatino,ROBO,328,6,169,1,8
-,340,Impresion,No Aplica,,Matutino,ICOM,1053,405,938,2,3
-,370,Electronica,No Aplica,,Matutino,ICOM,477,208,240,2,5
-,370,Electronica,No Aplica,,Matutino,INNI,534,306,478,2,5
-,370,Electronica,No Aplica,,Sabatino,ROBO,971,777,967,2,8
-,370,Electronica,No Aplica,,Mediodia,MELE,1088,186,242,2,8
-,370,Electronica,No Aplica,,Vespertino,MELE,1121,183,186,2,8
-,370,Electronica,No Aplica,,Mediodia,ROBO,438,161,435,2,8
-,375,Mantenimiento,Correctivo,,Matutino,ICOM,477,208,240,2,8
-,375,Mantenimiento,Correctivo,,Vespertino,INDI,449,335,375,2,8
-,375,Mantenimiento,Correctivo,,Mediodia,MELE,984,695,698,2,8
-,375,Mantenimiento,Correctivo,,Matutino,ICOM,984,664,733,2,8
-,380,Impresion,No Aplica,,Vespertino,MELE,1203,127,183,2,8
-,380,Impresion,No Aplica,,Mediodia,ROBO,1040,37,93,2,8
-,380,Impresion,No Aplica,,Matutino,ICOM,780,294,765,2,8
-,380,Impresion,No Aplica,,Sabatino,ROBO,971,777,967,2,8
-,380,Impresion,No Aplica,,Mediodia,INNI,1121,194,210,2,8
-,380,Impresion,No Aplica,,Sabatino,INDI,791,104,149,2,8
-,380,Impresion,No Aplica,,Vespertino,INNI,1030,291,325,2,8
-,380,Impresion,No Aplica,,Matutino,INNI,529,357,365,2,8
-,385,Mantenimiento,Correctivo,,Matutino,MELE,772,256,475,2,5
-,385,Mantenimiento,Correctivo,,Matutino,INNI,534,306,478,2,5
-,385,Mantenimiento,Correctivo,,Mediodia,INNI,1121,194,210,2,8
-,385,Mantenimiento,Correctivo,,Vespertino,INDI,491,32,56,2,3
-,385,Mantenimiento,Preventivo,,Vespertino,INDI,491,32,56,2,5
-,385,Mantenimiento,Correctivo,,Vespertino,INNI,1030,291,325,2,8
-,370,Electronica,No Aplica,,Sabatino,INDI,27,1,7,1,3
-,375,Eventos,No Aplica,,Vespertino,MELE,479,16,23,1,10
-,375,Eventos,No Aplica,,Vespertino,MELE,479,16,23,1,10
-,375,Eventos,No Aplica,,Mediodia,INDI,680,214,391,3,10
-,375,Mantenimiento,Correctivo,,Mediodia,INNI,635,237,295,3,3
-,375,Mantenimiento,Correctivo,,Vespertino,MELE,540,357,407,3,8
-,375,Eventos,No Aplica,,Sabatino,INDI,462,19,448,3,10
-,380,Impresion,No Aplica,,Mediodia,MELE,845,308,362,3,8
-,380,Impresion,No Aplica,,Mediodia,MELE,845,308,362,3,10
-,380,Impresion,No Aplica,,Mediodia,ICOM,826,45,763,3,8
-,380,Impresion,No Aplica,,Vespertino,ICOM,689,28,38,3,8
-,380,Impresion,No Aplica,,Vespertino,ICOM,689,28,38,3,10
-,380,Impresion,No Aplica,,Vespertino,ICOM,689,28,38,3,8
-,380,Impresion,No Aplica,,Matutino,ICOM,518,109,223,3,10
-,380,Impresion,No Aplica,,Mediodia,INDI,469,206,286,3,8
-,380,Impresion,No Aplica,,Matutino,INNI,420,2,237,3,10
-,380,Impresion,No Aplica,,Matutino,ROBO,415,122,300,3,10
-,380,Impresion,No Aplica,,Matutino,INNI,361,155,271,3,10
-,385,Mantenimiento,Correctivo,,Matutino,INNI,1195,374,749,3,5
-,385,Mantenimiento,Preventivo,,Vespertino,ROBO,879,50,241,3,8
-,385,Mantenimiento,Correctivo,,Mediodia,INNI,635,237,295,3,3
-,385,Mantenimiento,Preventivo,,Vespertino,ICOM,618,159,240,3,3
-,385,Mantenimiento,Correctivo,,Matutino,INNI,542,321,415,3,3
-,385,Mantenimiento,Preventivo,,Vespertino,INNI,1030,291,325,2,8
-,385,Mantenimiento,Preventivo,,Matutino,ICOM,361,18,92,2,8
-,375,Eventos,No Aplica,,Matutino,ROBO,439,136,347,1,10
-,375,Mantenimiento,Correctivo,,Sabatino,INNI,399,18,174,1,5
-,375,Mantenimiento,Correctivo,,Matutino,MELE,282,78,207,1,8
-,375,Eventos,No Aplica,,Sabatino,INDI,259,9,102,1,8
-,375,Mantenimiento,Correctivo,,Matutino,ICOM,173,31,58,1,3
-,385,Mantenimiento,Preventivo,,Matutino,ICOM,361,18,92,2,5
-,385,Mantenimiento,Preventivo,,Mediodia,INNI,920,249,275,2,8
-,390,Disenio,No Aplica,,Vespertino,MELE,1203,127,183,2,5
-,390,Disenio,No Aplica,,Vespertino,INDI,449,335,375,2,5
-,390,Disenio,No Aplica,,Matutino,INNI,534,306,478,2,5
-,390,Disenio,No Aplica,,Matutino,ICOM,984,664,733,2,5
-,390,Disenio,No Aplica,,Sabatino,MELE,940,101,211,2,5
-,390,Disenio,No Aplica,,Sabatino,MELE,940,101,211,2,5
-,395,Ludica,RV,,Mediodia,INNI,1093,84,338,2,5
-,385,Mantenimiento,Correctivo,,Vespertino,MELE,540,357,407,3,8
-,385,Mantenimiento,Correctivo,,Matutino,ROBO,535,200,442,3,8
-,385,Mantenimiento,Correctivo,,Matutino,ICOM,518,109,223,3,5
-,385,Mantenimiento,Correctivo,,Matutino,INNI,420,2,237,3,5
-,385,Mantenimiento,Preventivo,,Matutino,INNI,420,2,237,3,5
-,385,Mantenimiento,Preventivo,,Matutino,INNI,420,2,237,3,8
-,385,Mantenimiento,Preventivo,,Matutino,INNI,361,155,271,3,5
-,390,Disenio,No Aplica,,Mediodia,INDI,680,214,391,3,10
-,390,Disenio,No Aplica,,Mediodia,INDI,680,214,391,3,8
-,395,Ludica,RV,,Matutino,ICOM,477,208,240,2,5
-,395,Ludica,RV,,Sabatino,INDI,826,558,653,2,5
-,395,Ludica,RV,,Matutino,INNI,529,357,365,2,5
-,420,Electronica,No Aplica,,Mediodia,ROBO,923,67,79,2,8
-,390,Disenio,No Aplica,,Vespertino,INNI,527,242,335,3,5
-,390,Disenio,No Aplica,,Matutino,ROBO,415,122,300,3,3
-,390,Disenio,No Aplica,,Mediodia,MELE,387,196,374,3,8
-,395,Ludica,RV,,Matutino,ICOM,1238,385,602,3,10
-,395,Ludica,RV,,Matutino,INNI,1195,374,749,3,10
-,420,IA,Drones,,Matutino,INDI,432,23,170,2,3
-,420,IA,Drones,,Matutino,ICOM,780,294,765,2,5
-,420,IA,Drones,,Vespertino,INDI,1190,211,330,2,5
-,420,Electronica,No Aplica,,Matutino,ROBO,1244,81,646,2,10
-,420,IA,Drones,,Matutino,ROBO,1244,81,646,2,8
-,420,Electronica,No Aplica,,Mediodia,MELE,1088,186,242,2,10
-,420,IA,Drones,,Matutino,ICOM,361,18,92,2,5
-,420,IA,Drones,,Mediodia,MELE,1211,15,172,2,8
-,420,IA,Drones,,Mediodia,ROBO,438,161,435,2,5
-,420,IA,Drones,,Vespertino,MELE,515,163,189,2,5
-,420,Electronica,No Aplica,,Matutino,INNI,529,357,365,2,5
-,395,Ludica,RV,,Vespertino,ROBO,879,50,241,3,10
-,395,Ludica,RV,,Vespertino,INDI,870,79,293,3,5
-,420,Electronica,No Aplica,,Matutino,ICOM,1238,385,602,3,3
-,420,IA,Drones,,Matutino,INNI,1195,374,749,3,5
-,420,Electronica,No Aplica,,Sabatino,MELE,1066,264,700,3,10
-,420,Electronica,No Aplica,,Matutino,ROBO,983,8,71,3,10
-,420,Electronica,No Aplica,,Vespertino,ROBO,943,143,255,3,10
-,425,Ludica,RV,,Vespertino,MELE,1203,127,183,2,5
-,425,Ludica,RV,,Matutino,ICOM,477,208,240,2,3
-,425,Ludica,RV,,Matutino,ICOM,780,294,765,2,8
-,425,Ludica,RV,,Matutino,MELE,772,256,475,2,8
-,425,Ludica,RV,,Vespertino,INNI,1030,291,325,2,8
-,425,Ludica,RV,,Mediodia,ROBO,438,161,435,2,5
-,440,Administracion,Inventario,,Mediodia,INNI,1093,84,338,2,8
-,440,Administracion,Inventario,,Mediodia,ROBO,1040,37,93,2,5
-,420,IA,Drones,,Sabatino,ICOM,630,49,347,3,8
-,420,Electronica,No Aplica,,Sabatino,ROBO,600,69,127,3,8
-,420,Electronica,No Aplica,,Sabatino,ICOM,557,82,203,3,3
-,420,Electronica,No Aplica,,Vespertino,MELE,540,357,407,3,8
-,420,Electronica,No Aplica,,Vespertino,MELE,520,258,266,3,10
-,420,IA,Drones,,Matutino,ICOM,518,109,223,3,5
-,420,Electronica,No Aplica,,Matutino,ROBO,415,122,300,3,8
-,425,Ludica,RV,,Matutino,ROBO,983,8,71,3,8
-,425,Ludica,RV,,Mediodia,MELE,845,308,362,3,8
-,375,Mantenimiento,Correctivo,,Matutino,ICOM,173,31,58,1,3
-,375,Mantenimiento,Correctivo,,Vespertino,MELE,125,37,63,1,5
-,375,Mantenimiento,Correctivo,,Matutino,MELE,29,26,28,1,8
-,380,Impresion,No Aplica,,Matutino,ROBO,439,136,347,1,10
-,380,Impresion,No Aplica,,Vespertino,ROBO,427,35,35,1,10
-,380,Impresion,No Aplica,,Mediodia,INNI,425,163,187,1,10
-,380,Impresion,No Aplica,,Matutino,ICOM,173,31,58,1,8
-,385,Mantenimiento,Correctivo,,Sabatino,ROBO,486,202,240,1,8
-,385,Mantenimiento,Correctivo,,Vespertino,MELE,479,16,23,1,8
-,385,Mantenimiento,Preventivo,,Vespertino,ROBO,427,35,35,1,8
-,385,Mantenimiento,Correctivo,,Mediodia,INNI,425,163,187,1,5
-,385,Mantenimiento,Correctivo,,Mediodia,ROBO,55,12,20,1,5
-,390,Disenio,No Aplica,,Vespertino,MELE,483,4,43,1,10
-,390,Disenio,No Aplica,,Vespertino,MELE,479,16,23,1,10
-,390,Disenio,No Aplica,,Sabatino,ROBO,449,4,20,1,5
-,390,Disenio,No Aplica,,Mediodia,INNI,425,163,187,1,5
-,390,Disenio,No Aplica,,Matutino,INNI,205,3,28,1,3
-,395,Ludica,RV,,Sabatino,ROBO,486,202,240,1,8
-,395,Ludica,RV,,Matutino,ICOM,287,39,110,1,8
-,440,Administracion,Inventario,,Vespertino,MELE,1121,183,186,2,8
-,440,Administracion,Inventario,,Vespertino,ICOM,464,0,18,2,8
-,440,Administracion,Inventario,,Matutino,ICOM,753,104,110,2,5
-,465,Impresion,No Aplica,,Matutino,MELE,414,69,159,2,10
-,395,Ludica,RV,,Mediodia,ROBO,55,12,20,1,5
-,420,IA,Drones,,Sabatino,ROBO,328,6,169,1,8
-,420,IA,Drones,,Matutino,ICOM,287,39,110,1,5
-,420,Electronica,No Aplica,,Matutino,MELE,282,78,207,1,8
-,420,IA,Drones,,Vespertino,ROBO,278,59,248,1,8
-,420,Electronica,No Aplica,,Sabatino,ICOM,193,68,182,1,-3
-,420,IA,Drones,,Mediodia,ROBO,107,4,16,1,8
-,425,Ludica,RV,,Mediodia,MELE,845,308,362,3,8
-,425,Ludica,RV,,Mediodia,ICOM,826,45,763,3,8
-,425,Ludica,RV,,Mediodia,ICOM,826,45,763,3,8
-,425,Ludica,RV,,Vespertino,INDI,751,335,520,3,5
-,425,Ludica,RV,,Sabatino,ROBO,600,69,127,3,8
-,425,Ludica,RV,,Matutino,INNI,420,2,237,3,8
-,425,Ludica,RV,,Matutino,INNI,420,2,237,3,8
-,440,Administracion,Inventario,,Matutino,INNI,1195,374,749,3,5
-,440,Administracion,Inventario,,Vespertino,ROBO,879,50,241,3,8
-,440,Administracion,Inventario,,Matutino,ROBO,579,139,497,3,8
-,465,Impresion,No Aplica,,Matutino,MELE,414,69,159,2,8
-,465,Impresion,No Aplica,,Mediodia,INNI,1093,84,338,2,8
-,465,Impresion,No Aplica,,Matutino,ICOM,477,208,240,2,8
-,465,Impresion,No Aplica,,Matutino,INNI,534,306,478,2,8
-,465,Impresion,No Aplica,,Mediodia,INNI,1121,194,210,2,8
-,440,Administracion,Inventario,,Vespertino,MELE,520,258,266,3,8
-,440,Administracion,Inventario,,Matutino,MELE,364,25,167,3,8
-,465,Impresion,No Aplica,,Matutino,ROBO,983,8,71,3,8
-,420,IA,Drones,,Matutino,MELE,29,26,28,1,5
-,440,Administracion,Inventario,,Vespertino,MELE,483,4,43,1,8
-,440,Administracion,Inventario,,Vespertino,ROBO,427,35,35,1,8
-,440,Administracion,Inventario,,Sabatino,INNI,399,18,174,1,10
-,440,Administracion,Inventario,,Sabatino,ROBO,328,6,169,1,5
-,440,Administracion,Inventario,,Matutino,MELE,259,49,104,1,5
-,465,Impresion,No Aplica,,Matutino,ROBO,1244,81,646,2,10
-,465,Impresion,No Aplica,,Vespertino,INDI,511,391,414,2,10
-,465,Impresion,No Aplica,,Vespertino,MELE,1121,183,186,2,8
-,465,Impresion,No Aplica,,Vespertino,INDI,870,79,293,3,5
-,465,Impresion,No Aplica,,Mediodia,MELE,845,308,362,3,8
-,465,Impresion,No Aplica,,Mediodia,INDI,680,214,391,3,3
-,465,Impresion,No Aplica,,Mediodia,INNI,635,237,295,3,8
-,475,Programacion,Base de datos,,Mediodia,INNI,1063,181,275,3,5
-,475,Programacion,Base de datos,,Matutino,ROBO,983,8,71,3,3
-,475,Programacion,Base de datos,,Vespertino,INDI,870,79,293,3,-3
-,475,Programacion,Base de datos,,Matutino,ROBO,535,200,442,3,5
-,475,Programacion,Base de datos,,Sabatino,INDI,462,19,448,3,3
-,475,Programacion,Base de datos,,Matutino,INNI,420,2,237,3,5
-,465,Impresion,No Aplica,,Mediodia,ROBO,438,161,435,2,10
-,475,Programacion,Base de datos,,Matutino,MELE,414,69,159,2,5
-,475,Programacion,Base de datos,,Matutino,MELE,414,69,159,2,5
-,475,Programacion,Base de datos,,Matutino,ICOM,477,208,240,2,10
-,475,Programacion,Base de datos,,Matutino,ROBO,1244,81,646,2,8
-,475,Programacion,Base de datos,,Vespertino,INDI,491,32,56,2,5
-,440,Administracion,Inventario,,Mediodia,ROBO,107,4,16,1,5
-,440,Administracion,Inventario,,Sabatino,ICOM,32,14,17,1,8
-,465,Impresion,No Aplica,,Vespertino,MELE,483,4,43,1,10
-,465,Impresion,No Aplica,,Sabatino,ICOM,193,68,182,1,8
-,465,Impresion,No Aplica,,Sabatino,ICOM,193,68,182,1,8
-,465,Impresion,No Aplica,,Matutino,MELE,29,26,28,1,8
-,475,Programacion,Base de datos,,Vespertino,MELE,483,4,43,1,5
-,475,Programacion,Base de datos,,Sabatino,ROBO,449,4,20,1,5
-,475,Programacion,Base de datos,,Sabatino,INNI,399,18,174,1,10
+id_prestador,horario,semanas_actividad,carrera,experiencia,experiencia_mensual,experiencia_semanal,periodo,nombre_categoria,nombre_subcategoria,,TEC,id_actividad,resultado
+1,Sabatino,13,INNI,961,161,9,2,Mantenimiento,Preventivo,,435,,10
+1,Sabatino,13,INNI,961,161,9,2,Programacion,Servidores,,100,,8
+1,Sabatino,13,INNI,961,161,9,2,Mantenimiento,Preventivo,,225,,10
+1,Sabatino,13,INNI,961,161,9,2,Administracion,Inventario,,15,,3
+1,Sabatino,13,INNI,961,161,9,2,Impresion,No Aplica,,75,,3
+1,Sabatino,13,INNI,961,161,9,2,IA,Drones,,350,,10
+2,Matutino,23,MELE,668,608,298,3,Programacion,Servidores,,320,,5
+2,Matutino,23,MELE,668,608,298,3,Eventos,No Aplica,,285,,3
+2,Matutino,23,MELE,668,608,298,3,Mantenimiento,Correctivo,,130,,-3
+2,Matutino,23,MELE,668,608,298,3,Administracion,Inventario,,150,,5
+2,Matutino,23,MELE,668,608,298,3,Administracion,Inventario,,400,,-3
+2,Matutino,23,MELE,668,608,298,3,Mantenimiento,Preventivo,,225,,8
+2,Matutino,23,MELE,668,608,298,3,Impresion,No Aplica,,30,,-3
+3,Sabatino,18,ICOM,1399,1245,1,3,Administracion,Inventario,,15,,10
+3,Sabatino,18,ICOM,1399,1245,1,3,Disenio,No Aplica,,240,,5
+3,Sabatino,18,ICOM,1399,1245,1,3,Disenio,No Aplica,,210,,-3
+3,Sabatino,18,ICOM,1399,1245,1,3,Mantenimiento,Correctivo,,130,,5
+4,Matutino,19,ROBO,810,509,239,3,Disenio,No Aplica,,210,,-3
+4,Matutino,19,ROBO,810,509,239,3,Impresion,No Aplica,,365,,10
+4,Matutino,19,ROBO,810,509,239,3,Administracion,Inventario,,400,,10
+4,Matutino,19,ROBO,810,509,239,3,Disenio,No Aplica,,305,,-3
+4,Matutino,19,ROBO,810,509,239,3,Programacion,Servidores,,100,,8
+4,Matutino,19,ROBO,810,509,239,3,Administracion,Inventario,,15,,10
+4,Matutino,19,ROBO,810,509,239,3,Disenio,No Aplica,,465,,8
+4,Matutino,19,ROBO,810,509,239,3,Administracion,Inventario,,150,,3
+4,Matutino,19,ROBO,810,509,239,3,Disenio,No Aplica,,305,,10
+5,Sabatino,11,INDI,397,384,73,2,Mantenimiento,Preventivo,,50,,8
+5,Sabatino,11,INDI,397,384,73,2,Ludica,RV,,100,,5
+6,Matutino,21,INNI,1449,194,118,3,Ludica,RV,,100,,-3
+6,Matutino,21,INNI,1449,194,118,3,Programacion,Servidores,,140,,8
+6,Matutino,21,INNI,1449,194,118,3,Administracion,Inventario,,15,,3
+6,Matutino,21,INNI,1449,194,118,3,Mantenimiento,Preventivo,,200,,10
+6,Matutino,21,INNI,1449,194,118,3,Programacion,Servidores,,100,,5
+6,Matutino,21,INNI,1449,194,118,3,Programacion,Software,,450,,10
+7,Mediodia,24,INNI,566,40,19,3,Impresion,No Aplica,,210,,8
+7,Mediodia,24,INNI,566,40,19,3,Impresion,No Aplica,,35,,8
+7,Mediodia,24,INNI,566,40,19,3,Programacion,Servidores,,140,,8
+7,Mediodia,24,INNI,566,40,19,3,Programacion,Servidores,,100,,8
+7,Mediodia,24,INNI,566,40,19,3,Disenio,No Aplica,,320,,3
+7,Mediodia,24,INNI,566,40,19,3,Impresion,No Aplica,,365,,3
+8,Sabatino,23,INDI,843,480,207,3,Programacion,Servidores,,320,,8
+8,Sabatino,23,INDI,843,480,207,3,Eventos,No Aplica,,465,,-3
+8,Sabatino,23,INDI,843,480,207,3,Mantenimiento,Correctivo,,130,,-3
+8,Sabatino,23,INDI,843,480,207,3,Impresion,No Aplica,,30,,5
+9,Sabatino,22,ICOM,861,281,189,3,Electronica,No Aplica,,65,,8
+9,Sabatino,22,ICOM,861,281,189,3,Electronica,No Aplica,,420,,8
+9,Sabatino,22,ICOM,861,281,189,3,Eventos,No Aplica,,310,,8
+9,Sabatino,22,ICOM,861,281,189,3,Impresion,No Aplica,,365,,5
+10,Vespertino,19,INDI,1060,868,312,3,Mantenimiento,Preventivo,,225,,10
+10,Vespertino,19,INDI,1060,868,312,3,Administracion,Inventario,,400,,-3
+10,Vespertino,19,INDI,1060,868,312,3,Administracion,Inventario,,205,,3
+10,Vespertino,19,INDI,1060,868,312,3,Mantenimiento,Preventivo,,435,,5
+11,Vespertino,3,MELE,471,43,20,1,Eventos,No Aplica,,310,,10
+11,Vespertino,3,MELE,471,43,20,1,Administracion,Inventario,,455,,10
+11,Vespertino,3,MELE,471,43,20,1,Impresion,No Aplica,,35,,8
+11,Vespertino,3,MELE,471,43,20,1,Disenio,No Aplica,,240,,3
+11,Vespertino,3,MELE,471,43,20,1,Impresion,No Aplica,,365,,-3
+11,Vespertino,3,MELE,471,43,20,1,Programacion,Servidores,,100,,3
+11,Vespertino,3,MELE,471,43,20,1,Ludica,RV,,215,,-3
+11,Vespertino,3,MELE,471,43,20,1,Electronica,No Aplica,,420,,8
+12,Matutino,8,MELE,217,201,70,1,Mantenimiento,Preventivo,,200,,3
+12,Matutino,8,MELE,217,201,70,1,Administracion,Inventario,,15,,8
+12,Matutino,8,MELE,217,201,70,1,Programacion,Servidores,,140,,-3
+12,Matutino,8,MELE,217,201,70,1,Programacion,Servidores,,140,,8
+12,Matutino,8,MELE,217,201,70,1,Investigacion,No Aplica,,105,,3
+12,Matutino,8,MELE,217,201,70,1,Eventos,No Aplica,,310,,10
+12,Matutino,8,MELE,217,201,70,1,Electronica,No Aplica,,65,,3
+12,Matutino,8,MELE,217,201,70,1,Administracion,Inventario,,455,,3
+12,Matutino,8,MELE,217,201,70,1,Impresion,No Aplica,,210,,8
+12,Matutino,8,MELE,217,201,70,1,Electronica,No Aplica,,420,,-3
+13,Vespertino,0,MELE,447,314,282,1,Ludica,RV,,435,,10
+13,Vespertino,0,MELE,447,314,282,1,Disenio,No Aplica,,305,,10
+13,Vespertino,0,MELE,447,314,282,1,Administracion,Inventario,,15,,3
+14,Vespertino,21,ICOM,1389,1335,279,3,Ludica,RV,,215,,-3
+14,Vespertino,21,ICOM,1389,1335,279,3,Mantenimiento,Preventivo,,435,,10
+14,Vespertino,21,ICOM,1389,1335,279,3,Disenio,No Aplica,,305,,3
+14,Vespertino,21,ICOM,1389,1335,279,3,Impresion,No Aplica,,265,,3
+14,Vespertino,21,ICOM,1389,1335,279,3,Disenio,No Aplica,,465,,3
+14,Vespertino,21,ICOM,1389,1335,279,3,Disenio,No Aplica,,210,,8
+14,Vespertino,21,ICOM,1389,1335,279,3,IA,Drones,,350,,3
+14,Vespertino,21,ICOM,1389,1335,279,3,Ludica,RV,,215,,3
+14,Vespertino,21,ICOM,1389,1335,279,3,IA,Drones,,115,,3
+14,Vespertino,21,ICOM,1389,1335,279,3,Disenio,No Aplica,,320,,10
+15,Mediodia,6,INDI,349,89,62,1,Eventos,No Aplica,,465,,-3
+15,Mediodia,6,INDI,349,89,62,1,Mantenimiento,Preventivo,,435,,5
+15,Mediodia,6,INDI,349,89,62,1,Impresion,No Aplica,,210,,10
+15,Mediodia,6,INDI,349,89,62,1,Mantenimiento,Preventivo,,200,,-3
+15,Mediodia,6,INDI,349,89,62,1,Investigacion,No Aplica,,105,,-3
+15,Mediodia,6,INDI,349,89,62,1,Electronica,No Aplica,,85,,5
+15,Mediodia,6,INDI,349,89,62,1,Disenio,No Aplica,,210,,8
+15,Mediodia,6,INDI,349,89,62,1,Investigacion,No Aplica,,105,,3
+15,Mediodia,6,INDI,349,89,62,1,Mantenimiento,Correctivo,,130,,8
+16,Mediodia,16,INNI,1178,651,537,2,Mantenimiento,Preventivo,,435,,3
+16,Mediodia,16,INNI,1178,651,537,2,Administracion,Inventario,,150,,-3
+16,Mediodia,16,INNI,1178,651,537,2,Eventos,No Aplica,,465,,5
+16,Mediodia,16,INNI,1178,651,537,2,Ludica,RV,,185,,8
+16,Mediodia,16,INNI,1178,651,537,2,Ludica,RV,,215,,8
+17,Mediodia,13,MELE,892,56,38,2,Disenio,No Aplica,,240,,5
+17,Mediodia,13,MELE,892,56,38,2,Programacion,Servidores,,320,,5
+17,Mediodia,13,MELE,892,56,38,2,Impresion,No Aplica,,30,,8
+17,Mediodia,13,MELE,892,56,38,2,Mantenimiento,Preventivo,,200,,8
+17,Mediodia,13,MELE,892,56,38,2,Administracion,Inventario,,400,,10
+17,Mediodia,13,MELE,892,56,38,2,Impresion,No Aplica,,210,,3
+17,Mediodia,13,MELE,892,56,38,2,Programacion,Movil,,390,,10
+18,Sabatino,15,ROBO,1193,702,207,2,Impresion,No Aplica,,35,,5
+18,Sabatino,15,ROBO,1193,702,207,2,Administracion,Inventario,,455,,5
+18,Sabatino,15,ROBO,1193,702,207,2,Disenio,No Aplica,,210,,10
+18,Sabatino,15,ROBO,1193,702,207,2,IA,Drones,,350,,10
+18,Sabatino,15,ROBO,1193,702,207,2,Mantenimiento,Preventivo,,200,,-3
+18,Sabatino,15,ROBO,1193,702,207,2,Disenio,No Aplica,,210,,5
+18,Sabatino,15,ROBO,1193,702,207,2,Mantenimiento,Preventivo,,225,,5
+18,Sabatino,15,ROBO,1193,702,207,2,Disenio,No Aplica,,465,,-3
+18,Sabatino,15,ROBO,1193,702,207,2,Programacion,Movil,,390,,-3
+19,Mediodia,5,MELE,454,404,312,1,Mantenimiento,Preventivo,,435,,5
+19,Mediodia,5,MELE,454,404,312,1,Programacion,Servidores,,320,,5
+20,Vespertino,1,MELE,422,51,15,1,Impresion,No Aplica,,30,,-3
+20,Vespertino,1,MELE,422,51,15,1,Investigacion,No Aplica,,105,,3
+20,Vespertino,1,MELE,422,51,15,1,Mantenimiento,Preventivo,,435,,3
+20,Vespertino,1,MELE,422,51,15,1,Programacion,Movil,,390,,-3
+20,Vespertino,1,MELE,422,51,15,1,Impresion,No Aplica,,30,,3
+20,Vespertino,1,MELE,422,51,15,1,Ludica,RV,,435,,5
+20,Vespertino,1,MELE,422,51,15,1,Mantenimiento,Preventivo,,200,,3
+20,Vespertino,1,MELE,422,51,15,1,Impresion,No Aplica,,365,,8
+20,Vespertino,1,MELE,422,51,15,1,Ludica,RV,,185,,10
+20,Vespertino,1,MELE,422,51,15,1,Ludica,RV,,215,,-3
+21,Mediodia,18,INDI,1051,515,235,3,Administracion,Inventario,,400,,3
+21,Mediodia,18,INDI,1051,515,235,3,Administracion,Inventario,,150,,-3
+21,Mediodia,18,INDI,1051,515,235,3,Ludica,RV,,435,,10
+21,Mediodia,18,INDI,1051,515,235,3,Mantenimiento,Preventivo,,50,,-3
+21,Mediodia,18,INDI,1051,515,235,3,Administracion,Inventario,,455,,5
+22,Vespertino,17,ROBO,1327,413,68,3,Mantenimiento,Preventivo,,435,,-3
+22,Vespertino,17,ROBO,1327,413,68,3,Mantenimiento,Preventivo,,435,,-3
+22,Vespertino,17,ROBO,1327,413,68,3,Eventos,No Aplica,,285,,5
+22,Vespertino,17,ROBO,1327,413,68,3,Mantenimiento,Preventivo,,200,,10
+22,Vespertino,17,ROBO,1327,413,68,3,Disenio,No Aplica,,240,,3
+22,Vespertino,17,ROBO,1327,413,68,3,Mantenimiento,Correctivo,,135,,8
+23,Vespertino,12,MELE,632,589,575,2,Programacion,Servidores,,140,,8
+23,Vespertino,12,MELE,632,589,575,2,Electronica,No Aplica,,65,,10
+23,Vespertino,12,MELE,632,589,575,2,Impresion,No Aplica,,210,,3
+23,Vespertino,12,MELE,632,589,575,2,Mantenimiento,Preventivo,,435,,-3
+23,Vespertino,12,MELE,632,589,575,2,Impresion,No Aplica,,30,,5
+24,Sabatino,23,ICOM,1263,695,117,3,Administracion,Inventario,,400,,-3
+24,Sabatino,23,ICOM,1263,695,117,3,Eventos,No Aplica,,310,,10
+24,Sabatino,23,ICOM,1263,695,117,3,Electronica,No Aplica,,65,,3
+24,Sabatino,23,ICOM,1263,695,117,3,Disenio,No Aplica,,305,,5
+24,Sabatino,23,ICOM,1263,695,117,3,Programacion,Servidores,,140,,10
+24,Sabatino,23,ICOM,1263,695,117,3,Mantenimiento,Preventivo,,50,,5
+24,Sabatino,23,ICOM,1263,695,117,3,Mantenimiento,Preventivo,,435,,8
+24,Sabatino,23,ICOM,1263,695,117,3,Programacion,Software,,450,,5
+24,Sabatino,23,ICOM,1263,695,117,3,Disenio,No Aplica,,210,,-3
+24,Sabatino,23,ICOM,1263,695,117,3,Disenio,No Aplica,,320,,10
+25,Matutino,16,ROBO,871,826,102,2,Electronica,No Aplica,,420,,10
+25,Matutino,16,ROBO,871,826,102,2,Investigacion,No Aplica,,105,,8
+25,Matutino,16,ROBO,871,826,102,2,Administracion,Inventario,,205,,-3
+25,Matutino,16,ROBO,871,826,102,2,Eventos,No Aplica,,465,,3
+25,Matutino,16,ROBO,871,826,102,2,Administracion,Inventario,,455,,8
+25,Matutino,16,ROBO,871,826,102,2,Ludica,RV,,100,,10
+26,Mediodia,14,INDI,433,291,42,2,Disenio,No Aplica,,465,,-3
+26,Mediodia,14,INDI,433,291,42,2,Mantenimiento,Correctivo,,130,,-3
+26,Mediodia,14,INDI,433,291,42,2,Disenio,No Aplica,,305,,10
+26,Mediodia,14,INDI,433,291,42,2,Disenio,No Aplica,,465,,8
+26,Mediodia,14,INDI,433,291,42,2,Mantenimiento,Preventivo,,50,,-3
+26,Mediodia,14,INDI,433,291,42,2,Administracion,Inventario,,455,,8
+26,Mediodia,14,INDI,433,291,42,2,Investigacion,No Aplica,,105,,10
+26,Mediodia,14,INDI,433,291,42,2,Programacion,Servidores,,320,,3
+26,Mediodia,14,INDI,433,291,42,2,Disenio,No Aplica,,305,,3
+27,Mediodia,4,ROBO,219,158,8,1,Programacion,Servidores,,140,,8
+27,Mediodia,4,ROBO,219,158,8,1,Mantenimiento,Preventivo,,50,,5
+27,Mediodia,4,ROBO,219,158,8,1,Impresion,No Aplica,,30,,3
+27,Mediodia,4,ROBO,219,158,8,1,Eventos,No Aplica,,285,,-3
+27,Mediodia,4,ROBO,219,158,8,1,Ludica,RV,,435,,-3
+27,Mediodia,4,ROBO,219,158,8,1,Programacion,Servidores,,320,,3
+27,Mediodia,4,ROBO,219,158,8,1,Programacion,Servidores,,100,,-3
+28,Sabatino,24,ROBO,620,27,2,3,Ludica,RV,,185,,-3
+28,Sabatino,24,ROBO,620,27,2,3,Programacion,Software,,450,,8
+28,Sabatino,24,ROBO,620,27,2,3,Programacion,Software,,450,,3
+28,Sabatino,24,ROBO,620,27,2,3,Impresion,No Aplica,,365,,-3
+28,Sabatino,24,ROBO,620,27,2,3,Impresion,No Aplica,,75,,5
+28,Sabatino,24,ROBO,620,27,2,3,Mantenimiento,Correctivo,,135,,10
+28,Sabatino,24,ROBO,620,27,2,3,Eventos,No Aplica,,310,,3
+28,Sabatino,24,ROBO,620,27,2,3,Administracion,Inventario,,400,,3
+28,Sabatino,24,ROBO,620,27,2,3,Eventos,No Aplica,,285,,10
+28,Sabatino,24,ROBO,620,27,2,3,Programacion,Software,,450,,5
+29,Matutino,6,ROBO,386,242,199,1,IA,Drones,,350,,10
+29,Matutino,6,ROBO,386,242,199,1,Programacion,Software,,450,,10
+29,Matutino,6,ROBO,386,242,199,1,Administracion,Inventario,,15,,5
+30,Matutino,9,MELE,676,109,99,2,Administracion,Inventario,,455,,8
+30,Matutino,9,MELE,676,109,99,2,Eventos,No Aplica,,285,,5
+30,Matutino,9,MELE,676,109,99,2,Mantenimiento,Correctivo,,130,,5
+30,Matutino,9,MELE,676,109,99,2,Ludica,RV,,435,,3
+30,Matutino,9,MELE,676,109,99,2,Disenio,No Aplica,,320,,5
+30,Matutino,9,MELE,676,109,99,2,Electronica,No Aplica,,65,,3
+30,Matutino,9,MELE,676,109,99,2,Eventos,No Aplica,,285,,-3
+30,Matutino,9,MELE,676,109,99,2,Disenio,No Aplica,,240,,10
+30,Matutino,9,MELE,676,109,99,2,Administracion,Inventario,,400,,5
+31,Sabatino,0,INNI,76,73,30,1,Eventos,No Aplica,,285,,3
+31,Sabatino,0,INNI,76,73,30,1,Programacion,Servidores,,100,,8
+31,Sabatino,0,INNI,76,73,30,1,Impresion,No Aplica,,265,,-3
+31,Sabatino,0,INNI,76,73,30,1,Ludica,RV,,100,,10
+31,Sabatino,0,INNI,76,73,30,1,Impresion,No Aplica,,265,,-3
+31,Sabatino,0,INNI,76,73,30,1,Impresion,No Aplica,,35,,10
+31,Sabatino,0,INNI,76,73,30,1,Electronica,No Aplica,,420,,8
+31,Sabatino,0,INNI,76,73,30,1,Mantenimiento,Preventivo,,200,,-3
+31,Sabatino,0,INNI,76,73,30,1,Ludica,RV,,435,,3
+32,Vespertino,20,INDI,1016,111,67,3,Administracion,Inventario,,205,,3
+32,Vespertino,20,INDI,1016,111,67,3,Disenio,No Aplica,,465,,8
+32,Vespertino,20,INDI,1016,111,67,3,Ludica,RV,,435,,5
+32,Vespertino,20,INDI,1016,111,67,3,Programacion,Movil,,390,,10
+32,Vespertino,20,INDI,1016,111,67,3,Eventos,No Aplica,,310,,3
+32,Vespertino,20,INDI,1016,111,67,3,Disenio,No Aplica,,240,,3
+32,Vespertino,20,INDI,1016,111,67,3,Impresion,No Aplica,,75,,10
+33,Matutino,22,ROBO,1374,994,835,3,Disenio,No Aplica,,465,,5
+33,Matutino,22,ROBO,1374,994,835,3,Administracion,Inventario,,150,,3
+34,Mediodia,7,INNI,444,201,78,1,Programacion,Servidores,,140,,5
+34,Mediodia,7,INNI,444,201,78,1,Mantenimiento,Preventivo,,50,,5
+34,Mediodia,7,INNI,444,201,78,1,Disenio,No Aplica,,465,,10
+34,Mediodia,7,INNI,444,201,78,1,Eventos,No Aplica,,465,,8
+34,Mediodia,7,INNI,444,201,78,1,Impresion,No Aplica,,75,,3
+35,Matutino,23,MELE,951,724,691,3,Administracion,Inventario,,400,,10
+35,Matutino,23,MELE,951,724,691,3,Disenio,No Aplica,,240,,3
+35,Matutino,23,MELE,951,724,691,3,Programacion,Software,,450,,-3
+36,Vespertino,0,ICOM,386,268,84,1,Mantenimiento,Preventivo,,50,,-3
+36,Vespertino,0,ICOM,386,268,84,1,Disenio,No Aplica,,465,,-3
+36,Vespertino,0,ICOM,386,268,84,1,Mantenimiento,Correctivo,,130,,3
+36,Vespertino,0,ICOM,386,268,84,1,Administracion,Inventario,,455,,-3
+36,Vespertino,0,ICOM,386,268,84,1,Mantenimiento,Correctivo,,130,,10
+36,Vespertino,0,ICOM,386,268,84,1,Electronica,No Aplica,,420,,5
+36,Vespertino,0,ICOM,386,268,84,1,Ludica,RV,,215,,10
+36,Vespertino,0,ICOM,386,268,84,1,Ludica,RV,,215,,5
+36,Vespertino,0,ICOM,386,268,84,1,Electronica,No Aplica,,85,,3
+36,Vespertino,0,ICOM,386,268,84,1,Ludica,RV,,185,,3
+37,Sabatino,22,ROBO,746,9,5,3,IA,Drones,,350,,-3
+37,Sabatino,22,ROBO,746,9,5,3,Impresion,No Aplica,,75,,8
+37,Sabatino,22,ROBO,746,9,5,3,Administracion,Inventario,,400,,8
+37,Sabatino,22,ROBO,746,9,5,3,Ludica,RV,,185,,8
+38,Mediodia,20,MELE,666,538,305,3,Disenio,No Aplica,,240,,-3
+38,Mediodia,20,MELE,666,538,305,3,Mantenimiento,Preventivo,,50,,8
+38,Mediodia,20,MELE,666,538,305,3,Impresion,No Aplica,,75,,5
+38,Mediodia,20,MELE,666,538,305,3,IA,Drones,,350,,-3
+39,Mediodia,9,ROBO,1191,602,596,2,Mantenimiento,Preventivo,,225,,8
+39,Mediodia,9,ROBO,1191,602,596,2,Disenio,No Aplica,,240,,10
+39,Mediodia,9,ROBO,1191,602,596,2,IA,Drones,,115,,8
+39,Mediodia,9,ROBO,1191,602,596,2,Mantenimiento,Preventivo,,435,,5
+39,Mediodia,9,ROBO,1191,602,596,2,Disenio,No Aplica,,240,,3
+39,Mediodia,9,ROBO,1191,602,596,2,Programacion,Movil,,390,,10
+39,Mediodia,9,ROBO,1191,602,596,2,Disenio,No Aplica,,465,,3
+39,Mediodia,9,ROBO,1191,602,596,2,Programacion,Movil,,390,,5
+40,Matutino,18,INDI,958,523,183,3,IA,Drones,,350,,-3
+40,Matutino,18,INDI,958,523,183,3,Electronica,No Aplica,,85,,-3
+40,Matutino,18,INDI,958,523,183,3,Impresion,No Aplica,,30,,10
+40,Matutino,18,INDI,958,523,183,3,Ludica,RV,,435,,10
+40,Matutino,18,INDI,958,523,183,3,Mantenimiento,Preventivo,,225,,-3
+40,Matutino,18,INDI,958,523,183,3,Impresion,No Aplica,,365,,10
+40,Matutino,18,INDI,958,523,183,3,Programacion,Servidores,,320,,3
+40,Matutino,18,INDI,958,523,183,3,Disenio,No Aplica,,240,,8
+40,Matutino,18,INDI,958,523,183,3,Programacion,Movil,,390,,5
+41,Matutino,15,ICOM,644,161,108,2,Electronica,No Aplica,,65,,10
+41,Matutino,15,ICOM,644,161,108,2,Electronica,No Aplica,,420,,-3
+41,Matutino,15,ICOM,644,161,108,2,Disenio,No Aplica,,320,,3
+41,Matutino,15,ICOM,644,161,108,2,Mantenimiento,Preventivo,,225,,10
+41,Matutino,15,ICOM,644,161,108,2,Disenio,No Aplica,,210,,10
+41,Matutino,15,ICOM,644,161,108,2,Mantenimiento,Preventivo,,225,,3
+41,Matutino,15,ICOM,644,161,108,2,Impresion,No Aplica,,210,,10
+42,Sabatino,7,INNI,426,206,138,1,Mantenimiento,Preventivo,,225,,-3
+42,Sabatino,7,INNI,426,206,138,1,Disenio,No Aplica,,240,,8
+42,Sabatino,7,INNI,426,206,138,1,Eventos,No Aplica,,310,,5
+43,Vespertino,3,ROBO,92,17,14,1,Ludica,RV,,215,,-3
+43,Vespertino,3,ROBO,92,17,14,1,Programacion,Servidores,,100,,3
+43,Vespertino,3,ROBO,92,17,14,1,Impresion,No Aplica,,365,,5
+44,Matutino,23,INNI,868,379,205,3,Programacion,Software,,450,,10
+44,Matutino,23,INNI,868,379,205,3,Administracion,Inventario,,455,,8
+44,Matutino,23,INNI,868,379,205,3,Administracion,Inventario,,205,,5
+44,Matutino,23,INNI,868,379,205,3,Eventos,No Aplica,,310,,8
+44,Matutino,23,INNI,868,379,205,3,IA,Drones,,115,,5
+45,Sabatino,11,MELE,1125,435,7,2,Ludica,RV,,185,,10
+45,Sabatino,11,MELE,1125,435,7,2,Mantenimiento,Correctivo,,130,,10
+45,Sabatino,11,MELE,1125,435,7,2,Impresion,No Aplica,,30,,-3
+46,Matutino,12,ICOM,432,378,213,2,Mantenimiento,Preventivo,,200,,5
+46,Matutino,12,ICOM,432,378,213,2,Impresion,No Aplica,,210,,3
+47,Sabatino,13,INDI,415,198,118,2,Administracion,Inventario,,205,,10
+47,Sabatino,13,INDI,415,198,118,2,Programacion,Servidores,,320,,3
+47,Sabatino,13,INDI,415,198,118,2,Disenio,No Aplica,,210,,8
+47,Sabatino,13,INDI,415,198,118,2,Administracion,Inventario,,150,,8
+47,Sabatino,13,INDI,415,198,118,2,Electronica,No Aplica,,85,,-3
+47,Sabatino,13,INDI,415,198,118,2,Disenio,No Aplica,,210,,-3
+48,Matutino,21,INNI,821,494,286,3,Ludica,RV,,100,,3
+48,Matutino,21,INNI,821,494,286,3,Disenio,No Aplica,,320,,-3
+48,Matutino,21,INNI,821,494,286,3,IA,Drones,,115,,3
+48,Matutino,21,INNI,821,494,286,3,Administracion,Inventario,,205,,-3
+48,Matutino,21,INNI,821,494,286,3,Administracion,Inventario,,15,,-3
+48,Matutino,21,INNI,821,494,286,3,Administracion,Inventario,,150,,-3
+49,Mediodia,14,ROBO,558,61,8,2,Investigacion,No Aplica,,105,,8
+49,Mediodia,14,ROBO,558,61,8,2,Impresion,No Aplica,,75,,5
+50,Matutino,22,MELE,819,117,93,3,IA,Drones,,115,,8
+50,Matutino,22,MELE,819,117,93,3,Programacion,Servidores,,100,,-3
+50,Matutino,22,MELE,819,117,93,3,Ludica,RV,,435,,10
+51,Sabatino,13,ICOM,1136,184,120,2,IA,Drones,,350,,5
+51,Sabatino,13,ICOM,1136,184,120,2,Mantenimiento,Preventivo,,200,,8
+51,Sabatino,13,ICOM,1136,184,120,2,Impresion,No Aplica,,35,,8
+51,Sabatino,13,ICOM,1136,184,120,2,Impresion,No Aplica,,30,,10
+51,Sabatino,13,ICOM,1136,184,120,2,Administracion,Inventario,,15,,3
+51,Sabatino,13,ICOM,1136,184,120,2,Mantenimiento,Preventivo,,225,,10
+51,Sabatino,13,ICOM,1136,184,120,2,Ludica,RV,,435,,-3
+52,Matutino,14,INNI,724,162,60,2,Mantenimiento,Preventivo,,435,,10
+52,Matutino,14,INNI,724,162,60,2,Administracion,Inventario,,400,,10
+52,Matutino,14,INNI,724,162,60,2,Programacion,Servidores,,320,,8
+52,Matutino,14,INNI,724,162,60,2,Mantenimiento,Correctivo,,130,,10
+52,Matutino,14,INNI,724,162,60,2,Eventos,No Aplica,,285,,5
+53,Sabatino,12,INDI,1183,323,89,2,Impresion,No Aplica,,35,,10
+53,Sabatino,12,INDI,1183,323,89,2,Impresion,No Aplica,,35,,5
+53,Sabatino,12,INDI,1183,323,89,2,Administracion,Inventario,,455,,3
+53,Sabatino,12,INDI,1183,323,89,2,IA,Drones,,350,,5
+53,Sabatino,12,INDI,1183,323,89,2,Impresion,No Aplica,,265,,5
+53,Sabatino,12,INDI,1183,323,89,2,Administracion,Inventario,,150,,-3
+53,Sabatino,12,INDI,1183,323,89,2,Investigacion,No Aplica,,105,,10
+53,Sabatino,12,INDI,1183,323,89,2,IA,Drones,,115,,5
+53,Sabatino,12,INDI,1183,323,89,2,Programacion,Movil,,390,,5
+53,Sabatino,12,INDI,1183,323,89,2,Disenio,No Aplica,,305,,10
+54,Sabatino,16,MELE,350,80,15,2,Disenio,No Aplica,,240,,10
+54,Sabatino,16,MELE,350,80,15,2,Mantenimiento,Correctivo,,130,,-3
+54,Sabatino,16,MELE,350,80,15,2,Mantenimiento,Preventivo,,435,,5
+54,Sabatino,16,MELE,350,80,15,2,Disenio,No Aplica,,240,,10
+54,Sabatino,16,MELE,350,80,15,2,Impresion,No Aplica,,30,,10
+54,Sabatino,16,MELE,350,80,15,2,Mantenimiento,Correctivo,,135,,5
+54,Sabatino,16,MELE,350,80,15,2,Programacion,Servidores,,320,,-3
+54,Sabatino,16,MELE,350,80,15,2,Electronica,No Aplica,,420,,-3
+55,Vespertino,7,INNI,319,287,36,1,IA,Drones,,115,,-3
+55,Vespertino,7,INNI,319,287,36,1,Disenio,No Aplica,,465,,3
+56,Sabatino,10,ROBO,1136,1005,748,2,Disenio,No Aplica,,320,,3
+56,Sabatino,10,ROBO,1136,1005,748,2,IA,Drones,,115,,5
+56,Sabatino,10,ROBO,1136,1005,748,2,IA,Drones,,350,,5
+57,Mediodia,2,ICOM,325,66,22,1,Impresion,No Aplica,,210,,-3
+57,Mediodia,2,ICOM,325,66,22,1,Electronica,No Aplica,,85,,5
+57,Mediodia,2,ICOM,325,66,22,1,Programacion,Servidores,,140,,10
+57,Mediodia,2,ICOM,325,66,22,1,Eventos,No Aplica,,465,,8
+57,Mediodia,2,ICOM,325,66,22,1,Disenio,No Aplica,,305,,-3
+57,Mediodia,2,ICOM,325,66,22,1,Impresion,No Aplica,,265,,10
+57,Mediodia,2,ICOM,325,66,22,1,Eventos,No Aplica,,285,,-3
+57,Mediodia,2,ICOM,325,66,22,1,Administracion,Inventario,,455,,-3
+58,Matutino,1,MELE,397,55,39,1,Mantenimiento,Preventivo,,200,,5
+58,Matutino,1,MELE,397,55,39,1,Mantenimiento,Correctivo,,135,,5
+58,Matutino,1,MELE,397,55,39,1,Ludica,RV,,185,,3
+59,Vespertino,7,MELE,356,95,69,1,Programacion,Movil,,390,,5
+59,Vespertino,7,MELE,356,95,69,1,Programacion,Software,,450,,5
+59,Vespertino,7,MELE,356,95,69,1,IA,Drones,,350,,10
+60,Vespertino,11,ICOM,718,299,38,2,Mantenimiento,Preventivo,,200,,3
+60,Vespertino,11,ICOM,718,299,38,2,Impresion,No Aplica,,30,,8
+61,Matutino,14,ICOM,1015,921,86,2,Impresion,No Aplica,,35,,5
+61,Matutino,14,ICOM,1015,921,86,2,IA,Drones,,350,,10
+61,Matutino,14,ICOM,1015,921,86,2,Eventos,No Aplica,,465,,3
+61,Matutino,14,ICOM,1015,921,86,2,Administracion,Inventario,,15,,-3
+61,Matutino,14,ICOM,1015,921,86,2,Administracion,Inventario,,15,,8
+61,Matutino,14,ICOM,1015,921,86,2,Mantenimiento,Preventivo,,50,,5
+61,Matutino,14,ICOM,1015,921,86,2,Programacion,Software,,450,,-3
+61,Matutino,14,ICOM,1015,921,86,2,Programacion,Servidores,,320,,-3
+61,Matutino,14,ICOM,1015,921,86,2,Electronica,No Aplica,,85,,10
+61,Matutino,14,ICOM,1015,921,86,2,Ludica,RV,,215,,5
+62,Sabatino,17,INNI,758,206,6,3,Ludica,RV,,215,,-3
+62,Sabatino,17,INNI,758,206,6,3,Impresion,No Aplica,,35,,5
+62,Sabatino,17,INNI,758,206,6,3,Programacion,Movil,,390,,8
+63,Sabatino,11,INDI,539,277,107,2,Ludica,RV,,185,,8
+63,Sabatino,11,INDI,539,277,107,2,Investigacion,No Aplica,,105,,3
+63,Sabatino,11,INDI,539,277,107,2,IA,Drones,,350,,8
+63,Sabatino,11,INDI,539,277,107,2,Ludica,RV,,215,,5
+63,Sabatino,11,INDI,539,277,107,2,Disenio,No Aplica,,240,,-3
+63,Sabatino,11,INDI,539,277,107,2,Electronica,No Aplica,,85,,3
+64,Sabatino,12,MELE,445,69,11,2,Electronica,No Aplica,,85,,-3
+64,Sabatino,12,MELE,445,69,11,2,Impresion,No Aplica,,30,,-3
+65,Vespertino,20,INNI,1402,632,406,3,Impresion,No Aplica,,75,,5
+65,Vespertino,20,INNI,1402,632,406,3,Administracion,Inventario,,205,,-3
+65,Vespertino,20,INNI,1402,632,406,3,Impresion,No Aplica,,35,,5
+65,Vespertino,20,INNI,1402,632,406,3,IA,Drones,,115,,10
+65,Vespertino,20,INNI,1402,632,406,3,Administracion,Inventario,,150,,3
+65,Vespertino,20,INNI,1402,632,406,3,Mantenimiento,Preventivo,,200,,10
+65,Vespertino,20,INNI,1402,632,406,3,Investigacion,No Aplica,,105,,8
+65,Vespertino,20,INNI,1402,632,406,3,Eventos,No Aplica,,285,,10
+66,Vespertino,0,INNI,50,48,18,1,Disenio,No Aplica,,210,,8
+66,Vespertino,0,INNI,50,48,18,1,Programacion,Servidores,,320,,10
+66,Vespertino,0,INNI,50,48,18,1,Administracion,Inventario,,400,,5
+66,Vespertino,0,INNI,50,48,18,1,Mantenimiento,Preventivo,,50,,10
+66,Vespertino,0,INNI,50,48,18,1,Ludica,RV,,215,,3
+66,Vespertino,0,INNI,50,48,18,1,Mantenimiento,Preventivo,,50,,-3
+66,Vespertino,0,INNI,50,48,18,1,Ludica,RV,,100,,10
+66,Vespertino,0,INNI,50,48,18,1,Eventos,No Aplica,,310,,5
+67,Matutino,18,INNI,1357,1021,110,3,Disenio,No Aplica,,210,,-3
+67,Matutino,18,INNI,1357,1021,110,3,Disenio,No Aplica,,240,,3
+67,Matutino,18,INNI,1357,1021,110,3,Ludica,RV,,435,,5
+67,Matutino,18,INNI,1357,1021,110,3,Impresion,No Aplica,,35,,5
+68,Mediodia,7,ICOM,5,3,0,1,Mantenimiento,Correctivo,,135,,-3
+68,Mediodia,7,ICOM,5,3,0,1,Mantenimiento,Preventivo,,200,,-3
+68,Mediodia,7,ICOM,5,3,0,1,Eventos,No Aplica,,285,,3
+68,Mediodia,7,ICOM,5,3,0,1,Eventos,No Aplica,,285,,3
+68,Mediodia,7,ICOM,5,3,0,1,Impresion,No Aplica,,210,,10
+68,Mediodia,7,ICOM,5,3,0,1,Electronica,No Aplica,,420,,10
+68,Mediodia,7,ICOM,5,3,0,1,Administracion,Inventario,,455,,8
+68,Mediodia,7,ICOM,5,3,0,1,Ludica,RV,,435,,5
+68,Mediodia,7,ICOM,5,3,0,1,Administracion,Inventario,,400,,-3
+68,Mediodia,7,ICOM,5,3,0,1,Impresion,No Aplica,,265,,8
+69,Vespertino,19,ICOM,687,333,241,3,Administracion,Inventario,,150,,10
+69,Vespertino,19,ICOM,687,333,241,3,Eventos,No Aplica,,465,,3
+69,Vespertino,19,ICOM,687,333,241,3,Programacion,Software,,450,,3
+69,Vespertino,19,ICOM,687,333,241,3,Impresion,No Aplica,,265,,3
+69,Vespertino,19,ICOM,687,333,241,3,Programacion,Servidores,,140,,10
+70,Vespertino,21,ROBO,594,520,203,3,Electronica,No Aplica,,420,,5
+70,Vespertino,21,ROBO,594,520,203,3,IA,Drones,,115,,3
+70,Vespertino,21,ROBO,594,520,203,3,Electronica,No Aplica,,65,,10
+70,Vespertino,21,ROBO,594,520,203,3,Impresion,No Aplica,,75,,3
+70,Vespertino,21,ROBO,594,520,203,3,Mantenimiento,Preventivo,,50,,-3
+70,Vespertino,21,ROBO,594,520,203,3,Programacion,Servidores,,100,,10
+70,Vespertino,21,ROBO,594,520,203,3,Disenio,No Aplica,,320,,-3
+71,Sabatino,0,INDI,112,87,12,1,Impresion,No Aplica,,75,,5
+71,Sabatino,0,INDI,112,87,12,1,IA,Drones,,350,,8
+71,Sabatino,0,INDI,112,87,12,1,Disenio,No Aplica,,210,,10
+71,Sabatino,0,INDI,112,87,12,1,Electronica,No Aplica,,420,,-3
+71,Sabatino,0,INDI,112,87,12,1,Impresion,No Aplica,,210,,8
+71,Sabatino,0,INDI,112,87,12,1,IA,Drones,,115,,3
+71,Sabatino,0,INDI,112,87,12,1,Eventos,No Aplica,,465,,3
+71,Sabatino,0,INDI,112,87,12,1,Mantenimiento,Correctivo,,130,,10
+72,Sabatino,22,MELE,619,601,365,3,Impresion,No Aplica,,365,,-3
+72,Sabatino,22,MELE,619,601,365,3,Administracion,Inventario,,15,,10
+72,Sabatino,22,MELE,619,601,365,3,Disenio,No Aplica,,210,,10
+72,Sabatino,22,MELE,619,601,365,3,Administracion,Inventario,,400,,8
+73,Mediodia,19,MELE,723,518,504,3,Administracion,Inventario,,455,,8
+73,Mediodia,19,MELE,723,518,504,3,Mantenimiento,Preventivo,,435,,-3
+74,Matutino,12,INNI,759,161,32,2,Mantenimiento,Preventivo,,50,,5
+74,Matutino,12,INNI,759,161,32,2,Administracion,Inventario,,150,,3
+74,Matutino,12,INNI,759,161,32,2,Programacion,Servidores,,140,,10
+74,Matutino,12,INNI,759,161,32,2,Eventos,No Aplica,,285,,8
+74,Matutino,12,INNI,759,161,32,2,Programacion,Software,,450,,3
+74,Matutino,12,INNI,759,161,32,2,IA,Drones,,350,,8
+74,Matutino,12,INNI,759,161,32,2,Mantenimiento,Preventivo,,225,,10
+75,Matutino,20,ICOM,711,119,22,3,Electronica,No Aplica,,65,,-3
+75,Matutino,20,ICOM,711,119,22,3,Disenio,No Aplica,,240,,5
+75,Matutino,20,ICOM,711,119,22,3,Disenio,No Aplica,,465,,5
+75,Matutino,20,ICOM,711,119,22,3,Impresion,No Aplica,,265,,3
+75,Matutino,20,ICOM,711,119,22,3,Impresion,No Aplica,,35,,3
+75,Matutino,20,ICOM,711,119,22,3,Ludica,RV,,100,,8
+75,Matutino,20,ICOM,711,119,22,3,Eventos,No Aplica,,465,,-3
+76,Mediodia,0,MELE,139,60,24,1,Administracion,Inventario,,150,,8
+76,Mediodia,0,MELE,139,60,24,1,Programacion,Servidores,,100,,-3
+76,Mediodia,0,MELE,139,60,24,1,Impresion,No Aplica,,265,,5
+76,Mediodia,0,MELE,139,60,24,1,Impresion,No Aplica,,265,,8
+76,Mediodia,0,MELE,139,60,24,1,Impresion,No Aplica,,35,,8
+76,Mediodia,0,MELE,139,60,24,1,Administracion,Inventario,,150,,3
+76,Mediodia,0,MELE,139,60,24,1,Mantenimiento,Preventivo,,225,,10
+76,Mediodia,0,MELE,139,60,24,1,Electronica,No Aplica,,65,,5
+76,Mediodia,0,MELE,139,60,24,1,Programacion,Servidores,,100,,10
+76,Mediodia,0,MELE,139,60,24,1,Disenio,No Aplica,,210,,5
+77,Matutino,0,ICOM,395,254,93,1,Mantenimiento,Preventivo,,225,,3
+77,Matutino,0,ICOM,395,254,93,1,Electronica,No Aplica,,85,,10
+77,Matutino,0,ICOM,395,254,93,1,Programacion,Servidores,,100,,10
+77,Matutino,0,ICOM,395,254,93,1,Administracion,Inventario,,150,,5
+77,Matutino,0,ICOM,395,254,93,1,Ludica,RV,,435,,8
+78,Sabatino,20,INNI,908,169,136,3,Disenio,No Aplica,,320,,5
+78,Sabatino,20,INNI,908,169,136,3,Programacion,Servidores,,140,,8
+78,Sabatino,20,INNI,908,169,136,3,Disenio,No Aplica,,210,,8
+78,Sabatino,20,INNI,908,169,136,3,Eventos,No Aplica,,285,,8
+78,Sabatino,20,INNI,908,169,136,3,Administracion,Inventario,,205,,10
+78,Sabatino,20,INNI,908,169,136,3,Impresion,No Aplica,,210,,10
+78,Sabatino,20,INNI,908,169,136,3,Mantenimiento,Preventivo,,225,,-3
+79,Matutino,6,MELE,380,367,334,1,Eventos,No Aplica,,285,,5
+79,Matutino,6,MELE,380,367,334,1,Mantenimiento,Preventivo,,50,,8
+79,Matutino,6,MELE,380,367,334,1,Disenio,No Aplica,,210,,8
+79,Matutino,6,MELE,380,367,334,1,Mantenimiento,Preventivo,,50,,5
+79,Matutino,6,MELE,380,367,334,1,Impresion,No Aplica,,265,,5
+79,Matutino,6,MELE,380,367,334,1,Administracion,Inventario,,205,,-3
+80,Matutino,18,INDI,762,661,356,3,Impresion,No Aplica,,365,,8
+80,Matutino,18,INDI,762,661,356,3,Mantenimiento,Preventivo,,50,,3
+80,Matutino,18,INDI,762,661,356,3,Electronica,No Aplica,,65,,8
+80,Matutino,18,INDI,762,661,356,3,Eventos,No Aplica,,310,,5
+80,Matutino,18,INDI,762,661,356,3,Administracion,Inventario,,400,,5
+80,Matutino,18,INDI,762,661,356,3,Administracion,Inventario,,205,,10
+80,Matutino,18,INDI,762,661,356,3,Programacion,Movil,,390,,5
+80,Matutino,18,INDI,762,661,356,3,Mantenimiento,Preventivo,,225,,5
+81,Mediodia,23,ICOM,1187,928,389,3,Administracion,Inventario,,205,,10
+81,Mediodia,23,ICOM,1187,928,389,3,Programacion,Servidores,,320,,8
+81,Mediodia,23,ICOM,1187,928,389,3,Impresion,No Aplica,,35,,10
+81,Mediodia,23,ICOM,1187,928,389,3,Disenio,No Aplica,,240,,-3
+81,Mediodia,23,ICOM,1187,928,389,3,Programacion,Software,,450,,3
+81,Mediodia,23,ICOM,1187,928,389,3,Ludica,RV,,100,,5
+81,Mediodia,23,ICOM,1187,928,389,3,Disenio,No Aplica,,465,,5
+81,Mediodia,23,ICOM,1187,928,389,3,Ludica,RV,,185,,10
+82,Vespertino,2,INNI,219,17,16,1,Electronica,No Aplica,,420,,10
+82,Vespertino,2,INNI,219,17,16,1,Mantenimiento,Preventivo,,200,,-3
+83,Matutino,13,ROBO,1113,878,58,2,Administracion,Inventario,,400,,3
+83,Matutino,13,ROBO,1113,878,58,2,Electronica,No Aplica,,85,,3
+83,Matutino,13,ROBO,1113,878,58,2,IA,Drones,,115,,10
+83,Matutino,13,ROBO,1113,878,58,2,Ludica,RV,,100,,-3
+83,Matutino,13,ROBO,1113,878,58,2,Electronica,No Aplica,,85,,-3
+83,Matutino,13,ROBO,1113,878,58,2,Administracion,Inventario,,455,,5
+83,Matutino,13,ROBO,1113,878,58,2,Programacion,Servidores,,100,,10
+83,Matutino,13,ROBO,1113,878,58,2,Ludica,RV,,215,,10
+84,Matutino,9,ICOM,839,792,268,2,Disenio,No Aplica,,210,,3
+84,Matutino,9,ICOM,839,792,268,2,Programacion,Servidores,,100,,8
+85,Matutino,0,INDI,117,6,2,1,Programacion,Movil,,390,,8
+85,Matutino,0,INDI,117,6,2,1,IA,Drones,,350,,5
+85,Matutino,0,INDI,117,6,2,1,Mantenimiento,Preventivo,,50,,8
+85,Matutino,0,INDI,117,6,2,1,Impresion,No Aplica,,265,,-3
+85,Matutino,0,INDI,117,6,2,1,Administracion,Inventario,,400,,10
+85,Matutino,0,INDI,117,6,2,1,IA,Drones,,115,,5
+85,Matutino,0,INDI,117,6,2,1,IA,Drones,,115,,10
+85,Matutino,0,INDI,117,6,2,1,Programacion,Movil,,390,,8
+85,Matutino,0,INDI,117,6,2,1,Programacion,Servidores,,100,,3
+85,Matutino,0,INDI,117,6,2,1,Mantenimiento,Correctivo,,135,,-3
+86,Sabatino,6,INNI,27,27,16,1,Mantenimiento,Preventivo,,50,,8
+86,Sabatino,6,INNI,27,27,16,1,Impresion,No Aplica,,265,,-3
+86,Sabatino,6,INNI,27,27,16,1,Eventos,No Aplica,,465,,5
+86,Sabatino,6,INNI,27,27,16,1,Programacion,Software,,450,,3
+86,Sabatino,6,INNI,27,27,16,1,Ludica,RV,,100,,-3
+86,Sabatino,6,INNI,27,27,16,1,Impresion,No Aplica,,35,,10
+86,Sabatino,6,INNI,27,27,16,1,Disenio,No Aplica,,465,,3
+86,Sabatino,6,INNI,27,27,16,1,Disenio,No Aplica,,210,,8
+87,Mediodia,17,MELE,1358,324,48,3,Programacion,Software,,450,,5
+87,Mediodia,17,MELE,1358,324,48,3,Ludica,RV,,215,,10
+88,Matutino,18,INDI,872,489,440,3,Electronica,No Aplica,,65,,8
+88,Matutino,18,INDI,872,489,440,3,Disenio,No Aplica,,305,,5
+89,Vespertino,18,MELE,713,301,32,3,Mantenimiento,Correctivo,,130,,5
+89,Vespertino,18,MELE,713,301,32,3,Ludica,RV,,185,,8
+89,Vespertino,18,MELE,713,301,32,3,Investigacion,No Aplica,,105,,-3
+89,Vespertino,18,MELE,713,301,32,3,Disenio,No Aplica,,465,,-3
+89,Vespertino,18,MELE,713,301,32,3,Impresion,No Aplica,,75,,3
+89,Vespertino,18,MELE,713,301,32,3,Ludica,RV,,100,,3
+89,Vespertino,18,MELE,713,301,32,3,Impresion,No Aplica,,210,,-3
+90,Matutino,18,MELE,1414,474,168,3,Programacion,Software,,450,,5
+90,Matutino,18,MELE,1414,474,168,3,Investigacion,No Aplica,,105,,3
+91,Vespertino,20,INNI,660,414,54,3,Mantenimiento,Preventivo,,200,,-3
+91,Vespertino,20,INNI,660,414,54,3,Administracion,Inventario,,455,,3
+91,Vespertino,20,INNI,660,414,54,3,Impresion,No Aplica,,75,,3
+91,Vespertino,20,INNI,660,414,54,3,Administracion,Inventario,,455,,5
+91,Vespertino,20,INNI,660,414,54,3,Administracion,Inventario,,455,,-3
+91,Vespertino,20,INNI,660,414,54,3,Programacion,Movil,,390,,10
+91,Vespertino,20,INNI,660,414,54,3,Electronica,No Aplica,,420,,3
+91,Vespertino,20,INNI,660,414,54,3,Administracion,Inventario,,150,,3
+91,Vespertino,20,INNI,660,414,54,3,Disenio,No Aplica,,240,,8
+92,Vespertino,13,MELE,1107,272,184,2,Ludica,RV,,185,,5
+92,Vespertino,13,MELE,1107,272,184,2,Impresion,No Aplica,,210,,5
+92,Vespertino,13,MELE,1107,272,184,2,Mantenimiento,Correctivo,,135,,3
+92,Vespertino,13,MELE,1107,272,184,2,Administracion,Inventario,,150,,10
+92,Vespertino,13,MELE,1107,272,184,2,Impresion,No Aplica,,30,,5
+92,Vespertino,13,MELE,1107,272,184,2,Programacion,Servidores,,140,,8
+92,Vespertino,13,MELE,1107,272,184,2,Electronica,No Aplica,,420,,8
+93,Sabatino,13,ROBO,829,127,42,2,Electronica,No Aplica,,85,,10
+93,Sabatino,13,ROBO,829,127,42,2,Programacion,Servidores,,100,,3
+93,Sabatino,13,ROBO,829,127,42,2,Eventos,No Aplica,,285,,3
+93,Sabatino,13,ROBO,829,127,42,2,Administracion,Inventario,,205,,10
+93,Sabatino,13,ROBO,829,127,42,2,Ludica,RV,,100,,8
+93,Sabatino,13,ROBO,829,127,42,2,Programacion,Movil,,390,,-3
+94,Mediodia,4,INDI,282,124,111,1,Administracion,Inventario,,205,,5
+94,Mediodia,4,INDI,282,124,111,1,Investigacion,No Aplica,,105,,10
+94,Mediodia,4,INDI,282,124,111,1,Mantenimiento,Correctivo,,130,,5
+94,Mediodia,4,INDI,282,124,111,1,Administracion,Inventario,,150,,3
+94,Mediodia,4,INDI,282,124,111,1,Mantenimiento,Correctivo,,130,,5
+95,Mediodia,20,INNI,1404,1297,336,3,Ludica,RV,,100,,8
+95,Mediodia,20,INNI,1404,1297,336,3,Administracion,Inventario,,400,,10
+95,Mediodia,20,INNI,1404,1297,336,3,Impresion,No Aplica,,365,,3
+95,Mediodia,20,INNI,1404,1297,336,3,IA,Drones,,115,,-3
+96,Sabatino,24,ROBO,1370,510,417,3,Mantenimiento,Correctivo,,130,,8
+96,Sabatino,24,ROBO,1370,510,417,3,Disenio,No Aplica,,210,,8
+96,Sabatino,24,ROBO,1370,510,417,3,Impresion,No Aplica,,35,,-3
+96,Sabatino,24,ROBO,1370,510,417,3,Ludica,RV,,435,,-3
+96,Sabatino,24,ROBO,1370,510,417,3,Impresion,No Aplica,,75,,8
+97,Matutino,23,INNI,1466,111,71,3,Administracion,Inventario,,455,,3
+97,Matutino,23,INNI,1466,111,71,3,Electronica,No Aplica,,85,,-3
+97,Matutino,23,INNI,1466,111,71,3,Disenio,No Aplica,,305,,8
+97,Matutino,23,INNI,1466,111,71,3,Programacion,Servidores,,320,,-3
+97,Matutino,23,INNI,1466,111,71,3,Disenio,No Aplica,,320,,10
+97,Matutino,23,INNI,1466,111,71,3,Programacion,Servidores,,100,,8
+97,Matutino,23,INNI,1466,111,71,3,Investigacion,No Aplica,,105,,5
+97,Matutino,23,INNI,1466,111,71,3,Administracion,Inventario,,455,,8
+97,Matutino,23,INNI,1466,111,71,3,Ludica,RV,,100,,10
+97,Matutino,23,INNI,1466,111,71,3,Disenio,No Aplica,,240,,-3
+98,Vespertino,17,ICOM,1198,924,149,3,Programacion,Servidores,,320,,5
+98,Vespertino,17,ICOM,1198,924,149,3,Disenio,No Aplica,,305,,3
+98,Vespertino,17,ICOM,1198,924,149,3,Administracion,Inventario,,455,,3
+98,Vespertino,17,ICOM,1198,924,149,3,Ludica,RV,,215,,10
+98,Vespertino,17,ICOM,1198,924,149,3,Disenio,No Aplica,,320,,5
+98,Vespertino,17,ICOM,1198,924,149,3,Impresion,No Aplica,,365,,3
+98,Vespertino,17,ICOM,1198,924,149,3,Administracion,Inventario,,150,,10
+98,Vespertino,17,ICOM,1198,924,149,3,Programacion,Servidores,,140,,5
+98,Vespertino,17,ICOM,1198,924,149,3,Mantenimiento,Preventivo,,50,,3
+99,Matutino,2,ROBO,92,55,37,1,Disenio,No Aplica,,465,,-3
+99,Matutino,2,ROBO,92,55,37,1,IA,Drones,,350,,3
+99,Matutino,2,ROBO,92,55,37,1,Disenio,No Aplica,,240,,8
+99,Matutino,2,ROBO,92,55,37,1,Administracion,Inventario,,205,,5
+99,Matutino,2,ROBO,92,55,37,1,Administracion,Inventario,,150,,-3
+99,Matutino,2,ROBO,92,55,37,1,Impresion,No Aplica,,210,,3
+99,Matutino,2,ROBO,92,55,37,1,Impresion,No Aplica,,35,,3
+99,Matutino,2,ROBO,92,55,37,1,Administracion,Inventario,,400,,10
+99,Matutino,2,ROBO,92,55,37,1,Disenio,No Aplica,,210,,-3
+99,Matutino,2,ROBO,92,55,37,1,Ludica,RV,,215,,3
+100,Vespertino,12,INNI,1094,522,137,2,Disenio,No Aplica,,305,,5
+100,Vespertino,12,INNI,1094,522,137,2,Investigacion,No Aplica,,105,,10
+100,Vespertino,12,INNI,1094,522,137,2,Electronica,No Aplica,,420,,3
+100,Vespertino,12,INNI,1094,522,137,2,Electronica,No Aplica,,420,,3
+100,Vespertino,12,INNI,1094,522,137,2,Impresion,No Aplica,,30,,5
+100,Vespertino,12,INNI,1094,522,137,2,Ludica,RV,,185,,8
+100,Vespertino,12,INNI,1094,522,137,2,Administracion,Inventario,,205,,-3
+100,Vespertino,12,INNI,1094,522,137,2,IA,Drones,,350,,10
+100,Vespertino,12,INNI,1094,522,137,2,Disenio,No Aplica,,320,,5
+100,Vespertino,12,INNI,1094,522,137,2,Disenio,No Aplica,,305,,-3

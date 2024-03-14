@@ -243,6 +243,9 @@
                     field: "fecha",
                     sorter: "string",
                 }, {
+                    title: "IDENTIFICADOR",
+                    field: "id",
+                }, {
                     title: "Eliminar",
                     field: "id",
                     formatter: function (cell, formatterParams, onRendered) {
@@ -270,9 +273,9 @@
             .then(response => response.json())
             .then(data => {
 
-                console.log('Premio eliminado:', data);
+                console.log('Premio eliminado:');
 
-                window.location.reload(); 
+                //window.location.reload(); 
             })
             .catch(error => {
                 console.error('Error al eliminar premio:', error);
