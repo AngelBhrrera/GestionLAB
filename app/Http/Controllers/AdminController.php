@@ -981,6 +981,19 @@ class AdminController extends Controller
             dd($turno);
     }
 
+    public function filtroEditArea($id){ //Para cambio de nombre en area
+        if(Auth::user()->tipo == 'jefe area'){
+            return $areas = DB::table('areas')
+            ->where('id_sede', $id)
+            ->where('id', Auth::user()->area)
+            ->get();
+        }
+        
+        return  $areas = DB::table('areas')
+            ->where('id_sede', $id)
+            ->get();
+    }
+
     //IMPRESORAS
 
     public function control_print()
@@ -1398,7 +1411,48 @@ class AdminController extends Controller
             return redirect(route('admin.sede'))->with('warning', "Ya existe una área con ese nombre");
         }
     }
+    public function  modificarSede(Request $request){
+        
+        $nombre=$request->input("nuevoNombre");
+        $id=$request->input("idSede");
 
+        $nombreAnterior = DB::table('sedes')->where('id_sede', $id)->value('nombre_sede');
+        if(!($nombreAnterior === $nombre)){
+            $request->validate([
+                'nuevoNombre' => 'required|min:3|max:255|unique:sedes,nombre_Sede',
+            ],
+        [
+            'nuevoNombre.required' => 'El campo de nuevo nombre es requerido',
+            'nuevoNombre.min' => 'El nombre debe ser de mínimo 3 caracteres'
+        ]);
+        }
+        DB::table('sedes')
+        ->where('id_sede', $id)
+        ->update(['nombre_sede'=>$nombre]);
+        return redirect()->back()->with('success', 'Modificada correctamente');
+    }
+
+    public function modificarArea(Request $request){
+        $id_sede=$request->sede_2;
+        $id_area=json_decode($request->area_edit)->id;
+        $nombre=$request->nuevoNombre_2;
+
+        $nombreAnterior = DB::table('areas')->where('id', $id_area)->value('nombre_area');
+
+        if(!($nombreAnterior === $nombre)){
+            $request->validate([
+                'nuevoNombre_2' => 'required|min:3|max:255|unique:sedes,nombre_Sede',
+            ],
+        [
+            'nuevoNombre_2.required' => 'El campo de nuevo nombre es requerido',
+            'nuevoNombre_2.min' => 'El nombre debe ser de mínimo 3 caracteres'
+        ]);
+        }
+        DB::table('areas')
+        ->where('id', $id_area)
+        ->update(['nombre_area'=>$nombre]);
+        return redirect()->back()->with('success', 'Modificada correctamente');
+    }
     //CALENDARIO
 
     public function diasfestivos(){   

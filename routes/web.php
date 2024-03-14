@@ -117,7 +117,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::middleware('role:coordinador')->group(function() {
                     Route::get('admin/cambiarRol', 'cambiarRol')->name('cambiorol');
                 });
-
+                
                 Route::middleware('role:jefe area,jefe sede,Superadmin')->group(function() {
                     
                     Route::middleware('role:Superadmin')->group(function() {
@@ -149,6 +149,8 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
                     Route::post('admin/nuevaArea', 'nuevaArea')->name('nuevaArea');
                     Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
+                    Route::post('admin/modificarArea', 'modificarArea')->name('modificarArea');
+                    Route::get('admin/filtroEditArea/{id}','filtroEditArea')->name('filtroEditArea');
                     //ADMINISTRACION DEL CALENDARIO
                     Route::get('/admin/faltas', 'faltas')->name('faltas');
                     Route::get('/admin/horarios', 'horarios')->name('horarios');
