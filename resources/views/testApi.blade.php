@@ -86,47 +86,52 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    // Procesar los datos recibidos
+
                     console.log(data);
                     const tableBody = document.getElementById('prestadoresTable').getElementsByTagName('tbody')[0];
-                    // Limpiar la tabla
+   
                     tableBody.innerHTML = '';
-                    // Parsear las recomendaciones
                     const recomendaciones = JSON.parse(data.recomendaciones);
 
                     recomendaciones.forEach(recomendacion => {
-                        // Crear una nueva fila
                         const row = document.createElement('tr');
 
-                        // Crear las celdas de la fila
                         const nameCell = document.createElement('td');
                         const horarioCell = document.createElement('td');
+                        
 
                         const prestador = prestadores.find(p => p.id === recomendacion.id_prestador);
                         if (prestador) {
                             nameCell.textContent = prestador.name + ' ' + prestador.apellido;
-                            horarioCell.textContent = prestador.horario;
                         }
 
-                        // Cambiar el color del texto en función del valor de resultado
                         const resultado = recomendacion.resultado;
+                        let textoIndicador = '';
                         if (resultado === 10) {
                             row.style.color = 'green';
+                            textoIndicador = 'Trabajo excelente esperado';
                         } else if (resultado === 8) {
                             row.style.color = 'blue';
+                            textoIndicador = 'Trabajo muy bueno';
                         } else if (resultado === 5) {
                             row.style.color = 'yellow';
+                            textoIndicador = 'Trabajo aceptable';
                         } else if (resultado === 3) {
                             row.style.color = 'orange';
+                            textoIndicador = 'Trabajo regular';
                         } else if (resultado === -3) {
                             row.style.color = 'red';
+                            textoIndicador = 'Trabajo insatisfactorio';
                         }
 
-                        // Agregar las celdas a la fila
                         row.appendChild(nameCell);
                         row.appendChild(horarioCell);
 
-                        // Agregar la fila a la tabla
+                        // Crear un elemento <td> para el texto indicador y añadirlo a la fila
+                        const textoIndicadorCell = document.createElement('td');
+                        textoIndicadorCell.textContent = textoIndicador;
+                        row.appendChild(textoIndicadorCell);
+
                         tableBody.appendChild(row);
                     });
                 })

@@ -24,7 +24,7 @@ class CreatePremiosPrestadoresTable extends Migration
                 INNER JOIN premios_prestadores AS pp ON u.id = pp.id_prestador
                 INNER JOIN premios AS p ON p.id = pp.id_premio
                 WHERE p.tipo = 'horas'
-                GROUP BY u.id, u.name, p.horas;
+                GROUP BY u.id, u.name;
         ");
 
         DB::statement("
@@ -40,11 +40,13 @@ class CreatePremiosPrestadoresTable extends Migration
                     users AS u ON ch.id = u.id 
                 LEFT JOIN 
                     total_horas_extra AS the ON the.id = u.id;
+                GROUP BY u.id
         ");
 
         DB::statement("
         CREATE VIEW seguimiento_premios AS
             SELECT CONCAT(u.name, ' ', u.apellido) AS nombre_prestador, 
+                premios_prestadores.id_premio,
                 p.nombre, 
                 p.descripcion, 
                 p.tipo, 

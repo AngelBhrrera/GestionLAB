@@ -1622,7 +1622,7 @@ class AdminController extends Controller
             ->get();
         $prestadores = DB::table('solo_prestadores');
         $datos = DB::table('seguimiento_premios')
-            ->join('premios', 'seguimiento_premios.id', '=', 'premios.id')
+            ->join('premios', 'seguimiento_premios.id_premio', '=', 'premios.id')
             ->where('premios.ref', auth()->user()->area)
             ->get();
         if( auth()->user()->tipo == 'jefe area'){
@@ -1662,6 +1662,11 @@ class AdminController extends Controller
 
     public function asignar_premio(Request $request){
 
+        $request->validate([
+            'premios' => 'required | integer',
+            'prestadores_seleccionados' => 'required | array',
+            'prestadores_seleccionados.*' => 'integer',
+        ]);
         $prestadoresSeleccionados = $request->input('prestadores_seleccionados');
         $tamañoArreglo = count($prestadoresSeleccionados);
 
