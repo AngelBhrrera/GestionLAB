@@ -45,6 +45,7 @@ class CreatePremiosPrestadoresTable extends Migration
         DB::statement("
         CREATE VIEW seguimiento_premios AS
             SELECT CONCAT(u.name, ' ', u.apellido) AS nombre_prestador, 
+                premios_prestadores.id_premio,
                 p.nombre, 
                 p.descripcion, 
                 p.tipo, 

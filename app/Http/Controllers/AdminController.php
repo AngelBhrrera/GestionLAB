@@ -1528,7 +1528,7 @@ class AdminController extends Controller
             $prestadores->where('id_sede', auth()->user()->sede);
         }
         $prestadores = $prestadores->get();
-
+        #agregar condicion para filtrar los premios por visibilidad <- falta
 
         return view("admin.premios", [
             'prestadores' => $prestadores,
@@ -1544,6 +1544,9 @@ class AdminController extends Controller
             "descripcion" => "required|string|max:255",  
             "tipo" => "required|string",
             "horas" => "integer|nullable|between:1,60", 
+            "inicioVigencia" => "null",
+            "finVigencia" => "null",
+            "limite" => "null",
         ]);
 
         DB::table("premios")->insert([
@@ -1552,9 +1555,13 @@ class AdminController extends Controller
             "tipo" => $request -> input("tipo"),
             "horas" => $request -> input("horas"),
             "ref" => auth()->user()->area,
+            "inicioVigencia" => $request -> input("fechaInicio"),
+            "finVigencia" => $request -> input("fechaFin"),
+            "Visibilidad" => $request -> input("visibilidad"),
+            "limite" => $request -> input("limite"),
         ]);
        
-        return redirect()->back()->with('success', 'Creada correctamente');
+        return redirect()->back()->with('success', 'Creada correctamente'); #cambiar redireccion
     }
 
     public function asignar_premio(Request $request){
