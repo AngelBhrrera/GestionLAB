@@ -122,13 +122,12 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     
                     Route::middleware('role:Superadmin')->group(function() {
                         Route::get('/superadmin/gestion', 'gestionViews')->name('gestionViews');
-                        Route::get('/area_edit/{id}/{value}', 'editA')->name('editA');
-                        Route::get('/sede_edit/{id}/{value}', 'editS')->name('editS');
-
                     });
 
                     Route::get('/admin/gestion', 'gestHub')->name('gestHub');
-                    
+                    Route::post('/area_edit/{id}/{campo}', 'editA')->name('editA');
+                    Route::post('/sede_edit/{id}/{campo}', 'editS')->name('editS');
+
                     //ADMINISTRACION USUARIOS
                     Route::get('/admin/registro', 'registro')->name('registro'); 
                     Route::get('/admin/administradores', 'administradores')->name('administradores');

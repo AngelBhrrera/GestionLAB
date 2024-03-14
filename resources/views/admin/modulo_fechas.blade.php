@@ -151,16 +151,14 @@
 
 @section('script')
     <script type="text/javascript">
-            var sedes = {!! $no_laboral !!};
+            var dias_especiales = {!! $no_laboral !!};
             var table = new Tabulator("#festivos", {
 
-                data: sedes,
+                data: dias_especiales,
                 paginationSize: 15,
-
                 pagination: "local",
                 layout: "fitDataFill",
                 resizableColumns:false,
-                height: "100%",
 
                 columns: [{
                         title: "ID",
@@ -172,23 +170,19 @@
                         field: "evento",
                         headerFilter: "input",
                         sorter: "string",
-                        hozAlign: "center",
                         width: 300,
                     }, {
                         title: "Inicio",
                         field: "inicio",
-                        hozAlign: "center",
                         width: 150,
                     },{
                         title: "Fin",
                         field: "final",
-                        hozAlign: "center",
                         width: 150,
                     },
                     {
                         title: "Tipo",
                         field: "tipo",
-                        hozAlign: "center",
                         width: 150,
                     },
                     {
