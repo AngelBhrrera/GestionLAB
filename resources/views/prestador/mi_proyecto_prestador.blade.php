@@ -15,7 +15,7 @@
                     Detalles de Proyecto
                 </h2>
                     <h3 class="text-xl font-medium leading-none">{{$proyecto[$i][0]->titulo}}</h3><br>
-                    <h3 class="text-xl font-medium leading-none">{{"Turno: ".$proyecto[$i][0]->turno}}</h3>
+                    <h3 class="text-xl font-medium leading-none">{{"Turno: ".$proyecto[$i][0]->horario}}</h3>
                     <br>
                     <h3 class="text-xl font-medium leading-none mt-3">--Integrantes--</h3>
                         <div class="overflow-x-auto">
@@ -60,14 +60,6 @@
                                             <td><a class ="btn btn-primary" href="{{route('detallesActividad', $actividad->actividad_id)}}">Detalles</a></td>
                                         </tr>
                                     @endforeach
-                                    @for ($x=0; $x < 50; $x++)
-                                        <tr>
-                                            <td>{{$x}}</td>
-                                            <td>{{$x}}</td>
-                                            <td>{{$x}}</td>
-                                            <td><a class ="btn btn-primary" href="#">detalles</a></td>
-                                        </tr>
-                                    @endfor
                                 </tbody>
                             </table>
                         </div>

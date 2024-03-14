@@ -216,12 +216,14 @@ class AdminController extends Controller
         $dataI = DB::table('prestadores_inactivos');
         $dataL = DB::table('prestadores_servicio_liberado');
         $dataT = DB::table('prestadores_servicio_concluido');
+        $horarios = DB::Table('areas');
 
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $data->where('id_area', Auth::user()->area);
             $dataI->where('area', Auth::user()->area);
             $dataL->where('area', Auth::user()->area);
             $dataT->where('area', Auth::user()->area);
+            $horarios->where('id', Auth::user()->area);
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $data->where('id_sede', Auth::user()->sede);
             $dataI->where('sede',  Auth::user()->sede);
@@ -233,10 +235,21 @@ class AdminController extends Controller
         $dataI = $dataI->get();
         $dataL = $dataL->get();
         $dataT = $dataT->get();
+        $horarios = $horarios->first();
+        $horariosValidos = [];
+        
+        $horariosValidos[] = ($horarios->turnoMatutino == 1) ? "Matutino": null;
+        $horariosValidos[] = ($horarios->turnoMediodia == 1) ? "Mediodia": null;
+        $horariosValidos[] = ($horarios->turnoVespertino == 1) ? "Vespertino": null;
+        $horariosValidos[] = ($horarios->turnoSabatino == 1) ? "Sabatino": null;
+        $horariosValidos[] = ($horarios->turnoTiempoCompleto == 1) ? "TC": null;
+        $horariosValidos[] = ($horarios->no_Aplica == 1) ? "No Aplica": null;
+
+        
 
         return view('admin/ver_prestadores', ['datos' => json_encode($data),
         'datosI' => json_encode($dataI),   'datosL' => json_encode($dataL),
-        'datosT' => json_encode($dataT) ]);
+        'datosT' => json_encode($dataT), 'horariosValidos' => $horariosValidos ]);
     }
 
     public function prestadores_pendientes()
@@ -353,6 +366,41 @@ class AdminController extends Controller
             ->update(['tipo' => $value]);
 
         return response()->json(['message' => 'Modificado exitosamente']);
+    }
+
+    public function modificar_prestador(Request $request){
+        $horarios = DB::Table('areas');
+        $horarios = $horarios->first();
+        $horariosValidos = [];
+        $horariosValidos[] = ($horarios->turnoMatutino == 1) ? "Matutino": null;
+        $horariosValidos[] = ($horarios->turnoMediodia == 1) ? "Mediodia": null;
+        $horariosValidos[] = ($horarios->turnoVespertino == 1) ? "Vespertino": null;
+        $horariosValidos[] = ($horarios->turnoSabatino == 1) ? "Sabatino": null;
+        $horariosValidos[] = ($horarios->turnoTiempoCompleto == 1) ? "TC": null;
+        $horariosValidos[] = ($horarios->no_Aplica == 1) ? "No Aplica": null;
+
+        if(!in_array($request->horario_prest, $horariosValidos)){
+            return redirect()->route('admin.prestadores')->with('warning', 'El horario seleccionado no es válido');
+        }
+        
+        switch($request->tipo_prest){
+            case "jefe area":
+            case "jefe sede":
+            case "Superadmin":
+            return redirect()->route('admin.prestadores')->with('error', 'Error al modificar, no tienes los permisos necesarios');
+        }
+        
+
+        $id = DB::table('users')
+            ->where('codigo', $request->codigo)
+            ->value('id');
+            
+        $modificar = DB::table('users')
+        ->where('id', $id)
+        ->update(['horario'=>$request->horario_prest, 'tipo'=>$request->tipo_prest]);
+
+        return redirect()->route('admin.prestadores')->with('success', 'Modificado Correctamente');
+        
     }
 
     // ACTIVIDADES Y PROYECTOS
@@ -567,12 +615,26 @@ class AdminController extends Controller
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $prestadores->where('id_sede', auth()->user()->sede);
         }
+
+        switch(Auth::user()->tipo){
+            case "coordinador":
+                $proyectos = DB::table('proyectos')
+                ->where('id_area', Auth::user()->area)
+                ->where('horario', '=', Auth::user()->horario)
+                ->orWhere('horario', 'TC')
+                ->orWhere('particular', '0')
+                ->get();
+                break;
+            default:
+                $proyectos = DB::table('proyectos')->get();
+        }
+        
             
         $categorias = DB::table('categorias')->orderBy('nombre')->get();
         $actividades = DB::table('actividades')
             ->whereNotNull('TEC')
             ->get();
-        $proyectos = DB::table('proyectos')->get();
+        
         $prestadores = $prestadores->get();
     
         return view( 'admin/asignar_actividades', compact('prestadores', 'categorias', 'actividades', 'proyectos'));
@@ -722,6 +784,7 @@ class AdminController extends Controller
             $prestadores->where('id_area', auth()->user()->area)
                 ->where('horario', auth()->user()->horario)
                 ->where('tipo', '!=', 'coordinador');
+            $areas->where('id', auth()->user()->area);
             $tabla_proy->where('id_area', auth()->user()->area);
         }else if(auth()->user()->tipo == 'jefe area'){
             $prestadores->where('id_area', auth()->user()->area);
@@ -792,6 +855,26 @@ class AdminController extends Controller
         return view('/admin/registro_prestadores_proyecto', compact('prestadores', 'proyectos'));
     }
 
+    
+    public function proy_acts() {
+ 
+        $categorias = DB::table('categorias')->get();
+        switch(Auth::user()->tipo){
+            case "coordinador":
+                $proyectos = DB::table('proyectos')
+                ->where('id_area', Auth::user()->area)
+                ->where('horario', '=', Auth::user()->horario)
+                ->orWhere('horario', 'TC')
+                ->orWhere('particular', '0')
+                ->get();
+                break;
+            default:
+                $proyectos = DB::table('proyectos')->get();
+        }
+
+        return view('/admin/asignar_actividad_proyecto', compact( 'categorias', 'proyectos'));
+    }
+
     public function make_proy(Request $request){
 
         $request->validate([
@@ -809,7 +892,7 @@ class AdminController extends Controller
             'titulo' => $request->t_nombre,
             'id_area' => $request->input('area'),
             'particular' => $boolp,
-            'turno' => $request->input('horario'),
+            'horario' => $request->input('horario'),
         ]);
 
         $prestadoresSeleccionados = $request->input('prestadores_seleccionados');
@@ -1017,12 +1100,28 @@ class AdminController extends Controller
             ->orderBy('nombre')
             ->get();
 
+        $acts = DB::table('actividades')
+            ->select('actividades.id', 'titulo', 'TEC' , 'exp_ref', 'descripcion', 'recursos', 'objetivos', 'categorias.nombre AS categoria', 'subcategorias.nombre AS subcategoria')
+            ->join('categorias', 'id_categoria', '=', 'categorias.id')
+            ->join('subcategorias', 'id_subcategoria', '=', 'subcategorias.id')
+            ->get();
+
+        $cat = DB::table('categorias')
+            ->select('categorias.id', 'categorias.nombre', DB::raw('COUNT(actividades.id) AS total_actividades'), 
+                DB::raw('COUNT(actividades.id) AS total_actividades'),
+                DB::raw('CASE WHEN COUNT(subcategorias.id) > 0 THEN COUNT(subcategorias.id) ELSE "NO APLICA" END AS total_subcategorias'))
+            ->join('actividades', 'categorias.id', '=', 'actividades.id_categoria')
+            ->join('subcategorias', 'categorias.id', '=', 'subcategorias.categoria')
+            ->groupBy('actividades.id_categoria')
+            ->get();
+
         $subcateg = DB::table('subcategorias')
             ->select('subcategorias.*', 'categorias.nombre AS categoria')
             ->join('categorias', 'subcategorias.categoria', '=', 'categorias.id')
             ->get();
 
-        return view('admin.control_actividades', ['categoria'=>$categ, 'tabla_subcategorias' => json_encode($subcateg) ]);
+        return view('admin.control_actividades', ['categoria'=>$categ,  'tabla_actividades' => json_encode($acts),
+        'tabla_subcategorias' => json_encode($subcateg),  'tabla_categorias' => json_encode($cat), ]);
     }
 
     public function nuevaCateg(Request $request){
@@ -1243,16 +1342,20 @@ class AdminController extends Controller
 
     public function editA($id, $campo){
         $sql = DB::table('areas')
-        ->where('id', $id)
-        ->update(['nombre_area' => $campo]);
-
-        return response()->json(['message' => $sql]);
+            ->where('id', $id)
+            ->update(['nombre_area' => $campo]);
+    
+        if ($sql) {
+            return response()->json(['message' => 'Área actualizada correctamente']);
+        } else {
+            return response()->json(['message' => 'Error al actualizar el área'], 500);
+        }
     }
 
     public function editS($id, $campo){
         $sql = DB::table('sedes')
-        ->where('id_sede', $id)
-        ->update(['nombre_sede' => $campo]);
+            ->where('id_sede', $id)
+            ->update(['nombre_sede' => $campo]);
         return response()->json(['message' => $sql]);
     }
 
@@ -1307,8 +1410,6 @@ class AdminController extends Controller
             ->orderBy('inicio')
             ->get();
 
-        //$no_laboral = DB::select("Select * from eventos where sede = $sede and (area = $area or area = 0 ) order by inicio;");
-
         foreach($no_laboral as $valor){
 
             $fechaObjeto = DateTime::createFromFormat('Y-m-d H:i:s', $valor->inicio);
@@ -1324,10 +1425,12 @@ class AdminController extends Controller
     public function guardarfestivos(Request $request)
     {   
         $request->validate([
-            'descripcion' => 'string|max:500',
-            'tipo' => 'string | max:100',
+            'descripcion' => 'required|string|max:500',
+            'tipo' => 'required | string | max:100',
             'sede' =>  'integer',
             'area' => 'integer',
+        ],[
+            'descripcion.required' => "El campo justificación es obligatorio",
         ]);
 
         if($request->input('tipo')=='vacaciones'){
@@ -1378,7 +1481,7 @@ class AdminController extends Controller
             ->where('id', $id_festivo)
             ->update(['evento'=>$descripcion, 'inicio'=>$inicio, 'final'=>$fin]);
 
-        return redirect()->route('admin.registro_festivos')->with('success', 'Modificado correctamente');
+        return redirect()->route('admin.diasfestivos')->with('success', 'Modificado correctamente');
     }
 
     public function eliminardiafestivo($id)
@@ -1519,7 +1622,7 @@ class AdminController extends Controller
             ->get();
         $prestadores = DB::table('solo_prestadores');
         $datos = DB::table('seguimiento_premios')
-            ->join('premios', 'seguimiento_premios.id', '=', 'premios.id')
+            ->join('premios', 'seguimiento_premios.id_premio', '=', 'premios.id')
             ->where('premios.ref', auth()->user()->area)
             ->get();
         if( auth()->user()->tipo == 'jefe area'){
@@ -1566,6 +1669,11 @@ class AdminController extends Controller
 
     public function asignar_premio(Request $request){
 
+        $request->validate([
+            'premios' => 'required | integer',
+            'prestadores_seleccionados' => 'required | array',
+            'prestadores_seleccionados.*' => 'integer',
+        ]);
         $prestadoresSeleccionados = $request->input('prestadores_seleccionados');
         $tamañoArreglo = count($prestadoresSeleccionados);
 

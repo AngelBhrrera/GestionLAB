@@ -122,13 +122,12 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     
                     Route::middleware('role:Superadmin')->group(function() {
                         Route::get('/superadmin/gestion', 'gestionViews')->name('gestionViews');
-                        Route::get('/area_edit/{id}/{value}', 'editA')->name('editA');
-                        Route::get('/sede_edit/{id}/{value}', 'editS')->name('editS');
-
                     });
 
                     Route::get('/admin/gestion', 'gestHub')->name('gestHub');
-                    
+                    Route::post('/area_edit/{id}/{campo}', 'editA')->name('editA');
+                    Route::post('/sede_edit/{id}/{campo}', 'editS')->name('editS');
+
                     //ADMINISTRACION USUARIOS
                     Route::get('/admin/registro', 'registro')->name('registro'); 
                     Route::get('/admin/administradores', 'administradores')->name('administradores');
@@ -236,6 +235,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             //AJUSTES DE PRESTADOR
             Route::get('admin/modificar_horario_prestador/{id}/{value}', 'cambiar_horario')->name('cambiar_horario');
             Route::get('admin/modificar_tipo_prestador/{id}/{value}', 'cambiar_tipo')->name('cambiar_tipo');
+            Route::post('admin/modificar_prestador', 'modificar_prestador')->name('modificar_prestador');
             Route::get('admin/activar_prestador/{value}', 'activar')->name('activar');
             Route::get('admin/desactivar_prestador/{value}', 'desactivar')->name('desactivar');
             //AJUSTES DE IMPRESION

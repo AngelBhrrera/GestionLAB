@@ -35,7 +35,9 @@
                 layout: "fitDataFill",
                 resizableColumns:false,
                 height: "100%",
-                
+                initialSort: [
+                    { column: "fecha", dir: "desc" } // Ordena la columna "fecha" de forma descendente al cargar la página
+                ],
                
                 columns: [{
                         title: "Nombre de la actividad",
@@ -50,7 +52,7 @@
                     },{
                         title: "Fecha",
                         field: "fecha",
-                        sorter: "date",
+                        sorter: "string",
                     }, {
                         title: "TEC",
                         field: "TEC",

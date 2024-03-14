@@ -43,7 +43,7 @@
                     <div class="col-span-12 sm:col-span-4">
                         <div class="intro-y col-span-12 sm:col-span-6">
                             <label id="name" for="name" class="form-label">Nombre</label>
-                            <input id="name" type="text" class="form-control @if(old('opc')=='1') @error('name') is-invalid @enderror @endif" name="name" required autocomplete="off" placeholder="Nombre">
+                            <input id="name" type="text" class="form-control @if(old('opc')=='1') @error('name') is-invalid @enderror @endif" value="{{old('name')}}"name="name" required autocomplete="off" placeholder="Nombre">
                             @error('name')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -125,13 +125,11 @@
                                 <option id="15" value='CUSUR'>CUSUR</option>
                                 <option id="16" value='CUSUR'>Otro</option>
                             </select>
-                            @if(old('opc')=='1')
                             @error('centro')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
-                            @endif
                         </div>
                         <div class="intro-y col-span-12 sm:col-span-6" id="divCarrera">
                             <label  id="carrera" for="carrera" class="form-label">Carrera</label>
@@ -150,7 +148,7 @@
                                 @if (isset($sedes))
                                 <option id="sede" value="">Selecciona una sede</option>
                                     @foreach ($sedes as $dato )
-                                        <option id="{{$dato->id_sede}}" value="{{$dato->id_sede}}" data-nombre="{{$dato->nombre_sede}}">{{$dato->nombre_sede }} </option>
+                                        <option id="{{$dato->id_sede}}"  @selected(old('sede') == {{$dato->nombre_sede}}) value="{{$dato->id_sede}}" data-nombre="{{$dato->nombre_sede}}">{{$dato->nombre_sede }} </option>
                                     @endforeach
                                 @endif
                             </select>

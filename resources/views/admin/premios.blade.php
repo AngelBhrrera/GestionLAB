@@ -162,7 +162,7 @@
                             <div class="row justify-content-center">
                                 <div class="form-group row">
                                     <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Premios</label>
-                                    <select class="form-control" id="premios" name="premios">
+                                    <select class="form-control" id="premios" name="premios" required>
                                         @if (isset($premios))
                                             <option value="">Selecciona un premio</option>
                                             @foreach ($premios as $dato)
@@ -302,14 +302,13 @@
     <script type="text/javascript">
         var premios = {!! $datos !!};
         var table = new Tabulator("#players_premios", {
-            height: "100%",
+
             data: premios,
             layout: "fitColumns",
             pagination: "local",
             resizableColumns: false,  
             paginationSize: 24,
-            groupBy: "nombre_area",
-            tooltips: true,
+
             columns: [{
                     title: "Nombre prestador",
                     field: "nombre_prestador",

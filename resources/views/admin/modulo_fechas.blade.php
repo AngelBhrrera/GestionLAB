@@ -17,7 +17,7 @@
             @if(session('warning'))
                 <div class="alert alert-warning w-full px-4">{{session('warning')}}</div>
             @endif
-            @error('nombre')
+            @error('descripcion')
                 <div class="alert alert-danger w-full px-4">{{$message}}</div>
             @enderror
                 </div>
@@ -90,12 +90,12 @@
                 <h3 class="text-2xl mt-5 font-small">Añadir un día no laboral</h3>
                 <form action="{{route('admin.agregar_festivos')}}" method="POST">
                     @csrf
-                    <input type="hidden" name="tipo" value="festivo">
+                    <input type="hidden" name="tipo" value="no_laboral">
                     <input type="hidden" name="sede" value="{{Auth::user()->sede}}">
                     <input type="hidden" name="area" value="{{Auth::user()->area}}">
                     <div class="intro-y col-span-12 sm:col-span-6" id="divCarrera">
                         <p>Introduce un día no laboral</p><br>
-                        <input required id="diaLaboral" type="date" class="form-control" name="diaFestivo" placeholder="festivo" style="width: 200px"></div>
+                        <input required id="diaLaboral" type="date" class="form-control" name="diaFestivo" placeholder="No laboral" style="width: 200px"></div>
                         <br>
                         <label class="mr-5" for="descripcion">Justificación</label>
                         <input class="form-control" type="text" name="descripcion" autocomplete="off">
@@ -128,7 +128,7 @@
                             <input type="hidden" id="tipo" name="tipo" value="">
                             <div class="intro-y col-span-12 sm:col-span-6" id="divCarrera">
                                 <h2 class="text-2xl mt-5 font-small">Introduce los nuevos datos</h2><br>
-                                <input id="inicio" value="" type="date" class="form-control" name="inicio" placeholder="inicio" style="width: 200px"></div>
+                                <input id="inicio" required value="" type="date" class="form-control" name="inicio" placeholder="inicio" style="width: 200px"></div>
                                 <input id="fin" value="" type="date" class="form-control mt-5" name="fin" placeholder="fin" style="width: 200px"></div>
                                 <br>
                                 <label class="mr-5" for="descripcion">Justificación</label>
@@ -151,16 +151,14 @@
 
 @section('script')
     <script type="text/javascript">
-            var sedes = {!! $no_laboral !!};
+            var dias_especiales = {!! $no_laboral !!};
             var table = new Tabulator("#festivos", {
 
-                data: sedes,
+                data: dias_especiales,
                 paginationSize: 15,
-
                 pagination: "local",
                 layout: "fitDataFill",
                 resizableColumns:false,
-                height: "100%",
 
                 columns: [{
                         title: "ID",
@@ -172,23 +170,19 @@
                         field: "evento",
                         headerFilter: "input",
                         sorter: "string",
-                        hozAlign: "center",
                         width: 300,
                     }, {
                         title: "Inicio",
                         field: "inicio",
-                        hozAlign: "center",
                         width: 150,
                     },{
                         title: "Fin",
                         field: "final",
-                        hozAlign: "center",
                         width: 150,
                     },
                     {
                         title: "Tipo",
                         field: "tipo",
-                        hozAlign: "center",
                         width: 150,
                     },
                     {
@@ -269,10 +263,12 @@
                 var final = document.getElementById('fin');
                 
                 final.value = fechaFin;
-                if(data.tipo == "festivo"){
+                if(data.tipo == "festivo" || data.tipo == "no_laboral"){
                     final.classList.add('hidden');
+                    final.removeAttribute('required');
                 }else{
                     final.classList.remove('hidden');
+                    final.setAttribute('required','');
                 }
                 
             });

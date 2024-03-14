@@ -105,7 +105,7 @@
         <h2 class="text-lg font-medium mr-auto">Aquí puedes subir y visualizar tus reportes. Sigue los pasos para subir tus documentos en orden.</h2>
         <div class="alert @if($orden) alert-secondary @else alert-success-soft @endif show mb-2" role="alert">
             <div class="flex items-center">
-                <div class="font-medium text-lg">1. Orden de pago con comprobante.</div>
+                <div class="font-medium text-lg">1. Orden de pago con comprobante (opcional).</div>
             </div>
             <div class="mt-3">Orden de pago generada en la plataforma de servicio social con su comprobante correspondiente.</div>
         </div>
@@ -151,9 +151,9 @@
         </div>
         <div class="alert @if($finalDep) alert-secondary @else alert-success-soft @endif show mb-2" role="alert">
             <div class="flex items-center">
-                <div class="font-medium text-lg">8. Reporte final de la dependencia</div>
+                <div class="font-medium text-lg">8. Oficio de termino de servicio</div>
             </div>
-            <div class="mt-3">Reporte final generado por la dependencia a la que perteneces.</div>
+            <div class="mt-3">Oficio de termino de servicio generado por la dependencia a la que perteneces.</div>
         </div>
         <div class="alert @if($carta) alert-secondary @else alert-success-soft @endif show mb-2" role="alert">
             <div class="flex items-center">
