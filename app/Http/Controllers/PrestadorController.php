@@ -705,7 +705,7 @@ class PrestadorController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'tipo_actividad' => 'required | integer',
-            'tipo_categoria' => 'requried | integer',
+            'tipo_categoria' => 'required | integer',
             'recursos' => 'required|string', 
             'descripcion' => 'required|string|max:500',
             'objetivos' => 'required|string', 
@@ -829,13 +829,12 @@ class PrestadorController extends Controller
                 ->where('id', $idA)
                 ->value('TEC');
 
-
             DB::table('actividades_prestadores')->insert([
                 'id_prestador' => Auth::user()->id, 
                 'id_actividad' => $idA,
                 'estado' => "En revision",
                 'Tiempo_Invertido' => $TEC,
-                'id_proyecto' => $request->input('proyecto')]);
+                'id_proyecto' => $request->input('proyect')]);
         }
         
         $actual = DB::table('seguimiento_impresiones')
