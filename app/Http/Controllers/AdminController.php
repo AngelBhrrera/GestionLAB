@@ -1676,6 +1676,7 @@ class AdminController extends Controller
             ->get();
         $prestadores = DB::table('solo_prestadores');
         $datos = DB::table('seguimiento_premios')
+            ->select('seguimiento_premios.*')
             ->join('premios', 'seguimiento_premios.id_premio', '=', 'premios.id')
             ->where('premios.ref', auth()->user()->area)
             ->get();
