@@ -22,6 +22,22 @@
 @section('subcontent')
 
 <div class="container" style="padding-top: 20px; padding-left: 20px;">
+
+    <div class="grid grid-cols-12 gap-6 mt-5">
+        <div class="intro-y ml-5 col-span-12 lg:col-span-6 flex justify-center" id="alerta">
+            @if (session('success'))
+                <div class="alert alert-success w-full px-4">{{session('success')}}</div>
+            @endif
+            @if(session('warning'))
+                <div class="alert alert-warning w-full px-4">{{session('warning')}}</div>
+            @endif
+            @error('descripcion')
+                <div class="alert alert-danger w-full px-4">{{$message}}</div>
+            @enderror
+                </div>
+        </div>
+    </div>
+
     <ul class="nav nav-tabs nav-justified" role="tablist">  
         <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#cprinters">Registrar Impresoras</a>

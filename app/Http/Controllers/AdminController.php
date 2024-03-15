@@ -1055,7 +1055,7 @@ class AdminController extends Controller
             'id_area' =>auth()->user()->area
         ]);
 
-        return redirect()->back();
+        return redirect()->back()->with('success','Agregado correctamente');
     }
 
     public function module_print(){
@@ -1120,12 +1120,13 @@ class AdminController extends Controller
             ->get();
 
         $cat = DB::table('categorias')
-            ->select('categorias.id', 'categorias.nombre', DB::raw('COUNT(actividades.id) AS total_actividades'), 
-                DB::raw('COUNT(actividades.id) AS total_actividades'),
-                DB::raw('CASE WHEN COUNT(subcategorias.id) > 0 THEN COUNT(subcategorias.id) ELSE "NO APLICA" END AS total_subcategorias'))
+            ->select('categorias.id', 
+                     'categorias.nombre', 
+                     DB::raw('COUNT(actividades.id) AS total_actividades'), 
+                     DB::raw('CASE WHEN COUNT(subcategorias.id) > 0 THEN COUNT(subcategorias.id) ELSE "NO APLICA" END AS total_subcategorias'))
             ->join('actividades', 'categorias.id', '=', 'actividades.id_categoria')
-            ->join('subcategorias', 'categorias.id', '=', 'subcategorias.categoria')
-            ->groupBy('actividades.id_categoria')
+            ->leftJoin('subcategorias', 'categorias.id', '=', 'subcategorias.categoria')
+            ->groupBy('categorias.id', 'categorias.nombre')
             ->get();
 
         $subcateg = DB::table('subcategorias')
