@@ -770,7 +770,23 @@ class AdminController extends Controller
     
         return response()->json(['message' => 'Actividad eliminada']);
     }
+    
+    public function modificar_categoria(Request $request){
+        $request->validate(
+        [
+            'nombre'=>'required|unique:categorias,nombre'
+        ],
+        [
+            'nombre.unique'=> 'Ya hay una categoría con ese nombre',
+            'nombre.required'=> 'El campo nombre es obligatorio'
+        ]
+        );
 
+
+        DB::table('categorias')->where('id',$request->id_categoria)->update(['nombre'=>$request->nombre]);
+
+        return redirect(route('admin.categorias'))->with('success', 'Modificada correctamente');
+    }
     //PROYECTOS
 
     public function create_proy() {

@@ -34,12 +34,12 @@
     <div class="tooltip-content">
         <div id="chart-tooltip" class="py-1">
             <div class="font-medium dark:text-slate-200">Código de colores</div>
-                <div class="block w-8 h-8 cursor-pointer rounded-full " style="background: #0056A6"></div>Festivos/No laborables
+                <div class="block w-8 h-8 cursor-pointer rounded-full " style="background: #ABC6E1"></div>Festivos/No laborables
                 <br>
-                <div class="block w-8 h-8 cursor-pointer bg-[#00195f] rounded-full" style="background: #00FFF0"></div>
+                <div class="block w-8 h-8 cursor-pointer bg-[#00195f] rounded-full" style="background: #ABF9F7"></div>
                 Asistencias
                 <br>
-                <div class="block w-8 h-8 cursor-pointer bg-[#00195f] rounded-full" style="background: red"></div>
+                <div class="block w-8 h-8 cursor-pointer bg-[#00195f] rounded-full" style="background: #F8ACAF"></div>
                 Faltas
             </div>
         </div>
@@ -118,7 +118,11 @@
 
       var calendarEl = document.getElementById('calendar');
       var calendar = new FullCalendar.Calendar(calendarEl, {
+            buttonText: {
+          today: 'Hoy'
+        },
         eventOverlap: false,
+        locale: 'es',
         initialDate: Date.now(),
         events: [
             ...a,

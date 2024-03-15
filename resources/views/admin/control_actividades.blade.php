@@ -9,18 +9,18 @@
 
 <div class="container" style="padding-top: 20px; padding-left: 20px;">
     <div class="grid grid-cols-12 gap-6 mt-5">
-        <div class="intro-y ml-5 col-span-12 lg:col-span-6 flex justify-center" id="alerta">
+        <div class="intro-y ml-5 col-span-12 lg:col-span-6 flex justify-center">
             @if (session('success'))
-                <div class="alert alert-success w-full px-4">{{session('success')}}</div>
+                <div class="alert mb-5 alert-success w-full px-4">{{session('success')}}</div>
             @endif
             @if(session('warning'))
-                <div class="alert alert-warning w-full px-4">{{session('warning')}}</div>
+                <div class="alert mb-5 alert-warning w-full px-4">{{session('warning')}}</div>
             @endif
             @error('nombre')
-                <div class="alert alert-danger w-full px-4">{{$message}}</div>
+                <div class="alert mb-5 alert-danger w-full px-4">{{$message}}</div>
             @enderror
-                </div>
         </div>
+        
     </div>
 
     <ul class="nav nav-tabs nav-justified" role="tablist">  
@@ -112,6 +112,35 @@
                 </form>
             </div>
         </div>
+        <!-- BEGIN: Modal Content -->
+    <div id="static-backdrop-modal-preview" id="editarFestivo"class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body px-5 py-10">
+                    <div class="text-center">
+                        <div class="mb-5"></div>
+                        <h2 class="text-2xl mt-5 font-small">Modificar nombre de categoría</h2><br>
+                        
+                        <form action="{{route('admin.modificar_categoria')}}" method="POST">
+                            @csrf
+                            <input type="hidden" id="id_categoria" name="id_categoria">
+                            <label for="nombre">Nombre</label>
+                            <input id="nombre" value="" type="text" class="form-control" name="nombre" placeholder="nombre" style="width: 200px">
+                        
+                            <div class="intro-y col-span-12 sm:col-span-6" id="divCarrera">
+                                <br>
+                                <div class="text-center">
+                                    <button type="button" data-tw-dismiss="modal" class="btn btn-danger w-24">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary w-24">Guardar</button>
+                                </div>
+                                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     </div>
 </div>
@@ -200,6 +229,7 @@
                 }, {
                     title: "Modificar",
                     field: "datos",
+                    formatter: customButtonFormatter,
                 }, {
                     title: "Eliminar",
                     field: "id",
@@ -257,7 +287,7 @@
                     field: "objetivos",
                 }, {
                     title: "Modificar",
-                    field: "datos", 
+                    field: "datos",
                 },  {
                     title: "Eliminar",
                     field: "id",
@@ -274,6 +304,26 @@
                 },
             ]
         });
+
+        function customButtonFormatter(cell, formatterParams, onRendered) {
+            var div = document.createElement("div");
+            div.classList.add("text-center");
+            
+            var a = document.createElement("a");
+            a.href = "javascript:;";
+            a.setAttribute("data-tw-toggle", "modal");
+            a.setAttribute("data-tw-target", "#static-backdrop-modal-preview");
+            a.classList.add("btn", "btn-primary");
+            a.textContent = "Modificar";
+
+            div.appendChild(a);
+            a.addEventListener('click', function(){
+                var data = cell.getRow().getData();
+                document.getElementById('nombre').value = data.nombre;
+                document.getElementById('id_categoria').value = data.id;
+            });
+            return div;
+        }
 
 
     </script>
