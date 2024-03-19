@@ -163,7 +163,8 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     Route::get('/admin/categorias', 'categorias')->name('categorias');
                     Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
                     Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg');
-                    Route::post('/admin/modificar_categoria', 'modificar_categoria')->name('modificar_categoria'); 
+                    Route::post('/admin/modificar_categoria', 'modificar_categoria')->name('modificar_categoria');
+                    Route::post('/admin/modificar_subCategoria', 'modificar_subCategoria')->name('modificar_subCategoria'); 
                     //ADMINISTRACION DEL MODULO DE IMPRESION
                     Route::get('/admin/gestion_impresion', 'module_print')->name('module_print');
                     Route::post('/admin/set_imp_act', 'set_print_act')->name('set_print_act'); 

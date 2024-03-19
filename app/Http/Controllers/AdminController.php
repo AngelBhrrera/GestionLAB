@@ -787,6 +787,45 @@ class AdminController extends Controller
 
         return redirect(route('admin.categorias'))->with('success', 'Modificada correctamente');
     }
+
+    public function modificar_subCategoria(Request $request){
+        
+        $id = $request->id_subCategoria;
+        $nombre = $request->nombreSub;
+        $categoria = $request->categoria;
+        
+        $nombreAnterior = DB::table('subcategorias')->where('id', $id)->value('nombre');
+
+        if(($nombreAnterior === $nombre)){
+            $request->validate(
+                [
+                    'nombreSub'=>'required',
+                    'categoria' => 'required',
+                ],
+                [   
+                    'nombreSub.required'=> 'El campo nombre es obligatorio',
+                    'categoria.required' => 'El campo categoría es obligatorio',
+                ]
+                );
+        }else{
+            $request->validate(
+                [
+                    'nombreSub'=>'required|unique:subcategorias,nombre',
+                    'categoria' => 'required',
+                ],
+                [      
+                    'nombreSub.unique' => 'Ya hay una subCategoría con ese nombre',
+                    'nombreSub.required'=> 'El campo nombre es obligatorio',
+                    'categoria.required' => 'El campo categoría es obligatorio',
+                ]
+                );
+        }
+        
+        DB::table('subcategorias')->where('id', '=' ,$id)->update(['nombre'=>$nombre, 'categoria'=> $categoria]);
+        
+
+        return redirect(route('admin.categorias'))->with('success', 'Modificada correctamente');
+    }
     //PROYECTOS
 
     public function create_proy() {
@@ -1140,7 +1179,7 @@ class AdminController extends Controller
                      'categorias.nombre', 
                      DB::raw('COUNT(actividades.id) AS total_actividades'), 
                      DB::raw('CASE WHEN COUNT(subcategorias.id) > 0 THEN COUNT(subcategorias.id) ELSE "NO APLICA" END AS total_subcategorias'))
-            ->join('actividades', 'categorias.id', '=', 'actividades.id_categoria')
+            ->leftjoin('actividades', 'categorias.id', '=', 'actividades.id_categoria')
             ->leftJoin('subcategorias', 'categorias.id', '=', 'subcategorias.categoria')
             ->groupBy('categorias.id', 'categorias.nombre')
             ->get();
