@@ -184,15 +184,14 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/obtenerSubcategoria', 'obtenerSubcategoria')->name('obtenerSubcategorias');
             Route::get('/admin/obtenerPrestadores', 'obtenerPrestadores')->name('obtenerPrestadoresProyecto');
             //RUTAS ACTIVIDADES Y ASIGNACIONES
-            Route::get('/admin/actividades', 'actHub')->name('actHub');
 
-            Route::get('/admin/C_actividades', 'create_act')->name('create_act');
+            Route::get('/admin/C_actividades', 'actividades')->name('actividades');
             Route::post('/admin/M_actividades', 'make_act')->name('make_act');
-            Route::get('/admin/A_actividades', 'asign_act')->name('asign_act');
+            //Route::get('/admin/A_actividades', 'asign_act')->name('asign_act');
 
             Route::get('admin/ver_detalles_proyecto/detalles_actividad/{val}','detallesActividad')->name('detallesActividad');
 
-            Route::get('/admin/ver_actividades', 'actividades')->name('actividades');
+            //Route::get('/admin/ver_actividades', 'actividades')->name('actividades');
             Route::get('/admin/actividades_en_progreso','actividades_en_progreso')->name('actividades_en_progreso');
             Route::get('/admin/actividades_revision', 'reviewActs')->name('review_acts');
 
@@ -201,7 +200,6 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::post('/admin/actividad_TEU', 'actTEC')->name('actTEC');
 
             //RUTAS PROYECTOS Y ASIGNACIONES
-            Route::get('/admin/proyectos', 'proyHub')->name('proyHub');
             Route::get('/admin/C_proyectos', 'create_proy')->name('create_proy');
             Route::post('/admin/M_proyecto', 'make_proy')->name('make_proy');
 
@@ -221,7 +219,6 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/ver_impresoras', 'control_print')->name('control_print');
             Route::post('/admin/registrar_impresoras', 'make_print')->name('make_print');
             //MODULO DE PRESTADORES
-            Route::get('/admin/prestadores', 'prestadorHub')->name('prestadorHub');
             Route::get('/admin/general', 'general')->name('general');
             Route::get('/admin/prestadores_activos', 'prestadores')->name('prestadores');
             Route::get('/admin/prestadores_pendientes', 'prestadores_pendientes')->name('prestadores_pendientes');

@@ -2,7 +2,6 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-    <li class="breadcrumb-item"><a href="{{route('admin.proyHub')}}">Proyecto</a></li>
     <li class="breadcrumb-item active" aria-current="page">Ver detalles de proyecto</li>
 @endsection
 

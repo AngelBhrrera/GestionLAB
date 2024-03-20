@@ -125,35 +125,30 @@
 
             document.addEventListener('DOMContentLoaded', function() {
 
-                // Función para aplicar el filtro de búsqueda
                 function applyCustomFilter(value) {
-                // Convertir el valor de búsqueda a minúsculas y remover caracteres especiales y números
-                var searchValue = value.toLowerCase().replace(/[^a-z0-9áéíóúüñ]/g, '');
-
-                // Aplicar el filtro a las columnas "codigo", "name", "apellido" y "correo"
-                table.setFilter(function(row) {
-                    return (row.codigo && row.codigo.toString().toLowerCase().includes(searchValue)) || 
-                        (row.name && row.name.toLowerCase().includes(searchValue)) || 
-                        (row.apellido && row.apellido.toLowerCase().includes(searchValue)) || 
-                        (row.correo && row.correo.toLowerCase().includes(searchValue));
-                });
+                    var searchValue = value.toLowerCase().replace(/[^a-z0-9áéíóúüñ]/g, '');
+                    table.setFilter(function(row) {
+                        return (row.codigo && row.codigo.toString().toLowerCase().includes(searchValue)) || 
+                            (row.name && row.name.toLowerCase().includes(searchValue)) || 
+                            (row.apellido && row.apellido.toLowerCase().includes(searchValue)) || 
+                            (row.correo && row.correo.toLowerCase().includes(searchValue));
+                    });
                 }
 
-                    // Evento de cambio en el input de búsqueda
-                    document.getElementById("searchInput").addEventListener("input", function(e) {
+                document.getElementById("searchInput").addEventListener("input", function(e) {
                     var value = e.target.value.trim();
                     applyCustomFilter(value);
-                    });
+                });
 
-                    function resetSearch() {
-                        table.clearFilter();
-                        document.getElementById("searchInput").value = ""; // Limpiar el campo de búsqueda
-                        }
+                function resetSearch() {
+                    table.clearFilter();
+                    document.getElementById("searchInput").value = ""; 
+                }
 
-                        // Evento de clic en un botón para restablecer la búsqueda
-                        document.getElementById("resetButton").addEventListener("click", function() {
-                        resetSearch();
-                        });
+                // Evento de clic en un botón para restablecer la búsqueda
+                document.getElementById("resetButton").addEventListener("click", function() {
+                    resetSearch();
+                });
 
             });
             
