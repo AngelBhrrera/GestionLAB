@@ -81,24 +81,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.administradores') }}" class="side-menu">
-                            <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-cog">
-                                        <circle cx="18" cy="15" r="3" />
-                                        <circle cx="9" cy="7" r="4" />
-                                        <path d="M10 15H6a4 4 0 0 0-4 4v2" />
-                                        <path d="m21.7 16.4-.9-.3" />
-                                        <path d="m15.2 13.9-.9-.3" />
-                                        <path d="m16.6 18.7.3-.9" />
-                                        <path d="m19.1 12.2.3-.9" />
-                                        <path d="m19.6 18.7-.4-1" />
-                                        <path d="m16.8 12.3-.4-1" />
-                                        <path d="m14.3 16.6 1-.4" />
-                                        <path d="m20.7 13.8 1-.4" />
-                                    </svg></i> </div>
-                            <div class="side-menu__title">Ver todos los admins</div>
-                        </a>
-                    </li>
-                    <li>
                         <a href="{{ route('admin.diasfestivos') }}" class="side-menu">
                             <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-off">
                                         <path d="M4.18 4.18A2 2 0 0 0 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 1.82-1.18" />
@@ -179,7 +161,7 @@
                     <li>
                         <a href="{{route('admin.prestadores')}}" class="side-menu">
                             <div class="side-menu__icon"> <i data-lucide="user-check"></i> </div>
-                            <div class="side-menu__title">Ver prestadores activos</div>
+                            <div class="side-menu__title">Ver prestadores</div>
                         </a>
                     </li>
                     <li>
@@ -308,12 +290,6 @@
                             <a href="{{ route('admin.actividades')}}" class="side-menu">
                                 <div class="side-menu__icon"> <i data-lucide="list-checks"></i> </div>
                                 <div class="side-menu__title"> Actividades del Area </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.propose_acts') }}" class="side-menu">
-                                <div class="side-menu__icon"> <i data-lucide="file-plus-2"></i> </div>
-                                <div class="side-menu__title"> Actividades propuestas por Prestador</div>
                             </a>
                         </li>
                         @endif
