@@ -19,7 +19,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-    <li class="breadcrumb-item active"><a href="{{route('admin.proyHub')}}">Proyecto</a></li>
+    <li class="breadcrumb-item active">Proyecto</li>
 @endsection
 
 @section('subcontent')
@@ -232,11 +232,7 @@
 @endsection
 
 @section('script')
-
-
     <script type="text/javascript">
-
-        
 
         document.getElementById('enviar').addEventListener('submit', function(event) {
 

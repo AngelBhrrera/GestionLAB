@@ -350,7 +350,7 @@
                         button.style = "background-color: red; color: white; border: 1px solid dark-red; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
                         button.textContent = "Eliminar X";
                         button.addEventListener("click", function() {
-                            eliminarUsuario(value);
+                            eliminarActividad(value);
                         });
                         return button;
                     },     
@@ -402,6 +402,31 @@
                 });
             });
             return div;
+        }
+
+        function eliminarActividad(value) {
+            const token = document.head.querySelector('meta[name="csrf-token"]').content;
+            fetch(`eliminar_actividad/${value}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token,
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al eliminar la actividad');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // La redirección al volver atrás refrescará la página, lo que
+                // hará que se muestren los mensajes de sesión
+                window.location.href = window.location.href;
+            })
+            .catch(error => {
+                console.error('Error al eliminar:', error);
+            });
         }
 
 

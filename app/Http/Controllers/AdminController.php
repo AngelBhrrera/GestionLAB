@@ -11,7 +11,8 @@ use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Session;
 
 /*
 use Illuminate\Support\Facades\Hash;
@@ -204,10 +205,6 @@ class AdminController extends Controller
         $data = DB::table('solo_clientes')
         ->get();
         return view('admin/lista_clientes', ['datos' => json_encode($data)]);
-    }
-
-    public function prestadorHub(){
-        return view('admin/prestadores_hub');
     }
 
     public function prestadores()
@@ -405,12 +402,101 @@ class AdminController extends Controller
 
     // ACTIVIDADES Y PROYECTOS
 
-    public function actHub(){
-        return view('admin/actividades_hub');
+    public function get_aPrestadores(){
+        $aPrestadores = DB::table('solo_prestadores');
+    
+        if( auth()->user()->tipo == 'coordinador'){
+            $aPrestadores->where('id_area', auth()->user()->area)
+                ->where('horario', auth()->user()->horario);
+        }else if(auth()->user()->tipo == 'jefe area'){
+            $aPrestadores->where('id_area', auth()->user()->area);
+        }else  if( auth()->user()->tipo == 'jefe sede'){
+            $aPrestadores->where('id_sede', auth()->user()->sede);
+        }
+        $aPrestadores = $aPrestadores->get();
+
+        return $aPrestadores;
     }
 
-    public function proyHub(){
-        return view('admin/proyectos_hub');
+    public function get_aProyectos(){
+
+        switch(Auth::user()->tipo){
+            case "coordinador":
+                $proyectos = DB::table('proyectos')
+                ->where('id_area', Auth::user()->area)
+                ->where('horario', '=', Auth::user()->horario)
+                ->orWhere('horario', 'TC')
+                ->orWhere('particular', '0')
+                ->get();
+                break;
+            default:
+                $proyectos = DB::table('proyectos')->get();
+        }
+
+        return $proyectos;
+
+    }
+   
+
+    public function actividades(){
+
+        $listaActs = DB::table('seguimiento_actividades');
+        $pR = DB::table('seguimiento_actividades')
+        ->whereIn('estado', ['En revision', 'Error']);
+        $prestadores = DB::table('solo_prestadores');
+        $categorias = DB::table('categorias')->orderBy('nombre')->get();
+        $subcategorias = DB::table('subcategorias')->orderBy('nombre')->get();
+
+        if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
+            $listaActs->whereIn('id_proyecto', function ($query) {
+                $query->select('id')
+                    ->from('proyectos')
+                    ->where('id_area', auth()->user()->area);
+            });
+            $pR->whereIn('id_proyecto', function ($query) {
+                $query->select('id')
+                    ->from('proyectos')
+                    ->where('id_area', auth()->user()->area);
+            });
+            $prestadores->where('id_area', auth()->user()->area)
+                ->where('horario', auth()->user()->horario);
+        }else  if( auth()->user()->tipo == 'jefe sede'){
+            $listaActs->whereIn('id_proyecto', function ($query) {
+                $query->select('id')
+                    ->from('proyectos')
+                    ->whereIn('id_area', function ($subquery) {
+                        $subquery->select('id_sede')
+                                ->from('areas')
+                                ->where('id_sede', auth()->user()->sede);
+                    });
+            });
+            $pR->whereIn('id_proyecto', function ($query) {
+                $query->select('id')
+                    ->from('proyectos')
+                    ->whereIn('id_area', function ($subquery) {
+                        $subquery->select('id_sede')
+                                ->from('areas')
+                                ->where('id_sede', auth()->user()->sede);
+                    });
+            });
+            $prestadores->where('id_sede', auth()->user()->sede)
+                ->where('horario', auth()->user()->horario);
+        }
+
+        $listaActs = $listaActs->orderByDesc('fecha')->get();
+        $pR = $pR->get();
+        $prestadores = $prestadores->get();
+        $aActividad = DB::table('actividades')
+            ->whereNotNull('TEC')
+            ->get();
+        $aPrestador = $this->get_aPrestadores();
+        $aProyecto = $this->get_aProyectos();
+
+        return view( 'admin/actividades', [ 'prestadores' => $prestadores,
+            'categorias' => $categorias, 'subcategorias' => $subcategorias,
+            'aActividades' => $aActividad,  'aProyectos' => $aProyecto,  'aPrestadores' => $aPrestador,
+            'data1' =>json_encode($listaActs),
+            'data2' =>json_encode($pR)]);
     }
 
     public function actstate($id, $state) {
@@ -474,7 +560,7 @@ class AdminController extends Controller
         return 0;
     }
 
-    public function actividades(){
+    /*public function actividades(){
 
         $data = DB::table('seguimiento_actividades');
 
@@ -498,7 +584,7 @@ class AdminController extends Controller
         $data = $data->orderByDesc('fecha')->get();
 
         return view( 'admin/ver_todasActividades', [ 'data' =>json_encode($data)]);
-    }
+    }*/
 
     public function reviewActs(){
         $data = DB::table('seguimiento_actividades')
@@ -764,11 +850,19 @@ class AdminController extends Controller
 
     public function eliminarAct($id) {
         
-        DB::table('actividades')
-            ->where('id', $id)
-            ->delete();
-    
-        return response()->json(['message' => 'Actividad eliminada']);
+        try {
+            DB::table('actividades')
+                ->where('id', $id)
+                ->delete();   
+            Session::flash('success', '¡Actividad eliminada correctamente!');
+        } catch (QueryException $e) {
+            if ($e->errorInfo[1] == 1451) {
+                Session::flash('warning', 'No se puede eliminar la actividad porque está siendo referenciada por otra tabla.');
+            } else {
+                Session::flash('error', 'Error al eliminar la actividad: ' . $e->getMessage());
+            }
+        }
+        return redirect()->back();
     }
     
     public function modificar_categoria(Request $request){
@@ -1175,13 +1269,11 @@ class AdminController extends Controller
             ->get();
 
         $cat = DB::table('categorias')
-            ->select('categorias.id', 
-                     'categorias.nombre', 
-                     DB::raw('COUNT(actividades.id) AS total_actividades'), 
-                     DB::raw('CASE WHEN COUNT(subcategorias.id) > 0 THEN COUNT(subcategorias.id) ELSE "NO APLICA" END AS total_subcategorias'))
-            ->leftjoin('actividades', 'categorias.id', '=', 'actividades.id_categoria')
-            ->leftJoin('subcategorias', 'categorias.id', '=', 'subcategorias.categoria')
-            ->groupBy('categorias.id', 'categorias.nombre')
+            ->select('categorias.id', 'categorias.nombre',
+                DB::raw('COALESCE(actividades.total_actividades, "No existen") AS total_actividades'),
+                DB::raw('CASE WHEN subcategorias.total_subcategorias > 0 THEN subcategorias.total_subcategorias ELSE "No aplica" END AS total_subcategorias'))
+            ->leftJoin(DB::raw('(SELECT id_categoria, COUNT(*) AS total_actividades FROM actividades GROUP BY id_categoria) as actividades'), 'categorias.id', '=', 'actividades.id_categoria')
+            ->leftJoin(DB::raw('(SELECT categoria, COUNT(*) AS total_subcategorias FROM subcategorias GROUP BY categoria) as subcategorias'), 'categorias.id', '=', 'subcategorias.categoria')
             ->get();
 
         $subcateg = DB::table('subcategorias')

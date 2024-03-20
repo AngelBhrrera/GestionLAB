@@ -18,8 +18,7 @@
 
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-<li class="breadcrumb-item"><a href="{{route('admin.proyHub')}}">Proyecto</a></li>
-<li class="breadcrumb-item active" aria-current="page">Crear</li>
+<li class="breadcrumb-item active" aria-current="page">Registrar nuevo proyecto</li>
 @endsection
 
 @section('subcontent')
