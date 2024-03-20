@@ -15,10 +15,10 @@
                     Detalles de Proyecto
                 </h2>
                     <h3 class="text-xl font-medium leading-none">{{$proyecto[$i][0]->titulo}}</h3><br>
-                    <h3 class="text-xl font-medium leading-none">{{"Turno: ".$proyecto[$i][0]->horario}}</h3>
+                    <h3 class="text-xl font-medium leading-none">{{"Turno: ".$proyecto[$i][0]->turno}}</h3>
                     <br>
                     <h3 class="text-xl font-medium leading-none mt-3">--Integrantes--</h3>
-                        <div class="overflow-x-auto">
+                        <div class="overflow-x-auto" style="max-height: 250px; overflow-y: auto;">
                             <table class="table" >
                                 <thead>
                                     <tr>
@@ -72,8 +72,3 @@
     
 
 @endsection
-
-@section('script')
-
-@endsection
-

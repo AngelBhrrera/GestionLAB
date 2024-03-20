@@ -412,7 +412,7 @@ class PrestadorController extends Controller
         
         foreach($id as $id_proyecto){
             $proyecto[]= DB::table('proyectos')
-            ->select('titulo', 'horario')
+            ->select('titulo', 'turno')
             ->where('id',$id_proyecto->id_proyecto)
             ->get();
             

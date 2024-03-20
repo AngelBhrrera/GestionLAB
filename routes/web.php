@@ -187,11 +187,12 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
             Route::get('/admin/C_actividades', 'actividades')->name('actividades');
             Route::post('/admin/M_actividades', 'make_act')->name('make_act');
-            //Route::get('/admin/A_actividades', 'asign_act')->name('asign_act');
+            
 
             Route::get('admin/ver_detalles_proyecto/detalles_actividad/{val}','detallesActividad')->name('detallesActividad');
 
             //Route::get('/admin/ver_actividades', 'actividades')->name('actividades');
+            //Route::get('/admin/A_actividades', 'asign_act')->name('asign_act');
             Route::get('/admin/actividades_en_progreso','actividades_en_progreso')->name('actividades_en_progreso');
             Route::get('/admin/actividades_revision', 'reviewActs')->name('review_acts');
 

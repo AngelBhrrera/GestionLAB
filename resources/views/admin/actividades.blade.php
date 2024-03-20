@@ -33,6 +33,9 @@
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#aactp">Asignar Actividades a Prestador</a>
         </li>
+        {{--<li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#pract">Aprobar Actividades Propuestas por Prestador</a>
+        </li>--}}
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#eactpr">Evaluar Actividades Pendientes de Revision</a>
         </li>
@@ -73,7 +76,7 @@
                         <div class="form-group row">
                             <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Categoría</label>
                             <div class="col-md-6">
-                                <select class="form-control" id="tipo_categoria" name="tipo_categoria" required onchange="filtrarActividad()">
+                                <select class="form control" id="tipo_categoriaC" name="tipo_categoria" required onchange="filtroSC()">
                                     <option value="">Selecciona una categoría</option>
                                     @foreach ($categorias as $categoria)
                                         <option @selected(old('tipo_categoria')== {{$categoria->id}}) value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
@@ -85,7 +88,7 @@
                         <div class="form-group row">
                             <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Subcategoría</label>
                             <div class="col-md-6">
-                                <select class="form-control" id="tipo_subcategoria" name="tipo_subcategoria">
+                                <select class="form control" id="tipo_subcategoriaC" name="tipo_subcategoria">
                                     <option value="">Selecciona una subcategoría</option>
                                     @foreach ($subcategorias as $subcategoria)
                                     <option @selected(old('tipo_subcategoria')== {{$subcategoria->id}}) value="{{ $subcategoria->id }}">{{ $subcategoria->nombre }}</option>
@@ -200,16 +203,16 @@
                         <div class="col-span-6 sm:col-span-4 text-center">
                             <div class="form-group" id="select_proyect">
                                 <label for="actividades_l" class="col-md-4 col-form-label text-md-right">Proyecto</label>
-                                <select class="form-control" id="proyecto" name="proyecto" required onchange="filtrarPrestadores()">
+                                <select class="tom-select w-full"  id="proyecto" name="proyecto" required>
                                     <option value="">Selecciona un proyecto para asignar la actividad</option>
                                     @foreach ($aProyectos as $proyecto)
                                     <option value="{{ $proyecto->id }}">{{ $proyecto->titulo }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group" id="asignar">
+                            {{--<div class="form-group" id="asignar">
                                 <label for="tipo_categoria">Filtro por categoría</label>
-                                <select class="form-control" id="tipo_categoria" name="tipo_categoria" onchange="filtrarCategorias()">
+                                <select class="tom-select w-full" id="tipo_categoria" name="tipo_categoria" onchange="filtrarCategorias()">
                                     <option value="">Filtrar por categoría</option>
                                     @foreach ($categorias as $categoria)
                                     <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
@@ -218,14 +221,13 @@
                             </div>
                             <div class="form-group" id="asignar">
                                 <label for="tipo_subcategoria">Filtro por subcategoría</label>
-                                <select class="form-control" id="tipo_subcategoria" name="tipo_subcategoria" onchange="filtrarActividades2()">
+                                <select class="tom-select w-full" id="tipo_subcategoria" name="tipo_subcategoria" onchange="filtrarActividades2()">
                                     <option value="">Selecciona una subcategoria (Opcional)</option>
                                 </select>
-                            </div>
-
+                            </div>--}}
                             <div class="form-group" id="asignar">
                                 <label for="actividades_l" class="col-md-4 col-form-label text-md-right">Actividad</label>
-                                <select class="form-control" id="tipo_actividad" name="tipo_actividad" required>
+                                <select class="tom-select w-full" id="tipo_actividad" name="tipo_actividad" required>
                                     <option value="">Selecciona una actividad</option>
                                     @foreach ($aActividades as $actividad)
                                     <option value="{{ $actividad->id }}">{{ $actividad->titulo }}</option>
@@ -253,13 +255,23 @@
             </div>
         </div>
 
-        <div class="tab-pane" id="eactpr">
+        <div class="tab-pane" id="pract">
             <h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
              Aqui puedes aprobar actividades propuestas por los prestadores para su posterior asignacion
             </h2>
-            <div id="rActs"></div>
+            <div id="aActs"></div>
         </div>
 
+        <div class="tab-pane" id="eactpr">
+            <h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
+                Revisar actividades
+            </h2>
+            <div class="w-[350px] relative mx-5 my-5">
+                <input id="searchInput2" type="text" class="form-control pl-10" placeholder="Buscar">
+                <i class="w-5 h-5 absolute inset-y-0 left-0 my-auto text-slate-400 ml-3" data-lucide="search"></i>
+            </div>
+            <div id="rActs"></div>
+        </div>
 </div>
 
 @endsection
@@ -356,7 +368,7 @@
                             actividadSelect.appendChild(option);
                         });
                     });
-                    console.log("Add");
+
                 } else {
                     console.error('Error al obtener las actividades');
                 }
@@ -407,9 +419,9 @@
         xhr.send();
     }
 
-    function filtrarActividad() {
-        var categoriaSelect = document.getElementById('tipo_categoria');
-        var subcategoriaSelect = document.getElementById('tipo_subcategoria');
+    function filtroSC() {
+        var categoriaSelect = document.getElementById('tipo_categoriaC');
+        var subcategoriaSelect = document.getElementById('tipo_subcategoriaC');
         var categoriaId = categoriaSelect.value;
 
         subcategoriaSelect.innerHTML = '<option value="">Selecciona una subcategoria (Opcional)</option>';
@@ -439,42 +451,13 @@
         xhr.send();
     }
 
-    function filtrarPrestadores() {
-
-        var proySelect = document.getElementById('proyecto');
-        var preSelect = document.getElementById('prestadores_seleccionados');
-        var proyId = proySelect.value;
-
-        if (proyId === '') {
-            return;
-        }
-
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    var prestadores = JSON.parse(xhr.responseText);
-
-                    prestadores.forEach(prestador => {
-
-                    });
-
-                    dlb2.refresh();
-
-                } else {
-                    console.error('Error al obtener los prestadores');
-                }
-            }
-        };
-        xhr.open('GET', '{{ route('admin.obtenerPrestadoresProyecto') }}?proyectoId=' + proyId);
-        xhr.send();
-    }
 </script>
 
     <script type="text/javascript">
 
         var allAct = {!! $data1 !!};
         var prAct = {!! $data2 !!};
+        var revAct = {!! $data3 !!};
 
         function createTabulatorInstance(selector, data, config) {
             return new Tabulator(selector, {
@@ -548,7 +531,7 @@
             ],
         });
 
-        var table2 = createTabulatorInstance("#rActs", prAct, {
+        var table2 = createTabulatorInstance("#aActs", prAct, {
             ...commonConfig,
             columns: [{
                     title: "ID",
@@ -556,18 +539,20 @@
                         visible: false,
                         width: 2,
                     }, {
+                        title: "Proyecto",
+                        field: "proyecto_origen",
+                        sorter: "string",
+                    }, {
                         title: "Titulo",
-                        field: "titulo",
+                        field: "actividad",
                         sorter: "string",
-                        headerFilter: "input",
                     }, {
-                        title: "Tipo",
-                        field: "tipo",
+                        title: "Tiempo Invertido",
+                        field: "duracion",
                         sorter: "string",
-                        headerFilter: "input",
                     }, {
-                        title: "Descripcion",
-                        field: "descripcion",
+                        title: "Detalles",
+                        field: "detalles",
                         sorter: "string",
                     }, {
                         title: "",
@@ -599,6 +584,49 @@
                             return button;
                         }, 
                     },
+            ],
+        });
+
+        var table3 = createTabulatorInstance("#rActs", revAct, {
+            ...commonConfig,
+            columns: [{
+                        title: "Prestador",
+                        field: "prestador",
+                        sorter: "string",
+                        width: 170,
+                    }, {
+                        title: "Titulo Act",
+                        field: "actividad",
+                        sorter: "string",
+                    },  {
+                        title: "Fecha",
+                        field: "fecha",
+                        sorter: "string",
+                    },  {
+                        title: "Estado",
+                        field: "estado",
+                        editor: "select",
+                        editorParams: {
+                            values: {
+                                "Aprobada": "Aprobada",
+                                "En revision": "En revision",
+                                "Error": "Error",
+                            }
+                        },
+                        headerFilter: "select",
+                        headerFilterParams: {
+                            "": "", 
+                            "aprobado": "aprobado",
+                            "revision": "revision",
+                            "error": "error",
+                        },
+                        cellEdited: function (cell) {
+                            var row = cell.getRow();
+                            var id = row.getData().id;
+                            var value = cell.getValue();
+                            cambiarEstado(id, value);
+                        }
+                    }, 
             ],
         });
 
@@ -636,6 +664,27 @@
             .catch(error => {
                 console.error('Error al eliminar actividad:', error);
             });
+        }
+        
+        function cambiarEstado(id, value) {
+            const token = document.head.querySelector('meta[name="csrf-token"]').content;
+            fetch(`califAct/${id}/${value}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token,
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+
+                console.log('Estado de horas cambiado', data);
+
+                window.location.reload(); 
+            })
+            .catch(error => {
+                console.error('Error al cambiar de estado:', error);
+            });
         } 
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -652,9 +701,24 @@
                 });
             }
 
+            function applyCustomFilter2(value) {
+                var searchValue = value.toLowerCase().replace(/[^a-z0-9áéíóúüñ]/g, '');
+
+                table.setFilter(function(row) {
+                    return (row.prestador && row.prestador.toString().toLowerCase().includes(searchValue)) || 
+                        (row.actividad && row.actividad.toLowerCase().includes(searchValue)) || 
+                        (row.fecha && row.fecha.toLowerCase().includes(searchValue));
+                });
+            }
+
             document.getElementById("searchInput").addEventListener("input", function(e) {
                 var value = e.target.value.trim();
                 applyCustomFilter(value);
+            });
+
+            document.getElementById("searchInput2").addEventListener("input", function(e) {
+                var value = e.target.value.trim();
+                applyCustomFilter2(value);
             });
         });
 
