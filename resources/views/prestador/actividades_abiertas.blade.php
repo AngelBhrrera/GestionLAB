@@ -25,14 +25,14 @@
 
         <div class="actividad">
             <div class="titulo">{{ $actividad->actividad }}
-                <button class="boton-azul"  onclick="verDetalles({{ $actividad->actividad_id }})">+</button>
+                <button class="boton-azul" onclick="verDetalles({{ $actividad->actividad_id }})">+</button>
             </div>
             <div class="detalle">
                 <span class="subtitulo">Proyecto:</span> {{ $actividad->proyecto_origen }}
                 <br>{{ $actividad->categoria }} | </span>
 
                 @if(isset($actividad->subcategoria))
-                    <span class="Subcategoria"> {{ $actividad->subcategoria }}</span><br>
+                    <span class="subcategoria">{{ $actividad->subcategoria }}</span><br>
                 @endif
                 <span class="subtitulo">Fecha:</span> {{ $actividad->fecha }} 
             </div>
@@ -53,7 +53,7 @@
                 </div>
             <div class="detalle botones">
                 @if($actividad->estado == 'Asignada' || $actividad->estado == 'Creada')
-                    <button class="boton"  onclick="tomarActividad({{ $actividad->id }})" >Tomar Actividad</button>
+                    <button class="boton"  onclick="tomarActividad({{ $actividad->id }})"> Tomar Actividad</button>
                 @endif
             </div>
         </div>

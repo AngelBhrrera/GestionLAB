@@ -39,8 +39,8 @@ class CreatePremiosPrestadoresTable extends Migration
                 LEFT JOIN 
                     users AS u ON ch.id = u.id 
                 LEFT JOIN 
-                    total_horas_extra AS the ON the.id = u.id;
-                GROUP BY u.id
+                    total_horas_extra AS the ON the.id = u.id
+                GROUP BY u.id;
         ");
 
         DB::statement("

@@ -12,15 +12,14 @@
     <div class="grid grid-cols-12 gap-6 mt-5">
         <div class="intro-y ml-5 col-span-12 lg:col-span-6 flex justify-center" id="alerta">
             @if (session('success'))
-                <div class="alert alert-success w-full px-4">{{session('success')}}</div>
+                <div class="alert mb-5 alert-success w-full px-4">{{session('success')}}</div>
             @endif
             @if(session('warning'))
-                <div class="alert alert-warning w-full px-4">{{session('warning')}}</div>
+                <div class="alert mb-5 alert-warning w-full px-4">{{session('warning')}}</div>
             @endif
             @error('nombre')
-                <div class="alert alert-danger w-full px-4">{{$message}}</div>
+                <div class="alert mb-5 alert-danger w-full px-4">{{$message}}</div>
             @enderror
-                </div>
         </div>
     </div>
 
@@ -28,14 +27,17 @@
         <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#vare">Lista de areas</a>
         </li>
-        @if(Auth::user()->tipo == 'Superadmin')
+        @if(Auth::user()->tipo == 'Superadmin' )
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#rsed">Registrar sedes</a>
         </li>
         @endif
-        @if(Auth::user()->tipo == 'Superadmin' || Auth::user()->tipo == 'jefe sede')
+        @if(Auth::user()->tipo == 'Superadmin' || Auth::user()->tipo == 'jefe sede' || Auth::user()->tipo == 'jefe area')
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#rare">Registrar areas</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#aresed">Editar datos area/sede</a>
         </li>
         @endif
         <li class="nav-item">
@@ -102,6 +104,56 @@
             <div class="intro-y box p-5 mt-5">
                 <h3 class="text-2xl mt-5 font-small">Configurar modulos de las areas</h3>
                 <div class="text-center mx-auto" style="padding-left: 10px" id="areamod"></div>
+            </div>
+        </div>
+        <div class="tab-pane" id="aresed">
+            @if(Auth::user()->tipo == 'Superadmin' || Auth::user()->tipo == 'jefe sede')
+            <div class="intro-y box p-5">
+                <h3 class="text-2xl mt-5 font-small">Editar nombre de sede</h3>
+                <form action="{{route('admin.modificarSede')}}" method="POST">
+                    @csrf
+                    <input type="hidden" name="idSede" id="idSede" value="">
+                    <select class="form-control" name="sede_edit" id="sede_edit" onchange="modificarCamposSede()">
+                        <option value="null">Selecciona una sede</option>
+                        @if (isset($s))
+                            @foreach ($s as $dato)
+                                <option  @if(Auth::user()->tipo == 'jefe sede') selected @endif id="{{$dato->nombre_sede}}" value="{{json_encode($dato)}}">{{$dato->nombre_sede }}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                    <br><br>
+                    <input required type="text" name="nuevoNombre" id="nuevoNombre" style="width: 40%" placeholder="Nuevo nombre" class="form-control">
+                    <br><br>
+                    <button type="Submit" disabled id = "guardar" class="btn btn-primary"> Guardar cambios</button>
+                </form>
+            </div>
+            <br>
+            @endif
+            
+        
+            <div class="intro-y box p-5">
+                <h3 class="text-2xl mt-5 font-small">Editar nombre de area</h3>
+                <input type="hidden" id="area_user" value="{{Auth::user()->area}}">
+                <input type="hidden" id="bandera" value = @if (Auth::user()->tipo=='jefe sede') 0  @else 1 @endif>
+                <form action="{{route('admin.modificarArea')}}" method="POST">
+                    @csrf
+                    <select class="form-control" name="sede_2" id="sede_2" onchange="filtrarAreaSede()">
+                        <option value="null">Selecciona una sede</option>
+                        @if (isset($s))
+                            @foreach ($s as $dato)
+                                <option @if(Auth::user()->tipo == 'jefe area' || Auth::user()->tipo == 'jefe sede') selected @endif id="{{$dato->nombre_sede}}" value="{{$dato->id_sede}}">{{$dato->nombre_sede }}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                    <br><br>
+                    <select disabled class="form-control" name="area_edit" id="area_edit" onchange="modificarCamposArea()">
+                        <option id="default" value="null">Selecciona un área de trabajo</option>
+                    </select>
+                    <br><br>
+                    <input required type="text" name="nuevoNombre_2" id="nuevoNombre_2" style="width: 40%" placeholder="Nuevo nombre" class="form-control">
+                    <br><br>
+                    <button type="Submit" disabled id ="guardar_2" class="btn btn-primary"> Guardar cambios</button>
+                </form>
             </div>
         </div>
     </div>
@@ -177,7 +229,7 @@
                             activate(id, campo)
                             cell.setValue(!cell.getValue());
                         },
-                    }
+                    },
                 ]
             });
 
@@ -421,8 +473,93 @@
             .catch(error => {
                 console.error('Error en activacion:', error);
             });
-        } 
+        }
 
+        function modificarCamposSede(){
+            btn_guardar= document.getElementById("guardar");
+            selectSede = document.getElementById("sede_edit");
+            campoNombre = document.getElementById("nuevoNombre");
+            idSede=document.getElementById("idSede");
+            
+            if(selectSede.value === "null"){
+                 // Restablecer los campos al estado inicial
+                campoNombre.value = "";
+                idSede.value = "";
+                btn_guardar.disabled = true;
+                return;
+            }
+            btn_guardar.disabled = false;
+            var datoSede = JSON.parse(selectSede.value);
+            campoNombre.value = datoSede.nombre_sede;
+            idSede.value = datoSede.id_sede;
+        }
+
+        function filtrarAreaSede(){
+            btn_guardar= document.getElementById("guardar_2");
+            selectSede = document.getElementById("sede_2");
+            selectArea = document.getElementById("area_edit");
+            defaultOp =document.getElementById('default');
+            nuevoNombreArea = document.getElementById("nuevoNombre_2");
+            area_user = document.getElementById("area_user");
+            
+            if(selectSede.value === "null"){
+                // Restablecer los campos al estado inicial
+                //campoNombre.value = "";
+                btn_guardar.disabled = true;
+                selectArea.disabled = true;
+                nuevoNombreArea.value = "";
+                defaultOp.selected = true;
+                return;
+            }
+            selectArea.innerHTML = '<option id="default" value="null"> Selecciona un área de trabajo</option>';      
+            var sedeId = selectSede.value;
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            var areas = JSON.parse(xhr.responseText);
+                            selectArea.disabled = false;
+                            areas.forEach(function(area) {
+                                var option = document.createElement('option');
+                                option.value = JSON.stringify({id: area.id, nombre: area.nombre_area});
+                                option.text = area.nombre_area;
+                                selectArea.appendChild(option);
+                                if(JSON.parse(option.value).id == area_user.value){
+                                    option.selected = true;
+                                    btn_guardar.disabled = false;
+                                    nuevoNombreArea.value = option.text;
+                                }
+                            });
+                        } else {
+                            console.error('Error al obtener las sedes');
+                        }
+                    }
+                }
+            xhr.open('GET', 'filtroEditArea/' + sedeId);
+            xhr.send();
+        }
+
+        function modificarCamposArea(){
+            selectArea = document.getElementById("area_edit");
+            nuevoNombreArea = document.getElementById("nuevoNombre_2");
+            btn_guardar= document.getElementById("guardar_2");
+            if(selectArea.value === "null"){
+                // Restablecer los campos al estado inicial
+                console.log(selectArea.value);
+                btn_guardar.disabled = true;
+                nuevoNombreArea.value = "";
+                return;
+            }
+            btn_guardar.disabled = false;
+            nuevoNombreArea.value = JSON.parse(selectArea.value).nombre;
+        }
+        window.onload = function() {
+            if(document.getElementById("bandera").value == 0){
+                modificarCamposSede();
+            }
+            filtrarAreaSede();
+            modificarCamposArea();
+        };
 
     </script>
     

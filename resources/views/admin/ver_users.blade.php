@@ -16,37 +16,52 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-    <li class="breadcrumb-item"><a href="{{route('admin.prestadorHub')}}">Prestadores</a></li>
     <li class="breadcrumb-item active" aria-current="page">Prestadores Activos</li>
 @endsection
 
 @section('subcontent')
 
 <div class="container" style="padding-top: 20px; padding-left: 20px;">
+
+    <div class="grid grid-cols-12 gap-6 mt-5">
+        <div class="intro-y ml-5 col-span-12 lg:col-span-6 flex justify-center" id="alerta">
+            @if (session('success'))
+                <div class="alert mb-5 alert-success w-full px-4">{{session('success')}}</div>
+            @endif
+            @if(session('warning'))
+                <div class="alert mb-5 alert-warning w-full px-4">{{session('warning')}}</div>
+            @endif
+            @error('descripcion')
+                <div class="alert mb-5 alert-danger w-full px-4">{{$message}}</div>
+            @enderror
+                </div>
+        </div>
+    </div>
+
     <ul class="nav nav-tabs nav-justified" role="tablist">  
         <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#active">Activos</a>
+            <a class="nav-link active" data-toggle="tab" href="#u">Usuarios</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#inactive">Inactivos</a>
+            <a class="nav-link" data-toggle="tab" href="#a">Admins</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#SST">Servicio Terminado</a>
+            <a class="nav-link" data-toggle="tab" href="#p">Prestadores</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#SSL">Servicio Liberado</a>
+            <a class="nav-link" data-toggle="tab" href="#v">Clientes - Visitantes</a>
         </li>
     </ul>
     <div class="grid grid-cols-12 gap-6 mt-5">
         <div class="intro-y ml-5 col-span-12 lg:col-span-6 flex justify-center" id="alerta">
             @if (session('success'))
-                <div class="alert alert-success w-full px-4">{{session('success')}}</div>
+                <div class="alert mb-5 alert-success w-full px-4">{{session('success')}}</div>
             @endif
             @if(session('warning'))
-                <div class="alert alert-warning w-full px-4">{{session('warning')}}</div>
+                <div class="alert mb-5 alert-warning w-full px-4">{{session('warning')}}</div>
             @endif
             @if(session('error'))
-                <div class="alert alert-danger w-full px-4">{{session('error')}}</div>
+                <div class="alert mb-5 alert-danger w-full px-4">{{session('error')}}</div>
             @endif
             </div>
         </div>
@@ -56,48 +71,48 @@
         <i class="w-5 h-5 absolute inset-y-0 left-0 my-auto text-slate-400 ml-3" data-lucide="search"></i>
     </div>
     <div class="tab-content">
-        <div class="tab-pane active" id="active">
+        <div class="tab-pane active" id="u">
             <div class="card-header">
                 <h3 class="text-2xl font-medium leading-none mt-3 px-10 text-center mx-auto" style="padding-top: 20px; padding-bottom: 20px;"> 
-                Ver Prestadores Activos</h3>
+                Ver Todos los Usuarios</h3>
             </div>
             
             <div class="col-span-12 sm:col-span-4">
                 <div class="intro-y col-span-12 sm:col-span-6">
-                    <div id="act1"></div>
+                    <div id="allU"></div>
                 </div>
             </div>
         </div>
-        <div class="tab-pane" id="inactive">
+        <div class="tab-pane" id="a">
             <div class="card-header">
                 <h3 class="text-2xl font-medium leading-none mt-3 px-10 text-center mx-auto" style="padding-top: 20px; padding-bottom: 20px;"> 
-                Ver Prestadores Inactivos</h3>
+                Ver Todos lso Administradores</h3>
             </div>
             <div class="col-span-12 sm:col-span-4">
                 <div class="intro-y col-span-12 sm:col-span-6">
-                    <div id="inact2"></div>
+                    <div id="allA"></div>
                 </div>
             </div>
         </div>
-        <div class="tab-pane" id="SST">
+        <div class="tab-pane" id="p">
             <div class="card-header">
                 <h3 class="text-2xl font-medium leading-none mt-3 px-10 text-center mx-auto" style="padding-top: 20px; padding-bottom: 20px;"> 
-                Ver Prestadores Servicio Terminado</h3>
+                Ver Todos los Prestadores</h3>
             </div>
             <div class="col-span-12 sm:col-span-4">
                 <div class="intro-y col-span-12 sm:col-span-6">
-                    <div id="ter3"></div>
+                    <div id="allP"></div>
                 </div>
             </div>
         </div>
-        <div class="tab-pane" id="SSL">
+        <div class="tab-pane" id="v">
             <div class="card-header">
                 <h3 class="text-2xl font-medium leading-none mt-3 px-10 text-center mx-auto" style="padding-top: 20px; padding-bottom: 20px;"> 
-                Ver Prestadores Servicio Liberado</h3>
+                Ver Todos los Clientes - Visitantes</h3>
             </div>
             <div class="col-span-12 sm:col-span-4">
                 <div class="intro-y col-span-12 sm:col-span-6">
-                    <div id="lib4"></div>
+                    <div id="allV"></div>
                 </div>
             </div>
         </div>
@@ -160,9 +175,9 @@
     <script type="text/javascript">
 
             var users = {!! $datos !!};
-            var usersI = {!! $datosI !!};
-            var usersL = {!! $datosL !!};
-            var usersT = {!! $datosT !!};
+            var usersV = {!! $datosV !!};
+            var usersA = {!! $datosA !!};
+            var usersP = {!! $datosP !!};
 
             function createTabulatorInstance(selector, data, config) {
                 return new Tabulator(selector, {
@@ -182,9 +197,144 @@
                 tooltips: true,
             };
 
-            var table = createTabulatorInstance("#act1", users, {
+            var table = createTabulatorInstance("#allU", users, {
                 ...commonConfig,
                 groupBy: "nombre_area",
+                columns: [{
+                        title: "Nombre",
+                        field: "name",
+                        sorter: "string",
+                    }, {
+                        title: "Apellido",
+                        field: "apellido",
+                        sorter: "string",
+                    }, {
+                        title: "Correo",
+                        field: "correo",
+                        sorter: "string",
+                       
+                    }, {
+                        title: "Codigo",
+                        field: "codigo",
+                        sorter:"string",
+                       
+                    },  {
+                        title: "Tipo",
+                        field: "tipo",
+                        sorter: "string",
+                        headerFilter: false,
+                        headerFilter:"select",
+                        headerFilterParams: {
+                            "": "", 
+                            "prestador": "prestador",
+                            "coordinador": "coordinador",
+                            "maestro": "maestro",
+                            "alumno": "alumno",
+                            "practicante": "practicante",
+                            "voluntario": "voluntario",
+                        }
+                    },  {
+                        title: "Contacto",
+                        field: "telefono",
+                    }
+                ],
+            });
+
+            var table2 = createTabulatorInstance("#allV", usersV, {
+                ...commonConfig,
+                columns: [{
+                    title: "ID",
+                        field: "id",
+                        visible: false,
+                        width: 2,
+                    },{
+                        title: "Fecha",
+                        field: "fecha",
+                        sorter: "string",
+                        width: 110,
+                    }, {
+                        title: "Nombre",
+                        field: "name",
+                        sorter: "string",
+                    }, {
+                        title: "Apellido",
+                        field: "apellido",
+                        sorter: "string",
+                        editor: "input",
+                    }, {
+                        title: "Responsable",
+                        field: "responsable",
+                        sorter: "string",
+                    }, {
+                        title: "Correo",
+                        field: "correo",
+                        sorter: "string",
+                    }, {
+                        title: "Contacto",
+                        field: "numero",
+                    }, {
+                        title: "Entrada",
+                        field: "hora_llegada",
+                        sorter: "string",
+                    }, {
+                        title: "Salida",
+                        field: "hora_salida",
+                        sorter: "string",
+                    },{
+                        title: "Motivo",
+                        field: "motivo",
+                        editor: "input",
+                        cellEdited: function (cell) {
+                            var row = cell.getRow();
+                            var id = row.getData().id;
+                            var value = cell.getValue();
+                            agregarObservaciones(id, value);
+                        },
+                    },
+                    
+                ],
+            });
+
+            var table3 = createTabulatorInstance("#allA", usersA, {
+                ...commonConfig,
+                columns: [{
+                        title: "Nombre",
+                        field: "name",
+                        sorter: "string",
+                    }, {
+                        title: "Apellido",
+                        field: "apellido",
+                        sorter: "string",
+                    }, {
+                        title: "Correo",
+                        field: "correo",
+                        sorter: "string",
+                    }, {
+                        title: "Telefono",
+                        field: "contacto",
+                        sorter: "number",
+                    }, {
+                        title: "Sede",
+                        field: "sede",
+                        sorter: "string",
+                    },  {
+                        title: "Area",
+                        field: "area",
+                        sorter: "string",
+                    },{
+                        title: "Tipo",
+                        field: "tipo",
+                        sorter: "string",
+                    }, {
+                        title: "Horario",
+                        field: "horario",
+                        sorter: "string",
+                    }, 
+                ],
+            });
+
+            var table4 = createTabulatorInstance("#allP", usersP, {
+                ...commonConfig,
                 columns: [{
                         title: "Nombre",
                         field: "name",
@@ -254,99 +404,6 @@
                 ],
             });
 
-            var table2 = createTabulatorInstance("#inact2", usersI, {
-                ...commonConfig,
-                columns: [{
-                        title: "Nombre",
-                        field: "name",
-                        sorter: "string",
-                        
-                    }, {
-                        title: "Apellido",
-                        field: "apellido",
-                        sorter: "string",
-                        
-                    }, {
-                        title: "Correo",
-                        field: "correo",
-                        sorter: "string",
-                        
-                    }, {
-                        title: "Codigo",
-                        field: "codigo",
-                        sorter: "number",
-                        
-                    }, {
-                        title: "Activar",
-                        field: "id",
-                        formatter: function (cell, formatterParams, onRendered) {
-                            var value = cell.getValue();
-                            var button = document.createElement("button");
-                            button.style = "background-color: #4CAF50; color: white; border: 1px solid #4CAF50; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
-                            button.textContent = "Activar";
-                            button.title = "";
-                            button.addEventListener("click", function() {
-                                activarPrestador(value);
-                            });
-                            return button;
-                        }, 
-                        
-                    },
-                ],
-            });
-
-            var table3 = createTabulatorInstance("#ter3", usersT, {
-                ...commonConfig,
-                columns: [{
-                        title: "Nombre",
-                        field: "name",
-                        sorter: "string",
-                    }, {
-                        title: "Apellido",
-                        field: "apellido",
-                        sorter: "string",
-                    }, {
-                        title: "Correo",
-                        field: "correo",
-                        sorter: "string",
-                    }, {
-                        title: "Codigo",
-                        field: "codigo",
-                        sorter: "number",
-                    },
-                ],
-            });
-
-            var table4 = createTabulatorInstance("#lib4", usersL, {
-                ...commonConfig,
-                columns: [{
-                        title: "Nombre",
-                        field: "name",
-                        sorter: "string",
-                    }, {
-                        title: "Apellido",
-                        field: "apellido",
-                        sorter: "string",
-                    }, {
-                        title: "Correo",
-                        field: "correo",
-                        sorter: "string",
-                    }, {
-                        title: "Codigo",
-                        field: "codigo",
-                        sorter: "number",
-                    }, {
-                        title: "Horas",
-                        field: "horas",
-                        sorter: "number",
-                    }, {
-                        title: "Fecha de Salida",
-                        field: "fecha_salida",
-                        sorter: "number",
-                    }, 
-                ],
-            });
-
             function fetchData(url, method, callback) {
                 const token = document.head.querySelector('meta[name="csrf-token"]').content;
                 fetch(url, {
@@ -366,29 +423,6 @@
                 });
             }
 
-            function modificarTPrestador(id, value) {
-                fetchData(`modificar_tipo_prestador/${id}/${value}`, 'GET', data => {
-                    console.log('Respuesta del servidor:', data);
-                });
-            }
-
-            function modificarHPrestador(id, value) {
-                fetchData(`modificar_horario_prestador/${id}/${value}`, 'GET', data => {
-                    console.log('Respuesta del servidor:', data);
-                });
-            }
-
-            function desactivarPrestador(value) {
-                fetchData(`desactivar_prestador/${value}`, 'GET', data => {
-                    console.log('Usuario desactivado:', data);
-                });
-            }
-
-            function activarPrestador(value) {
-                fetchData(`activar_prestador/${value}`, 'GET', data => {
-                    console.log('Usuario activado:', data);
-                });
-            }
             function customButtonFormatter(cell, formatterParams, onRendered) {
             var div = document.createElement("div");
             div.classList.add("text-center");
@@ -477,6 +511,25 @@
                 applyCustomFilter(value, table4);
             });
         });
+
+        function agregarObservaciones(id, value) {
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`motivo_visita/${id}/${value}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+
+                    console.log('Estado de impresion cambiado', data);
+                })
+                .catch(error => {
+                    console.error('Error al cambiar de estado de impresion:', error);
+                });
+            } 
 
     </script>
 @endsection

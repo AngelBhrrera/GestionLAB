@@ -40,7 +40,7 @@ class Soloprestadores extends Migration
             LEFT JOIN `areas` ON `users`.`area` = `areas`.`id`
             LEFT JOIN `sedes` ON `users`.`sede` = `sedes`.`id_sede`
             LEFT JOIN `semanas_prestador` ON `semanas_prestador`.`idusuario` =  `users`.`id`
-            LEFT JOIN `user_level` ON `user_level`.`id` =  `users`.`id`;
+            LEFT JOIN `user_level` ON `user_level`.`id` =  `users`.`id`
         ");
     }
 

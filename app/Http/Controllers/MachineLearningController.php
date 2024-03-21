@@ -49,6 +49,7 @@ class MachineLearningController extends Controller
                 COALESCE(sc.nombre, 'No Aplica') AS nombre_subcategoria,
                 ap.id_prestador,
                 u.horario,
+                sp.semanas_actividad,
                 u.carrera,
                 u.experiencia,
                 lb_m.total_exp AS experiencia_mensual,
@@ -66,8 +67,10 @@ class MachineLearningController extends Controller
                 categorias c ON a.id_categoria = c.id
             LEFT JOIN
                 subcategorias sc ON a.id_subcategoria = sc.id
-            JOIN
+            LEFT JOIN
                 users u ON ap.id_prestador = u.id
+            JOIN
+                solo_prestadores sp ON ap.id_prestador = sp.id
             LEFT JOIN
                 lb_m ON u.id = lb_m.id_prestador
             LEFT JOIN
@@ -77,12 +80,10 @@ class MachineLearningController extends Controller
             WHERE exp IS NOT null
         SQL;
 
-        // Ejecutar la consulta y obtener los resultados
         $resultados = DB::select($query);
 
         $fileName = $this->exportarResultadosACSV($resultados);
 
-        // Devolver el nombre del archivo CSV generado
         return response()->json([            
             'archivo' => $fileName,
         ]);
@@ -95,6 +96,7 @@ class MachineLearningController extends Controller
         $headers = [
             'id_prestador',
             'horario',
+            'semanas_actividad',
             'carrera',
             'experiencia',
             'experiencia_mensual',
@@ -116,6 +118,7 @@ class MachineLearningController extends Controller
             SELECT
                 u.id,
                 u.horario,
+                sp.semanas_actividad,
                 u.carrera,
                 u.experiencia,
                 lb_m.total_exp AS experiencia_mensual,
@@ -126,7 +129,9 @@ class MachineLearningController extends Controller
                     ELSE 3
                 END AS periodo
             FROM
-                users u
+                solo_prestadores AS sp
+            LEFT JOIN
+                users u ON u.id = sp.id
             LEFT JOIN
                 lb_m ON u.id = lb_m.id_prestador
             LEFT JOIN

@@ -16,7 +16,6 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-    <li class="breadcrumb-item"><a href="{{route('admin.prestadorHub')}}">Prestadores</a></li>
     <li class="breadcrumb-item active" aria-current="page">Prestadores Activos</li>
 @endsection
 
@@ -40,13 +39,13 @@
     <div class="grid grid-cols-12 gap-6 mt-5">
         <div class="intro-y ml-5 col-span-12 lg:col-span-6 flex justify-center" id="alerta">
             @if (session('success'))
-                <div class="alert alert-success w-full px-4">{{session('success')}}</div>
+                <div class="alert mb-5 alert-success w-full px-4">{{session('success')}}</div>
             @endif
             @if(session('warning'))
-                <div class="alert alert-warning w-full px-4">{{session('warning')}}</div>
+                <div class="alert mb-5 alert-warning w-full px-4">{{session('warning')}}</div>
             @endif
             @if(session('error'))
-                <div class="alert alert-danger w-full px-4">{{session('error')}}</div>
+                <div class="alert mb-5 alert-danger w-full px-4">{{session('error')}}</div>
             @endif
             </div>
         </div>

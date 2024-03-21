@@ -63,13 +63,13 @@
 
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
                             <label for="">Piezas</label>
-                            <input  type="text" class="form-control"
+                            <input  type="number" class="form-control"
                                 name="pieces" id="pieces" value="{{old('pieces')}}" required>
                         </div>
 
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
                             <label for="">Peso</label>
-                            <input  type="text" class="form-control"
+                            <input  type="number" class="form-control" min="0"
                                 name="weight" id="weight" value="{{old('weight')}}" required>
                         </div>
 
@@ -77,8 +77,8 @@
                             <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Tiempo estimado</label>
                                 <div class="col-md-6">
                                     <div class="input-group date" id="datetimepicker" data-target-input="nearest">
-                                        <input name="horas" type="number" class="form-control" placeholder="Horas" min="01" max="23" step="1" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
-                                        <input name="minutos" type="number" class="form-control" placeholder="Minutos" min="01" max="59" step="1" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
+                                        <input id="horas" name="horas" type="number" class="form-control" placeholder="Horas" min="01" max="23" step="1" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
+                                        <input id="minutos" name="minutos" type="number" class="form-control" placeholder="Minutos" min="01" max="59" step="1" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
                                     </div>
                                 </div>
                         </div>
@@ -99,3 +99,33 @@
 </div>
 
 @endsection
+
+@section('script')
+<script>
+    document.getElementById("horas").addEventListener("input", function() {
+        if (this.value < 0) {
+            this.value = '';
+            alert("No se permiten números negativos");
+        }
+    });
+    document.getElementById("minutos").addEventListener("input", function() {
+        if (this.value < 0) {
+            this.value = '';
+            alert("No se permiten números negativos");
+        }
+    });
+    document.getElementById("weight").addEventListener("input", function() {
+        if (this.value < 0) {
+            this.value = '';
+            alert("No se permiten números negativos");
+        }
+    });
+    document.getElementById("pieces").addEventListener("input", function() {
+        if (this.value < 0) {
+            this.value = '';
+            alert("No se permiten números negativos");
+        }
+    });
+</script>
+@endsection
+

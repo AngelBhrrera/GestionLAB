@@ -117,7 +117,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::middleware('role:coordinador')->group(function() {
                     Route::get('admin/cambiarRol', 'cambiarRol')->name('cambiorol');
                 });
-
+                
                 Route::middleware('role:jefe area,jefe sede,Superadmin')->group(function() {
                     
                     Route::middleware('role:Superadmin')->group(function() {
@@ -152,6 +152,8 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     Route::post('admin/nuevaSede', 'nuevaSede')->name('nuevaSede');
                     Route::post('admin/nuevaArea', 'nuevaArea')->name('nuevaArea');
                     Route::post('admin/modificarSede', 'modificarSede')->name('modificarSede');
+                    Route::post('admin/modificarArea', 'modificarArea')->name('modificarArea');
+                    Route::get('admin/filtroEditArea/{id}','filtroEditArea')->name('filtroEditArea');
                     //ADMINISTRACION DEL CALENDARIO
                     Route::get('/admin/faltas', 'faltas')->name('faltas');
                     Route::get('/admin/horarios', 'horarios')->name('horarios');
@@ -163,10 +165,11 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     //MODULO CATEGORIAS
                     Route::get('/admin/categorias', 'categorias')->name('categorias');
                     Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
-                    Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg'); 
+                    Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg');
+                    Route::post('/admin/modificar_categoria', 'modificar_categoria')->name('modificar_categoria');
+                    Route::post('/admin/modificar_subCategoria', 'modificar_subCategoria')->name('modificar_subCategoria'); 
                     //ADMINISTRACION DEL MODULO DE IMPRESION
                     Route::get('/admin/gestion_impresion', 'module_print')->name('module_print');
-                    Route::post('/admin/registrar_impresoras', 'make_print')->name('make_print');
                     Route::post('/admin/set_imp_act', 'set_print_act')->name('set_print_act'); 
                     Route::post('/admin/set_mant_act', 'set_mainteneance_act')->name('set_mainteneance_act'); 
                     //CAMBIO PASSWORD
@@ -184,15 +187,15 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/obtenerSubcategoria', 'obtenerSubcategoria')->name('obtenerSubcategorias');
             Route::get('/admin/obtenerPrestadores', 'obtenerPrestadores')->name('obtenerPrestadoresProyecto');
             //RUTAS ACTIVIDADES Y ASIGNACIONES
-            Route::get('/admin/actividades', 'actHub')->name('actHub');
 
-            Route::get('/admin/C_actividades', 'create_act')->name('create_act');
+            Route::get('/admin/C_actividades', 'actividades')->name('actividades');
             Route::post('/admin/M_actividades', 'make_act')->name('make_act');
-            Route::get('/admin/A_actividades', 'asign_act')->name('asign_act');
+            
 
             Route::get('admin/ver_detalles_proyecto/detalles_actividad/{val}','detallesActividad')->name('detallesActividad');
 
-            Route::get('/admin/ver_actividades', 'actividades')->name('actividades');
+            //Route::get('/admin/ver_actividades', 'actividades')->name('actividades');
+            //Route::get('/admin/A_actividades', 'asign_act')->name('asign_act');
             Route::get('/admin/actividades_en_progreso','actividades_en_progreso')->name('actividades_en_progreso');
             Route::get('/admin/actividades_revision', 'reviewActs')->name('review_acts');
 
@@ -201,7 +204,6 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::post('/admin/actividad_TEU', 'actTEC')->name('actTEC');
 
             //RUTAS PROYECTOS Y ASIGNACIONES
-            Route::get('/admin/proyectos', 'proyHub')->name('proyHub');
             Route::get('/admin/C_proyectos', 'create_proy')->name('create_proy');
             Route::post('/admin/M_proyecto', 'make_proy')->name('make_proy');
 
@@ -219,8 +221,8 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             
             //MODULO IMPRESIONES
             Route::get('/admin/ver_impresoras', 'control_print')->name('control_print');
+            Route::post('/admin/registrar_impresoras', 'make_print')->name('make_print');
             //MODULO DE PRESTADORES
-            Route::get('/admin/prestadores', 'prestadorHub')->name('prestadorHub');
             Route::get('/admin/general', 'general')->name('general');
             Route::get('/admin/prestadores_activos', 'prestadores')->name('prestadores');
             Route::get('/admin/prestadores_pendientes', 'prestadores_pendientes')->name('prestadores_pendientes');

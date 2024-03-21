@@ -26,13 +26,13 @@
     <div class="container" style="padding-top: 20px; padding-left: 20px;">
         <div class="intro-y ml-5 col-span-12 lg:col-span-6 flex justify-center" id="alerta">
             @if (session('success'))
-                <div class="alert alert-success w-full px-4">{{session('success')}}</div>
+                <div class="alert mb-5 alert-success w-full px-4">{{session('success')}}</div>
             @endif
             @if(session('warning'))
-                <div class="alert alert-warning w-full px-4">{{session('warning')}}</div>
+                <div class="alert mb-5 alert-warning w-full px-4">{{session('warning')}}</div>
             @endif
             @error('nombre')
-                <div class="alert alert-danger w-full px-4">{{$message}}</div>
+                <div class="alert mb-5 alert-danger w-full px-4">{{$message}}</div>
             @enderror
                 </div>
                 <div class="card card-primary">
@@ -341,6 +341,9 @@
                     field: "fecha",
                     sorter: "string",
                 }, {
+                    title: "IDENTIFICADOR",
+                    field: "id",
+                }, {
                     title: "Eliminar",
                     field: "id",
                     formatter: function (cell, formatterParams, onRendered) {
@@ -368,9 +371,9 @@
             .then(response => response.json())
             .then(data => {
 
-                console.log('Premio eliminado:', data);
+                console.log('Premio eliminado:');
 
-                window.location.reload(); 
+                //window.location.reload(); 
             })
             .catch(error => {
                 console.error('Error al eliminar premio:', error);

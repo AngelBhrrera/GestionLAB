@@ -19,7 +19,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-    <li class="breadcrumb-item active"><a href="{{route('admin.proyHub')}}">Proyecto</a></li>
+    <li class="breadcrumb-item active">Proyecto</li>
 @endsection
 
 @section('subcontent')
@@ -28,13 +28,13 @@
     <div class="grid grid-cols-12 gap-6 mt-5">
         <div class="intro-y ml-5 col-span-12 lg:col-span-6 flex justify-center" id="alerta">
             @if (session('success'))
-                <div class="alert alert-success w-full px-4">{{session('success')}}</div>
+                <div class="alert mb-5 alert-success w-full px-4">{{session('success')}}</div>
             @endif
             @if(session('warning'))
-                <div class="alert alert-warning w-full px-4">{{session('warning')}}</div>
+                <div class="alert mb-5 alert-warning w-full px-4">{{session('warning')}}</div>
             @endif
             @error('nombre')
-                <div class="alert alert-danger w-full px-4">{{$message}}</div>
+                <div class="alert mb-5 alert-danger w-full px-4">{{$message}}</div>
             @enderror
                 </div>
         </div>
@@ -145,7 +145,7 @@
                 <div class="col-span-6 sm:col-span-4 text-center">
                     <div class="form-group">
                         <label for="tipo_categoria">Seleccionar proyecto</label>
-                        <select class="form-control" id="proyecto" name="proyecto" required>
+                        <select class="tom-select w-full" id="proyecto" name="proyecto" required>
                             <option value="">Selecciona un proyecto para asginar actividad/es </option>
                             @foreach ($proyectos as $proyecto)
                                 <option value="{{ $proyecto->id }}">{{ $proyecto->titulo }}</option>
@@ -154,7 +154,7 @@
                     </div>
                     <div class="form-group">
                         <label for="tipo_categoria">Filtro por categoría</label>
-                        <select class="form-control" id="tipo_categoria" name="tipo_categoria" onchange="filtrarCategorias()">
+                        <select class="form control" id="tipo_categoria" name="tipo_categoria" onchange="filtrarCategorias()">
                             <option value="">Filtrar por categoría</option>
                             @foreach ($categorias as $categoria)
                                 <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
@@ -163,7 +163,7 @@
                     </div>
                     <div class="form-group">
                         <label for="tipo_subcategoria">Filtro por subcategoría</label>
-                        <select class="form-control" id="tipo_subcategoria" name="tipo_subcategoria" onchange="filtrarActividades2()">
+                        <select class="form control" id="tipo_subcategoria" name="tipo_subcategoria" onchange="filtrarActividades2()">
                             <option value=null >Filtrar por subcategoría</option>
                         </select>
                     </div>
@@ -172,7 +172,7 @@
                         <label for="actividades_l" class="col-md-4 col-form-label text-md-right">Actividades</label>
                         <div id="module-container">
                             <div class="module">
-                                <select class="form-control mi-select" id="tipo_actividad" name="module-0" required>
+                                <select class="form control" id="tipo_actividad" name="module-0" required>
                                     <option value="" >Asignar actividad</option>
                                 </select>
                                 <button type="button" class="btn btn-danger"  onclick="removeModule(0)">-</button>
@@ -198,7 +198,7 @@
                     @csrf
                     <div class="form-group">
                         <label style="font-weight: bold; font-size: 1.2em;" for="proyecto">Seleccionar proyecto</label>
-                        <select class="form-control" id="proyecto" name="proyecto">
+                        <select class="tom-select w-full" id="proyecto" name="proyecto">
                             <option value="">Selecciona el area de trabajo donde estará principalmente el proyecto</option>
                             @foreach ($proyectos as $proyecto)
                                 <option value="{{ $proyecto->id }}">{{ $proyecto->titulo}}</option>
@@ -232,11 +232,7 @@
 @endsection
 
 @section('script')
-
-
     <script type="text/javascript">
-
-        
 
         document.getElementById('enviar').addEventListener('submit', function(event) {
 
@@ -367,7 +363,7 @@
         const module = document.createElement('div');
         module.classList.add('module');
         module.innerHTML = `
-            <select class="form-control select2" id="tipo_actividad"  name="module-${moduleId}" required>
+            <select class="form control" id="tipo_actividad"  name="module-${moduleId}" required>
                 <option value="" >Asignar actividad</option>
             </select>
             <button type="button" class="btn btn-danger" onclick="removeModule(${moduleId})""> - </button>
