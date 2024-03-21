@@ -56,8 +56,6 @@ class CreatePremiosPrestadoresTable extends Migration
             FROM premios_prestadores
             INNER JOIN users u ON u.id = premios_prestadores.id_prestador
             INNER JOIN premios p ON p.id = premios_prestadores.id_premio
-            GROUP BY premios_prestadores.id, u.name, u.apellido,
-            p.nombre, p.descripcion, p.tipo, p.horas, premios_prestadores.fecha
         ");    
     }
 
