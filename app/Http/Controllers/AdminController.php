@@ -167,15 +167,24 @@ class AdminController extends Controller
         $data = DB::table('users')
             ->select('users.id','users.name', 'users.apellido', 'users.correo', 'users.codigo', 'users.tipo', 'users.telefono', 'areas.nombre_area')
             ->join('areas', 'users.area', '=', 'areas.id');
-
+        $areas = null;
+        $sedes = null;
+        
         if (auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area') {
             $data->where('users.area', auth()->user()->area);
-            $data = $data->get();
             $n_Area = DB::table('areas')
             ->where('id', auth()->user()->area)
             ->value('nombre_area');
             $dataA->where('solo_admins.area',$n_Area);
             $dataP->where('id_area', Auth::user()->area);
+            $horarios= DB::table('areas')->where('id', Auth::user()->area)->first();
+            $horariosValidos = [];
+            $horariosValidos[] = ($horarios->turnoMatutino == 1) ? "Matutino": null;
+            $horariosValidos[] = ($horarios->turnoMediodia == 1) ? "Mediodia": null;
+            $horariosValidos[] = ($horarios->turnoVespertino == 1) ? "Vespertino": null;
+            $horariosValidos[] = ($horarios->turnoSabatino == 1) ? "Sabatino": null;
+            $horariosValidos[] = ($horarios->turnoTiempoCompleto == 1) ? "TC": null;
+            $horariosValidos[] = ($horarios->no_Aplica == 1) ? "No Aplica": null;
         } else if (auth()->user()->tipo == 'jefe sede') {
             $data->where('users.sede', auth()->user()->sede);
             $n_Sede = DB::table('sedes')
@@ -183,17 +192,23 @@ class AdminController extends Controller
                 ->value('nombre_sede');
             $dataA->where('solo_admins.sede',$n_Sede);
             $dataP->where('id_sede', Auth::user()->sede);
+            $horariosValidos = ["Matutino", "Vespertino", "Mediodia", "Sabatino", "TC", "No Aplica"];
+            $areas = DB::table('areas')->where('id_sede', Auth::user()->sede)->get();
+        }else if (auth()->user()->tipo == 'Superadmin'){
+            $horariosValidos = ["Matutino", "Vespertino", "Mediodia", "Sabatino", "TC", "No Aplica"];
+            $areas = DB::table('areas')->get();
+            $sedes = DB::table('sedes')->get();
         }
-
+        
         $data = $data->get();
         $dataP = $dataP->get(); 
         $dataA = $dataA->get();
         $dataV = DB::table('solo_clientes')
             ->get();
+        
 
-        $horariosValidos = ["Matutino", "Vespertino", "Mediodia", "Sabatino", "TC", "No Aplica"];
-
-        return view('admin/ver_users', ['datos' => json_encode($data), 'horariosValidos' => $horariosValidos, 
+        return view('admin/ver_users', ['datos' => json_encode($data), 
+            'horariosValidos' => $horariosValidos, 'areas' => $areas, 'sedes' => $sedes,
             'datosA' => json_encode($dataA),
             'datosV' => json_encode($dataV),
             'datosP' => json_encode($dataP)]);
@@ -386,19 +401,6 @@ class AdminController extends Controller
     }
 
     public function modificar_prestador(Request $request){
-        $horarios = DB::Table('areas');
-        $horarios = $horarios->first();
-        $horariosValidos = [];
-        $horariosValidos[] = ($horarios->turnoMatutino == 1) ? "Matutino": null;
-        $horariosValidos[] = ($horarios->turnoMediodia == 1) ? "Mediodia": null;
-        $horariosValidos[] = ($horarios->turnoVespertino == 1) ? "Vespertino": null;
-        $horariosValidos[] = ($horarios->turnoSabatino == 1) ? "Sabatino": null;
-        $horariosValidos[] = ($horarios->turnoTiempoCompleto == 1) ? "TC": null;
-        $horariosValidos[] = ($horarios->no_Aplica == 1) ? "No Aplica": null;
-
-        if(!in_array($request->horario_prest, $horariosValidos)){
-            return redirect()->route('admin.prestadores')->with('warning', 'El horario seleccionado no es válido');
-        }
         
         switch($request->tipo_prest){
             case "jefe area":
@@ -407,16 +409,47 @@ class AdminController extends Controller
             return redirect()->route('admin.prestadores')->with('error', 'Error al modificar, no tienes los permisos necesarios');
         }
         
-
         $id = DB::table('users')
             ->where('codigo', $request->codigo)
             ->value('id');
-            
         $modificar = DB::table('users')
-        ->where('id', $id)
-        ->update(['horario'=>$request->horario_prest, 'tipo'=>$request->tipo_prest]);
+        ->where('id', $id);
 
-        return redirect()->route('admin.prestadores')->with('success', 'Modificado Correctamente');
+        if(Auth::user()->tipo == "jefe sede"){
+            $request->validate(
+                ['area_edit' => 'required',
+                'horario' => 'required',
+                'tipo' => 'required'],
+                ['area_edit.required' => "Debe especificar un área de trabajo",
+                'horario.required' => "Debe especificar un horario"]
+                
+            );
+            $modificar->update(['area' => json_decode($request->area_edit)->id,'horario'=>$request->horario_prest, 'tipo'=>$request->tipo_prest]);
+        }else if(Auth::user()->tipo == "Superadmin"){
+            $request->validate(
+                ['area_edit' => 'required',
+                'horario' => 'required',
+                'tipo' => 'required',
+                'sede_edit' => 'required'],
+                ['area_edit.required' => "Debe especificar un área de trabajo",
+                'sede_edit.required' => "Debe especificar una sede",
+                'horario.required' => "Debe especificar un horario",
+                ]
+            );
+            $modificar->update(['sede'=> $request->sede_edit, 'area' => json_decode($request->area_edit)->id,
+            'horario'=>$request->horario_prest, 'tipo'=>$request->tipo_prest]);
+        }else{
+            $request->validate(
+                [
+                'horario' => 'required',
+                'tipo' => 'required'
+                ],
+                [
+                'horario.required' => "Debe especificar un horario",]
+            );
+            $modificar->update(['horario'=>$request->horario_prest, 'tipo'=>$request->tipo_prest]);
+        }
+        return redirect()->route('admin.general',['tab' => 'p'])->with('success', 'Modificado Correctamente');
         
     }
 
@@ -1167,7 +1200,6 @@ class AdminController extends Controller
         return  $turno = DB::table('areas')
             ->where('id', $id)
             ->get();
-            dd($turno);
     }
 
     public function filtroEditArea($id){ //Para cambio de nombre en area
@@ -1181,6 +1213,18 @@ class AdminController extends Controller
         return  $areas = DB::table('areas')
             ->where('id_sede', $id)
             ->get();
+    }
+
+    public function obtenerHorarios($id){
+        $horarios = DB::table('areas')->where('id', $id)->first();
+        $horariosValidos = [];
+        $horariosValidos[] = ($horarios->turnoMatutino == 1) ? "Matutino": null;
+        $horariosValidos[] = ($horarios->turnoMediodia == 1) ? "Mediodia": null;
+        $horariosValidos[] = ($horarios->turnoVespertino == 1) ? "Vespertino": null;
+        $horariosValidos[] = ($horarios->turnoSabatino == 1) ? "Sabatino": null;
+        $horariosValidos[] = ($horarios->turnoTiempoCompleto == 1) ? "TC": null;
+        $horariosValidos[] = ($horarios->no_Aplica == 1) ? "No Aplica": null;
+        return $horariosValidos;
     }
 
     //IMPRESORAS

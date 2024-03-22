@@ -133,6 +133,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     Route::get('/admin/administradores', 'administradores')->name('administradores');
                     Route::get('/admin/administradores', 'administradores')->name('administradores');
                     Route::get('/admin/admin_prestadores_terminados','admin_prestadores_terminados')->name('admin_prestadores_terminados');
+                    Route::get('admin/obtenerHorarios/{id}','obtenerHorarios')->name('obtenerHorarios');
                     //ADMINISTRACION DE PREMIOS
                     Route::get('/admin/premios', 'premios')->name('premios');
                     Route::post('admin/g_premio', 'guardar_premio')->name('guardar_premio');

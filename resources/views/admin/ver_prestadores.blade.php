@@ -227,13 +227,14 @@
                         field: "carrera",
                         sorter: "string",
                       
-                    },{
-                        title: "Modificar",
-                        field: "datos",
-                        headerTooltip: "Tras seleccionar el cambio de tipo usuario o turno, presiona este boton para guardar los cambios. Nota: Si cambias al prestador a un horario que no corresponde con su area de trabajo, no se realizará el cambio",
-                        formatter: customButtonFormatter, 
+                    },//{
+                    //     title: "Modificar",
+                    //     field: "datos",
+                    //     headerTooltip: "Tras seleccionar el cambio de tipo usuario o turno, presiona este boton para guardar los cambios. Nota: Si cambias al prestador a un horario que no corresponde con su area de trabajo, no se realizará el cambio",
+                    //     formatter: customButtonFormatter, 
                       
-                    }, {
+                    // }
+                    , {
                         title: "Desactivar",
                         field: "id",
                         width: 135,
@@ -466,6 +467,7 @@
                         (row.apellido && row.apellido.toLowerCase().includes(searchValue)) || 
                         (row.correo && row.correo.toLowerCase().includes(searchValue));
                 });
+            
             }
 
             document.getElementById("searchInput").addEventListener("input", function(e) {
