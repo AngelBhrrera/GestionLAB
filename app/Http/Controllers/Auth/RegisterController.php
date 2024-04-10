@@ -135,10 +135,8 @@ class RegisterController extends Controller
         ], $customMessages, $customAttributes);
 
         if ($validator->fails()) {
-           
             session()->flash('alert-type', 'error');
             session()->flash('alert-message', 'Error en la validación: ' . $validator->errors()->first());
-
         }
     
         return $validator;

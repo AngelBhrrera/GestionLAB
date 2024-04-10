@@ -406,28 +406,41 @@ class PrestadorController extends Controller
             ->select('id_proyecto')
             ->where('id_prestador', auth()->user()->id)
             ->get();
-        $proyecto=[];
-        $prestadores=[];
-        $actividades=[];
-        
-        foreach($id as $id_proyecto){
-            $proyecto[]= DB::table('proyectos')
-            ->select('titulo', 'turno')
-            ->where('id',$id_proyecto->id_proyecto)
-            ->get();
-            
-            $prestadores[] = DB::table('proyectos_prestadores')
+    
+        $proyecto = [];
+        $prestadores = [];
+        $actividades = [];
+    
+        foreach ($id as $id_proyecto) {
+            $proyectoQuery = DB::table('proyectos')
+                ->select('titulo', 'turno')
+                ->where('id', $id_proyecto->id_proyecto)
+                ->get();
+    
+            if (!empty($proyectoQuery)) {
+                $proyecto[] = $proyectoQuery;
+            }
+    
+            $prestadoresQuery = DB::table('proyectos_prestadores')
                 ->select('id_prestador', 'name', 'apellido', 'correo', 'telefono')
                 ->where('id_proyecto', $id_proyecto->id_proyecto)
-                ->join('users', 'id_prestador','=','users.id')
+                ->join('users', 'id_prestador', '=', 'users.id')
                 ->get();
-            
-            $actividades[] = DB::table('seguimiento_actividades')
-                ->select('actividad_id','actividad', 'estado', 'prestador')
+    
+            if (!empty($prestadoresQuery)) {
+                $prestadores[] = $prestadoresQuery;
+            }
+    
+            $actividadesQuery = DB::table('seguimiento_actividades')
+                ->select('actividad_id', 'actividad', 'estado', 'prestador')
                 ->where('id_proyecto', $id_proyecto->id_proyecto)
                 ->get();
+    
+            if (!empty($actividadesQuery)) {
+                $actividades[] = $actividadesQuery;
+            }
         }
-        
+    
         return view('/prestador/mi_proyecto_prestador', compact('prestadores', 'actividades', 'proyecto'));
     }
 
