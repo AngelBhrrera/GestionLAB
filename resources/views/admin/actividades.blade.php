@@ -28,7 +28,7 @@
             <a class="nav-link active" data-toggle="tab" href="#cact">Registrar Nueva Actividad</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#vacts">Ver Todas las Actividades Creadas en el Area</a>
+            <a class="nav-link" data-toggle="tab" href="#vacts">Ver Todas las Actividades en el Area</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#aactp">Asignar Actividades a Prestador</a>
@@ -76,7 +76,7 @@
                         <div class="form-group row">
                             <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Categoría</label>
                             <div class="col-md-6">
-                                <select class="form control" id="tipo_categoriaC" name="tipo_categoria" required onchange="filtroSC()">
+                                <select class="form-control" id="tipo_categoriaC" name="tipo_categoria" required onchange="filtroSC()">
                                     <option value="">Selecciona una categoría</option>
                                     @foreach ($categorias as $categoria)
                                         <option @selected(old('tipo_categoria')== {{$categoria->id}}) value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
@@ -88,7 +88,7 @@
                         <div class="form-group row">
                             <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Subcategoría</label>
                             <div class="col-md-6">
-                                <select class="form control" id="tipo_subcategoriaC" name="tipo_subcategoria">
+                                <select class="form-control" id="tipo_subcategoriaC" name="tipo_subcategoria">
                                     <option value="">Selecciona una subcategoría</option>
                                     @foreach ($subcategorias as $subcategoria)
                                     <option @selected(old('tipo_subcategoria')== {{$subcategoria->id}}) value="{{ $subcategoria->id }}">{{ $subcategoria->nombre }}</option>
@@ -147,8 +147,8 @@
                         <div class="form-group row">
                             <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Tiempo estimado (TEC)</label>
                                 <div class="col-md-6">
-                                        <input name="horas" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" required value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
-                                        <input name="minutos" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" required value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
+                                        <input name="horas" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" value="0" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
+                                        <input name="minutos" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" value="0" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
                                 </div>
                                 @error('horas')
                                     <strong>{{$message}}</strong>
@@ -156,19 +156,22 @@
                                 @error('minutos')
                                     <strong>{{$message}}</strong>
                                 @enderror
-                                <br>
-                                <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
+                            <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
                         </div>
+                        <br>
 
                         <div class="form-group row">
                             <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Experiencia</label>
-                                <div class="col-md-6">
-                                    <input name="exp" type="number" class="form-control sm:w-56" min="5" max="100" value="{{old('exp')}}" required>
-                        
-                                </div>
-                                <small id="Help" class="form-text text-muted">Ingresa la cantidad de experiencia que puede ganar el prestador en caso de un trabajo óptimo</small>
+                            <div class="col-md-6">
+                                <select name="exp" class="form-control sm:w-56" required>
+                                    <option value="" disabled selected>Ingresa la dificultad de la actividad</option>
+                                    <option value="5">Fácil</option>
+                                    <option value="20">Normal</option>
+                                    <option value="40">Difícil</option>
+                                </select>
+                            </div>
+                            <small id="Help" class="form-text text-muted">Ingresa la cantidad de experiencia que puede ganar el prestador en caso de un trabajo óptimo</small>
                         </div>
-
 
                         <div class="col-md-12 text-right">
                             <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits ">Crear</button>

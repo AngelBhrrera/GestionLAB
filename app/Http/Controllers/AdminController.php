@@ -162,7 +162,7 @@ class AdminController extends Controller
 
     public function general()
     {
-
+        
         $dataP = DB::table('solo_prestadores');
         $dataA = DB::table('solo_admins');
         $data = DB::table('users')
@@ -721,58 +721,64 @@ class AdminController extends Controller
     
     public function make_act(Request $request) {
 
-        $request->validate([
-            'nombre' => 'string|max:255|unique:actividades,titulo',
-            'tipo' => 'integer',
-            'recursos' => 'string', 
-            'descripcion' => 'string|max:500',
-            'objetivos' => 'string', 
-            'exp' => 'integer|min:5|max:100',
-            'horas' => [
-                'integer',
-                function ($attribute, $value, $fail) use ($request) {
-                    $minutos = $request->input('minutos');
-                    if ($value == 0 && $minutos == 0) {
-                        $fail('Las horas y los minutos no pueden ser ambos 0.');
+        try{
+            
+            $request->validate([
+                'nombre' => 'string|max:255|unique:actividades,titulo',
+                'tipo' => 'integer',
+                'recursos' => 'string', 
+                'descripcion' => 'string|max:500',
+                'objetivos' => 'string', 
+                'exp' => 'integer|min:5|max:100',
+                'horas' => [
+                    'integer',
+                    function ($attribute, $value, $fail) use ($request) {
+                        $minutos = $request->input('minutos');
+                        if ($value == 0 && $minutos == 0) {
+                            $fail('Las horas y los minutos no pueden ser ambos 0.');
+                        }
                     }
-                }
-            ],
-            'minutos' => [
-                'integer',
-                function ($attribute, $value, $fail) use ($request) {
-                    $horas = $request->input('horas');
-                    if ($value == 0 && $horas == 0) {
-                        $fail('Las horas y los minutos no pueden ser ambos 0.');
+                ],
+                'minutos' => [
+                    'integer',
+                    function ($attribute, $value, $fail) use ($request) {
+                        $horas = $request->input('horas');
+                        if ($value == 0 && $horas == 0) {
+                            $fail('Las horas y los minutos no pueden ser ambos 0.');
+                        }
                     }
-                }
-            ]
-        ]);
+                ]
+            ]);
 
-        $subcategoria = $request->input('tipo_subcategoria');
-        if($subcategoria == '')
-            $subcategoria = null;
-        $horas = $request->input('horas')*60;
-        $minutos = $request->input('minutos');
-        $tec = $horas + $minutos;
-        if( $request->input('tipo_actividad') != 'generica'){
-            $tipo = auth()->user()->sede;
-        }else{
-            $tipo = 0;
+            $subcategoria = $request->input('tipo_subcategoria');
+            if($subcategoria == '')
+                $subcategoria = null;
+            $horas = $request->input('horas')*60;
+            $minutos = $request->input('minutos');
+            $tec = $horas + $minutos;
+            if( $request->input('tipo_actividad') != 'generica'){
+                $tipo = auth()->user()->sede;
+            }else{
+                $tipo = 0;
+            }
+        
+            DB::table('actividades')->insert([
+        
+                'titulo' =>$request->input('nombre'),
+                'id_categoria' =>  $request->input('tipo_categoria'),
+                'id_subcategoria' => $subcategoria,
+                'tipo' => $tipo,
+                'recursos' => $request->input('recursos'),
+                'descripcion' =>$request->input('descripcion'),
+                'exp_ref' =>$request->input('exp'),
+                'objetivos' => $request->input('resultados'),
+                'TEC' => $tec,]);
+        
+            return redirect()->back()->with('success', 'Actividad creada correctamente');
+        }catch (\Exception $e) {
+           
+            return redirect()->back()->with('error', 'Error al crear la actividad: ' . $e->getMessage());
         }
-    
-        DB::table('actividades')->insert([
-    
-            'titulo' =>$request->input('nombre'),
-            'id_categoria' =>  $request->input('tipo_categoria'),
-            'id_subcategoria' => $subcategoria,
-            'tipo' => $tipo,
-            'recursos' => $request->input('recursos'),
-            'descripcion' =>$request->input('descripcion'),
-            'exp_ref' =>$request->input('exp'),
-            'objetivos' => $request->input('resultados'),
-            'TEC' => $tec,]);
-    
-        return redirect()->back();
     }
 
     public function asign_act(){

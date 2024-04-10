@@ -100,7 +100,7 @@
         <div class="tab-pane" id="a">
             <div class="card-header">
                 <h3 class="text-2xl font-medium leading-none mt-3 px-10 text-center mx-auto" style="padding-top: 20px; padding-bottom: 20px;"> 
-                Ver Todos lso Administradores</h3>
+                Ver Todos los Administradores</h3>
             </div>
             <div class="col-span-12 sm:col-span-4">
                 <div class="intro-y col-span-12 sm:col-span-6">
@@ -227,6 +227,7 @@
             var usersA = {!! $datosA !!};
             var usersP = {!! $datosP !!};
             var usersC = {!! $datosC !!};
+
 
             function createTabulatorInstance(selector, data, config) {
                 return new Tabulator(selector, {

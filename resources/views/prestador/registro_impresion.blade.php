@@ -56,9 +56,17 @@
                         </div>
 
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
-                            <label for="">Color</label>
-                            <input type="text"  class="form-control"
-                                name="color" id="color" value="{{old('color')}}" required>
+                            <label for="color">Color</label>
+                            <select name="color" id="color" class="form-control" required>
+                                <option value="" disabled selected>Selecciona un color</option>
+                                <option value="Negro">Negro</option>
+                                <option value="Blanco">Blanco</option>
+                                <option value="Azul">Azul</option>
+                                <option value="Amarillo">Amarillo</option>
+                                <option value="Rojo">Rojo</option>
+                                <option value="Verde">Verde</option>
+                                <option value="Dorado">Dorado</option>
+                            </select>
                         </div>
 
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
@@ -69,8 +77,10 @@
 
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
                             <label for="">Peso</label>
-                            <input  type="number" class="form-control" min="0"
+                            <input  type="number" class="form-control" 
                                 name="weight" id="weight" value="{{old('weight')}}" required>
+                            <small id="Help" class="form-text text-muted">Ingresa la cantidad en gramos, máximo dos decimales</small>
+
                         </div>
 
                         <div class="form-group row">

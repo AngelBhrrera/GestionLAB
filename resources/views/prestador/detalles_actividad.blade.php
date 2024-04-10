@@ -22,7 +22,15 @@
                 <h1 id="titulo_actividad">{{$detalle->titulo}}</h1>
                 <li id="categorias"><strong>Categoría:</strong> {{ $detalle->nombre_categoria }}</li>
                 <li id="categorias"><strong>Subcategoría:</strong> {{ $detalle->nombre_subcategoria }}</li>
-                <li id="categorias"><strong>Tipo:</strong> {{ $detalle->tipo }}</li>
+                <li id="categorias"><strong>Tipo:</strong>  
+                    @if($detalle->tipo == 1)
+                        Particular
+                    @elseif($detalle->tipo == 0)
+                        Genérica
+                    @else
+                        No especificado
+                    @endif
+                </li>
                 <li id="categorias"><strong>Descripción:</strong> {{ $detalle->descripcion }}</li>
                 <li id="categorias"><strong>Objetivos:</strong>
                     <ul>
