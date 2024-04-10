@@ -13,6 +13,7 @@ use DateTime;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\Rule;
 
 /*
 use Illuminate\Support\Facades\Hash;
@@ -201,7 +202,8 @@ class AdminController extends Controller
         }
         
         $data = $data->get();
-        $dataP = $dataP->get(); 
+        $dataC = DB::table('solo_prestadores')->where('tipo','coordinador')->get();
+        $dataP = $dataP->get();
         $dataA = $dataA->get();
         $dataV = DB::table('solo_clientes')
             ->get();
@@ -211,7 +213,8 @@ class AdminController extends Controller
             'horariosValidos' => $horariosValidos, 'areas' => $areas, 'sedes' => $sedes,
             'datosA' => json_encode($dataA),
             'datosV' => json_encode($dataV),
-            'datosP' => json_encode($dataP)]);
+            'datosP' => json_encode($dataP),
+            'datosC' => json_encode($dataC),]);
     }
 
     public function administradores()
@@ -409,47 +412,59 @@ class AdminController extends Controller
             return redirect()->route('admin.prestadores')->with('error', 'Error al modificar, no tienes los permisos necesarios');
         }
         
-        $id = DB::table('users')
-            ->where('codigo', $request->codigo)
-            ->value('id');
+        $id = $request->id_prest;
         $modificar = DB::table('users')
         ->where('id', $id);
 
         if(Auth::user()->tipo == "jefe sede"){
             $request->validate(
                 ['area_edit' => 'required',
-                'horario' => 'required',
-                'tipo' => 'required'],
+                'horario_prest' => 'required',
+                'tipo_prest' => 'required'],
                 ['area_edit.required' => "Debe especificar un área de trabajo",
-                'horario.required' => "Debe especificar un horario"]
+                'horario_prest.required' => "Debe especificar un horario"]
                 
             );
             $modificar->update(['area' => json_decode($request->area_edit)->id,'horario'=>$request->horario_prest, 'tipo'=>$request->tipo_prest]);
         }else if(Auth::user()->tipo == "Superadmin"){
             $request->validate(
-                ['area_edit' => 'required',
-                'horario' => 'required',
-                'tipo' => 'required',
-                'sede_edit' => 'required'],
-                ['area_edit.required' => "Debe especificar un área de trabajo",
+                ['nombre' => 'required',
+                'apellido' => 'required',
+                'codigo' => ['required', Rule::unique('users')->ignore($id, 'id')],
+                'correo'=>['required', Rule::unique('users')->ignore($id)],
+                'area_edit' => 'required',
+                'horario_prest' => 'required',
+                'tipo_prest' => 'required',
+                'sede_edit' => 'required',
+                ],
+                [
+                'nombre.required' => 'Nombre es obligatorio',
+                'apellido.required' => 'Apellido es obligatorio',
+                'codigo.required' => 'Código es obligatorio',
+                'correo.required' => 'El correo es obligatorio',
+                'codigo.unique' => 'Código ya existente',
+                'correo.unique' => 'Correo dubplicado', 
+                'area_edit.required' => "Debe especificar un área de trabajo",
                 'sede_edit.required' => "Debe especificar una sede",
-                'horario.required' => "Debe especificar un horario",
+                'horario_prest.required' => "Debe especificar un horario",
                 ]
             );
-            $modificar->update(['sede'=> $request->sede_edit, 'area' => json_decode($request->area_edit)->id,
+            $modificar->update(['name'=>$request->nombre, 'apellido'=>$request->apellido, 
+            'codigo'=>$request->codigo, 'correo' => $request->correo,
+            'sede'=> $request->sede_edit, 'area' => json_decode($request->area_edit)->id,
             'horario'=>$request->horario_prest, 'tipo'=>$request->tipo_prest]);
         }else{
             $request->validate(
                 [
-                'horario' => 'required',
-                'tipo' => 'required'
+                'horario_prest' => 'required',
+                'tipo_prest' => 'required'
                 ],
                 [
-                'horario.required' => "Debe especificar un horario",]
+                'horario_prest.required' => "Debe especificar un horario",]
             );
             $modificar->update(['horario'=>$request->horario_prest, 'tipo'=>$request->tipo_prest]);
         }
-        return redirect()->route('admin.general',['tab' => 'p'])->with('success', 'Modificado Correctamente');
+        return redirect()->route('admin.general')->with('success', 'Modificado Correctamente');
         
     }
 

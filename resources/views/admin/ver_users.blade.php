@@ -40,9 +40,25 @@
             @error('area_edit')
                 <div class="alert mb-5 alert-danger w-full px-4">{{$message}}</div>
             @enderror
-            @error('horario')
+            @error('horario_prest')
                 <div class="alert mb-5 alert-danger w-full px-4">{{$message}}</div>
             @enderror
+            @error('correo')
+                <div class="alert mb-5 alert-danger w-full px-4">{{$message}}</div>
+            @enderror
+            @error('codigo')
+                <div class="alert mb-5 alert-danger w-full px-4">{{$message}}</div>
+            @enderror
+
+            {{--@if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }} </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif--}}
                 </div>
         </div>
     </div>
@@ -56,6 +72,9 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#p">Prestadores</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#c">Coordinadores</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#v">Clientes - Visitantes</a>
@@ -100,6 +119,17 @@
                 </div>
             </div>
         </div>
+        <div class="tab-pane" id="c">
+            <div class="card-header">
+                <h3 class="text-2xl font-medium leading-none mt-3 px-10 text-center mx-auto" style="padding-top: 20px; padding-bottom: 20px;"> 
+                Ver Todos los Coordinadores</h3>
+            </div>
+            <div class="col-span-12 sm:col-span-4">
+                <div class="intro-y col-span-12 sm:col-span-6">
+                    <div id="allC"></div>
+                </div>
+            </div>
+        </div>
         <div class="tab-pane" id="v">
             <div class="card-header">
                 <h3 class="text-2xl font-medium leading-none mt-3 px-10 text-center mx-auto" style="padding-top: 20px; padding-bottom: 20px;"> 
@@ -119,20 +149,26 @@
                 <div class="modal-body px-5 py-10">
                     <div class="text-center">
                         <div class="mb-5"></div>
-                        <h2 class="text-2xl mt-5 font-small">Modificar</h2><br>
+                        <h2 class="text-2xl mt-5 font-small">Modificar usuario</h2><br>
                         <input type="hidden" value="" id="sede_user">
                         <input type="hidden" value="" id="area_user">
                         <input type="hidden" value="" id="horario">
-                        <label for="nombre">Nombre</label>
-                        <input id="nombre" readonly value="" type="text" class="form-control" name="nombre" placeholder="nombre" style="width: 200px">
-                        <br><label for="apellido">Apellido</label>
-                        <input id="apellido" readonly value="" type="text" class="form-control mt-5" name="apellido" placeholder="apellido" style="width: 200px">
-                        
                         
                         <form action="{{route('api.modificar_prestador')}}" method="POST">
                             @csrf
-                            <label for="codigo">Código</label>
-                            <input id="codigo" readonly value="" type="text" class="form-control mt-5" name="codigo" placeholder="codigo" style="width: 200px">
+                            <input type="hidden" value="" id="id_prest" name="id_prest">
+
+                            <label for="nombre">Nombre</label>
+                            <input id="nombre" @if(Auth::user()->tipo != 'Superadmin') readonly @endif value="" type="text" class="form-control" name="nombre" placeholder="nombre" style="width: 200px">
+                            
+                            <br><label for="apellido">Apellido</label>
+                            <input id="apellido" @if(Auth::user()->tipo != 'Superadmin') readonly @endif  value="" type="text" class="form-control mt-5" name="apellido" placeholder="apellido" style="width: 200px">
+                            
+                            <br><label for="codigo">Código</label>
+                            <input id="codigo" @if(Auth::user()->tipo != 'Superadmin') readonly @endif  value="" type="text" class="form-control mt-5" name="codigo" placeholder="codigo" style="width: 200px">
+                            
+                            <br><label for="correo">Correo</label>
+                            <input type="email" id="correo" @if(Auth::user()->tipo != 'Superadmin') readonly @endif  value="" class="form-control mt-5" name="correo" placeholder="correo" style="width: 200px" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,5}">
                             <div class="intro-y col-span-12 sm:col-span-6" id="divCarrera">
                                 <br>
                                 <label class="mr-5" for="tipo_prest">Tipo</label>
@@ -190,6 +226,7 @@
             var usersV = {!! $datosV !!};
             var usersA = {!! $datosA !!};
             var usersP = {!! $datosP !!};
+            var usersC = {!! $datosC !!};
 
             function createTabulatorInstance(selector, data, config) {
                 return new Tabulator(selector, {
@@ -347,7 +384,14 @@
 
             var table4 = createTabulatorInstance("#allP", usersP, {
                 ...commonConfig,
-                columns: [{
+                columns: [
+                    {
+                        title: "ID",
+                        field: "id",
+                        sorter: "string",
+                        visible: false,
+                      
+                    },{
                         title: "Nombre",
                         field: "name",
                         sorter: "string",
@@ -440,6 +484,44 @@
                 ],
             });
 
+            var table5 = createTabulatorInstance("#allC", usersC, {
+                ...commonConfig,
+                groupBy: "nombre_sede",
+                columns: [{
+                        title: "Nombre",
+                        field: "name",
+                        sorter: "string",
+                    }, {
+                        title: "Apellido",
+                        field: "apellido",
+                        sorter: "string",
+                      
+                    }, {
+                        title: "Correo",
+                        field: "correo",
+                        sorter: "string",                 
+                    }, {
+                        title: "Codigo",
+                        field: "codigo",
+                        sorter: "number",
+                    },  {
+                        title: "Horario",
+                        field: "horario",
+                        sorter: "string",
+                    }, {
+                        title: "Area",
+                        field: "nombre_area",
+                        sorter: "string",
+                    }, {
+                        title: "Modificar",
+                        field: "datos",
+                        headerTooltip: "Tras seleccionar el cambio de tipo usuario o turno, presiona este boton para guardar los cambios. Nota: Si cambias al prestador a un horario que no corresponde con su area de trabajo, no se realizará el cambio",
+                        formatter: customButtonFormatter, 
+                      
+                    },
+                ],
+            });
+
             var data;
             function fetchData(url, method, callback) {
                 const token = document.head.querySelector('meta[name="csrf-token"]').content;
@@ -481,9 +563,13 @@
                 sedeId = document.getElementById('sede_user');
                 areaId = document.getElementById('area_user');
                 horario_prest = document.getElementById('horario');
+                id_prest = document.getElementById('id_prest');
+                correo = document.getElementById('correo');
                 sedeId.value = data.id_sede;
                 areaId.value = data.id_area;
                 horario_prest.value = data.horario;
+                id_prest.value = data.id;
+                correo.value = data.correo;
                 const tipo_prest = document.getElementById('prestador');//Opción Prestador
                 const tipo_coord = document.getElementById('coordinador');//Opción coordinador
                 const tipo_vol = document.getElementById('voluntario');//Opción Voluntario  
