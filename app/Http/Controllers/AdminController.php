@@ -1875,8 +1875,7 @@ class AdminController extends Controller
         }
         $prestadores = $prestadores->get();
         #agregar condicion para filtrar los premios por visibilidad <- falta
-        
-        
+   
         return view("admin.premios", [
             'prestadores' => $prestadores,
             'premios' => $premios,

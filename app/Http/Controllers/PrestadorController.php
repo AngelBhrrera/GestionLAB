@@ -1147,7 +1147,9 @@ class PrestadorController extends Controller
 
     // PREMIOS
      public function premios_pull(){
-        $premios = DB::Select("SELECT * FROM premios");
+        $premios = DB::table("premios")
+        ->where("Visibilidad", 0)
+        ->get();
         return view("prestador.premios_pull", ["datosJson" => json_encode($premios)]);
      }
 
