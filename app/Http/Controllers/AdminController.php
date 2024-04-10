@@ -161,7 +161,7 @@ class AdminController extends Controller
 
     public function general()
     {
-
+        
         $dataP = DB::table('solo_prestadores');
         $dataA = DB::table('solo_admins');
         $data = DB::table('users')
@@ -186,6 +186,7 @@ class AdminController extends Controller
         }
 
         $data = $data->get();
+        $dataC = $dataP->where('tipo', 'coordinador')->get();
         $dataP = $dataP->get(); 
         $dataA = $dataA->get();
         $dataV = DB::table('solo_clientes')
@@ -194,9 +195,8 @@ class AdminController extends Controller
         $horariosValidos = ["Matutino", "Vespertino", "Mediodia", "Sabatino", "TC", "No Aplica"];
 
         return view('admin/ver_users', ['datos' => json_encode($data), 'horariosValidos' => $horariosValidos, 
-            'datosA' => json_encode($dataA),
-            'datosV' => json_encode($dataV),
-            'datosP' => json_encode($dataP)]);
+            'datosA' => json_encode($dataA),   'datosC' => json_encode($dataC),
+            'datosV' => json_encode($dataV),   'datosP' => json_encode($dataP)]);
     }
 
     public function administradores()

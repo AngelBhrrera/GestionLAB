@@ -49,6 +49,9 @@
             <a class="nav-link" data-toggle="tab" href="#p">Prestadores</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#c">Coordinadores</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#v">Clientes - Visitantes</a>
         </li>
     </ul>
@@ -86,7 +89,7 @@
         <div class="tab-pane" id="a">
             <div class="card-header">
                 <h3 class="text-2xl font-medium leading-none mt-3 px-10 text-center mx-auto" style="padding-top: 20px; padding-bottom: 20px;"> 
-                Ver Todos lso Administradores</h3>
+                Ver Todos los Administradores</h3>
             </div>
             <div class="col-span-12 sm:col-span-4">
                 <div class="intro-y col-span-12 sm:col-span-6">
@@ -102,6 +105,17 @@
             <div class="col-span-12 sm:col-span-4">
                 <div class="intro-y col-span-12 sm:col-span-6">
                     <div id="allP"></div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="c">
+            <div class="card-header">
+                <h3 class="text-2xl font-medium leading-none mt-3 px-10 text-center mx-auto" style="padding-top: 20px; padding-bottom: 20px;"> 
+                Ver Todos los Coordinadores</h3>
+            </div>
+            <div class="col-span-12 sm:col-span-4">
+                <div class="intro-y col-span-12 sm:col-span-6">
+                    <div id="allC"></div>
                 </div>
             </div>
         </div>
@@ -178,6 +192,8 @@
             var usersV = {!! $datosV !!};
             var usersA = {!! $datosA !!};
             var usersP = {!! $datosP !!};
+            var usersC = {!! $datosC !!};
+
 
             function createTabulatorInstance(selector, data, config) {
                 return new Tabulator(selector, {
@@ -399,6 +415,44 @@
                             });
                             return button;
                         }, 
+                      
+                    },
+                ],
+            });
+
+            var table5 = createTabulatorInstance("#allC", usersC, {
+                ...commonConfig,
+                groupBy: "nombre_sede",
+                columns: [{
+                        title: "Nombre",
+                        field: "name",
+                        sorter: "string",
+                    }, {
+                        title: "Apellido",
+                        field: "apellido",
+                        sorter: "string",
+                      
+                    }, {
+                        title: "Correo",
+                        field: "correo",
+                        sorter: "string",                 
+                    }, {
+                        title: "Codigo",
+                        field: "codigo",
+                        sorter: "number",
+                    },  {
+                        title: "Horario",
+                        field: "horario",
+                        sorter: "string",
+                    }, {
+                        title: "Area",
+                        field: "nombre_area",
+                        sorter: "string",
+                    }, {
+                        title: "Modificar",
+                        field: "datos",
+                        headerTooltip: "Tras seleccionar el cambio de tipo usuario o turno, presiona este boton para guardar los cambios. Nota: Si cambias al prestador a un horario que no corresponde con su area de trabajo, no se realizará el cambio",
+                        formatter: customButtonFormatter, 
                       
                     },
                 ],

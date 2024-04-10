@@ -28,7 +28,7 @@
             <a class="nav-link active" data-toggle="tab" href="#cact">Registrar Nueva Actividad</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#vacts">Ver Todas las Actividades Creadas en el Area</a>
+            <a class="nav-link" data-toggle="tab" href="#vacts">Ver Todas las Actividades en el Area</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#aactp">Asignar Actividades a Prestador</a>
@@ -76,7 +76,7 @@
                         <div class="form-group row">
                             <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Categoría</label>
                             <div class="col-md-6">
-                                <select class="form control" id="tipo_categoriaC" name="tipo_categoria" required onchange="filtroSC()">
+                                <select class="form-control" id="tipo_categoriaC" name="tipo_categoria" required onchange="filtroSC()">
                                     <option value="">Selecciona una categoría</option>
                                     @foreach ($categorias as $categoria)
                                         <option @selected(old('tipo_categoria')== {{$categoria->id}}) value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
@@ -88,7 +88,7 @@
                         <div class="form-group row">
                             <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Subcategoría</label>
                             <div class="col-md-6">
-                                <select class="form control" id="tipo_subcategoriaC" name="tipo_subcategoria">
+                                <select class="form-control" id="tipo_subcategoriaC" name="tipo_subcategoria">
                                     <option value="">Selecciona una subcategoría</option>
                                     @foreach ($subcategorias as $subcategoria)
                                     <option @selected(old('tipo_subcategoria')== {{$subcategoria->id}}) value="{{ $subcategoria->id }}">{{ $subcategoria->nombre }}</option>
