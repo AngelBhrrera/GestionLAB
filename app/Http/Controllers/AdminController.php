@@ -467,6 +467,22 @@ class AdminController extends Controller
         return redirect()->route('admin.general')->with('success', 'Modificado Correctamente');
         
     }
+    public function modificar_password(Request $request){
+        $request->validate(
+            ['nuevaPassword' => 'required',
+            'confirmarPassword' => 'required'],
+            ['nuevaPassword.required' => 'Debe introducir una nueva contraseña',
+            'confirmarPassword.required' => 'Debe confirmar la contraseña']
+        );
+
+        if($request->nuevaPassword != $request->confirmarPassword){
+            return redirect()->route('admin.general')->with('warning', "Las contraseñas no coinciden");
+        }
+
+        $modificar = DB::table('users')->where('id', $request->id_prest)->update(['password' => Hash::make($request->nuevaPassword)]);
+
+        return redirect()->route('admin.general')->with('success', "Contraseña modificada");
+    }
 
     // ACTIVIDADES Y PROYECTOS
 

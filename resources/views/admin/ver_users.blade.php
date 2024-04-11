@@ -22,7 +22,17 @@
 @section('subcontent')
 
 <div class="container" style="padding-top: 20px; padding-left: 20px;">
-
+    
+        <?php
+            if (Auth::user()->tipo == "Superadmin"){
+                $cambioContraseña = true;
+            }  
+            else{
+                $cambioContraseña = false;
+            }
+            
+        ?>
+    
     <div class="grid grid-cols-12 gap-6 mt-5">
         <div class="intro-y ml-5 col-span-12 lg:col-span-6 flex justify-center" id="alerta">
             @if (session('success'))
@@ -49,9 +59,15 @@
             @error('codigo')
                 <div class="alert mb-5 alert-danger w-full px-4">{{$message}}</div>
             @enderror
+            @error('nuevaPassword')
+                <div class="alert mb-5 alert-danger w-full px-4">{{$message}}</div>
+            @enderror
+            @error('confirmarPassword')
+                <div class="alert mb-5 alert-danger w-full px-4">{{$message}}</div>
+            @enderror
 
             {{--@if ($errors->any())
-                <div class="alert alert-danger">
+                <div class="alert mb-5 alert-danger w-full px-4">
                     <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }} </li>
@@ -143,7 +159,7 @@
         </div>
     </div>
     <!-- BEGIN: Modal Content -->
-    <div id="static-backdrop-modal-preview" id="editarFestivo"class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div id="static-backdrop-modal-preview" id="editarFestivo" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body px-5 py-10">
@@ -217,6 +233,42 @@
             </div>
         </div>
     </div>
+    <!-- BEGIN: Modal Content -->
+    <div id="static-backdrop-modal-preview2" id="editarFestivo" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body px-5 py-10">
+                    <div class="text-center">
+                        <div class="mb-5"></div>
+                        <h2 class="text-2xl mt-5 font-small">Cambiar contraseña</h2>
+                        
+                        <form action="{{route('api.modificar_password')}}" onsubmit="return confirmarCambio()" method="POST">
+                            @csrf
+                            <input type="hidden" value="" id="id_prest_modal2" name="id_prest">
+                            <h1 class="text-xl mt-5 font-small">Usuario</h1><br>
+                            <label for="nombre">Nombre</label>
+                            <input id="nombre_modal2" readonly value="" type="text" class="form-control" name="nombre" placeholder="nombre" style="width: 200px">
+                            
+                            <br><label for="apellido">Apellido</label>
+                            <input id="apellido_modal2" readonly  value="" type="text" class="form-control mt-5" name="apellido" placeholder="apellido" style="width: 200px">
+                            
+                            <br><label for="codigo">Código</label>
+                            <input id="codigo_modal2" readonly value="" type="text" class="form-control mt-5" name="codigo" placeholder="codigo" style="width: 200px">
+                            
+                            <input required type="password" class="form-control mt-5" name="nuevaPassword" placeholder="Nueva contraseña*" style="width: 200px">
+                            <input required type="password" class="form-control mt-5" name="confirmarPassword" placeholder="Confirmar contraseña*" style="width: 200px">
+                            
+                            <br><br>
+                            <div class="text-center">
+                                <button type="button" data-tw-dismiss="modal" class="btn btn-danger w-24">Cancelar</button>
+                                <button type="submit" class="btn btn-primary w-24">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
    
 @endsection
 
@@ -227,6 +279,7 @@
             var usersA = {!! $datosA !!};
             var usersP = {!! $datosP !!};
             var usersC = {!! $datosC !!};
+            var mostrarBtn = @json($cambioContraseña);
 
 
             function createTabulatorInstance(selector, data, config) {
@@ -460,13 +513,45 @@
                         sorter: "string",
                       
                     }, {
-                        title: "Modificar",
+                        title: "Acciones",
                         field: "datos",
                         headerTooltip: "Tras seleccionar el cambio de tipo usuario o turno, presiona este boton para guardar los cambios. Nota: Si cambias al prestador a un horario que no corresponde con su area de trabajo, no se realizará el cambio",
                         formatter: customButtonFormatter, 
                       
                     },{
-                        title: "Desactivar",
+                        title: "",
+                        field: "datos",
+                        headerTooltip: "Cambio de contraseña para usuarios, sólo un superadmin tiene el permiso necesario",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            if(mostrarBtn){
+                                var div = document.createElement("div");
+                                div.classList.add("text-center");
+                                
+                                var a = document.createElement("a");
+                                a.href = "javascript:;";
+                                a.setAttribute("data-tw-toggle", "modal");
+                                a.setAttribute("data-tw-target", "#static-backdrop-modal-preview2");
+                                a.classList.add("btn", "btn-primary");
+                                a.textContent = "Cambiar contraseña";
+
+                                div.appendChild(a);
+                                a.addEventListener('click', function(){
+                                    
+                                    data = cell.getRow().getData();
+                                    document.getElementById('nombre_modal2').value = data.name;
+                                    document.getElementById('apellido_modal2').value = data.apellido;
+                                    document.getElementById('codigo_modal2').value = data.codigo;
+                                    id_prest = document.getElementById('id_prest_modal2');
+                                    id_prest.value = data.id;
+                                });
+                                return div;
+                            }
+                            return;
+                            
+                        },
+                      
+                    },{
+                        title: "",
                         field: "id",
                         width: 135,
                         formatter: function (cell, formatterParams, onRendered) {
@@ -514,10 +599,42 @@
                         field: "nombre_area",
                         sorter: "string",
                     }, {
-                        title: "Modificar",
+                        title: "Acciones",
                         field: "datos",
                         headerTooltip: "Tras seleccionar el cambio de tipo usuario o turno, presiona este boton para guardar los cambios. Nota: Si cambias al prestador a un horario que no corresponde con su area de trabajo, no se realizará el cambio",
-                        formatter: customButtonFormatter, 
+                        formatter: customButtonFormatter,
+                      
+                    },{
+                        title: "",
+                        field: "datos",
+                        headerTooltip: "Cambio de contraseña para usuarios, sólo un superadmin tiene el permiso necesario",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            if(mostrarBtn){
+                                var div = document.createElement("div");
+                                div.classList.add("text-center");
+                                
+                                var a = document.createElement("a");
+                                a.href = "javascript:;";
+                                a.setAttribute("data-tw-toggle", "modal");
+                                a.setAttribute("data-tw-target", "#static-backdrop-modal-preview2");
+                                a.classList.add("btn", "btn-primary");
+                                a.textContent = "Cambiar contraseña";
+
+                                div.appendChild(a);
+                                a.addEventListener('click', function(){
+                                    
+                                    data = cell.getRow().getData();
+                                    document.getElementById('nombre_modal2').value = data.name;
+                                    document.getElementById('apellido_modal2').value = data.apellido;
+                                    document.getElementById('codigo_modal2').value = data.codigo;
+                                    id_prest = document.getElementById('id_prest_modal2');
+                                    id_prest.value = data.id;
+                                });
+                                return div;
+                            }
+                            return ;
+                            
+                        },
                       
                     },
                 ],
@@ -597,28 +714,6 @@
                     default:
                         console.log("Opción no reconocida");
                 }
-
-                // switch(data.horario){
-                //     case "Matutino":
-                //         document.getElementById('Matutino').selected = true;
-                //         break;
-                //     case "Mediodia":
-                //         document.getElementById('Mediodia').selected = true;
-                //         break;
-                //     case "Vespertino":
-                //         document.getElementById('Vespertino').selected = true;
-                //         break;
-                //     case "Sabatino":
-                //         document.getElementById('Sabatino').selected = true;
-                //         break;
-                //     case "TC":
-                //         document.getElementById('TC').selected = true;
-                //         break;
-                //     default:
-                //         document.getElementById('No Aplica').selected = true;
-                //         break;
-                    
-                // }
 
                 var sede = document.getElementById(data.nombre_sede);
                 if(sede){
@@ -852,6 +947,17 @@
                     console.error('Error al cambiar de estado de impresion:', error);
                 });
             }
+
+        function confirmarCambio(){
+            const confirmar = confirm("¿Estás seguro de cambiar la contraseña?");
+
+            if(confirmar){
+                return true;
+            }else{
+                return false;
+            }
+
+        }
 
     </script>
 @endsection
