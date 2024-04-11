@@ -824,7 +824,9 @@
                 xhr.open('GET', 'filtroEditArea/' + sedeId.value);
                 xhr.send();
             }else{
-                selectArea.innerHTML = '<option id="default" value="null"> Selecciona un área de trabajo</option>';      
+                if(selectArea){
+                    selectArea.innerHTML = '<option id="default" value="null"> Selecciona un área de trabajo</option>';
+                }   
                 
                     var xhr = new XMLHttpRequest();
                     xhr.onreadystatechange = function() {

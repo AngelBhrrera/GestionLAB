@@ -431,7 +431,7 @@ class AdminController extends Controller
                 ['nombre' => 'required',
                 'apellido' => 'required',
                 'codigo' => ['required', Rule::unique('users')->ignore($id, 'id')],
-                'correo'=>['required', Rule::unique('users')->ignore($id)],
+                'correo'=>['required', Rule::unique('users')->ignore($id, 'id')],
                 'area_edit' => 'required',
                 'horario_prest' => 'required',
                 'tipo_prest' => 'required',
@@ -462,11 +462,19 @@ class AdminController extends Controller
                 [
                 'horario_prest.required' => "Debe especificar un horario",]
             );
+            
+            if(Auth::user()->tipo == "coordinador"){
+                $modificar = DB::table('users')
+                ->where('codigo', $request->codigo)
+                ->update(['horario'=>$request->horario_prest, 'tipo'=>$request->tipo_prest]);
+                return redirect()->route('admin.prestadores')->with('success', 'Modificado Correctamente');
+            }
             $modificar->update(['horario'=>$request->horario_prest, 'tipo'=>$request->tipo_prest]);
         }
         return redirect()->route('admin.general')->with('success', 'Modificado Correctamente');
         
     }
+
     public function modificar_password(Request $request){
         $request->validate(
             ['nuevaPassword' => 'required',
