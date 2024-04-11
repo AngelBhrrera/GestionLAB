@@ -165,7 +165,7 @@
                 <div class="modal-body px-5 py-10">
                     <div class="text-center">
                         <div class="mb-5"></div>
-                        <h2 class="text-2xl mt-5 font-small">Modificar usuario</h2><br>
+                        <h2 class="text-2xl mt-5 font-small">Modificar prestador</h2><br>
                         <input type="hidden" value="" id="sede_user">
                         <input type="hidden" value="" id="area_user">
                         <input type="hidden" value="" id="horario">
@@ -234,6 +234,48 @@
         </div>
     </div>
     <!-- BEGIN: Modal Content -->
+    <div id="static-2" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body px-5 py-10">
+                    <div class="text-center">
+                        <div class="mb-5"></div>
+                        <h2 class="text-2xl mt-5 font-small">Modificar usuario</h2><br>
+                        <input type="hidden" value="" id="sede_user">
+                        <input type="hidden" value="" id="area_user">
+                        <input type="hidden" value="" id="horario">
+                        
+                        <form action="{{route('api.modificar_prestador2')}}" method="POST">
+                            @csrf
+                            <input type="hidden" value="" id="id_prest2" name="id_prest">
+
+                            <label for="nombre">Nombre</label>
+                            <input id="nombre2" @if(Auth::user()->tipo != 'Superadmin') readonly @endif value="" type="text" class="form-control" name="nombre" placeholder="nombre" style="width: 200px">
+                            
+                            <br><label for="apellido">Apellido</label>
+                            <input id="apellido2" @if(Auth::user()->tipo != 'Superadmin') readonly @endif  value="" type="text" class="form-control mt-5" name="apellido" placeholder="apellido" style="width: 200px">
+                            
+                            <br><label for="codigo">Código</label>
+                            <input id="codigo2" @if(Auth::user()->tipo != 'Superadmin') readonly @endif  value="" type="text" class="form-control mt-5" name="codigo" placeholder="codigo" style="width: 200px">
+                            
+                            <br><label for="email">Correo</label>
+                            <input type="email" id="correo2" @if(Auth::user()->tipo != 'Superadmin') readonly @endif  value="" class="form-control mt-5" name="correo" placeholder="correo" style="width: 200px" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,5}">
+                            <div class="intro-y col-span-12 sm:col-span-6" id="divCarrera">
+
+                                <br><br>
+                                <div class="text-center">
+                                    <button type="button" data-tw-dismiss="modal" class="btn btn-danger w-24">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary w-24">Guardar</button>
+                                </div>
+                                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- BEGIN: Modal Content -->
     <div id="static-backdrop-modal-preview2" id="editarFestivo" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -252,8 +294,8 @@
                             <br><label for="apellido">Apellido</label>
                             <input id="apellido_modal2" readonly  value="" type="text" class="form-control mt-5" name="apellido" placeholder="apellido" style="width: 200px">
                             
-                            <br><label for="codigo">Código</label>
-                            <input id="codigo_modal2" readonly value="" type="text" class="form-control mt-5" name="codigo" placeholder="codigo" style="width: 200px">
+                            <br><label for="correo">Correo</label>
+                            <input id="correo_modal3" readonly value="" type="text" class="form-control mt-5" name="correo" placeholder="codigo" style="width: 200px">
                             
                             <input required type="password" class="form-control mt-5" name="nuevaPassword" placeholder="Nueva contraseña*" style="width: 200px">
                             <input required type="password" class="form-control mt-5" name="confirmarPassword" placeholder="Confirmar contraseña*" style="width: 200px">
@@ -339,7 +381,43 @@
                     },  {
                         title: "Contacto",
                         field: "telefono",
-                    }
+                    }, {
+                        title: "Acciones",
+                        field: "datos",
+                        headerTooltip: "Tras seleccionar el cambio de tipo usuario o turno, presiona este boton para guardar los cambios. Nota: Si cambias al prestador a un horario que no corresponde con su area de trabajo, no se realizará el cambio",
+                        formatter: customButtonFormatter2,  
+                    }, {
+                        title: "",
+                        field: "datos",
+                        headerTooltip: "Cambio de contraseña para usuarios, sólo un superadmin tiene el permiso necesario",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            if(mostrarBtn){
+                                var div = document.createElement("div");
+                                div.classList.add("text-center");
+                                
+                                var a = document.createElement("a");
+                                a.href = "javascript:;";
+                                a.setAttribute("data-tw-toggle", "modal");
+                                a.setAttribute("data-tw-target", "#static-backdrop-modal-preview2");
+                                a.classList.add("btn", "btn-primary");
+                                a.textContent = "Cambiar contraseña";
+
+                                div.appendChild(a);
+                                a.addEventListener('click', function(){
+                                    
+                                    data = cell.getRow().getData();
+                                    document.getElementById('nombre_modal2').value = data.name;
+                                    document.getElementById('apellido_modal2').value = data.apellido;
+                                    document.getElementById('correo_modal3').value = data.correo;
+                                    id_prest = document.getElementById('id_prest_modal2');
+                                    id_prest.value = data.id;
+                                });
+                                return div;
+                            }
+                            return;
+                            
+                        },
+                    },
                 ],
             });
 
@@ -432,12 +510,45 @@
                         title: "Horario",
                         field: "horario",
                         sorter: "string",
-                    }, 
+                    }, {
+                        title: "",
+                        field: "datos",
+                        headerTooltip: "Cambio de contraseña para usuarios, sólo un superadmin tiene el permiso necesario",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            if(mostrarBtn){
+                                var div = document.createElement("div");
+                                div.classList.add("text-center");
+                                
+                                var a = document.createElement("a");
+                                a.href = "javascript:;";
+                                a.setAttribute("data-tw-toggle", "modal");
+                                a.setAttribute("data-tw-target", "#static-backdrop-modal-preview2");
+                                a.classList.add("btn", "btn-primary");
+                                a.textContent = "Cambiar contraseña";
+
+                                div.appendChild(a);
+                                a.addEventListener('click', function(){
+                                    
+                                    data = cell.getRow().getData();
+                                    document.getElementById('nombre_modal2').value = data.name;
+                                    document.getElementById('apellido_modal2').value = data.apellido;
+                                    document.getElementById('correo_modal3').value = data.correo;
+                                    id_prest = document.getElementById('id_prest_modal2');
+                                    id_prest.value = data.id;
+                                });
+                                return div;
+                            }
+                            return;
+                            
+                        },
+                      
+                    },
                 ],
             });
 
             var table4 = createTabulatorInstance("#allP", usersP, {
                 ...commonConfig,
+                groupBy: "nombre_sede",
                 columns: [
                     {
                         title: "ID",
@@ -468,26 +579,18 @@
                         field: "codigo",
                         sorter: "number",
                       
-                    },
-                    {
+                    }, {
                         title: "ID sede",
                         field: "id_sede",
                         sorter: "string",
                         visible: false,
 
-                    },{
-                        title: "Sede",
-                        field: "nombre_sede",
-                        sorter: "string",
-
-                    },
-                    {
+                    }, {
                         title: "ID area",
                         field: "id_area",
                         sorter: "string",
                         visible: false,
-
-                    },{
+                    }, {
                         title: "Area",
                         field: "nombre_area",
                         sorter: "string",
@@ -496,7 +599,6 @@
                         title: "Horario",
                         field: "horario",
                         sorter: "string",
-
                     }, {
                         title: "Cumplidas",
                         field: "horas_cumplidas",
@@ -508,11 +610,6 @@
                         sorter: "number",
                       
                     },  {
-                        title: "Carrera",
-                        field: "carrera",
-                        sorter: "string",
-                      
-                    }, {
                         title: "Acciones",
                         field: "datos",
                         headerTooltip: "Tras seleccionar el cambio de tipo usuario o turno, presiona este boton para guardar los cambios. Nota: Si cambias al prestador a un horario que no corresponde con su area de trabajo, no se realizará el cambio",
@@ -540,7 +637,7 @@
                                     data = cell.getRow().getData();
                                     document.getElementById('nombre_modal2').value = data.name;
                                     document.getElementById('apellido_modal2').value = data.apellido;
-                                    document.getElementById('codigo_modal2').value = data.codigo;
+                                    document.getElementById('correo_modal3').value = data.correo;
                                     id_prest = document.getElementById('id_prest_modal2');
                                     id_prest.value = data.id;
                                 });
@@ -558,7 +655,7 @@
                             var value = cell.getValue();
                             var button = document.createElement("button");
                             button.style = "background-color: red; color: white; border: 1px solid white; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
-                            button.textContent = "Desactivar";
+                            button.textContent = "X";
                             button.title = "";
                             button.addEventListener("click", function() {
                                 desactivarPrestador(value);
@@ -626,7 +723,7 @@
                                     data = cell.getRow().getData();
                                     document.getElementById('nombre_modal2').value = data.name;
                                     document.getElementById('apellido_modal2').value = data.apellido;
-                                    document.getElementById('codigo_modal2').value = data.codigo;
+                                    document.getElementById('correo_modal3').value = data.correo;
                                     id_prest = document.getElementById('id_prest_modal2');
                                     id_prest.value = data.id;
                                 });
@@ -657,6 +754,12 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
+                });
+            }
+
+            function desactivarPrestador(value) {
+                fetchData(`desactivar_prestador/${value}`, 'GET', data => {
+                    console.log('Usuario desactivado:', data);
                 });
             }
 
@@ -723,6 +826,31 @@
                 if(area){
                     area.selected = true;
                 }
+                
+            });
+            return div;
+        }
+
+        function customButtonFormatter2(cell, formatterParams, onRendered) {
+            var div = document.createElement("div");
+            div.classList.add("text-center");
+            
+            var a = document.createElement("a");
+            a.href = "javascript:;";
+            a.setAttribute("data-tw-toggle", "modal");
+            a.setAttribute("data-tw-target", "#static-2");
+            a.classList.add("btn", "btn-primary");
+            a.textContent = "Modificar";
+
+            div.appendChild(a);
+            a.addEventListener('click', function(){
+                
+                data = cell.getRow().getData();
+                document.getElementById('nombre2').value = data.name;
+                document.getElementById('apellido2').value = data.apellido;
+                document.getElementById('codigo2').value = data.codigo;
+                document.getElementById('id_prest2').value = data.id;
+                document.getElementById('correo2').value = data.correo;
                 
             });
             return div;

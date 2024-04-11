@@ -443,7 +443,7 @@ class AdminController extends Controller
                 'codigo.required' => 'Código es obligatorio',
                 'correo.required' => 'El correo es obligatorio',
                 'codigo.unique' => 'Código ya existente',
-                'correo.unique' => 'Correo dubplicado', 
+                'correo.unique' => 'Correo duplicado', 
                 'area_edit.required' => "Debe especificar un área de trabajo",
                 'sede_edit.required' => "Debe especificar una sede",
                 'horario_prest.required' => "Debe especificar un horario",
@@ -467,6 +467,43 @@ class AdminController extends Controller
         return redirect()->route('admin.general')->with('success', 'Modificado Correctamente');
         
     }
+
+    public function modificar_prestador2(Request $request){
+        
+        switch($request->tipo_prest){
+            case "jefe area":
+            case "jefe sede":
+            case "Superadmin":
+            return redirect()->route('admin.prestadores')->with('error', 'Error al modificar, no tienes los permisos necesarios');
+        }
+        
+        $id = $request->id_prest;
+        $modificar = DB::table('users')
+        ->where('id', $id);
+
+        if(Auth::user()->tipo == "Superadmin"){
+            $request->validate(
+                ['nombre' => 'required',
+                'apellido' => 'required',
+                'codigo' => ['required', Rule::unique('users')->ignore($id, 'id')],
+                'correo'=>['required', Rule::unique('users')->ignore($id)],
+                ],
+                [
+                'nombre.required' => 'Nombre es obligatorio',
+                'apellido.required' => 'Apellido es obligatorio',
+                'codigo.required' => 'Código es obligatorio',
+                'correo.required' => 'El correo es obligatorio',
+                'codigo.unique' => 'Código ya existente',
+                'correo.unique' => 'Correo duplicado', 
+                ]
+            );
+            $modificar->update(['name'=>$request->nombre, 'apellido'=>$request->apellido, 
+            'codigo'=>$request->codigo, 'correo' => $request->correo,]);
+        }
+        return redirect()->route('admin.general')->with('success', 'Modificado Correctamente');
+        
+    }
+
     public function modificar_password(Request $request){
         $request->validate(
             ['nuevaPassword' => 'required',
