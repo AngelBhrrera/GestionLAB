@@ -1175,6 +1175,7 @@ class AdminController extends Controller
 
         $tabla_proy = DB::table('seguimiento_proyecto3');
         $prestadores = DB::table('solo_prestadores');
+        $proyectos = DB::table('proyectos');
         $areas = DB::table('areas')
             ->select('id', 'nombre_area');
 
@@ -1184,18 +1185,23 @@ class AdminController extends Controller
                 ->where('tipo', '!=', 'coordinador');
             $areas->where('id', auth()->user()->area);
             $tabla_proy->where('id_area', auth()->user()->area);
+            $proyectos ->where('id_area', auth()->user()->area);
         }else if(auth()->user()->tipo == 'jefe area'){
             $prestadores->where('id_area', auth()->user()->area);
             $areas->where('id', auth()->user()->area);
             $tabla_proy->where('id_area', auth()->user()->area);
+            $proyectos ->where('id_area', auth()->user()->area);
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $prestadores->where('id_sede', auth()->user()->sede);    
             $areas->where('id_sede', auth()->user()->sede);
-            $tabla_proy->where('id_sede', auth()->user()->sede);    
+            $tabla_proy->where('id_sede', auth()->user()->sede);   
+            $proyectos->join('areas', 'proyectos.id_area', '=', 'areas.id')
+            ->where('areas.id_sede', auth()->user()->sede)
+            ->where('proyectos.id_area', auth()->user()->area);
         }
         $tabla_proy =  $tabla_proy->get();
         $categorias = DB::table('categorias') ->orderBy('nombre')->get();
-        $proyectos = DB::table('proyectos')->get();
+        $proyectos = $proyectos->get();
         $areas = $areas->get();
         $prestadores= $prestadores->get();
 
