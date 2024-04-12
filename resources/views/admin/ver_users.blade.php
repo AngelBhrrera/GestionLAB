@@ -87,10 +87,10 @@
             <a class="nav-link" data-toggle="tab" href="#a">Admins</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#p">Prestadores</a>
+            <a class="nav-link" data-toggle="tab" href="#c">Coordinadores</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#c">Coordinadores</a>
+            <a class="nav-link" data-toggle="tab" href="#p">Prestadores</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#v">Clientes - Visitantes</a>
@@ -400,7 +400,7 @@
                                 a.setAttribute("data-tw-toggle", "modal");
                                 a.setAttribute("data-tw-target", "#static-backdrop-modal-preview2");
                                 a.classList.add("btn", "btn-primary");
-                                a.textContent = "Cambiar contraseña";
+                                a.textContent = "Cambio 🔒";
 
                                 div.appendChild(a);
                                 a.addEventListener('click', function(){
@@ -428,11 +428,6 @@
                         field: "id",
                         visible: false,
                         width: 2,
-                    },{
-                        title: "Fecha",
-                        field: "fecha",
-                        sorter: "string",
-                        width: 110,
                     }, {
                         title: "Nombre",
                         field: "name",
@@ -442,36 +437,14 @@
                         field: "apellido",
                         sorter: "string",
                         editor: "input",
-                    }, {
-                        title: "Responsable",
-                        field: "responsable",
-                        sorter: "string",
-                    }, {
+                    },  {
                         title: "Correo",
                         field: "correo",
                         sorter: "string",
                     }, {
                         title: "Contacto",
                         field: "numero",
-                    }, {
-                        title: "Entrada",
-                        field: "hora_llegada",
-                        sorter: "string",
-                    }, {
-                        title: "Salida",
-                        field: "hora_salida",
-                        sorter: "string",
-                    },{
-                        title: "Motivo",
-                        field: "motivo",
-                        editor: "input",
-                        cellEdited: function (cell) {
-                            var row = cell.getRow();
-                            var id = row.getData().id;
-                            var value = cell.getValue();
-                            agregarObservaciones(id, value);
-                        },
-                    },
+                    }, 
                     
                 ],
             });
@@ -524,7 +497,7 @@
                                 a.setAttribute("data-tw-toggle", "modal");
                                 a.setAttribute("data-tw-target", "#static-backdrop-modal-preview2");
                                 a.classList.add("btn", "btn-primary");
-                                a.textContent = "Cambiar contraseña";
+                                a.textContent = "Cambio 🔒";
 
                                 div.appendChild(a);
                                 a.addEventListener('click', function(){
@@ -629,7 +602,7 @@
                                 a.setAttribute("data-tw-toggle", "modal");
                                 a.setAttribute("data-tw-target", "#static-backdrop-modal-preview2");
                                 a.classList.add("btn", "btn-primary");
-                                a.textContent = "Cambiar contraseña";
+                                a.textContent = "Cambio 🔒";
 
                                 div.appendChild(a);
                                 a.addEventListener('click', function(){
@@ -715,7 +688,7 @@
                                 a.setAttribute("data-tw-toggle", "modal");
                                 a.setAttribute("data-tw-target", "#static-backdrop-modal-preview2");
                                 a.classList.add("btn", "btn-primary");
-                                a.textContent = "Cambiar contraseña";
+                                a.textContent = "Cambio 🔒";
 
                                 div.appendChild(a);
                                 a.addEventListener('click', function(){

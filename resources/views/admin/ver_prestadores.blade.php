@@ -115,7 +115,7 @@
                         <input id="apellido" readonly value="" type="text" class="form-control mt-5" name="apellido" placeholder="apellido" style="width: 200px">
                         
                         
-                        <form action="{{route('api.modificar_prestador3')}}" method="POST">
+                        <form action="{{route('api.modificar_prestador')}}" method="POST">
                             @csrf
                             <label for="codigo">Código</label>
                             <input id="codigo" readonly value="" type="text" class="form-control mt-5" name="codigo" placeholder="codigo" style="width: 200px">

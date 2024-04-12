@@ -107,11 +107,10 @@
                 </div>
             </div>
             
-
-            <!-- END: Reporte 1 -->
             <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
                 <h2 class="text-lg font-medium mr-auto">ULTIMOS 5 CHECK IN</h2>
             </div>
+
             <br>
             <div id="players"> </div>
             @if ($filtro->gamificacion == 1)

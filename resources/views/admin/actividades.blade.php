@@ -43,142 +43,211 @@
 
     <div class="tab-content">
         <div class="tab-pane active" id="cact">
-            <div class="col-md-9">
-                <div class="card card-primary">
-                    <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Crear nueva actividad </h3>
-                </div>
+            <form method="POST" action="{{route('admin.makeasign_act')}}">
+                <div class="col-md-9" id="parte1">
+                    <div class="card card-primary">
+                        <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Crear nueva actividad </h3>
+                    </div>
+                    <div class="card-body pl-10 pr-10">
+                            @if (isset($tipo))
+                            <input id="tipo" name="tipo" value={{ $tipo }} type="hidden">
+                            @endif
 
-                <div class="card-body pl-10 pr-10">
+                            <input id="id" name="id" type="hidden" value="{{!isset($actm[0]->id) ? old('id') : $actm[0]->id }}">
+                            <input name="TipoOriginal" type="hidden" value="{{isset($actm[0]->tipo) ? $actm[0]->tipo : old('TipoOriginal') }}">
+                            @csrf
 
-                    <form method="POST" action="{{route('admin.make_act')}}">
-                        @if (isset($tipo))
-                        <input id="tipo" name="tipo" value={{ $tipo }} type="hidden">
-                        @endif
+                            <div class="form-group row">
+                                <label for="nombre" class="col-md-4 col-form-label text-md-right">Nombre de la actividad</label>
 
-                        <input id="id" name="id" type="hidden" value="{{!isset($actm[0]->id) ? old('id') : $actm[0]->id }}">
-                        <input name="TipoOriginal" type="hidden" value="{{isset($actm[0]->tipo) ? $actm[0]->tipo : old('TipoOriginal') }}">
-                        @csrf
+                                <div class="col-md-6">
+                                    <input required id="nombre" type="text" class="form-control @error('nombre') is-invalid @enderror" value="{{old('nombre')}}" name="nombre" value="{{isset($actm[0]->nombre_act) ? $actm[0]->nombre_act : old('nombre') }}" required autocomplete="nombre" autofocus>
+                                    @error('nombre')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
 
-                        <div class="form-group row">
-                            <label for="nombre" class="col-md-4 col-form-label text-md-right">Nombre de la actividad</label>
-
-                            <div class="col-md-6">
-                                <input id="nombre" type="text" class="form-control @error('nombre') is-invalid @enderror" value="{{old('nombre')}}" name="nombre" value="{{isset($actm[0]->nombre_act) ? $actm[0]->nombre_act : old('nombre') }}" required autocomplete="nombre" autofocus>
-                                @error('nombre')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-group row">
-                            <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Categoría</label>
-                            <div class="col-md-6">
-                                <select class="form-control" id="tipo_categoriaC" name="tipo_categoria" required onchange="filtroSC()">
-                                    <option value="">Selecciona una categoría</option>
-                                    @foreach ($categorias as $categoria)
-                                        <option @selected(old('tipo_categoria')== {{$categoria->id}}) value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="form-group row">
-                            <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Subcategoría</label>
-                            <div class="col-md-6">
-                                <select class="form-control" id="tipo_subcategoriaC" name="tipo_subcategoria">
-                                    <option value="">Selecciona una subcategoría</option>
-                                    @foreach ($subcategorias as $subcategoria)
-                                    <option @selected(old('tipo_subcategoria')== {{$subcategoria->id}}) value="{{ $subcategoria->id }}">{{ $subcategoria->nombre }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="form-group row">
-                            <label for="tipo_actividad" class="text-center">Tipo de actividad</label>
-                            <div class="row text-center">
-                                <div class="col">
-                                    <select class="form-control" name="tipo_actividad">
-                                        <option value="{{null}}">Selecciona un tipo de actividad</option>
-                                        <option  value="generica" @selected(old('tipo_actividad')== "generica")>Genérica</option>
-                                        <option  value="particular" @selected(old('tipo_actividad')== "particular")>Particular</option>
+                            <div class="form-group row">
+                                <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Categoría</label>
+                                <div class="col-md-6">
+                                    <select required class="form-control" id="tipo_categoriaC" name="tipo_categoria" required onchange="filtroSC()">
+                                        <option value="">Selecciona una categoría</option>
+                                        @foreach ($categorias as $categoria)
+                                            <option @selected(old('tipo_categoria')== {{$categoria->id}}) value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
                             <br>
-                            <div class="col-md-6">
-                            <label for="recursos">Recursos necesarios - entradas</label>
-                                <textarea id="recursos" type="text" class="form-control" name="recursos" placeholder="Ingrese los datos separados por comas (impresora, filamento, papel, agua)">{{old('recursos')}}</textarea>
-
-                                @error('descripcion')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="descripcion" class="col-md-4 col-form-label text-md-right">Descripción del trabajo a realizar - procesos</label>
-
-                            <div class="col-md-6">
-                                <textarea id="descripcion" type="text" class="form-control @error('descripcion') is-invalid @enderror" value="{{old('descripcion')}}" name="descripcion" required>{{old('descripcion')}}</textarea>
-
-                                @error('descripcion')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="resultados" class="col-md-4 col-form-label text-md-right">Objetivos, resultados que se esperan - salidas</label>
-
-                            <div class="col-md-6">
-                                <textarea id="resultados" type="text" class="form-control" value="{{old('resultados')}}" name="resultados" placeholder="Ingrese los datos separados por comas (imprimir, diseñar, pintar)" required>{{old('resultados')}}</textarea>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Tiempo estimado (TEC)</label>
+                            <div class="form-group row">
+                                <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Subcategoría</label>
                                 <div class="col-md-6">
-                                        <input name="horas" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" value="0" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
-                                        <input name="minutos" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" value="0" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
+                                    <select class="form-control" id="tipo_subcategoriaC" name="tipo_subcategoria">
+                                        <option value="">Selecciona una subcategoría</option>
+                                        @foreach ($subcategorias as $subcategoria)
+                                        <option @selected(old('tipo_subcategoria')== {{$subcategoria->id}}) value="{{ $subcategoria->id }}">{{ $subcategoria->nombre }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                @error('horas')
-                                    <strong>{{$message}}</strong>
-                                @enderror
-                                @error('minutos')
-                                    <strong>{{$message}}</strong>
-                                @enderror
-                            <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
-                        </div>
-                        <br>
+                            </div>
+                            <br>
+                            <div class="form-group row">
+                                <label for="tipo_actividad" class="text-center">Tipo de actividad</label>
+                                <div class="row text-center">
+                                    <div class="col">
+                                        <select required class="form-control" name="tipo_actividad">
+                                            <option value="{{null}}">Selecciona un tipo de actividad</option>
+                                            <option  value="generica" @selected(old('tipo_actividad')== "generica")>Genérica</option>
+                                            <option  value="particular" @selected(old('tipo_actividad')== "particular")>Particular</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="col-md-6">
+                                <label for="recursos">Recursos necesarios - entradas</label>
+                                    <textarea required id="recursos" type="text" class="form-control" name="recursos" placeholder="Ingrese los datos separados por comas (impresora, filamento, papel, agua)">{{old('recursos')}}</textarea>
 
+                                    @error('descripcion')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="descripcion" class="col-md-4 col-form-label text-md-right">Descripción del trabajo a realizar - procesos</label>
+
+                                <div class="col-md-6">
+                                    <textarea required id="descripcion" type="text" class="form-control @error('descripcion') is-invalid @enderror" value="{{old('descripcion')}}" name="descripcion" required>{{old('descripcion')}}</textarea>
+
+                                    @error('descripcion')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="resultados" class="col-md-4 col-form-label text-md-right">Objetivos, resultados que se esperan - salidas</label>
+
+                                <div class="col-md-6">
+                                    <textarea required id="resultados" type="text" class="form-control" value="{{old('resultados')}}" name="resultados" placeholder="Ingrese los datos separados por comas (imprimir, diseñar, pintar)" required>{{old('resultados')}}</textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Tiempo estimado (TEC)</label>
+                                    <div class="col-md-6">
+                                            <input required name="horas" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" value="0" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
+                                            <input required name="minutos" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" value="0" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
+                                    </div>
+                                    @error('horas')
+                                        <strong>{{$message}}</strong>
+                                    @enderror
+                                    @error('minutos')
+                                        <strong>{{$message}}</strong>
+                                    @enderror
+                                <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
+                            </div>
+                            <br>
+
+                            <div class="form-group row">
+                                <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Experiencia</label>
+                                <div class="col-md-6">
+                                    <select name="exp" class="form-control sm:w-56" required>
+                                        <option value="" selected>Ingresa la dificultad de la actividad</option>
+                                        <option value="5">Fácil</option>
+                                        <option value="20">Normal</option>
+                                        <option value="40">Difícil</option>
+                                    </select>
+                                </div>
+                                <small id="Help" class="form-text text-muted">Ingresa la cantidad de experiencia que puede ganar el prestador en caso de un trabajo óptimo</small>
+                            </div>
+                            <br>
+                            <div class="col-md-12 text-center"> 
+                                <buttontype="button" id="siguiente" class="btn btn-primary" style="font-size: 20px;">Siguiente</button>
+                            </div>
+                            <div style="height: 50px;"></div>
+
+                    </div>
+                </div>
+                <div class="col-md-9" id="parte2" style="display:none">
+                    <div class="card card-primary">
+                        <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;">Asignar actividad </h3>
+                    </div>
+                    <div class="card-body pl-10 pr-10">
                         <div class="form-group row">
-                            <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Experiencia</label>
+                            <label for="tipo_asignacion" class="col-md-4 col-form-label text-md-right">Tipo de asignación</label>
                             <div class="col-md-6">
-                                <select name="exp" class="form-control sm:w-56" required>
-                                    <option value="" disabled selected>Ingresa la dificultad de la actividad</option>
-                                    <option value="5">Fácil</option>
-                                    <option value="20">Normal</option>
-                                    <option value="40">Difícil</option>
+                                <select  class="tom-select" id="tipo_asignacion" name="tipo_asignacion">
+                                    <option value="">Selecciona una opción</option>
+                                    <option value="1">Asignar a proyecto</option>
+                                    <option value="2">Asignar a prestador</option>
                                 </select>
                             </div>
-                            <small id="Help" class="form-text text-muted">Ingresa la cantidad de experiencia que puede ganar el prestador en caso de un trabajo óptimo</small>
                         </div>
 
-                        <div class="col-md-12 text-right">
-                            <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits ">Crear</button>
+                        <div class="form-group row">
+                            <label for="select_premio" class="col-md-4 col-form-label text-md-right">Premio</label>
+                            <div class="col-md-6">
+                                <select  class="tom-select" id="select_premio" name="premio">
+                                
+                                </select>
+                            </div>
                         </div>
-                    </form>
+
+                        <div class="form-group row">
+                            <label for="select_proyecto" class="col-md-4 col-form-label text-md-right">Proyecto</label>
+                            <div class="col-md-6">
+                                <select  class="tom-select" id="select_proyecto" name="proyecto">
+                                    <option value="">Selecciona un proyecto para asignar la actividad</option>
+                                    @foreach ($aProyectos as $proyecto)
+                                        <option value="{{ $proyecto->id }}">{{ $proyecto->titulo }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div id="campo_adicional_prestador" style="display: none;">
+                            <div class="form-group row">
+                                <label for="select_prestador" class="col-md-4 col-form-label text-md-right">Prestador/es</label>
+                                    <div class="col-md-6">
+                                        <select class="select2" name="prestadores_seleccionados[]" id="prestadores_seleccionados" multiple>  
+                                        @if (isset($aPrestadores))
+                                        @foreach ($aPrestadores as $prestador)
+                                            <option value="{{$prestador->id}}">{{$prestador->name." ".$prestador->apellido}}</option>
+                                        @endforeach
+                                        @endif
+                                        </select>
+                                    </div>
+                                <small id="Help" class="form-text text-muted">Selecciona a los prestadores para realizar la actividad</small>
+                            </div>
+                        </div>
+
+                        <div id="campo_adicional_proyecto" style="display: none;">
+                            <div class="form-group row">
+                                <label for="numero_veces" class="col-md-4 col-form-label text-md-right">Número de veces</label>
+                                <div class="col-md-6">
+                                    <input type="number" class="form-control" id="numero_veces" name="numero_veces" min="1" max="25">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-md-12 text-center"> 
+                        <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits" style="font-size: 20px;">Crear</button> <!-- Aumentamos el tamaño de la fuente -->
+                    </div>
+                    <div style="height: 50px;"></div>
                 </div>
-            </div>
+            </form>
         </div>
 
         <div class="tab-pane" id="vacts">
@@ -475,7 +544,6 @@
             layout: "fitDataFill",
             resizableColumns:false,
             layoutColumnsOnNewData:true,
-            virtualDomHoz:true,
             headerFilterPlaceholder: "Buscar..",
             tooltips: true,
         };
@@ -629,7 +697,22 @@
                             var value = cell.getValue();
                             cambiarEstado(id, value);
                         }
-                    }, 
+                    }, {
+                        title: "",
+                        field: "actividad_id",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            var value = cell.getValue();
+                            var button = document.createElement("button");
+                            button.style = "background-color: blue; color: white; border: 1px solid white; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
+                            button.textContent = "Más Info.";
+                            button.title = "";
+                            button.addEventListener("click", function() {
+
+                                window.location.href = 'ver_detalles_actividad/' + value;
+                            });
+                            return button;
+                        }, 
+                    }
             ],
         });
 
@@ -726,5 +809,29 @@
         });
 
     </script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("siguiente").addEventListener("click", function() {
+           
+            document.getElementById("parte1").style.display = "none";
+           
+            document.getElementById("parte2").style.display = "block";
+        });
+
+        document.getElementById("tipo_asignacion").addEventListener("change", function() {
+
+            var seleccion = this.value;
+            if (seleccion === "1") {
+                document.getElementById("campo_adicional_proyecto").style.display = "block";
+                document.getElementById("campo_adicional_prestador").style.display = "none";
+            } else if (seleccion === "2") {
+                document.getElementById("campo_adicional_proyecto").style.display = "none";
+                document.getElementById("campo_adicional_prestador").style.display = "block";
+            }
+        });
+    });
+</script>
 
 @endsection

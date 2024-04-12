@@ -462,6 +462,12 @@ class AdminController extends Controller
                 [
                 'horario_prest.required' => "Debe especificar un horario",]
             );
+            if(Auth::user()->tipo == "coordinador"){
+                $modificar = DB::table('users')
+                ->where('codigo', $request->codigo)
+                ->update(['horario'=>$request->horario_prest, 'tipo'=>$request->tipo_prest]);
+                return redirect()->route('admin.prestadores')->with('success', 'Modificado Correctamente');
+            }
             $modificar->update(['horario'=>$request->horario_prest, 'tipo'=>$request->tipo_prest]);
         }
         return redirect()->route('admin.general')->with('success', 'Modificado Correctamente');
@@ -501,41 +507,6 @@ class AdminController extends Controller
             'codigo'=>$request->codigo, 'correo' => $request->correo,]);
         }
         return redirect()->route('admin.general')->with('success', 'Modificado Correctamente');
-        
-    }
-
-    public function modificar_prestador3(Request $request){
-        $horarios = DB::Table('areas');
-        $horarios = $horarios->first();
-        $horariosValidos = [];
-        $horariosValidos[] = ($horarios->turnoMatutino == 1) ? "Matutino": null;
-        $horariosValidos[] = ($horarios->turnoMediodia == 1) ? "Mediodia": null;
-        $horariosValidos[] = ($horarios->turnoVespertino == 1) ? "Vespertino": null;
-        $horariosValidos[] = ($horarios->turnoSabatino == 1) ? "Sabatino": null;
-        $horariosValidos[] = ($horarios->turnoTiempoCompleto == 1) ? "TC": null;
-        $horariosValidos[] = ($horarios->no_Aplica == 1) ? "No Aplica": null;
-
-        if(!in_array($request->horario_prest, $horariosValidos)){
-            return redirect()->route('admin.prestadores')->with('warning', 'El horario seleccionado no es válido');
-        }
-        
-        switch($request->tipo_prest){
-            case "jefe area":
-            case "jefe sede":
-            case "Superadmin":
-            return redirect()->route('admin.prestadores')->with('error', 'Error al modificar, no tienes los permisos necesarios');
-        }
-        
-
-        $id = DB::table('users')
-            ->where('codigo', $request->codigo)
-            ->value('id');
-            
-        $modificar = DB::table('users')
-        ->where('id', $id)
-        ->update(['horario'=>$request->horario_prest, 'tipo'=>$request->tipo_prest]);
-
-        return redirect()->route('admin.prestadores')->with('success', 'Modificado Correctamente');
         
     }
 
@@ -863,6 +834,95 @@ class AdminController extends Controller
                 'TEC' => $tec,]);
         
             return redirect()->back()->with('success', 'Actividad creada correctamente');
+        }catch (\Exception $e) {
+           
+            return redirect()->back()->with('error', 'Error al crear la actividad: ' . $e->getMessage());
+        }
+    }
+
+    public function makeasign_act(Request $request) {
+
+        try{
+            
+            $request->validate([
+                'nombre' => 'string|max:255|unique:actividades,titulo',
+                'tipo' => 'integer',
+                'recursos' => 'string', 
+                'descripcion' => 'string|max:500',
+                'objetivos' => 'string', 
+                'exp' => 'integer|min:5|max:100',
+                'horas' => [
+                    'integer',
+                    function ($attribute, $value, $fail) use ($request) {
+                        $minutos = $request->input('minutos');
+                        if ($value == 0 && $minutos == 0) {
+                            $fail('Las horas y los minutos no pueden ser ambos 0.');
+                        }
+                    }
+                ],
+                'minutos' => [
+                    'integer',
+                    function ($attribute, $value, $fail) use ($request) {
+                        $horas = $request->input('horas');
+                        if ($value == 0 && $horas == 0) {
+                            $fail('Las horas y los minutos no pueden ser ambos 0.');
+                        }
+                    }
+                ],
+                'proyecto' => 'integer',
+                'numero_veces' => 'integer|min:1|max:25',
+                'tipo_asignacion' => 'integer',
+                'prestadores_seleccionados' => 'array',
+                'prestadores_seleccionados.*' => 'integer',
+            ]);
+
+            $subcategoria = $request->input('tipo_subcategoria');
+            if($subcategoria == '')
+                $subcategoria = null;
+            $horas = $request->input('horas')*60;
+            $minutos = $request->input('minutos');
+            $tec = $horas + $minutos;
+            if( $request->input('tipo_actividad') != 'generica'){
+                $tipo = auth()->user()->sede;
+            }else{
+                $tipo = 0;
+            }
+        
+            $idAct = DB::table('actividades')->insertGetId([
+                'titulo' =>$request->input('nombre'),
+                'id_categoria' =>  $request->input('tipo_categoria'),
+                'id_subcategoria' => $subcategoria,
+                'tipo' => $tipo,
+                'recursos' => $request->input('recursos'),
+                'descripcion' =>$request->input('descripcion'),
+                'exp_ref' =>$request->input('exp'),
+                'objetivos' => $request->input('resultados'),
+                'TEC' => $tec,]);
+
+            if ($request->input('tipo_asignacion') == "1") {
+                for ($i = 0; $i < $request->input('numero_veces'); $i++) {
+                    DB::table('actividades_prestadores')->insert([
+                        'id_prestador' => 0,
+                        'id_actividad' => $idAct,
+                        'estado' => "Creada",
+                        'id_proyecto' => $request->input('proyecto')]);
+                }
+                return redirect()->back()->with('success', 'Actividad asignada correctamente');
+            } else {
+                
+                $prestadoresSeleccionados = $request->input('prestadores_seleccionados');
+                $tamañoArreglo = count($prestadoresSeleccionados);
+                for ($i = 0; $i < $tamañoArreglo; $i++) {
+                    $idp = $prestadoresSeleccionados[$i];
+                        DB::table('actividades_prestadores')->insert([
+                            'id_prestador' => $idp,
+                            'id_actividad' => $idAct,
+                            'estado' => "Asignada",
+                            'id_proyecto' => $request->input('proyecto')]);
+                }
+                return redirect()->back()->with('success', 'Actividad asignada correctamente');
+            }
+    
         }catch (\Exception $e) {
            
             return redirect()->back()->with('error', 'Error al crear la actividad: ' . $e->getMessage());

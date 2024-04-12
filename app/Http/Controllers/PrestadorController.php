@@ -1070,6 +1070,40 @@ class PrestadorController extends Controller
         return redirect()->route('perfil')->with('success', 'Imagen cambiada correctamente');
     }
 
+    public function agregarDatos(Request $request){
+       
+        $request->validate([
+            'cumple' => 'nullable|date_format:Y-m-d',
+            'emerg' => 'nullable|numeric|digits:10',
+            'aficiones' => 'nullable|string|max:500',
+        ], [
+            'cumple.date_format' => 'El campo cumple debe tener el formato de fecha YYYY-MM-DD.',
+            'emerg.numeric' => 'El campo emerg debe ser numérico.',
+            'emerg.digits' => 'El campo emerg debe tener exactamente 10 dígitos.',
+            'aficiones.max' => 'El campo aficiones no debe sobrepasar los 500 caracteres.'
+        ]);
+
+        $userId =  Auth::user()->id;
+
+        if ($request->has('cumple')) {
+            $cumple = $request->cumple;
+            DB::table('users')->where('id', $userId)->update(['cumpleanios' => $cumple]);
+        }
+        
+        if ($request->has('emerg')) {
+            $emerg = $request->emerg;
+            DB::table('users')->where('id', $userId)->update(['emergencia' => $emerg]);
+        }
+        
+        if ($request->has('aficiones')) {
+            $aficiones = $request->aficiones;
+            DB::table('users')->where('id', $userId)->update(['aficiones' => $aficiones]);
+        }
+
+        return redirect()->route('perfil')->with('success', 'Datos agregados');
+
+    }
+
     //GAMIFICACION
 
     public function prestador_level(){

@@ -114,6 +114,10 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
             Route::middleware('role:jefe area,jefe sede,Superadmin,coordinador')->group(function() {
 
+                Route::get('/admin/ver_detalles_proyecto/ver_detalles_actividad/{id}', 'view_details_act')->name('view_details_act');
+                Route::get('/admin/ver_detalles_actividad/{id}', 'view_details_act')->name('view_details_act');
+
+
                 Route::middleware('role:coordinador')->group(function() {
                     Route::get('admin/cambiarRol', 'cambiarRol')->name('cambiorol');
                 });
@@ -188,7 +192,8 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
             Route::get('/admin/C_actividades', 'actividades')->name('actividades');
             Route::post('/admin/M_actividades', 'make_act')->name('make_act');
-            
+
+            Route::post('/admin/MA_actividades', 'makeasign_act')->name('makeasign_act');
 
             Route::get('admin/ver_detalles_proyecto/detalles_actividad/{val}','detallesActividad')->name('detallesActividad');
 
@@ -213,8 +218,6 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::post('/admin/asign3', 'asign3')->name('asign3');
 
             Route::get('/admin/ver_detalles_proyecto/{id}', 'view_details_proy')->name('view_details_proy');
-            Route::get('/admin/ver_detalles_proyecto/ver_detalles_actividad/{id}', 'view_details_act')->name('view_details_act');
-
             Route::post('admin/removerProyecto/{proyectoId}/{prestadorId}', 'removefromProy')->name('removefromProy');
             
             //MODULO IMPRESIONES
@@ -238,7 +241,6 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::post('admin/modificar_password', 'modificar_password')->name('modificar_password')->middleware('role:Superadmin');
             Route::post('admin/modificar_prestador', 'modificar_prestador')->name('modificar_prestador');
             Route::post('admin/modificar_prestador2', 'modificar_prestador2')->name('modificar_prestador2');
-            Route::post('admin/modificar_prestador3', 'modificar_prestador3')->name('modificar_prestador3');
             Route::get('admin/activar_prestador/{value}', 'activar')->name('activar');
             Route::get('admin/desactivar_prestador/{value}', 'desactivar')->name('desactivar');
             //AJUSTES DE IMPRESION
@@ -288,6 +290,7 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         //MODULO PERFIL
         Route::get('/prestador/home/perfil', 'perfil')->name('perfil');
         Route::post('/prestador/home/perfil/cambiar-imagen-perfil', 'cambiarImagenPerfil')->name('cambiarImagenPerfil');
+        Route::post('/prestador/home/perfil/extra-data', 'agregarDatos')->name('datosComplementarios');
         //MODULO REPORTES
         Route::get('prestador/reportes_parciales', 'show_reportes')->name('parciales');
         Route::post('prestador/subir_reporte_parcial', 'subir_reportes_parciales')->name('subirReporte');
