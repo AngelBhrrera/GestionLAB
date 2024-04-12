@@ -504,6 +504,41 @@ class AdminController extends Controller
         
     }
 
+    public function modificar_prestador3(Request $request){
+        $horarios = DB::Table('areas');
+        $horarios = $horarios->first();
+        $horariosValidos = [];
+        $horariosValidos[] = ($horarios->turnoMatutino == 1) ? "Matutino": null;
+        $horariosValidos[] = ($horarios->turnoMediodia == 1) ? "Mediodia": null;
+        $horariosValidos[] = ($horarios->turnoVespertino == 1) ? "Vespertino": null;
+        $horariosValidos[] = ($horarios->turnoSabatino == 1) ? "Sabatino": null;
+        $horariosValidos[] = ($horarios->turnoTiempoCompleto == 1) ? "TC": null;
+        $horariosValidos[] = ($horarios->no_Aplica == 1) ? "No Aplica": null;
+
+        if(!in_array($request->horario_prest, $horariosValidos)){
+            return redirect()->route('admin.prestadores')->with('warning', 'El horario seleccionado no es válido');
+        }
+        
+        switch($request->tipo_prest){
+            case "jefe area":
+            case "jefe sede":
+            case "Superadmin":
+            return redirect()->route('admin.prestadores')->with('error', 'Error al modificar, no tienes los permisos necesarios');
+        }
+        
+
+        $id = DB::table('users')
+            ->where('codigo', $request->codigo)
+            ->value('id');
+            
+        $modificar = DB::table('users')
+        ->where('id', $id)
+        ->update(['horario'=>$request->horario_prest, 'tipo'=>$request->tipo_prest]);
+
+        return redirect()->route('admin.prestadores')->with('success', 'Modificado Correctamente');
+        
+    }
+
     public function modificar_password(Request $request){
         $request->validate(
             ['nuevaPassword' => 'required',

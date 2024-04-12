@@ -115,7 +115,7 @@
                         <input id="apellido" readonly value="" type="text" class="form-control mt-5" name="apellido" placeholder="apellido" style="width: 200px">
                         
                         
-                        <form action="{{route('api.modificar_prestador')}}" method="POST">
+                        <form action="{{route('api.modificar_prestador3')}}" method="POST">
                             @csrf
                             <label for="codigo">Código</label>
                             <input id="codigo" readonly value="" type="text" class="form-control mt-5" name="codigo" placeholder="codigo" style="width: 200px">
@@ -227,14 +227,13 @@
                         field: "carrera",
                         sorter: "string",
                       
-                    },//{
-                    //     title: "Modificar",
-                    //     field: "datos",
-                    //     headerTooltip: "Tras seleccionar el cambio de tipo usuario o turno, presiona este boton para guardar los cambios. Nota: Si cambias al prestador a un horario que no corresponde con su area de trabajo, no se realizará el cambio",
-                    //     formatter: customButtonFormatter, 
+                    },  {
+                     title: "Modificar",
+                     field: "datos",
+                     headerTooltip: "Tras seleccionar el cambio de tipo usuario o turno, presiona este boton para guardar los cambios. Nota: Si cambias al prestador a un horario que no corresponde con su area de trabajo, no se realizará el cambio",
+                     formatter: customButtonFormatter, 
                       
-                    // }
-                    , {
+                    }, {
                         title: "Desactivar",
                         field: "id",
                         width: 135,

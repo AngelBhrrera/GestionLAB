@@ -238,6 +238,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::post('admin/modificar_password', 'modificar_password')->name('modificar_password')->middleware('role:Superadmin');
             Route::post('admin/modificar_prestador', 'modificar_prestador')->name('modificar_prestador');
             Route::post('admin/modificar_prestador2', 'modificar_prestador2')->name('modificar_prestador2');
+            Route::post('admin/modificar_prestador3', 'modificar_prestador3')->name('modificar_prestador3');
             Route::get('admin/activar_prestador/{value}', 'activar')->name('activar');
             Route::get('admin/desactivar_prestador/{value}', 'desactivar')->name('desactivar');
             //AJUSTES DE IMPRESION
