@@ -308,7 +308,7 @@
                             </div>
                             <label for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
                             <div class="form-group" id="duelist_box">
-                                <select class="select2" name="prestadores_seleccionados[]" id="prestadores_seleccionados" multiple>  
+                                <select class="select3" name="prestadores_seleccionados[]" id="prestadores_seleccionados2" multiple>  
                                     @if (isset($aPrestadores))
                                     @foreach ($aPrestadores as $prestador)
                                         <option value="{{$prestador->id}}">{{$prestador->name." ".$prestador->apellido}}</option>
@@ -353,7 +353,7 @@
 
     document.getElementById('asign').addEventListener('submit', function(event) {
         
-        const prestadorSelect = document.getElementById('prestadores_seleccionados');
+        const prestadorSelect = document.getElementById('prestadores_seleccionados2');
 
         if (prestadorSelect.selectedOptions.length === 0) {
                 event.preventDefault();
@@ -362,6 +362,26 @@
     });
 
     let dlb2 = new DualListbox('.select2', {
+        availableTitle: 'Prestadores disponibles',
+        selectedTitle: 'Prestadores seleccionados',
+        addButtonText: 'Agregar',
+        removeButtonText: 'Quitar',
+        addAllButtonText: 'Agregar todos',
+        removeAllButtonText: 'Quitar todos',
+        searchPlaceholder: 'Buscar prestadores'
+    });
+    dlb2.addEventListener('added', function(event) {
+        const prestadorSelect = document.getElementById('prestadores_seleccionados');
+        console.log(prestadorSelect.value);
+    });
+    dlb2.addEventListener('removed', function(event) {
+        const prestadorSelect = document.getElementById('prestadores_seleccionados');
+        if (prestadorSelect.selectedOptions.length === 0) {
+            console.log(prestadorSelect.value);
+        }
+    });
+
+    let dlb3 = new DualListbox('.select3', {
         availableTitle: 'Prestadores disponibles',
         selectedTitle: 'Prestadores seleccionados',
         addButtonText: 'Agregar',

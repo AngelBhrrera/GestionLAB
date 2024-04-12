@@ -568,7 +568,10 @@ class AdminController extends Controller
     public function actividades(){
 
         $reviewActs = DB::table('seguimiento_actividades')
-            ->whereIn('estado', ['En revision', 'Error']);
+            ->whereIn('seguimiento_actividades.estado', ['En revision', 'Error'])
+            ->join('proyectos', 'seguimiento_actividades.id_proyecto', '=', 'proyectos.id')
+            ->select('seguimiento_actividades.*', 'proyectos.turno');
+
         $listaActs = DB::table('seguimiento_actividades');
         $pR = DB::table('seguimiento_actividades')
         ->whereIn('estado', ['En revision', 'Error']);
@@ -594,6 +597,12 @@ class AdminController extends Controller
                     ->from('proyectos')
                     ->where('id_area', auth()->user()->area);
             });
+            if( auth()->user()->tipo == 'coordinador'){
+                $reviewActs->where(function ($query) {
+                    $query->where('proyectos.turno', 'No aplica')
+                          ->orWhere('proyectos.turno', auth()->user()->horario);
+                });
+            }
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $listaActs->whereIn('id_proyecto', function ($query) {
                 $query->select('id')
@@ -870,7 +879,7 @@ class AdminController extends Controller
                     }
                 ],
                 'proyecto' => 'integer',
-                'numero_veces' => 'integer|min:1|max:25',
+                'numero_veces' => 'nullable|integer|min:1|max:25',
                 'tipo_asignacion' => 'integer',
                 'prestadores_seleccionados' => 'array',
                 'prestadores_seleccionados.*' => 'integer',
@@ -908,7 +917,7 @@ class AdminController extends Controller
                         'id_proyecto' => $request->input('proyecto')]);
                 }
                 return redirect()->back()->with('success', 'Actividad asignada correctamente');
-            } else {
+            } else  if ($request->input('tipo_asignacion') == "2") {
                 
                 $prestadoresSeleccionados = $request->input('prestadores_seleccionados');
                 $tamañoArreglo = count($prestadoresSeleccionados);
