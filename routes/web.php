@@ -117,7 +117,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 Route::get('/admin/ver_detalles_proyecto/ver_detalles_actividad/{id}', 'view_details_act')->name('view_details_act');
                 Route::get('/admin/ver_detalles_actividad/{id}', 'view_details_act')->name('view_details_act');
                 
-                Route::get('admin/registro_impresion', 'create_imps')->name('create_imps');
+                Route::get('admin/registro_impresion', 'create_imps')->name('create_impsA');
                 Route::post('admin/registrar_impresion', 'register_imps')->name('register_imps');
                 Route::get('admin/observaciones_impresora/{id}/{val}', 'detail_printer')->name('detail_printer');
         

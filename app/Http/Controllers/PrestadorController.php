@@ -840,7 +840,7 @@ class PrestadorController extends Controller
             ->where('area_ref',  auth()->user()->area)
             ->get();
 
-        return view('admin/registro_impresion',
+        return view('prestador/registro_impresion',
         compact('imps', 'proys', 'colors'));
     }
 

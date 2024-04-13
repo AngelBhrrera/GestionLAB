@@ -248,7 +248,7 @@
                             </a>
                         </li>
                         <li>
-                                <a href="{{route('admin.create_imps')}}" class="side-menu">
+                                <a href="{{route('admin.create_impsA')}}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="plus-circle"></i> </div>
                                     <div class="side-menu__title"> Crear impresión </div>
                                 </a>
