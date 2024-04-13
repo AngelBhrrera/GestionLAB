@@ -316,6 +316,7 @@
 
 @section('script')
     <script type="text/javascript">
+
             var users = {!! $datos !!};
             var usersV = {!! $datosV !!};
             var usersA = {!! $datosA !!};
@@ -583,7 +584,7 @@
                         sorter: "number",
                       
                     },  {
-                        title: "Acciones",
+                        title: "Modificar",
                         field: "datos",
                         headerTooltip: "Tras seleccionar el cambio de tipo usuario o turno, presiona este boton para guardar los cambios. Nota: Si cambias al prestador a un horario que no corresponde con su area de trabajo, no se realizará el cambio",
                         formatter: customButtonFormatter, 
@@ -668,7 +669,7 @@
                         title: "Area",
                         field: "nombre_area",
                         sorter: "string",
-                    }, {
+                    },  {
                         title: "Acciones",
                         field: "datos",
                         headerTooltip: "Tras seleccionar el cambio de tipo usuario o turno, presiona este boton para guardar los cambios. Nota: Si cambias al prestador a un horario que no corresponde con su area de trabajo, no se realizará el cambio",

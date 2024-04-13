@@ -24,8 +24,11 @@
     </div>
 
     <ul class="nav nav-tabs nav-justified" role="tablist">  
+    <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#eactpr">Evaluar Actividades Pendientes de Revision</a>
+        </li>
         <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#cact">Registrar Nueva Actividad</a>
+            <a class="nav-link" data-toggle="tab" href="#cact">Registrar Nueva Actividad</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#vacts">Ver Todas las Actividades en el Area</a>
@@ -36,13 +39,22 @@
         {{--<li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#pract">Aprobar Actividades Propuestas por Prestador</a>
         </li>--}}
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#eactpr">Evaluar Actividades Pendientes de Revision</a>
-        </li>
+        
     </ul>
 
     <div class="tab-content">
-        <div class="tab-pane active" id="cact">
+        <div class="tab-pane active" id="eactpr">
+            <h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
+                Revisar actividades
+            </h2>
+            <div class="w-[350px] relative mx-5 my-5">
+                <input id="searchInput2" type="text" class="form-control pl-10" placeholder="Buscar">
+                <i class="w-5 h-5 absolute inset-y-0 left-0 my-auto text-slate-400 ml-3" data-lucide="search"></i>
+            </div>
+            <div id="rActs"></div>
+        </div>
+
+        <div class="tab-pane" id="cact">
             <form method="POST" action="{{route('admin.makeasign_act')}}">
                 <div class="col-md-9" id="parte1">
                     <div class="card card-primary">
@@ -334,16 +346,8 @@
             <div id="aActs"></div>
         </div>
 
-        <div class="tab-pane" id="eactpr">
-            <h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
-                Revisar actividades
-            </h2>
-            <div class="w-[350px] relative mx-5 my-5">
-                <input id="searchInput2" type="text" class="form-control pl-10" placeholder="Buscar">
-                <i class="w-5 h-5 absolute inset-y-0 left-0 my-auto text-slate-400 ml-3" data-lucide="search"></i>
-            </div>
-            <div id="rActs"></div>
-        </div>
+        
+    </div>
 </div>
 
 @endsection
@@ -724,7 +728,7 @@
                             var value = cell.getValue();
                             var button = document.createElement("button");
                             button.style = "background-color: blue; color: white; border: 1px solid white; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
-                            button.textContent = "Más Info.";
+                            button.textContent = "+ Info.";
                             button.title = "";
                             button.addEventListener("click", function() {
 
@@ -732,7 +736,17 @@
                             });
                             return button;
                         }, 
-                    }
+                    }, {
+                        title: "Detalles",
+                        field: "detalles",
+                        editor: "input",
+                        cellEdited: function (cell) {
+                            var row = cell.getRow();
+                            var id = row.getData().id;
+                            var value = cell.getValue();
+                            agregarObservaciones(id, value);
+                        },
+                    },        
             ],
         });
 

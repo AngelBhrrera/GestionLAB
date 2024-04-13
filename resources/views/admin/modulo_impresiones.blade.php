@@ -40,18 +40,39 @@
 
     <ul class="nav nav-tabs nav-justified" role="tablist">  
         <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#cprinters">Registrar Impresoras</a>
+            <a class="nav-link active" data-toggle="tab" href="#prints">Ver Impresiones</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#cprinters">Registrar Impresoras</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#printers">Gestionar Impresoras</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#prints">Ver Impresiones</a>
+            <a class="nav-link" data-toggle="tab" href="#colorp">Colores de impresion</a>
         </li>
     </ul>
 
     <div class="tab-content">
-        <div class="tab-pane active" id="cprinters">
+        <div class="tab-pane active" id="prints">
+            <div class="card-header">
+                <h3 class="text-2xl font-medium leading-none mt-3 px-10 text-center mx-auto" style="padding-top: 20px; padding-bottom: 20px;"> 
+                Ver Impresiones del Area</h3>
+            </div>
+            <div class="table-controls pl-10">
+                <button class="download-button" id="download-json">Download JSON</button>
+                <button class="download-button" id="download-csv">Download CSV</button>
+                <button class="download-button" id="download-xlsx">Download XLSX</button>
+            </div>
+            <br>
+            <div class="col-span-12 sm:col-span-4">
+                <div class="intro-y col-span-12 sm:col-span-6">
+                    <div id="players2"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="cprinters">
 
             <div class="card card-primary">
                 <h3  class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Gestión de Impresoras </h3>
@@ -116,25 +137,62 @@
             </div>
         </div>
 
-        <div class="tab-pane" id="prints">
+        <div class="tab-pane" id="colorp">
             <div class="card-header">
                 <h3 class="text-2xl font-medium leading-none mt-3 px-10 text-center mx-auto" style="padding-top: 20px; padding-bottom: 20px;"> 
-                Ver Impresiones del Area</h3>
+               Colores de Impresion</h3>
             </div>
-            <div class="table-controls pl-10">
-                <button class="download-button" id="download-json">Download JSON</button>
-                <button class="download-button" id="download-csv">Download CSV</button>
-                <button class="download-button" id="download-xlsx">Download XLSX</button>
-            </div>
+            <div class="text-center">
+                <a href="javascript:;" data-tw-toggle="modal" 
+                data-tw-target="#basic-modal-preview" class="btn btn-primary">
+                <i class="w-4 h-4 mr-2" data-target="#imagenModal" data-toggle="modal" data-lucide="image-plus"></i> Agregar nuevo color</a>
+            </div>   
             <br>
             <div class="col-span-12 sm:col-span-4">
                 <div class="intro-y col-span-12 sm:col-span-6">
-                    <div id="players2"></div>
+                    <div id="players3"></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+    <!-- Modal para agregar color -->
+    <div id="blank-modal" class="p-5">
+        <div class="preview">
+            <!-- END: Modal Toggle -->
+            <!-- BEGIN: Modal Content -->
+            <div id="basic-modal-preview" class="modal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body p-10 text-center">
+                            <h2 class="text-2xl mt-5 font-medium">
+                                Agregar Color
+                            </h2>
+                            <form action="{{ route('api.addColor') }}" method="POST">
+                                @csrf
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <div class="overflow-x-auto sm:w-full">
+                                            <div class="text-center pt-5">                                              
+                                                <h2 class="text-2xl mt-5 font-small">Color:</h2><br>
+                                                <input id="color" type="text" class="form-control" name="color" placeholder="Ingresa el nuevo color" style="width: 200px">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" id="cancelar" data-tw-dismiss="modal" class="btn btn-danger" data-dismiss="#basic-modal-preview">Cancelar</button>
+                                <button type="submit" class="btn btn-primary">Crear</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END: Modal Content -->
+        </div>
+    </div>
+    <!-- END modal-->
 
 <div style="height: 65px;"></div>
 @endsection
@@ -144,6 +202,7 @@
 
             var printers = {!! $impresoras !!};
             var prints = {!! $impresiones !!};
+            var colors = {!! $colores !!};
 
             function createTabulatorInstance(selector, data, config) {
                 return new Tabulator(selector, {
@@ -194,42 +253,46 @@
                     },  {
                         title: "Estado",
                         field: "estado",
-                        formatter: function(cell, formatterParams, onRendered) {
-                            var estado = cell.getValue();
-                            var icono = "";
-
-                            if (estado === 0) {
-                                icono = "Inactivo";
-                            } else if (estado === 1) {
-                                icono = "Activo";
-                            } 
-                            return icono;
-                        },
-                    }, {
-                        title: "",
-                        field: "id",
-                        formatter: function (cell, formatterParams, onRendered) {
-
-                            var button = document.createElement("button");
-                            var row = cell.getRow();
-                            var state = row.getData().estado;
-                            var nombreCampo = cell.getColumn().getField();
-                            console.log(nombreCampo);
-                            if(state == 1){
-                                button.style = "background-color: red; color: white; border: 1px solid red; padding: 5px 15px; border-radius: 5px; font-size: 12px;";
-                                button.textContent = "Desactivar";
-                            }else{
-                                button.style = "background-color: #4CAF50; color: white; border: 1px solid #4CAF50; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
-                                button.textContent = "Activar";
-                                button.title ="";
+                        editor: "select",
+                        editorParams: {
+                            values: {
+                                0: "Inactivo",
+                                1: "Activo",
+                                2: "En Mantenimiento",
                             }
-                           
-                            button.addEventListener("click", function() {
-                                var value = cell.getValue();
-                                activarImpresora(value);
-                            });
-                            return button;
-                        }, 
+                        },
+                        cellEdited: function (cell) {
+                            var id = cell.getRow().getData().id;
+                            var value = cell.getValue();
+                            cambiarEstadoImpresora(id, value);
+                        },
+                        formatter: function(cell, formatterParams, onRendered) {
+                            var estado = Number(cell.getValue());
+                            console.log(estado);
+                            var textoEstado = "";
+                            if (estado === 0) {
+                                textoEstado = "Inactivo";
+                            } else if (estado === 1) {
+                                textoEstado = "Activo";
+                            } else if(estado === 2) {
+                                textoEstado = "En Mantenimiento";
+                            } else {
+                                textoEstado = "Desconocido";
+                            }
+                            return textoEstado;
+                        },
+                       
+                    },  {
+                        title: "Observaciones",
+                        field: "observaciones",
+                        editor: "input",
+                        width: 350,
+                        cellEdited: function (cell) {
+                            var row = cell.getRow();
+                            var id = row.getData().id;
+                            var value = cell.getValue();
+                            agregarObservacionesImpresora(id, value);
+                        },
                     },
                 ], 
             });
@@ -292,6 +355,7 @@
                             var row = cell.getRow();
                             var id = row.getData().id;
                             var value = cell.getValue();
+                            console.log(id);
                             cambiarEstadoImpresion(id, value);
                         }
                     },   {
@@ -314,9 +378,33 @@
                 ],
             });
 
-            function activarImpresora(value) {
+            var table3 = createTabulatorInstance("#players3", colors, {
+                ...commonConfig,
+                columns: [ {
+                    title: "Color",
+                        field: "color",
+                        sorter: "string",
+                    }, {
+                        title: "Eliminar",
+                        field: "id",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            var value = cell.getValue();
+                            var button = document.createElement("button");
+                            button.style = "background-color: red; color: white; border: 1px solid dark-red; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
+                            button.textContent = "Eliminar";
+                            button.addEventListener("click", function() {
+                                eliminarColor(value);
+                            });
+                            return button;
+                        }, 
+                        
+                    }, 
+                ],
+            });
+
+            function eliminarColor(value) {
                 const token = document.head.querySelector('meta[name="csrf-token"]').content;
-                fetch(`activar_impresora/${value}`, {
+                fetch(`eliminar_color/${value}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -326,14 +414,88 @@
                 .then(response => response.json())
                 .then(data => {
 
-                    console.log('Impresora activado:', data);
+                    console.log('Usuario activado:', data);
 
                     window.location.reload(); 
                 })
                 .catch(error => {
-                    console.error('Error al activar impresora:', error);
+                    console.error('Error al activar usuario:', error);
                 });
             } 
+
+            function cambiarEstadoImpresion(id, value) {
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`changestate_print/${id}/${value}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+
+                    console.log('Estado de impresion cambiado', data);
+                })
+                .catch(error => {
+                    console.error('Error al cambiar de estado de impresion:', error);
+                });
+            } 
+
+            function cambiarEstadoImpresora(id, value) {
+                const token = document.head.querySelector('meta[name="csrf-token"]').content;
+                fetch(`changestate_printer/${id}/${value}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+
+                    console.log('Estado de impresora cambiado', data);
+                })
+                .catch(error => {
+                    console.error('Error al cambiar de estado de impresora:', error);
+                });
+            } 
+
+            function agregarObservaciones(id, value) {
+            const token = document.head.querySelector('meta[name="csrf-token"]').content;
+            fetch(`observaciones_impresion/${id}/${value}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token,
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Observaciones de actividad cambiada', data);
+            })
+            .catch(error => {
+                console.error('Error al cambiar de estado de impresion:', error);
+            });
+        } 
+
+        function agregarObservacionesImpresora(id, value) {
+            const token = document.head.querySelector('meta[name="csrf-token"]').content;
+            fetch(`observaciones_impresora/${id}/${value}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token,
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Observaciones de impresora cambiada', data);
+            })
+            .catch(error => {
+                console.error('Error al agregar observaciones:', error);
+            });
+        } 
 
     </script>
 @endsection

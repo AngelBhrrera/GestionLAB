@@ -599,9 +599,25 @@ class PrestadorController extends Controller
             ->where('estado', 'En proceso')
             ->value('id');
 
-        DB::table('actividades_prestadores')
+        $timeRef = DB::table('actividades_prestadores')
             ->where('id', $found)
-            ->update(['estado' => 'Bloqueada']);
+            ->value('hora_refs');
+        $timeRef2 = date('H:i:s');
+
+        $tiempoInvertido = DB::table('actividades_prestadores')
+            ->where('id', $found)
+            ->value('Tiempo_Invertido');
+
+        $intervalCalc = $this->calculoIntervaloM($timeRef, $timeRef2);
+        $tiempoInvertido += $intervalCalc;
+
+        DB::table('actividades_prestadores')
+        ->where('id', $found)
+        ->update([
+            'estado' => 'Bloqueada',
+            'Tiempo_Invertido' => $tiempoInvertido,
+            'detalles' => 'Comenzo otra actividad'
+        ]);
 
         return 0;
     }
@@ -613,9 +629,25 @@ class PrestadorController extends Controller
             ->where('estado', 'En proceso')
             ->value('id');
 
-        DB::table('actividades_prestadores')
+        $timeRef = DB::table('actividades_prestadores')
             ->where('id', $found)
-            ->update(['estado' => 'Bloqueada', 'detalles' => 'Salida de Checkin']);
+            ->value('hora_refs');
+        $timeRef2 = date('H:i:s');
+
+        $tiempoInvertido = DB::table('actividades_prestadores')
+            ->where('id', $found)
+            ->value('Tiempo_Invertido');
+
+        $intervalCalc = $this->calculoIntervaloM($timeRef, $timeRef2);
+        $tiempoInvertido += $intervalCalc;
+
+        DB::table('actividades_prestadores')
+        ->where('id', $found)
+        ->update([
+            'estado' => 'Bloqueada',
+            'Tiempo_Invertido' => $tiempoInvertido,
+            'detalles' => 'Salida de Checkin'
+        ]);
 
         return 0;
     }
@@ -796,16 +828,20 @@ class PrestadorController extends Controller
 
     public function create_imps()
     {
-        $impresoras = DB::table('impresoras')
+        $imps = DB::table('impresoras')
             ->where('estado', 1)
             ->get();
 
-        $proy = DB::table('proyectos')->get();
+        $proys = DB::table('proyectos')
+            ->where('id_area', auth()->user()->area)
+            ->get();
 
-        return view('prestador/registro_impresion',
-            ['imps' => $impresoras,
-            'proys' => $proy
-        ]);
+        $colors = DB::table('impresion_colores')
+            ->where('area_ref',  auth()->user()->area)
+            ->get();
+
+        return view('admin/registro_impresion',
+        compact('imps', 'proys', 'colors'));
     }
 
     public function register_imps(Request $request)

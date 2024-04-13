@@ -18,11 +18,11 @@
                 </div>
                 <div class="card-body">
 
-                    <form class="from-prevent-multiple-submits" method="POST" action="{{ route('register_imps') }}">
+                    <form class="from-prevent-multiple-submits" method="POST" action="{{ route('admin.register_imps') }}">
                     @csrf
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
                             <label for="from-group" class="form-label">Impresora</label>
-                            <select class="form-control" name="imp_id" id="imp_id" required>
+                            <select  class="tom-select w-full" name="imp_id" id="imp_id" required>
                             @if (isset($imps))
                                 <option id="" value="{{null}}" >Selecciona la impresora</option>
                                 @foreach ($imps as $dato)
@@ -34,7 +34,7 @@
 
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
                             <label for="from-group" class="form-label">Proyecto</label>
-                            <select class="form-control" name="proyect" id="proyect" required>
+                            <select class="tom-select w-full" name="proyect" id="proyect" required>
                                 <option id="null_proyect" value="{{null}}" >Selecciona el proyecto </option>
                                 @if (isset($proys))
                                     @foreach ($proys as $dato )
@@ -57,15 +57,13 @@
 
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
                             <label for="color">Color</label>
-                            <select name="color" id="color" class="form-control" required>
+                            <select name="color" id="color"  class="tom-select w-full" required>
                                 <option value="" disabled selected>Selecciona un color</option>
-                                <option value="Negro">Negro</option>
-                                <option value="Blanco">Blanco</option>
-                                <option value="Azul">Azul</option>
-                                <option value="Amarillo">Amarillo</option>
-                                <option value="Rojo">Rojo</option>
-                                <option value="Verde">Verde</option>
-                                <option value="Dorado">Dorado</option>
+                                @if (isset($colors))
+                                    @foreach ($colors as $dato )
+                                        <option id="{{$dato->id}}" value="{{$dato->id}}">{{$dato->color }} </option>
+                                    @endforeach
+                                @endif    
                             </select>
                         </div>
 

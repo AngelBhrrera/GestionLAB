@@ -137,6 +137,18 @@
                             <div class="side-menu__title">Gestion Actividades, Categorias y Subcategorias</div>
                         </a>
                     </li>
+                        @if (Auth::user()->tipo == "Superadmin")
+                        <li>
+                            <a href="{{route('admin.gestionLvls')}}" class="side-menu">
+                                <div class="side-menu__icon"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                                stroke-linejoin="round" class="lucide lucide-between-horizontal-start"><rect width="13" 
+                                height="7" x="8" y="3" rx="1"/><path d="m2 9 3 3-3 3"/><rect width="13" height="7" 
+                                x="8" y="14" rx="1"/></svg></i> </div>
+                                <div class="side-menu__title">Gestionar Niveles Gamificacion</div>
+                            </a>
+                        </li>
+                        @endif
                     @endif
                 </ul>
             </li>
@@ -235,6 +247,12 @@
                                 <div class="side-menu__title">Gestión Impresoras</div>
                             </a>
                         </li>
+                        <li>
+                                <a href="{{route('admin.create_imps')}}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="plus-circle"></i> </div>
+                                    <div class="side-menu__title"> Crear impresión </div>
+                                </a>
+                            </li>
                         @if (Auth::user()->tipo == "jefe area")
                         <li>
                             <a href="{{route('admin.module_print')}}" class="side-menu">

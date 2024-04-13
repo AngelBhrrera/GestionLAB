@@ -64,8 +64,9 @@ class AdminController extends Controller
         }
         if(Auth::user()->horario != 'No Aplica'){
             $sqlproy->where('p.turno', Auth::user()->horario);
-            $sqlactsp ->where('u.horario', Auth::user()->horario);
-            $sqlactst ->where('u.horario', Auth::user()->horario);
+            $sqlactsp->where('u.horario', Auth::user()->horario);
+            $sqlactst->where('u.horario', Auth::user()->horario);
+            $totalExp->where('u.horario', Auth::user()->horario);
         }
         //$sqlproy = $sqlproy->get();
 
@@ -76,7 +77,6 @@ class AdminController extends Controller
 
         $exp = strval($totalExp);
 
-        
         $rendimiento =  DB::table('rendimiento')
             ->where('id_usuario', auth()->user()->id )
             ->get();
@@ -1345,6 +1345,17 @@ class AdminController extends Controller
         return view('admin.ver_detalles_proyecto', compact('proyecto','prestadores', 'actividades', 'proyectoId'));
     }
 
+    public function detail_act($id, $value) {
+
+        $sql= DB::table('actividades_prestadores')
+            ->where('id', $id)
+            ->update(['detalles' => $value]);
+
+        return response()->json(['message' => $sql]);
+    }
+
+    
+
     public function view_details_act($id)
     {
     
@@ -1420,13 +1431,19 @@ class AdminController extends Controller
             ->get();
 
         $dataP = DB::table('ver_impresiones')
+            ->select('ver_impresiones.*')
             ->join('users', 'ver_impresiones.id_Prestador', '=', 'users.id')
             ->where('sede', auth()->user()->sede)
+            ->orderByDesc('ver_impresiones.fecha')
+            ->get();
+        $dataC = DB::table('impresion_colores')
+            ->where('area_ref',  auth()->user()->area)
             ->get();
 
         return view('admin/modulo_impresiones',
             [ 'impresoras' =>json_encode($data),
-            'impresiones' =>json_encode($dataP)
+            'impresiones' =>json_encode($dataP),
+            'colores' =>json_encode($dataC),
         ]);
     }
 
@@ -1453,7 +1470,47 @@ class AdminController extends Controller
             ->where('id', $id)
             ->update(['estado' => $state]);
 
+        return response()->json(['message' => 'Estado cambiado exitosamente' . $id]);
+    }
+
+    public function printerstate($id, $state) {
+
+        DB::table('impresoras')
+            ->where('id', $id)
+            ->update(['estado' => $state]);
+
         return response()->json(['message' => 'Activado exitosamente' . $id]);
+    }
+
+    public function detail_printer($id, $value) {
+
+        $sql= DB::table('impresoras')
+            ->where('id', $id)
+            ->update(['observaciones' => $value]);
+
+        return response()->json(['message' => $sql]);
+    }
+
+    public function eliminarC($id) {
+        
+        DB::table('impresion_colores')->where('id', $id)
+            ->delete();
+    
+        return response()->json(['message' => 'Color eliminado']);
+    }
+
+    public function addColor (Request $request)
+    {
+        $request->validate([
+            'color' => 'string|max:50',
+        ]);
+
+        DB::table('impresion_colores')->insert([
+            'color' => $request->input('color'),
+            'area_ref' =>auth()->user()->area
+        ]);
+
+        return redirect()->back()->with('success','Agregado correctamente');
     }
 
     public function make_print(Request $request)
@@ -1473,6 +1530,87 @@ class AdminController extends Controller
         ]);
 
         return redirect()->back()->with('success','Agregado correctamente');
+    }
+
+    public function create_imps()
+    {
+        $imps = DB::table('impresoras')
+            ->where('estado', 1)
+            ->get();
+
+        $proys = DB::table('proyectos')
+            ->where('id_area', auth()->user()->area)
+            ->get();
+
+        $colors = DB::table('impresion_colores')
+            ->where('area_ref',  auth()->user()->area)
+            ->get();
+
+        return view('admin/registro_impresion',
+        compact('imps', 'proys', 'colors'));
+    }
+
+    public function register_imps(Request $request)
+    {
+        $request->validate([
+            'horas' => ['required_without:minutos', 'integer'],
+            'minutos' => ['required_without:horas', 'integer'],
+            'imp_id' => 'required|integer',
+            'proyect' => 'required|integer',
+            'color' => 'string | max:100',
+            'weight' => 'required|regex:#^\d+(\.\d{1,2})?$#',
+            'model' => 'required | string | max:100',
+            'pieces' => 'required|integer',
+        ]);
+        
+        $tiempo = $this->format_time($request->input('horas'), $request->input('minutos'));
+
+        DB::table('seguimiento_impresiones')->insert([['id_Prestador' =>Auth::user()->id, 
+        'id_Impresora' => $request->input('imp_id'), 'id_Proyecto' =>$request->input('proyect'), 
+        'nombre_modelo_stl' => $request->input('model'), 'color' => $request->input('color'), 
+        'piezas' => $request->input('pieces'), 'peso' => $request->input('weight'), 'tiempo_impresion' => $tiempo]]);
+
+        $actImp = DB::table('impresoras')
+            ->where('id', $request->input('imp_id'))
+            ->whereNotNull('act_impresion')
+            ->exists();
+
+        if($actImp){
+            $idA = DB::table('impresoras')
+                ->where('id', $request->input('imp_id'))
+                ->value('act_impresion');
+
+            $TEC = DB::table('actividades')
+                ->where('id', $idA)
+                ->value('TEC');
+
+            DB::table('actividades_prestadores')->insert([
+                'id_prestador' => Auth::user()->id, 
+                'id_actividad' => $idA,
+                'estado' => "En revision",
+                'Tiempo_Invertido' => $TEC,
+                'id_proyecto' => $request->input('proyect')]);
+        }
+        
+        $actual = DB::table('seguimiento_impresiones')
+            ->where('id_Impresora', $request->input('imp_id'))
+            ->orderByDesc('fecha')
+            ->limit(1)
+            ->value('fecha');
+
+        DB::table('impresoras')
+            ->where('id', $request->input('imp_id'))
+            ->update(['ultimo_uso' => $actual]);
+
+        return redirect()->route('admin.control_print');
+    }
+
+    public function format_time($hours,$minutes){
+
+        $formatH = str_pad($hours, 2, '0', STR_PAD_LEFT);
+        $formatM = str_pad($minutes, 2, '0', STR_PAD_LEFT);
+        return $formatH . 'h' . $formatM . 'm';
+
     }
 
     public function module_print(){
@@ -2180,6 +2318,54 @@ class AdminController extends Controller
         $actualizar = DB::table('users')->where('id', Auth::user()->id)->update(['password'=>$password]);
 
         return redirect()->route('login', ['success'=>'Actualización de credenciales, inicia sesión de nuevo']);
+    }
+
+    //GAMIFICACION 
+
+    public function gestionLvls(){
+
+        $niveles = DB::table('niveles')
+        ->where('nivel', '>', 1)
+        ->orderByDesc('nivel')
+        ->get();
+
+        return view( 'admin/gestion_niveles',  ['lvls' => json_encode($niveles)]);
+    }
+
+    public function edit_XP($lvl, $value) {
+
+        $check = DB::table('niveles')
+            ->where('nivel', $lvl)
+            ->value('experiencia_acumulada');
+
+        $ultimoNivel = DB::table('niveles')
+            ->orderByDesc('nivel')
+            ->value('nivel');
+        if($lvl != $ultimoNivel){
+            if($value >= $check){
+                DB::table('niveles')
+                    ->where('nivel', $lvl)
+                    ->update(['experiencia_acumulada' => $value+1]);
+    
+                DB::table('niveles')
+                    ->where('nivel', $lvl+1)
+                    ->update(['experiencia' => $value+2]);
+            }
+        }else{
+            DB::table('niveles')
+                ->where('nivel', $lvl)
+                ->update(['experiencia_acumulada' => $value]);        
+        }
+        
+        $sql1= DB::table('niveles')
+            ->where('nivel', $lvl)
+            ->update(['experiencia' => $value]);
+
+        DB::table('niveles')
+            ->where('nivel', $lvl-1)
+            ->update(['experiencia_acumulada' => $value-1]);
+        
+        return response()->json(['message' => $sql1]);
     }
 
 }
