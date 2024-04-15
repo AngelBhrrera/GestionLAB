@@ -290,8 +290,6 @@
                                 <div class="side-menu__title">Proyectos</div>
                             </a>
                         </li>
-                        @endif
-                        @if($proyectos)
                         <li>
                             <a href="{{ route('admin.actividades')}}" class="side-menu">
                                 <div class="side-menu__icon"> <i data-lucide="list-checks"></i> </div>

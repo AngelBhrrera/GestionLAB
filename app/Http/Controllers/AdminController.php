@@ -468,6 +468,8 @@ class AdminController extends Controller
         $prestadores = DB::table('solo_prestadores');
         $categorias = DB::table('categorias')->orderBy('nombre')->get();
         $subcategorias = DB::table('subcategorias')->orderBy('nombre')->get();
+        $premios = DB::table("premios")
+            ->select("id","nombre")->get();
 
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $listaActs->whereIn('id_proyecto', function ($query) {
@@ -534,7 +536,9 @@ class AdminController extends Controller
             'aActividades' => $aActividad,  'aProyectos' => $aProyecto,  'aPrestadores' => $aPrestador,
             'data1' =>json_encode($listaActs),
             'data2' =>json_encode($pR),
+            "premios" => $premios,
             'data3' =>json_encode($reviewActs)]);
+            
     }
 
     public function actstate($id, $state) {
@@ -674,14 +678,15 @@ class AdminController extends Controller
     public function make_act(Request $request) {
 
         try{
-            
+        
             $request->validate([
                 'nombre' => 'string|max:255|unique:actividades,titulo',
                 'tipo' => 'integer',
                 'recursos' => 'string', 
                 'descripcion' => 'string|max:500',
-                'objetivos' => 'string', 
+                'objetivos' => 'string',
                 'exp' => 'integer|min:5|max:100',
+                "premio_asignado" => "integer|nullable",
                 'horas' => [
                     'integer',
                     function ($attribute, $value, $fail) use ($request) {
@@ -724,6 +729,7 @@ class AdminController extends Controller
                 'descripcion' =>$request->input('descripcion'),
                 'exp_ref' =>$request->input('exp'),
                 'objetivos' => $request->input('resultados'),
+                'id_premios' =>$request->input('premio_asignado'),
                 'TEC' => $tec,]);
         
             return redirect()->back()->with('success', 'Actividad creada correctamente');
@@ -1880,8 +1886,7 @@ class AdminController extends Controller
             $prestadores->where('id_sede', auth()->user()->sede);
         }
         $prestadores = $prestadores->get();
-        #agregar condicion para filtrar los premios por visibilidad <- falta
-   
+        
         return view("admin.premios", [
             'prestadores' => $prestadores,
             'premios' => $premios,
@@ -1896,9 +1901,9 @@ class AdminController extends Controller
             "descripcion" => "required|string|max:255",  
             "tipo" => "required|string",
             "horas" => "integer|nullable|between:1,60", 
-            "inicioVigencia" => "null",
-            "finVigencia" => "null",
-            "limite" => "null",
+            "inicioVigencia" => "nullable|date", // Example date validation
+            "finVigencia" => "nullable|date",     // Example date validation
+            "limite" => "nullable|numeric",       // Example numeric validation
         ]);
 
         DB::table("premios")->insert([
@@ -1949,6 +1954,7 @@ class AdminController extends Controller
         return view('admin.cambioPassword');
     }
 
+    // Cambio de contrasenia 
     public function actualizar_password(Request $request){
         
         $request->validate([

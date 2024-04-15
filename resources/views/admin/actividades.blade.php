@@ -144,6 +144,20 @@
                             </div>
                         </div>
 
+                        <div class="form-group row"  style="margin-top: 5px; margin-bottom: 15px;">
+                            <label for="premios" class="col-md-4 col-form-label text-md-right">Premio para la actividad</label>
+                            <div class="col-md-7" style="margin-top: 5px; margin-bottom: 5px;">
+                                <select name="premio_asignado" class="form-control sm:w-56" required>
+                                    <option value="null" disabled selected>Ingresa premio o insignia</option>
+                                    <option value="null">Ninguno</option>
+                                    @foreach ($premios as $premio)
+                                        <option value="{{ $premio->id }}">{{ $premio->nombre }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <small id="Help" class="form-text text-muted">Ingresa un premio en caso de ser necesario </small>
+                        </div>
+
                         <div class="form-group row">
                             <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Tiempo estimado (TEC)</label>
                                 <div class="col-md-6">
