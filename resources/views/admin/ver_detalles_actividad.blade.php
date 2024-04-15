@@ -14,12 +14,19 @@
     <h1 class="text-center" id="detalle_titulo">Detalle Actividad</h1>
     <div class="text-center mx-auto" style="padding-left: 1.5px;" id="players"></div>
     @if(isset($detalle))
-        <div id="actividad">
+        <div id="actividad" style="background-color: transparent; color: white;">
         <ul>
                 <h1 id="titulo_actividad">{{$detalle->titulo}}</h1>
                 <li id="categorias"><strong>Categoría:</strong> {{ $detalle->nombre_categoria }}</li>
                 <li id="categorias"><strong>Subcategoría:</strong> {{ $detalle->nombre_subcategoria }}</li>
-                <li id="categorias"><strong>Tipo:</strong> {{ $detalle->tipo }}</li>
+                <li id="categorias"><strong>Tipo:</strong>  
+                    @if($detalle->tipo == 1)
+                        Particular
+                    @elseif($detalle->tipo == 0)
+                        Genérica
+                    @else
+                        No especificado
+                    @endif
                 <li id="categorias"><strong>Descripción:</strong> {{ $detalle->descripcion }}</li>
                 <li id="categorias"><strong>Objetivos:</strong>
                     <ul>

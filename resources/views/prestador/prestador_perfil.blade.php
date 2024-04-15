@@ -43,6 +43,12 @@
                     @else
                         <div class="col-span-2 md:col-span-1 flex items-center justify-center 2xl:justify-start"> <i data-lucide="building" class="w-4 h-4 mr-2"></i>Sede: No definida</div>
                     @endif
+                    @if(isset($user->emergencia))
+                        <div class="col-span-2 md:col-span-1 flex items-center justify-center 2xl:justify-start"> <i data-lucide="radio" class="w-4 h-4 mr-2"></i>Emergencias: {{$user->emergencia}}</div>
+                    @endif    
+                    @if(isset($user->cumpleanios))
+                        <div class="col-span-2 md:col-span-1 flex items-center justify-center 2xl:justify-start"> <i data-lucide="calendar" class="w-4 h-4 mr-2"></i>Cumpleaños: {{$user->cumpleanios}}</div>
+                    @endif
                     
                 </div>
                 <div class="flex 2xl:mr-10 mt-5"></div>
@@ -64,12 +70,16 @@
                         <a href="javascript:;" data-tw-toggle="modal" 
                         data-tw-target="#basic-modal-preview" class="btn btn-primary">
                         <i class="w-4 h-4 mr-2" data-target="#imagenModal" data-toggle="modal" data-lucide="image-plus"></i> Cambiar imagen</a>
-                    </div>
+                        <a href="javascript:;" data-tw-toggle="modal" 
+                        data-tw-target="#basic-modal-preview2" class="btn btn-primary">
+                        <i class="w-4 h-4 mr-2" data-target="#datoModal" data-toggle="modal" data-lucide="user-plus"></i>Agregar datos complementarios</a>
+                    </div>                        
                 </div>
             </div>
         </div>
     </div>
     <!-- END: Profile Cover -->
+
     <!-- Modal para cambiar la imagen -->
     <div id="blank-modal" class="p-5">
         <div class="preview">
@@ -125,14 +135,77 @@
         </div>
     </div>
     <!-- END modal cambiar imagen-->
+
+    <!-- Modal para agregar otors datos -->
+    <div id="blank-modal" class="p-5">
+        <div class="preview">
+            <!-- END: Modal Toggle -->
+            <!-- BEGIN: Modal Content -->
+            <div id="basic-modal-preview2" class="modal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body p-10 text-center">
+                            <h2 class="text-2xl mt-5 font-medium">
+                                Agregar datos complementarios
+                            </h2>
+                            <form action="{{ route('datosComplementarios') }}" method="POST">
+                                @csrf
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <div class="overflow-x-auto sm:w-full">
+                                            <div class="text-center pt-5">
+                                                <div class="overflow-x-auto sm:w-full">
+                                                    <div class="intro-y col-span-12 sm:col-span-6">
+                                                        <h2 class="text-2xl mt-5 font-small">Cumpleaños:</h2><br>
+                                                        <input id="cumple" value="{{ isset($user->cumpleanios) ? $user->cumpleanios : '' }}" type="date" class="form-control" name="cumple" placeholder="Ingresa tu fecha de cumpleaños" style="width: 200px">
+                                                    </div>
+                                                    <div class="intro-y col-span-12 sm:col-span-6">
+                                                        <h2 class="text-2xl mt-5 font-small">Numero emergencias:</h2><br>
+                                                        <input id="emerg" type="text" class="form-control" value="{{ isset($user->emergencia) ? $user->emergencia : '' }}"  name="emerg" placeholder="Ingresa un numero al que acudir en caso de emergencia" style="width: 200px" maxlength="10">
+                                                    </div>
+                                                    <div class="intro-y col-span-12 sm:col-span-6">
+                                                        <h2 class="text-2xl mt-5 font-small">Aficiones:</h2><br>
+                                                        <textarea id="aficiones" class="form-control" name="aficiones" placeholder="Ingresa aficiones tuyas separadas por coma" style="width: 200px">{{ isset($user->aficiones) ? $user->aficiones : '' }}</textarea>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" id="cancelar" data-tw-dismiss="modal" class="btn btn-danger" data-dismiss="#basic-modal-preview">Cancelar</button>
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END: Modal Content -->
+        </div>
+    </div>
+    <!-- END modal agregar datos complementarios-->
+
+    <!-- BEGIN: Profile Content -->
+    <div class="box intro-y p-5 mt-5">
+        <div class="flex items-center border-b border-slate-200/60 dark:border-darkmode-400 pb-5 mb-5">
+            <div class="font-medium truncate text-base">Aficiones</div>
+        </div>
+        <div class="flex flex-wrap">
+            @if(isset($user->aficiones))
+                @foreach(explode(',', $user->aficiones) as $aficion)
+                    <div class="px-3 py-1 bg-primary/10 border border-primary/10 rounded-full mr-2 mb-2">{{ $aficion }}</div>
+                @endforeach
+            @endif
+        </div>
+    </div>
         
     @if ($filtro->gamificacion == 1)
-    <!-- BEGIN: Profile Content -->
+    
     <div class="col-span-12 xl:col-span-8">
         
         <div class="box intro-y p-5 mt-5">
             <div class="flex items-center border-b border-slate-200/60 dark:border-darkmode-400 pb-5 mb-5">
-                <div class="font-medium truncate text-base">Medallas Obtenidas</div>
+                <div class="font-medium truncate text-base">Niveles Obtenidos</div>
             </div>
             <div class="grid grid-cols-12 gap-y-7">
                 @foreach($todasMedallasUsuario as $medalla)

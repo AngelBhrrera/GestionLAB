@@ -248,7 +248,7 @@
                         var value = cell.getValue();
                         var button = document.createElement("button");
                         button.style = "background-color: red; color: white; border: 1px solid dark-red; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
-                        button.textContent = "Eliminar X";
+                        button.textContent = "X";
                         button.addEventListener("click", function() {
                             eliminarUsuario(value);
                         });
@@ -290,7 +290,7 @@
                         var value = cell.getValue();
                         var button = document.createElement("button");
                         button.style = "background-color: red; color: white; border: 1px solid dark-red; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
-                        button.textContent = "Eliminar X";
+                        button.textContent = "X";
                         button.addEventListener("click", function() {
                             eliminarUsuario(value);
                         });
@@ -303,6 +303,7 @@
 
         var table3 = createTabulatorInstance("#activ", a, {
             ...commonConfig,
+            groupBy: "categoria",
             columns: [
                 {
                     title: "ID",
@@ -321,26 +322,25 @@
                     title: "Experiencia",
                     field: "exp_ref",
                     sorter: "number",
-                }, {
-                    title: "Categoria",
-                    field: "categoria",
-                    sorter: "string",
-                },   {
+                },  {
                     title: "Subcategoria",
                     field: "subcategoria",
                     sorter: "string",
-                },   {
+                },  {
                     title: "Descripcion",
                     field: "descripcion",
-                }, {
-                    title: "Recursos",
-                    field: "recursos",
-                }, {
-                    title: "Objetivos",
-                    field: "objetivos",
-                }, {
+                },  {
                     title: "Modificar",
-                    field: "datos",
+                    formatter: function (cell, formatterParams, onRendered) {
+                        var value = cell.getValue();
+                        var button = document.createElement("button");
+                        button.style = "background-color: blue; color: white; border: 1px solid dark-red; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
+                        button.textContent = "⚙️";
+                        button.addEventListener("click", function() {
+                            eliminarActividad(value);
+                        });
+                        return button;
+                    },     
                 },  {
                     title: "Eliminar",
                     field: "id",
@@ -348,7 +348,7 @@
                         var value = cell.getValue();
                         var button = document.createElement("button");
                         button.style = "background-color: red; color: white; border: 1px solid dark-red; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
-                        button.textContent = "Eliminar X";
+                        button.textContent = "X";
                         button.addEventListener("click", function() {
                             eliminarActividad(value);
                         });
@@ -367,7 +367,7 @@
             a.setAttribute("data-tw-toggle", "modal");
             a.setAttribute("data-tw-target", "#static-backdrop-modal-preview");
             a.classList.add("btn", "btn-primary");
-            a.textContent = "Modificar";
+            a.textContent = "⚙️";
 
             div.appendChild(a);
             a.addEventListener('click', function(){
@@ -387,7 +387,7 @@
             a.setAttribute("data-tw-toggle", "modal");
             a.setAttribute("data-tw-target", "#static-backdrop-modal-preview-2");
             a.classList.add("btn", "btn-primary");
-            a.textContent = "Modificar";
+            a.textContent = "⚙️";
 
             div.appendChild(a);
             a.addEventListener('click', function(){

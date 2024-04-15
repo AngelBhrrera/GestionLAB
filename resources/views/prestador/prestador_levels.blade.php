@@ -25,10 +25,13 @@
 
 @section('subcontent')
 
+<div class="col-span-12 flex justify-center">
+    <div class="card-header">
+        <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;"> Siguiente nivel </h3>
+    </div>
+</div>
+
 <div class="col-span-12">
-                <div class="card-header">
-                    <h3  class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;"> Siguiente nivel </h3>
-                </div>
         <div class="box intro-y px-3 pt-3 pb-5">
                     
             <div class="flex flex-col 2xl:flex-row items-center justify-center text-center 2xl:text-left">

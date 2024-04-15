@@ -599,9 +599,25 @@ class PrestadorController extends Controller
             ->where('estado', 'En proceso')
             ->value('id');
 
-        DB::table('actividades_prestadores')
+        $timeRef = DB::table('actividades_prestadores')
             ->where('id', $found)
-            ->update(['estado' => 'Bloqueada']);
+            ->value('hora_refs');
+        $timeRef2 = date('H:i:s');
+
+        $tiempoInvertido = DB::table('actividades_prestadores')
+            ->where('id', $found)
+            ->value('Tiempo_Invertido');
+
+        $intervalCalc = $this->calculoIntervaloM($timeRef, $timeRef2);
+        $tiempoInvertido += $intervalCalc;
+
+        DB::table('actividades_prestadores')
+        ->where('id', $found)
+        ->update([
+            'estado' => 'Bloqueada',
+            'Tiempo_Invertido' => $tiempoInvertido,
+            'detalles' => 'Comenzo otra actividad'
+        ]);
 
         return 0;
     }
@@ -613,9 +629,25 @@ class PrestadorController extends Controller
             ->where('estado', 'En proceso')
             ->value('id');
 
-        DB::table('actividades_prestadores')
+        $timeRef = DB::table('actividades_prestadores')
             ->where('id', $found)
-            ->update(['estado' => 'Bloqueada', 'detalles' => 'Salida de Checkin']);
+            ->value('hora_refs');
+        $timeRef2 = date('H:i:s');
+
+        $tiempoInvertido = DB::table('actividades_prestadores')
+            ->where('id', $found)
+            ->value('Tiempo_Invertido');
+
+        $intervalCalc = $this->calculoIntervaloM($timeRef, $timeRef2);
+        $tiempoInvertido += $intervalCalc;
+
+        DB::table('actividades_prestadores')
+        ->where('id', $found)
+        ->update([
+            'estado' => 'Bloqueada',
+            'Tiempo_Invertido' => $tiempoInvertido,
+            'detalles' => 'Salida de Checkin'
+        ]);
 
         return 0;
     }
@@ -796,16 +828,20 @@ class PrestadorController extends Controller
 
     public function create_imps()
     {
-        $impresoras = DB::table('impresoras')
+        $imps = DB::table('impresoras')
             ->where('estado', 1)
             ->get();
 
-        $proy = DB::table('proyectos')->get();
+        $proys = DB::table('proyectos')
+            ->where('id_area', auth()->user()->area)
+            ->get();
+
+        $colors = DB::table('impresion_colores')
+            ->where('area_ref',  auth()->user()->area)
+            ->get();
 
         return view('prestador/registro_impresion',
-            ['imps' => $impresoras,
-            'proys' => $proy
-        ]);
+        compact('imps', 'proys', 'colors'));
     }
 
     public function register_imps(Request $request)
@@ -1068,6 +1104,40 @@ class PrestadorController extends Controller
         $user->save();
 
         return redirect()->route('perfil')->with('success', 'Imagen cambiada correctamente');
+    }
+
+    public function agregarDatos(Request $request){
+       
+        $request->validate([
+            'cumple' => 'nullable|date_format:Y-m-d',
+            'emerg' => 'nullable|numeric|digits:10',
+            'aficiones' => 'nullable|string|max:500',
+        ], [
+            'cumple.date_format' => 'El campo cumple debe tener el formato de fecha YYYY-MM-DD.',
+            'emerg.numeric' => 'El campo emerg debe ser numérico.',
+            'emerg.digits' => 'El campo emerg debe tener exactamente 10 dígitos.',
+            'aficiones.max' => 'El campo aficiones no debe sobrepasar los 500 caracteres.'
+        ]);
+
+        $userId =  Auth::user()->id;
+
+        if ($request->has('cumple')) {
+            $cumple = $request->cumple;
+            DB::table('users')->where('id', $userId)->update(['cumpleanios' => $cumple]);
+        }
+        
+        if ($request->has('emerg')) {
+            $emerg = $request->emerg;
+            DB::table('users')->where('id', $userId)->update(['emergencia' => $emerg]);
+        }
+        
+        if ($request->has('aficiones')) {
+            $aficiones = $request->aficiones;
+            DB::table('users')->where('id', $userId)->update(['aficiones' => $aficiones]);
+        }
+
+        return redirect()->route('perfil')->with('success', 'Datos agregados');
+
     }
 
     //GAMIFICACION

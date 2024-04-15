@@ -154,7 +154,7 @@
                     </div>
                     <div class="form-group">
                         <label for="tipo_categoria">Filtro por categoría</label>
-                        <select class="form control" id="tipo_categoria" name="tipo_categoria" onchange="filtrarCategorias()">
+                        <select class="form-control" id="tipo_categoria" name="tipo_categoria" onchange="filtrarCategorias()">
                             <option value="">Filtrar por categoría</option>
                             @foreach ($categorias as $categoria)
                                 <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
@@ -163,7 +163,7 @@
                     </div>
                     <div class="form-group">
                         <label for="tipo_subcategoria">Filtro por subcategoría</label>
-                        <select class="form control" id="tipo_subcategoria" name="tipo_subcategoria" onchange="filtrarActividades2()">
+                        <select class="form-control" id="tipo_subcategoria" name="tipo_subcategoria" onchange="filtrarActividades2()">
                             <option value=null >Filtrar por subcategoría</option>
                         </select>
                     </div>
@@ -172,7 +172,7 @@
                         <label for="actividades_l" class="col-md-4 col-form-label text-md-right">Actividades</label>
                         <div id="module-container">
                             <div class="module">
-                                <select class="form control" id="tipo_actividad" name="module-0" required>
+                                <select class="form-control" id="tipo_actividad" name="module-0" required>
                                     <option value="" >Asignar actividad</option>
                                 </select>
                                 <button type="button" class="btn btn-danger"  onclick="removeModule(0)">-</button>
@@ -180,6 +180,7 @@
                         </div>
                         <button type="submit"  class="btn btn-primary from-prevent-multiple-submits" id="add-module-btn">+</button>
                     </div>
+                    <br>
                     <div class="col-md-8" id="agregar_actividades"> 
                         <button type="submit" id='asignar' class="btn btn-primary from-prevent-multiple-submits">Agregar a proyecto</button>
                     </div>
@@ -199,7 +200,7 @@
                     <div class="form-group">
                         <label style="font-weight: bold; font-size: 1.2em;" for="proyecto">Seleccionar proyecto</label>
                         <select class="tom-select w-full" id="proyecto" name="proyecto">
-                            <option value="">Selecciona el area de trabajo donde estará principalmente el proyecto</option>
+                            <option value="">Selecciona un proyecto obligatoriamente para asignar actividad</option>
                             @foreach ($proyectos as $proyecto)
                                 <option value="{{ $proyecto->id }}">{{ $proyecto->titulo}}</option>
                             @endforeach
@@ -363,7 +364,7 @@
         const module = document.createElement('div');
         module.classList.add('module');
         module.innerHTML = `
-            <select class="form control" id="tipo_actividad"  name="module-${moduleId}" required>
+            <select class="form-control" id="tipo_actividad"  name="module-${moduleId}" required>
                 <option value="" >Asignar actividad</option>
             </select>
             <button type="button" class="btn btn-danger" onclick="removeModule(${moduleId})""> - </button>

@@ -114,6 +114,19 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
             Route::middleware('role:jefe area,jefe sede,Superadmin,coordinador')->group(function() {
 
+                Route::get('/admin/ver_detalles_proyecto/ver_detalles_actividad/{id}', 'view_details_act')->name('view_details_act');
+                Route::get('/admin/ver_detalles_actividad/{id}', 'view_details_act')->name('view_details_act');
+                
+                Route::get('admin/registro_impresion', 'create_imps')->name('create_impsA');
+                Route::post('admin/registrar_impresion', 'register_imps')->name('register_imps');
+                Route::get('admin/observaciones_impresora/{id}/{val}', 'detail_printer')->name('detail_printer');
+        
+
+                Route::get('admin/observaciones_actividad/{id}/{val}', 'detail_act')->name('detail_act');
+
+                Route::get('superadmin/editarXP/{lvl}/{val}', 'edit_XP')->name('edit_XP');
+        
+
                 Route::middleware('role:coordinador')->group(function() {
                     Route::get('admin/cambiarRol', 'cambiarRol')->name('cambiorol');
                 });
@@ -122,6 +135,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     
                     Route::middleware('role:Superadmin')->group(function() {
                         Route::get('/superadmin/gestion', 'gestionViews')->name('gestionViews');
+                        Route::get('/superadmin/gestionNiveles', 'gestionLvls')->name('gestionLvls');
                     });
 
                     Route::get('/admin/gestion', 'gestHub')->name('gestHub');
@@ -133,6 +147,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     Route::get('/admin/administradores', 'administradores')->name('administradores');
                     Route::get('/admin/administradores', 'administradores')->name('administradores');
                     Route::get('/admin/admin_prestadores_terminados','admin_prestadores_terminados')->name('admin_prestadores_terminados');
+                    Route::get('admin/obtenerHorarios/{id}','obtenerHorarios')->name('obtenerHorarios');
                     //ADMINISTRACION DE PREMIOS
                     Route::get('/admin/premios', 'premios')->name('premios');
                     Route::post('admin/g_premio', 'guardar_premio')->name('guardar_premio');
@@ -190,7 +205,8 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
             Route::get('/admin/C_actividades', 'actividades')->name('actividades');
             Route::post('/admin/M_actividades', 'make_act')->name('make_act');
-            
+
+            Route::post('/admin/MA_actividades', 'makeasign_act')->name('makeasign_act');
 
             Route::get('admin/ver_detalles_proyecto/detalles_actividad/{val}','detallesActividad')->name('detallesActividad');
 
@@ -215,8 +231,6 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::post('/admin/asign3', 'asign3')->name('asign3');
 
             Route::get('/admin/ver_detalles_proyecto/{id}', 'view_details_proy')->name('view_details_proy');
-            Route::get('/admin/ver_detalles_proyecto/ver_detalles_actividad/{id}', 'view_details_act')->name('view_details_act');
-
             Route::post('admin/removerProyecto/{proyectoId}/{prestadorId}', 'removefromProy')->name('removefromProy');
             
             //MODULO IMPRESIONES
@@ -237,17 +251,23 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             //AJUSTES DE PRESTADOR
             Route::get('admin/modificar_horario_prestador/{id}/{value}', 'cambiar_horario')->name('cambiar_horario');
             Route::get('admin/modificar_tipo_prestador/{id}/{value}', 'cambiar_tipo')->name('cambiar_tipo');
+            Route::post('admin/modificar_password', 'modificar_password')->name('modificar_password')->middleware('role:Superadmin');
             Route::post('admin/modificar_prestador', 'modificar_prestador')->name('modificar_prestador');
+            Route::post('admin/modificar_prestador2', 'modificar_prestador2')->name('modificar_prestador2');
             Route::get('admin/activar_prestador/{value}', 'activar')->name('activar');
             Route::get('admin/desactivar_prestador/{value}', 'desactivar')->name('desactivar');
             //AJUSTES DE IMPRESION
             Route::get('admin/activar_impresora/{value}', 'activate_print')->name('activate_print');
             Route::get('admin/changestate_print/{id}/{value}', 'printstate')->name('printstate');
+            Route::get('admin/changestate_printer/{id}/{value}', 'printerstate')->name('printerstate');
             Route::get('admin/observaciones_impresion/{id}/{value}', 'detail_prints')->name('detail_prints');
 
             Route::get('admin/califAct/{id}/{value}', 'actstate')->name('actstate');
             
             Route::post('/admin/registrarvisitas', 'registrarVisita')->name('registrarVisita');
+
+            Route::get('admin/eliminar_color/{value}', 'eliminarC')->name('eliminarC');
+            Route::post('admin/agregar_color', 'addColor')->name('addColor');
 
             Route::middleware('role:jefe area,jefe sede,Superadmin')->group(function() {
                 //API PRESTADOR
@@ -287,6 +307,7 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         //MODULO PERFIL
         Route::get('/prestador/home/perfil', 'perfil')->name('perfil');
         Route::post('/prestador/home/perfil/cambiar-imagen-perfil', 'cambiarImagenPerfil')->name('cambiarImagenPerfil');
+        Route::post('/prestador/home/perfil/extra-data', 'agregarDatos')->name('datosComplementarios');
         //MODULO REPORTES
         Route::get('prestador/reportes_parciales', 'show_reportes')->name('parciales');
         Route::post('prestador/subir_reporte_parcial', 'subir_reportes_parciales')->name('subirReporte');
@@ -324,7 +345,6 @@ Route::controller(App\Http\Controllers\PrestadorController::class)->group(functi
         Route::get('prestador/miProyecto','myProject')->name('myProject');
         Route::get('prestador/detalles_actividad/{val}','detallesActividad')->name('detallesActividad');
         Route::get('prestador/observaciones_actividad/{id}/{val}', 'detail_act')->middleware('role:prestador,practicante,voluntario')->name('detail_act');
-        Route::get('admin/observaciones_actividad/{id}/{val}', 'detail_act')->middleware('role:coordinador,jefe area,jefe sede')->name('detail_act');
         //MODULO GAMIFICACION
         Route::get('prestador/nivel', 'level_progress')->name('level');
         Route::get('prestador/leaderboard', 'leaderboard_area')->name('leaderboard_area');

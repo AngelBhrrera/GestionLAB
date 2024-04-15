@@ -22,7 +22,17 @@
 @section('subcontent')
 
 <div class="container" style="padding-top: 20px; padding-left: 20px;">
-
+    
+        <?php
+            if (Auth::user()->tipo == "Superadmin"){
+                $cambioContraseña = true;
+            }  
+            else{
+                $cambioContraseña = false;
+            }
+            
+        ?>
+    
     <div class="grid grid-cols-12 gap-6 mt-5">
         <div class="intro-y ml-5 col-span-12 lg:col-span-6 flex justify-center" id="alerta">
             @if (session('success'))
@@ -34,6 +44,37 @@
             @error('descripcion')
                 <div class="alert mb-5 alert-danger w-full px-4">{{$message}}</div>
             @enderror
+            @error('sede_edit')
+                <div class="alert mb-5 alert-danger w-full px-4">{{$message}}</div>
+            @enderror
+            @error('area_edit')
+                <div class="alert mb-5 alert-danger w-full px-4">{{$message}}</div>
+            @enderror
+            @error('horario_prest')
+                <div class="alert mb-5 alert-danger w-full px-4">{{$message}}</div>
+            @enderror
+            @error('correo')
+                <div class="alert mb-5 alert-danger w-full px-4">{{$message}}</div>
+            @enderror
+            @error('codigo')
+                <div class="alert mb-5 alert-danger w-full px-4">{{$message}}</div>
+            @enderror
+            @error('nuevaPassword')
+                <div class="alert mb-5 alert-danger w-full px-4">{{$message}}</div>
+            @enderror
+            @error('confirmarPassword')
+                <div class="alert mb-5 alert-danger w-full px-4">{{$message}}</div>
+            @enderror
+
+            {{--@if ($errors->any())
+                <div class="alert mb-5 alert-danger w-full px-4">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }} </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif--}}
                 </div>
         </div>
     </div>
@@ -46,26 +87,15 @@
             <a class="nav-link" data-toggle="tab" href="#a">Admins</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#c">Coordinadores</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#p">Prestadores</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#v">Clientes - Visitantes</a>
         </li>
     </ul>
-    <div class="grid grid-cols-12 gap-6 mt-5">
-        <div class="intro-y ml-5 col-span-12 lg:col-span-6 flex justify-center" id="alerta">
-            @if (session('success'))
-                <div class="alert mb-5 alert-success w-full px-4">{{session('success')}}</div>
-            @endif
-            @if(session('warning'))
-                <div class="alert mb-5 alert-warning w-full px-4">{{session('warning')}}</div>
-            @endif
-            @if(session('error'))
-                <div class="alert mb-5 alert-danger w-full px-4">{{session('error')}}</div>
-            @endif
-            </div>
-        </div>
-    </div>
     <div class="w-[350px] relative mx-5 my-5">
         <input id="searchInput" type="text" class="form-control pl-10" placeholder="Buscar">
         <i class="w-5 h-5 absolute inset-y-0 left-0 my-auto text-slate-400 ml-3" data-lucide="search"></i>
@@ -86,7 +116,7 @@
         <div class="tab-pane" id="a">
             <div class="card-header">
                 <h3 class="text-2xl font-medium leading-none mt-3 px-10 text-center mx-auto" style="padding-top: 20px; padding-bottom: 20px;"> 
-                Ver Todos lso Administradores</h3>
+                Ver Todos los Administradores</h3>
             </div>
             <div class="col-span-12 sm:col-span-4">
                 <div class="intro-y col-span-12 sm:col-span-6">
@@ -105,6 +135,17 @@
                 </div>
             </div>
         </div>
+        <div class="tab-pane" id="c">
+            <div class="card-header">
+                <h3 class="text-2xl font-medium leading-none mt-3 px-10 text-center mx-auto" style="padding-top: 20px; padding-bottom: 20px;"> 
+                Ver Todos los Coordinadores</h3>
+            </div>
+            <div class="col-span-12 sm:col-span-4">
+                <div class="intro-y col-span-12 sm:col-span-6">
+                    <div id="allC"></div>
+                </div>
+            </div>
+        </div>
         <div class="tab-pane" id="v">
             <div class="card-header">
                 <h3 class="text-2xl font-medium leading-none mt-3 px-10 text-center mx-auto" style="padding-top: 20px; padding-bottom: 20px;"> 
@@ -118,49 +159,151 @@
         </div>
     </div>
     <!-- BEGIN: Modal Content -->
-    <div id="static-backdrop-modal-preview" id="editarFestivo"class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div id="static-backdrop-modal-preview" id="editarFestivo" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body px-5 py-10">
                     <div class="text-center">
                         <div class="mb-5"></div>
-                        <h2 class="text-2xl mt-5 font-small">Modificar horario/tipo de prestador</h2><br>
-                        <label for="nombre">Nombre</label>
-                        <input id="nombre" readonly value="" type="text" class="form-control" name="nombre" placeholder="nombre" style="width: 200px">
-                        <br><label for="apellido">Apellido</label>
-                        <input id="apellido" readonly value="" type="text" class="form-control mt-5" name="apellido" placeholder="apellido" style="width: 200px">
-                        
+                        <h2 class="text-2xl mt-5 font-small">Modificar prestador</h2><br>
+                        <input type="hidden" value="" id="sede_user">
+                        <input type="hidden" value="" id="area_user">
+                        <input type="hidden" value="" id="horario">
                         
                         <form action="{{route('api.modificar_prestador')}}" method="POST">
                             @csrf
-                            <label for="codigo">Código</label>
-                            <input id="codigo" readonly value="" type="text" class="form-control mt-5" name="codigo" placeholder="codigo" style="width: 200px">
+                            <input type="hidden" value="" id="id_prest" name="id_prest">
+
+                            <label for="nombre">Nombre</label>
+                            <input id="nombre" @if(Auth::user()->tipo != 'Superadmin') readonly @endif value="" type="text" class="form-control" name="nombre" placeholder="nombre" style="width: 200px">
+                            
+                            <br><label for="apellido">Apellido</label>
+                            <input id="apellido" @if(Auth::user()->tipo != 'Superadmin') readonly @endif  value="" type="text" class="form-control mt-5" name="apellido" placeholder="apellido" style="width: 200px">
+                            
+                            <br><label for="codigo">Código</label>
+                            <input id="codigo" @if(Auth::user()->tipo != 'Superadmin') readonly @endif  value="" type="text" class="form-control mt-5" name="codigo" placeholder="codigo" style="width: 200px">
+                            
+                            <br><label for="correo">Correo</label>
+                            <input type="email" id="correo" @if(Auth::user()->tipo != 'Superadmin') readonly @endif  value="" class="form-control mt-5" name="correo" placeholder="correo" style="width: 200px" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,5}">
                             <div class="intro-y col-span-12 sm:col-span-6" id="divCarrera">
                                 <br>
                                 <label class="mr-5" for="tipo_prest">Tipo</label>
-                                <select class="form-control" name="tipo_prest" id="tipo_prest" style="width: 200px">
+                                <select required class="form-control" name="tipo_prest" id="tipo_prest" style="width: 200px">
                                     <option id="prestador" value="prestador">Prestador</option>
                                     <option id="coordinador" value="coordinador">Coordinador</option>
                                     <option id="voluntario" value="voluntario">Voluntario</option>
                                     <option id="practicante" value="practicante">Practicante</option>
                                 </select>
-                                <br><br>
-                                <label  for="horario_prest">Horario</label>
-                                <select class="form-control" name="horario_prest" id="horario_prest" style="width: 200px">
-                                    @foreach ($horariosValidos as $horario )
-                                        @if ($horario)
-                                            <option value="{{$horario}}" id="{{$horario}}">{{$horario}}</option>
-                                        @endif
-                                        
-                                    @endforeach
-                                </select>
                                 <br>
+                                @if (Auth::user()->tipo == "Superadmin")
+                                <br>
+                                <label class="mr-5" for="sede_edit">Sede</label>
+                                    <select required class="form-control"name="sede_edit" id="sede_edit" style="width: 200px" onchange="filtrarAreaSede()">
+                                        @foreach ($sedes as $sede)
+                                            <option value="{{$sede->id_sede}}" id="{{$sede->nombre_sede}}">{{$sede->nombre_sede}}</option>
+                                        @endforeach
+                                    </select>
+                                    <br>
+                                @endif
+                                
+                                @if (Auth::user()->tipo == "jefe sede" || Auth::user()->tipo == "Superadmin")
+                                <br>
+                                    <label class="mr-5" for="area_edit">Area</label>
+                                    <select required class="form-control" name="area_edit" id="area_edit" style="width: 200px" onchange="filtrarHorario()">
+                                           
+                                    </select>
+                                    <br>
+                                @endif
+                                <br>
+                                <label  for="horario_prest">Horario</label>
+                                <select required class="form-control" name="horario_prest" id="horario_prest" style="width: 200px">
+                                    
+                                </select>
+                                
                                 <br><br>
                                 <div class="text-center">
                                     <button type="button" data-tw-dismiss="modal" class="btn btn-danger w-24">Cancelar</button>
                                     <button type="submit" class="btn btn-primary w-24">Guardar</button>
                                 </div>
                                 
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- BEGIN: Modal Content -->
+    <div id="static-2" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body px-5 py-10">
+                    <div class="text-center">
+                        <div class="mb-5"></div>
+                        <h2 class="text-2xl mt-5 font-small">Modificar usuario</h2><br>
+                        <input type="hidden" value="" id="sede_user">
+                        <input type="hidden" value="" id="area_user">
+                        <input type="hidden" value="" id="horario">
+                        
+                        <form action="{{route('api.modificar_prestador2')}}" method="POST">
+                            @csrf
+                            <input type="hidden" value="" id="id_prest2" name="id_prest">
+
+                            <label for="nombre">Nombre</label>
+                            <input id="nombre2" @if(Auth::user()->tipo != 'Superadmin') readonly @endif value="" type="text" class="form-control" name="nombre" placeholder="nombre" style="width: 200px">
+                            
+                            <br><label for="apellido">Apellido</label>
+                            <input id="apellido2" @if(Auth::user()->tipo != 'Superadmin') readonly @endif  value="" type="text" class="form-control mt-5" name="apellido" placeholder="apellido" style="width: 200px">
+                            
+                            <br><label for="codigo">Código</label>
+                            <input id="codigo2" @if(Auth::user()->tipo != 'Superadmin') readonly @endif  value="" type="text" class="form-control mt-5" name="codigo" placeholder="codigo" style="width: 200px">
+                            
+                            <br><label for="email">Correo</label>
+                            <input type="email" id="correo2" @if(Auth::user()->tipo != 'Superadmin') readonly @endif  value="" class="form-control mt-5" name="correo" placeholder="correo" style="width: 200px" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,5}">
+                            <div class="intro-y col-span-12 sm:col-span-6" id="divCarrera">
+
+                                <br><br>
+                                <div class="text-center">
+                                    <button type="button" data-tw-dismiss="modal" class="btn btn-danger w-24">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary w-24">Guardar</button>
+                                </div>
+                                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- BEGIN: Modal Content -->
+    <div id="static-backdrop-modal-preview2" id="editarFestivo" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body px-5 py-10">
+                    <div class="text-center">
+                        <div class="mb-5"></div>
+                        <h2 class="text-2xl mt-5 font-small">Cambiar contraseña</h2>
+                        
+                        <form action="{{route('api.modificar_password')}}" onsubmit="return confirmarCambio()" method="POST">
+                            @csrf
+                            <input type="hidden" value="" id="id_prest_modal2" name="id_prest">
+                            <h1 class="text-xl mt-5 font-small">Usuario</h1><br>
+                            <label for="nombre">Nombre</label>
+                            <input id="nombre_modal2" readonly value="" type="text" class="form-control" name="nombre" placeholder="nombre" style="width: 200px">
+                            
+                            <br><label for="apellido">Apellido</label>
+                            <input id="apellido_modal2" readonly  value="" type="text" class="form-control mt-5" name="apellido" placeholder="apellido" style="width: 200px">
+                            
+                            <br><label for="correo">Correo</label>
+                            <input id="correo_modal3" readonly value="" type="text" class="form-control mt-5" name="correo" placeholder="codigo" style="width: 200px">
+                            
+                            <input required type="password" class="form-control mt-5" name="nuevaPassword" placeholder="Nueva contraseña*" style="width: 200px">
+                            <input required type="password" class="form-control mt-5" name="confirmarPassword" placeholder="Confirmar contraseña*" style="width: 200px">
+                            
+                            <br><br>
+                            <div class="text-center">
+                                <button type="button" data-tw-dismiss="modal" class="btn btn-danger w-24">Cancelar</button>
+                                <button type="submit" class="btn btn-primary w-24">Guardar</button>
                             </div>
                         </form>
                     </div>
@@ -178,6 +321,9 @@
             var usersV = {!! $datosV !!};
             var usersA = {!! $datosA !!};
             var usersP = {!! $datosP !!};
+            var usersC = {!! $datosC !!};
+            var mostrarBtn = @json($cambioContraseña);
+
 
             function createTabulatorInstance(selector, data, config) {
                 return new Tabulator(selector, {
@@ -236,7 +382,43 @@
                     },  {
                         title: "Contacto",
                         field: "telefono",
-                    }
+                    }, {
+                        title: "Acciones",
+                        field: "datos",
+                        headerTooltip: "Tras seleccionar el cambio de tipo usuario o turno, presiona este boton para guardar los cambios. Nota: Si cambias al prestador a un horario que no corresponde con su area de trabajo, no se realizará el cambio",
+                        formatter: customButtonFormatter2,  
+                    }, {
+                        title: "",
+                        field: "datos",
+                        headerTooltip: "Cambio de contraseña para usuarios, sólo un superadmin tiene el permiso necesario",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            if(mostrarBtn){
+                                var div = document.createElement("div");
+                                div.classList.add("text-center");
+                                
+                                var a = document.createElement("a");
+                                a.href = "javascript:;";
+                                a.setAttribute("data-tw-toggle", "modal");
+                                a.setAttribute("data-tw-target", "#static-backdrop-modal-preview2");
+                                a.classList.add("btn", "btn-primary");
+                                a.textContent = "Cambio 🔒";
+
+                                div.appendChild(a);
+                                a.addEventListener('click', function(){
+                                    
+                                    data = cell.getRow().getData();
+                                    document.getElementById('nombre_modal2').value = data.name;
+                                    document.getElementById('apellido_modal2').value = data.apellido;
+                                    document.getElementById('correo_modal3').value = data.correo;
+                                    id_prest = document.getElementById('id_prest_modal2');
+                                    id_prest.value = data.id;
+                                });
+                                return div;
+                            }
+                            return;
+                            
+                        },
+                    },
                 ],
             });
 
@@ -247,11 +429,6 @@
                         field: "id",
                         visible: false,
                         width: 2,
-                    },{
-                        title: "Fecha",
-                        field: "fecha",
-                        sorter: "string",
-                        width: 110,
                     }, {
                         title: "Nombre",
                         field: "name",
@@ -261,36 +438,14 @@
                         field: "apellido",
                         sorter: "string",
                         editor: "input",
-                    }, {
-                        title: "Responsable",
-                        field: "responsable",
-                        sorter: "string",
-                    }, {
+                    },  {
                         title: "Correo",
                         field: "correo",
                         sorter: "string",
                     }, {
                         title: "Contacto",
                         field: "numero",
-                    }, {
-                        title: "Entrada",
-                        field: "hora_llegada",
-                        sorter: "string",
-                    }, {
-                        title: "Salida",
-                        field: "hora_salida",
-                        sorter: "string",
-                    },{
-                        title: "Motivo",
-                        field: "motivo",
-                        editor: "input",
-                        cellEdited: function (cell) {
-                            var row = cell.getRow();
-                            var id = row.getData().id;
-                            var value = cell.getValue();
-                            agregarObservaciones(id, value);
-                        },
-                    },
+                    }, 
                     
                 ],
             });
@@ -329,13 +484,53 @@
                         title: "Horario",
                         field: "horario",
                         sorter: "string",
-                    }, 
+                    }, {
+                        title: "",
+                        field: "datos",
+                        headerTooltip: "Cambio de contraseña para usuarios, sólo un superadmin tiene el permiso necesario",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            if(mostrarBtn){
+                                var div = document.createElement("div");
+                                div.classList.add("text-center");
+                                
+                                var a = document.createElement("a");
+                                a.href = "javascript:;";
+                                a.setAttribute("data-tw-toggle", "modal");
+                                a.setAttribute("data-tw-target", "#static-backdrop-modal-preview2");
+                                a.classList.add("btn", "btn-primary");
+                                a.textContent = "Cambio 🔒";
+
+                                div.appendChild(a);
+                                a.addEventListener('click', function(){
+                                    
+                                    data = cell.getRow().getData();
+                                    document.getElementById('nombre_modal2').value = data.name;
+                                    document.getElementById('apellido_modal2').value = data.apellido;
+                                    document.getElementById('correo_modal3').value = data.correo;
+                                    id_prest = document.getElementById('id_prest_modal2');
+                                    id_prest.value = data.id;
+                                });
+                                return div;
+                            }
+                            return;
+                            
+                        },
+                      
+                    },
                 ],
             });
 
             var table4 = createTabulatorInstance("#allP", usersP, {
                 ...commonConfig,
-                columns: [{
+                groupBy: "nombre_sede",
+                columns: [
+                    {
+                        title: "ID",
+                        field: "id",
+                        sorter: "string",
+                        visible: false,
+                      
+                    },{
                         title: "Nombre",
                         field: "name",
                         sorter: "string",
@@ -358,11 +553,26 @@
                         field: "codigo",
                         sorter: "number",
                       
+                    }, {
+                        title: "ID sede",
+                        field: "id_sede",
+                        sorter: "string",
+                        visible: false,
+
+                    }, {
+                        title: "ID area",
+                        field: "id_area",
+                        sorter: "string",
+                        visible: false,
+                    }, {
+                        title: "Area",
+                        field: "nombre_area",
+                        sorter: "string",
+
                     },  {
                         title: "Horario",
                         field: "horario",
                         sorter: "string",
-
                     }, {
                         title: "Cumplidas",
                         field: "horas_cumplidas",
@@ -374,25 +584,52 @@
                         sorter: "number",
                       
                     },  {
-                        title: "Carrera",
-                        field: "carrera",
-                        sorter: "string",
-                      
-                    },{
                         title: "Modificar",
                         field: "datos",
                         headerTooltip: "Tras seleccionar el cambio de tipo usuario o turno, presiona este boton para guardar los cambios. Nota: Si cambias al prestador a un horario que no corresponde con su area de trabajo, no se realizará el cambio",
                         formatter: customButtonFormatter, 
                       
-                    }, {
-                        title: "Desactivar",
+                    },{
+                        title: "",
+                        field: "datos",
+                        headerTooltip: "Cambio de contraseña para usuarios, sólo un superadmin tiene el permiso necesario",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            if(mostrarBtn){
+                                var div = document.createElement("div");
+                                div.classList.add("text-center");
+                                
+                                var a = document.createElement("a");
+                                a.href = "javascript:;";
+                                a.setAttribute("data-tw-toggle", "modal");
+                                a.setAttribute("data-tw-target", "#static-backdrop-modal-preview2");
+                                a.classList.add("btn", "btn-primary");
+                                a.textContent = "Cambio 🔒";
+
+                                div.appendChild(a);
+                                a.addEventListener('click', function(){
+                                    
+                                    data = cell.getRow().getData();
+                                    document.getElementById('nombre_modal2').value = data.name;
+                                    document.getElementById('apellido_modal2').value = data.apellido;
+                                    document.getElementById('correo_modal3').value = data.correo;
+                                    id_prest = document.getElementById('id_prest_modal2');
+                                    id_prest.value = data.id;
+                                });
+                                return div;
+                            }
+                            return;
+                            
+                        },
+                      
+                    },{
+                        title: "",
                         field: "id",
                         width: 135,
                         formatter: function (cell, formatterParams, onRendered) {
                             var value = cell.getValue();
                             var button = document.createElement("button");
                             button.style = "background-color: red; color: white; border: 1px solid white; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
-                            button.textContent = "Desactivar";
+                            button.textContent = "X";
                             button.title = "";
                             button.addEventListener("click", function() {
                                 desactivarPrestador(value);
@@ -404,6 +641,77 @@
                 ],
             });
 
+            var table5 = createTabulatorInstance("#allC", usersC, {
+                ...commonConfig,
+                groupBy: "nombre_sede",
+                columns: [{
+                        title: "Nombre",
+                        field: "name",
+                        sorter: "string",
+                    }, {
+                        title: "Apellido",
+                        field: "apellido",
+                        sorter: "string",
+                      
+                    }, {
+                        title: "Correo",
+                        field: "correo",
+                        sorter: "string",                 
+                    }, {
+                        title: "Codigo",
+                        field: "codigo",
+                        sorter: "number",
+                    },  {
+                        title: "Horario",
+                        field: "horario",
+                        sorter: "string",
+                    }, {
+                        title: "Area",
+                        field: "nombre_area",
+                        sorter: "string",
+                    },  {
+                        title: "Acciones",
+                        field: "datos",
+                        headerTooltip: "Tras seleccionar el cambio de tipo usuario o turno, presiona este boton para guardar los cambios. Nota: Si cambias al prestador a un horario que no corresponde con su area de trabajo, no se realizará el cambio",
+                        formatter: customButtonFormatter,
+                      
+                    },{
+                        title: "",
+                        field: "datos",
+                        headerTooltip: "Cambio de contraseña para usuarios, sólo un superadmin tiene el permiso necesario",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            if(mostrarBtn){
+                                var div = document.createElement("div");
+                                div.classList.add("text-center");
+                                
+                                var a = document.createElement("a");
+                                a.href = "javascript:;";
+                                a.setAttribute("data-tw-toggle", "modal");
+                                a.setAttribute("data-tw-target", "#static-backdrop-modal-preview2");
+                                a.classList.add("btn", "btn-primary");
+                                a.textContent = "Cambio 🔒";
+
+                                div.appendChild(a);
+                                a.addEventListener('click', function(){
+                                    
+                                    data = cell.getRow().getData();
+                                    document.getElementById('nombre_modal2').value = data.name;
+                                    document.getElementById('apellido_modal2').value = data.apellido;
+                                    document.getElementById('correo_modal3').value = data.correo;
+                                    id_prest = document.getElementById('id_prest_modal2');
+                                    id_prest.value = data.id;
+                                });
+                                return div;
+                            }
+                            return ;
+                            
+                        },
+                      
+                    },
+                ],
+            });
+
+            var data;
             function fetchData(url, method, callback) {
                 const token = document.head.querySelector('meta[name="csrf-token"]').content;
                 fetch(url, {
@@ -423,6 +731,12 @@
                 });
             }
 
+            function desactivarPrestador(value) {
+                fetchData(`desactivar_prestador/${value}`, 'GET', data => {
+                    console.log('Usuario desactivado:', data);
+                });
+            }
+
             function customButtonFormatter(cell, formatterParams, onRendered) {
             var div = document.createElement("div");
             div.classList.add("text-center");
@@ -436,14 +750,26 @@
 
             div.appendChild(a);
             a.addEventListener('click', function(){
-                var data = cell.getRow().getData();
+                
+                data = cell.getRow().getData();
                 document.getElementById('nombre').value = data.name;
                 document.getElementById('apellido').value = data.apellido;
                 document.getElementById('codigo').value = data.codigo;
+                sedeId = document.getElementById('sede_user');
+                areaId = document.getElementById('area_user');
+                horario_prest = document.getElementById('horario');
+                id_prest = document.getElementById('id_prest');
+                correo = document.getElementById('correo');
+                sedeId.value = data.id_sede;
+                areaId.value = data.id_area;
+                horario_prest.value = data.horario;
+                id_prest.value = data.id;
+                correo.value = data.correo;
                 const tipo_prest = document.getElementById('prestador');//Opción Prestador
                 const tipo_coord = document.getElementById('coordinador');//Opción coordinador
                 const tipo_vol = document.getElementById('voluntario');//Opción Voluntario  
                 const tipo_pract = document.getElementById('practicante');//Opción Practicante
+                selectsAuto();
                 if( tipo_prest.value == data.tipo){
                     tipo_prest.selected = true;
                 }else{
@@ -466,31 +792,226 @@
                         console.log("Opción no reconocida");
                 }
 
-                const select_horario = document.getElementById('horario');
-                switch(data.horario){
-                    case "Matutino":
-                        document.getElementById('Matutino').selected = true;
-                        break;
-                    case "Mediodia":
-                        document.getElementById('Mediodia').selected = true;
-                        break;
-                    case "Vespertino":
-                        document.getElementById('Vespertino').selected = true;
-                        break;
-                    case "Sabatino":
-                        document.getElementById('Sabatino').selected = true;
-                        break;
-                    case "TC":
-                        document.getElementById('TC').selected = true;
-                        break;
-                    default:
-                        document.getElementById('No Aplica').selected = true;
-                        break;
-                    
+                var sede = document.getElementById(data.nombre_sede);
+                if(sede){
+                    sede.selected = true;
                 }
+                var area = document.getElementById(data.nombre_area);
+                if(area){
+                    area.selected = true;
+                }
+                
             });
             return div;
         }
+
+        function customButtonFormatter2(cell, formatterParams, onRendered) {
+            var div = document.createElement("div");
+            div.classList.add("text-center");
+            
+            var a = document.createElement("a");
+            a.href = "javascript:;";
+            a.setAttribute("data-tw-toggle", "modal");
+            a.setAttribute("data-tw-target", "#static-2");
+            a.classList.add("btn", "btn-primary");
+            a.textContent = "Modificar";
+
+            div.appendChild(a);
+            a.addEventListener('click', function(){
+                
+                data = cell.getRow().getData();
+                document.getElementById('nombre2').value = data.name;
+                document.getElementById('apellido2').value = data.apellido;
+                document.getElementById('codigo2').value = data.codigo;
+                document.getElementById('id_prest2').value = data.id;
+                document.getElementById('correo2').value = data.correo;
+                
+            });
+            return div;
+        }
+
+
+        function filtrarAreaSede(){
+            selectSede = document.getElementById("sede_edit");
+            selectArea = document.getElementById("area_edit");
+            
+            if(document.getElementById("sede_edit")){
+                sedeId.value = selectSede.value;
+                selectSede = document.getElementById("sede_edit");
+                selectArea.innerHTML = '<option id="default" value="null"> Selecciona un área de trabajo</option>';      
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                                var areas = JSON.parse(xhr.responseText);
+                                selectArea.disabled = false;
+                                areas.forEach(function(area) {
+                                    var option = document.createElement('option');
+                                    option.value = JSON.stringify({id: area.id, nombre: area.nombre_area});
+                                    option.text = area.nombre_area;
+                                    option.id = area.nombre_area;
+                                    selectArea.appendChild(option);
+                                    if(JSON.parse(option.value).id == areaId.value){
+                                        option.selected = true;
+                                    }
+                                });
+                            } else {
+                                console.error('Error al obtener las sedes');
+                            }
+                        }
+                    }
+                xhr.open('GET', 'filtroEditArea/' + sedeId.value);
+                xhr.send();
+                
+                
+                
+            }else{
+                selectArea.innerHTML = '<option id="default" value="null"> Selecciona un área de trabajo</option>';      
+                
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                                var areas = JSON.parse(xhr.responseText);
+                                selectArea.disabled = false;
+                                areas.forEach(function(area) {
+                                    var option = document.createElement('option');
+                                    option.value = JSON.stringify({id: area.id, nombre: area.nombre_area});
+                                    option.text = area.nombre_area;
+                                    option.id = area.nombre_area;
+                                    selectArea.appendChild(option);
+                                    if(JSON.parse(option.value).id == areaId.value){
+                                        option.selected = true;
+                                    }
+                                });
+                            } else {
+                                console.error('Error al obtener las sedes');
+                            }
+                        }
+                    }
+                xhr.open('GET', 'filtroEditArea/' +  sedeId.value);
+                xhr.send();
+            }
+        }
+        function selectsAuto(){
+            selectSede = document.getElementById("sede_edit");
+            selectArea = document.getElementById("area_edit");
+            selectHorario = document.getElementById('horario_prest');
+            horario_prest = document.getElementById('horario');
+            
+            if(document.getElementById("sede_edit")){
+                selectSede = document.getElementById("sede_edit");
+                selectArea.innerHTML = '<option id="default" value="null"> Selecciona un área de trabajo</option>';      
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                                var areas = JSON.parse(xhr.responseText);
+                                selectArea.disabled = false;
+                                areas.forEach(function(area) {
+                                    var option = document.createElement('option');
+                                    option.value = JSON.stringify({id: area.id, nombre: area.nombre_area});
+                                    option.text = area.nombre_area;
+                                    option.id = area.nombre_area;
+                                    selectArea.appendChild(option);
+                                    if(JSON.parse(option.value).id == areaId.value){
+                                        option.selected = true;
+                                    }
+                                });
+                            } else {
+                                console.error('Error al obtener las sedes');
+                            }
+                        }
+                    }
+                xhr.open('GET', 'filtroEditArea/' + sedeId.value);
+                xhr.send();
+            }else{
+                if(selectArea){
+                    selectArea.innerHTML = '<option id="default" value="null"> Selecciona un área de trabajo</option>';
+                }     
+                
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                                var areas = JSON.parse(xhr.responseText);
+
+                                areas.forEach(function(area) {
+                                    var option = document.createElement('option');
+                                    option.value = JSON.stringify({id: area.id, nombre: area.nombre_area});
+                                    option.text = area.nombre_area;
+                                    option.id = area.nombre_area;
+                                    selectArea.appendChild(option);
+                                    if(JSON.parse(option.value).id == areaId.value){
+                                        option.selected = true;
+                                    }
+                                });
+                            } else {
+                                console.error('Error al obtener las sedes');
+                            }
+                        }
+                    }
+                xhr.open('GET', 'filtroEditArea/' +  sedeId.value);
+                xhr.send();
+            }
+            
+            selectHorario.innerHTML = '<option id="default" value="null"> Selecciona un horario</option>'; 
+            var xhr2 = new XMLHttpRequest();
+              
+                xhr2.onreadystatechange = function() {
+                    if (xhr2.readyState === XMLHttpRequest.DONE) {
+                        if (xhr2.status === 200) {
+                            var horarios = JSON.parse(xhr2.responseText);
+                            horarios.forEach(function(horario) {
+                                if(horario){
+                                    option = document.createElement('option');
+                                    option.value = horario;
+                                    option.text = horario;
+                                    option.id = horario;
+                                    selectHorario.appendChild(option);
+                                }
+                                if(option.value == horario_prest.value){
+                                    option.selected = true;
+                                }
+                            });
+                        } else {
+                            console.error('Error al obtener horarios');
+                        }
+                    }
+                }
+            xhr2.open('GET', 'obtenerHorarios/' +  areaId.value);
+            xhr2.send();
+        }
+
+        function filtrarHorario(){
+            selectHorario.innerHTML = '<option id="default" value="null"> Selecciona un horario</option>'; 
+            var xhr2 = new XMLHttpRequest();
+            areaId.value = JSON.parse(selectArea.value).id;
+                xhr2.onreadystatechange = function() {
+                    if (xhr2.readyState === XMLHttpRequest.DONE) {
+                        if (xhr2.status === 200) {
+                            var horarios = JSON.parse(xhr2.responseText);
+                            horarios.forEach(function(horario) {
+                                if(horario){
+                                    option = document.createElement('option');
+                                    option.value = horario;
+                                    option.text = horario;
+                                    option.id = horario;
+                                    selectHorario.appendChild(option);
+                                }
+                                if(option.value == horario_prest.value){
+                                    option.selected = true;
+                                }
+                            });
+                        } else {
+                            console.error('Error al obtener horarios');
+                        }
+                    }
+                }
+            xhr2.open('GET', 'obtenerHorarios/' +  areaId.value);
+            xhr2.send();
+        }
+        
 
         document.addEventListener('DOMContentLoaded', function() {
             function applyCustomFilter(value, table) {
@@ -529,7 +1050,18 @@
                 .catch(error => {
                     console.error('Error al cambiar de estado de impresion:', error);
                 });
-            } 
+            }
+
+        function confirmarCambio(){
+            const confirmar = confirm("¿Estás seguro de cambiar la contraseña?");
+
+            if(confirmar){
+                return true;
+            }else{
+                return false;
+            }
+
+        }
 
     </script>
 @endsection
