@@ -1,310 +1,139 @@
 @extends('layouts/admin-layout')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('homeP')}}">Admin</a></li>
-    <li class="breadcrumb-item"><a>Registro</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Impresion</li>
+    <li class="breadcrumb-item"><a href="{{route('homeP')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
+    <li class="breadcrumb-item"><a href="{{route('printHub')}}">Impresion</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Registrar</li>
 @endsection
 
-@section('subcontent')
 
+@section('subcontent')
 <div class="container">
+
     <div class="row justify-content-center">
         <div class="col-md-9">
             <div class="card card-primary">
-                <div class="card-header">
-                    <h3 class="card-title">Formulario de Impresión</h3>
+            <div class="card-header">
+                    <h3  class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;"> Registro de Impresión </h3>
                 </div>
                 <div class="card-body">
 
-                    <form class="from-prevent-multiple-submits" method="POST" action="{{ route('crearImpresion') }}"  enctype="multipart/form-data">
-
+                    <form class="from-prevent-multiple-submits" method="POST" action="{{ route('admin.register_imps') }}">
                     @csrf
-                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de ingresar el correo institucional">
-                            <label for="">Correo</label>
-                            <input type="email" class="form-control @error('correo') is-invalid @enderror"
-                                name="correo" id="correo" aria-describedby="emailHelpId"  value="{{old('correo')}}">
-                            <small id="Help" class="form-text text-muted">favor de ingresar el correo institucional</small>
-                            @error('correo')
+                        <div class="form-group" data-toggle="tooltip" data-placement="top">
+                            <label for="from-group" class="form-label">Impresora</label>
+                            <select  class="tom-select w-full" name="imp_id" id="imp_id" required>
+                            @if (isset($imps))
+                                <option id="" value="{{null}}" >Selecciona la impresora</option>
+                                @foreach ($imps as $dato)
+                                    <option id="{{$dato->id}}" value="{{$dato->id}}" >{{$dato->nombre }} </option>
+                                @endforeach
+                            @endif       
+                            </select>          
+                        </div>
+
+                        <div class="form-group" data-toggle="tooltip" data-placement="top">
+                            <label for="from-group" class="form-label">Proyecto</label>
+                            <select class="tom-select w-full" name="proyect" id="proyect" required>
+                                <option id="null_proyect" value="{{null}}" >Selecciona el proyecto </option>
+                                @if (isset($proys))
+                                    @foreach ($proys as $dato )
+                                        <option id="{{$dato->id}}" value="{{$dato->id}}">{{$dato->titulo }} </option>
+                                    @endforeach
+                                @endif                 
+                            </select>
+                        </div>
+
+                        <div class="form-group" data-toggle="tooltip" data-placement="top">
+                            <label for="">Nombre del modelo .stl</label>
+                            <input type="text"  class="form-control @error('model') is-invalid @enderror"
+                                name="model" id="model" value="{{old('model')}}" required>
+                            @error('model')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                         </div>
-                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de ingresar tu nombre completo iniciando por los apellidos">
-                            <label for="">Nombre Completo</label>
-                            <input type="text"  class="form-control @error('nombre') is-invalid @enderror"
-                                name="nombre" id="nombre" aria-describedby="helpId" value="{{old('nombre')}}">
-                                <small id="Help" class="form-text text-muted">favor de ingresar tu nombre completo iniciando por los apellidos</small>
-                            @error('nombre')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de ingresar un numero de telefono valido">
-                            <label for="">Teléfono</label>
-                            <input type="tel"class="form-control @error('telefono') is-invalid @enderror"
-                            name="telefono" id="telefono" aria-describedby="helpId" value="{{ old('telefono') }}">
-                            <small id="Help" class="form-text text-muted">favor de ingresar un numero de telefono valido</small>
-                            @error('telefono')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
+
+                        <div class="form-group" data-toggle="tooltip" data-placement="top">
+                            <label for="color">Color</label>
+                            <select name="color" id="color"  class="tom-select w-full" required>
+                                <option value="" disabled selected>Selecciona un color</option>
+                                @if (isset($colors))
+                                    @foreach ($colors as $dato )
+                                        <option id="{{$dato->id}}" value="{{$dato->id}}">{{$dato->color }} </option>
+                                    @endforeach
+                                @endif    
+                            </select>
                         </div>
 
-                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de propocionar acceso de visualizacion y descarga a la carpeta de drive">
-                            <label for="">Enlace Drive</label>
-                            <input type="url" class="form-control @error('enlaceDrive') is-invalid @enderror"
-                            name="enlaceDrive" id="enlaceDrive" aria-describedby="helpId" value="{{ old('enlaceDrive') }}">
-                            <small id="Help" class="form-text text-muted">favor de propocionar acceso de visualizacion y descarga a la carpeta de drive</small>
-                                @error('enlaceDrive')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                        <div class="form-group" data-toggle="tooltip" data-placement="top">
+                            <label for="">Piezas</label>
+                            <input  type="number" class="form-control"
+                                name="pieces" id="pieces" value="{{old('pieces')}}" required>
                         </div>
 
+                        <div class="form-group" data-toggle="tooltip" data-placement="top">
+                            <label for="">Peso</label>
+                            <input  type="number" class="form-control" 
+                                name="weight" id="weight" value="{{old('weight')}}" required>
+                            <small id="Help" class="form-text text-muted">Ingresa la cantidad en gramos, máximo dos decimales</small>
 
-                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de poner el numerode piezas igual al numerode archivos STL que esten el en drive">
-                            <label for="">Número de Piezas</label>
-                            <input type="number" class="form-control @error('N_piezas') is-invalid @enderror"
-                            name="N_piezas" id="N_piezas" aria-describedby="helpId" value="{{ old('N_piezas') }}">
-                            <small id="Help" class="form-text text-muted">favor de poner el numerode piezas igual al numerode archivos STL que esten el en drive</small>
-                                @error('N_piezas')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
                         </div>
 
-                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de poner el titulo igual al nombre de la carpeta o archivo STL que tenga en drive">
-                            <label for="">Título del Proyecto</label>
-                            <input type="text"class="form-control @error('proyecto') is-invalid @enderror"
-                            name="proyecto" id="proyecto" aria-describedby="helpId" value="{{ old('proyecto') }}">
-                            <small id="Help" class="form-text text-muted">favor de poner el titulo igual al nombre de la carpeta que tenga en drive</small>
-                                @error('proyecto')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                        <div class="form-group row">
+                            <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Tiempo estimado</label>
+                                <div class="col-md-6">
+                                    <div class="input-group date" id="datetimepicker" data-target-input="nearest">
+                                        <input id="horas" name="horas" type="number" class="form-control" placeholder="Horas" min="01" max="23" step="1" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
+                                        <input id="minutos" name="minutos" type="number" class="form-control" placeholder="Minutos" min="01" max="59" step="1" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
+                                    </div>
+                                </div>
                         </div>
 
-
-
-
-                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de poner como palabras calve el tipo de impresion que se va a ahacer y el nombre de los archivos STL">
-                            <label for="">Palabras Clave</label>
-                            <textarea class="form-control @error('palabrasClave') is-invalid @enderror"
-                            name="palabrasClave" id="palabrasClave" rows="3" >{{ old('palabrasClave') }}</textarea>
-                            <small id="Help" class="form-text text-muted">favor de poner como palabras calve el tipo de impresion que se va a ahacer y el nombre de los archivos STL</small>
-                            @error('palabrasClave')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                        </div>
-
-                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de poner una breve descripcion de la impresion">
-                            <label for="">Introducción del Proyecto</label>
-                            <textarea class="form-control @error('introduccion') is-invalid @enderror"
-                            name="introduccion" id="introduccion" rows="3" >{{ old('introduccion') }}</textarea>
-                            <small id="Help" class="form-text text-muted">favor de poner una breve descripcion de la impresion</small>
-                            @error('introduccion')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                        </div>
-
-                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de poner el nombre de otras impresiones que hallas solicitado o que esten realcioanad a la impresion que se desea realizar">
-                            <label for="">Trabajos Relacionados al Proyecto</label>
-                            <textarea class="form-control @error('trabajosRelacionados') is-invalid @enderror"
-                            name="trabajosRelacionados" id="trabajosRelacionados" rows="3" >{{ old('trabajosRelacionados') }}</textarea>
-                            <small id="Help" class="form-text text-muted">favor de poner el nombre de otras impresiones que hallas solicitado o que esten realcioanad a la impresion que se desea realizar</small>
-                                @error('trabajosRelacionados')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                        </div>
-
-                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de poner un resumen  de lo que quieres imprimir">
-                            <label for="">Resumen del Proyecto (De 150 a 300 palabras)</label>
-                            <textarea class="form-control @error('observaciones') is-invalid @enderror"
-                            name="observaciones" id="observaciones" rows="10" >{{ old('observaciones') }}</textarea>
-                            <small id="Help" class="form-text text-muted">favor de poner un resumen  de lo que quieres imprimir</small>
-                            @error('observaciones')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                        </div>
-
-
-                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de poner una pqueña descrpcion de tu impresion">
-                            <label for="">Propuesta de Diseño del Proyecto</label>
-                            <textarea class="form-control @error('propuesta') is-invalid @enderror"
-                            name="propuesta" id="propuesta" rows="3" >{{ old('propuesta') }}</textarea>
-                            <small id="Help" class="form-text text-muted">favor de poner un resumen  de lo que quieres imprimir</small>
-                            @error('propuesta')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                        </div>
-
-                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="favor de poner tus comclusiones y opniones de la impresion">
-                            <label for="">Conclusión del Proyecto</label>
-                            <textarea class="form-control @error('conclusion') is-invalid @enderror"
-                            name="conclusion" id="conclusion" rows="3" >{{ old('conclusion') }}</textarea>
-                            <small id="Help" class="form-text text-muted">favor de poner tus comclusiones y opniones de la impresion</small>
-                            @error('conclusion')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                        </div>
+                        <br>
 
                         <div class="col-md-12 text-right">
-                            <button style="" type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits">
-                                Enviar
+                            <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits">
+                                Registrar impresion
                             </button>
                         </div>
 
                     </form>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
 </div>
+
 @endsection
 
-
-
-
+@section('script')
 <script>
-    $('#alert').fadeIn();
-      setTimeout(function() {
-           $("#alert").fadeOut();
-      },5000);
-// Add the following code if you want the name of the file appear on select
-$(".custom-file-input").on("change", function() {
-  var files = Array.from(this.files)
-  var fileName = files.map(f =>{return f.name}).join(", ")
-  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-});
-(function(){
-$('.from-prevent-multiple-submits').on('submit', function(){
-    $('.from-prevent-multiple-submits').attr('disabled','true');
-})
-})();
-</script>
-
-<script type="text/javascript">
-    $(document).ready(function(){
-        cambiar();
-    });
-    function cambiar(){
-        var divAlumno = document.getElementById('divAlumno');
-        if(document.getElementById('opcMaestro').selected){
-            divalumno.style.display = "none";
-        }else{
-            divalumno.style.display = "";
+    document.getElementById("horas").addEventListener("input", function() {
+        if (this.value < 0) {
+            this.value = '';
+            alert("No se permiten números negativos");
         }
-    }
-</script>
-
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('#enviar').click(function(){
-            var correo = document.getElementById("correo").value;
-            var nombre = document.getElementById("nombre").value;
-            var telefono = document.getElementById("telefono").value;
-            var carrera = document.getElementById("carrera").value;
-            var semestre = document.getElementById("semestre").value;
-            var enlaceDrive = document.getElementById("enlaceDrive").value;
-            var N_piezas = document.getElementById("N_piezas").value;
-            var proyecto = document.getElementById("proyecto").value;
-            var palabrasClave = document.getElementById("palabrasClave").value;
-            var introduccion = document.getElementById("introduccion").value;
-            var trabajosRelacionados = document.getElementById("trabajosRelacionados").value;
-            var observaciones = document.getElementById("observaciones").value;
-            var propuesta = document.getElementById("propuesta").value;
-            var conclusion = document.getElementById("conclusion").value;
-
-            localStorage.setItem("correo", correo);
-            localStorage.setItem("nombre", nombre);
-            localStorage.setItem("telefono", telefono);
-            localStorage.setItem("carrera", carrera);
-            localStorage.setItem("semestre", semestre);
-            localStorage.setItem("enlaceDrive", enlaceDrive);
-            localStorage.setItem("N_piezas", N_piezas);
-            localStorage.setItem("proyecto", proyecto);
-            localStorage.setItem("palabrasClave", palabrasClave);
-            localStorage.setItem("introduccion", introduccion);
-            localStorage.setItem("trabajosRelacionados", trabajosRelacionados);
-            localStorage.setItem("observaciones", observaciones);
-            localStorage.setItem("propuesta", propuesta);
-            localStorage.setItem("conclusion", conclusion);
-
-        });
+    });
+    document.getElementById("minutos").addEventListener("input", function() {
+        if (this.value < 0) {
+            this.value = '';
+            alert("No se permiten números negativos");
+        }
+    });
+    document.getElementById("weight").addEventListener("input", function() {
+        if (this.value < 0) {
+            this.value = '';
+            alert("No se permiten números negativos");
+        }
+    });
+    document.getElementById("pieces").addEventListener("input", function() {
+        if (this.value < 0) {
+            this.value = '';
+            alert("No se permiten números negativos");
+        }
     });
 </script>
+@endsection
 
-    <!-- Bootstrap 4 -->
-
-    <!-- Page specific script -->
-    <script>
-        $(function () {
-          //Initialize Select2 Elements
-          $('.select2').select2()
-
-          //Initialize Select2 Elements
-          $('.select2bs4').select2({
-            theme: 'bootstrap4'
-          })
-
-          //Datemask dd/mm/yyyy
-          $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
-          //Datemask2 mm/dd/yyyy
-          $('#datemask2').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
-          //Money Euro
-          $('[data-mask]').inputmask()
-
-          //Date picker
-          $('#reservationdate').datetimepicker({
-            format: 'DD/MM/YYYY hh:mm A',
-            icons: { time: 'far fa-clock' }
-
-          });
-
-          //Timepicker
-          $('#timepicker').datetimepicker({
-            format: 'LT'
-          })
-
-          //Bootstrap Duallistbox
-          $('.duallistbox').bootstrapDualListbox()
-
-          //Colorpicker
-          $('.my-colorpicker1').colorpicker()
-          //color picker with addon
-          $('.my-colorpicker2').colorpicker()
-
-          $('.my-colorpicker2').on('colorpickerChange', function(event) {
-            $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
-          })
-
-          $("input[data-bootstrap-switch]").each(function(){
-            $(this).bootstrapSwitch('state', $(this).prop('checked'));
-          })
-
-        })
-    </script>

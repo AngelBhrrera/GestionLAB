@@ -64,8 +64,9 @@ class AdminController extends Controller
         }
         if(Auth::user()->horario != 'No Aplica'){
             $sqlproy->where('p.turno', Auth::user()->horario);
-            $sqlactsp ->where('u.horario', Auth::user()->horario);
-            $sqlactst ->where('u.horario', Auth::user()->horario);
+            $sqlactsp->where('u.horario', Auth::user()->horario);
+            $sqlactst->where('u.horario', Auth::user()->horario);
+            $totalExp->where('u.horario', Auth::user()->horario);
         }
         //$sqlproy = $sqlproy->get();
 
@@ -76,7 +77,6 @@ class AdminController extends Controller
 
         $exp = strval($totalExp);
 
-        
         $rendimiento =  DB::table('rendimiento')
             ->where('id_usuario', auth()->user()->id )
             ->get();
@@ -443,7 +443,7 @@ class AdminController extends Controller
                 'codigo.required' => 'Código es obligatorio',
                 'correo.required' => 'El correo es obligatorio',
                 'codigo.unique' => 'Código ya existente',
-                'correo.unique' => 'Correo dubplicado', 
+                'correo.unique' => 'Correo duplicado', 
                 'area_edit.required' => "Debe especificar un área de trabajo",
                 'sede_edit.required' => "Debe especificar una sede",
                 'horario_prest.required' => "Debe especificar un horario",
@@ -462,7 +462,6 @@ class AdminController extends Controller
                 [
                 'horario_prest.required' => "Debe especificar un horario",]
             );
-            
             if(Auth::user()->tipo == "coordinador"){
                 $modificar = DB::table('users')
                 ->where('codigo', $request->codigo)
@@ -470,6 +469,42 @@ class AdminController extends Controller
                 return redirect()->route('admin.prestadores')->with('success', 'Modificado Correctamente');
             }
             $modificar->update(['horario'=>$request->horario_prest, 'tipo'=>$request->tipo_prest]);
+        }
+        return redirect()->route('admin.general')->with('success', 'Modificado Correctamente');
+        
+    }
+
+    public function modificar_prestador2(Request $request){
+        
+        switch($request->tipo_prest){
+            case "jefe area":
+            case "jefe sede":
+            case "Superadmin":
+            return redirect()->route('admin.prestadores')->with('error', 'Error al modificar, no tienes los permisos necesarios');
+        }
+        
+        $id = $request->id_prest;
+        $modificar = DB::table('users')
+        ->where('id', $id);
+
+        if(Auth::user()->tipo == "Superadmin"){
+            $request->validate(
+                ['nombre' => 'required',
+                'apellido' => 'required',
+                'codigo' => ['required', Rule::unique('users')->ignore($id, 'id')],
+                'correo'=>['required', Rule::unique('users')->ignore($id)],
+                ],
+                [
+                'nombre.required' => 'Nombre es obligatorio',
+                'apellido.required' => 'Apellido es obligatorio',
+                'codigo.required' => 'Código es obligatorio',
+                'correo.required' => 'El correo es obligatorio',
+                'codigo.unique' => 'Código ya existente',
+                'correo.unique' => 'Correo duplicado', 
+                ]
+            );
+            $modificar->update(['name'=>$request->nombre, 'apellido'=>$request->apellido, 
+            'codigo'=>$request->codigo, 'correo' => $request->correo,]);
         }
         return redirect()->route('admin.general')->with('success', 'Modificado Correctamente');
         
@@ -533,7 +568,10 @@ class AdminController extends Controller
     public function actividades(){
 
         $reviewActs = DB::table('seguimiento_actividades')
-            ->whereIn('estado', ['En revision', 'Error']);
+            ->whereIn('seguimiento_actividades.estado', ['En revision', 'Error'])
+            ->join('proyectos', 'seguimiento_actividades.id_proyecto', '=', 'proyectos.id')
+            ->select('seguimiento_actividades.*', 'proyectos.turno');
+
         $listaActs = DB::table('seguimiento_actividades');
         $pR = DB::table('seguimiento_actividades')
         ->whereIn('estado', ['En revision', 'Error']);
@@ -559,6 +597,12 @@ class AdminController extends Controller
                     ->from('proyectos')
                     ->where('id_area', auth()->user()->area);
             });
+            if( auth()->user()->tipo == 'coordinador'){
+                $reviewActs->where(function ($query) {
+                    $query->where('proyectos.turno', 'No aplica')
+                          ->orWhere('proyectos.turno', auth()->user()->horario);
+                });
+            }
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $listaActs->whereIn('id_proyecto', function ($query) {
                 $query->select('id')
@@ -805,6 +849,95 @@ class AdminController extends Controller
         }
     }
 
+    public function makeasign_act(Request $request) {
+
+        try{
+            
+            $request->validate([
+                'nombre' => 'string|max:255|unique:actividades,titulo',
+                'tipo' => 'integer',
+                'recursos' => 'string', 
+                'descripcion' => 'string|max:500',
+                'objetivos' => 'string', 
+                'exp' => 'integer|min:5|max:100',
+                'horas' => [
+                    'integer',
+                    function ($attribute, $value, $fail) use ($request) {
+                        $minutos = $request->input('minutos');
+                        if ($value == 0 && $minutos == 0) {
+                            $fail('Las horas y los minutos no pueden ser ambos 0.');
+                        }
+                    }
+                ],
+                'minutos' => [
+                    'integer',
+                    function ($attribute, $value, $fail) use ($request) {
+                        $horas = $request->input('horas');
+                        if ($value == 0 && $horas == 0) {
+                            $fail('Las horas y los minutos no pueden ser ambos 0.');
+                        }
+                    }
+                ],
+                'proyecto' => 'integer',
+                'numero_veces' => 'nullable|integer|min:1|max:25',
+                'tipo_asignacion' => 'integer',
+                'prestadores_seleccionados' => 'array',
+                'prestadores_seleccionados.*' => 'integer',
+            ]);
+
+            $subcategoria = $request->input('tipo_subcategoria');
+            if($subcategoria == '')
+                $subcategoria = null;
+            $horas = $request->input('horas')*60;
+            $minutos = $request->input('minutos');
+            $tec = $horas + $minutos;
+            if( $request->input('tipo_actividad') != 'generica'){
+                $tipo = auth()->user()->sede;
+            }else{
+                $tipo = 0;
+            }
+        
+            $idAct = DB::table('actividades')->insertGetId([
+                'titulo' =>$request->input('nombre'),
+                'id_categoria' =>  $request->input('tipo_categoria'),
+                'id_subcategoria' => $subcategoria,
+                'tipo' => $tipo,
+                'recursos' => $request->input('recursos'),
+                'descripcion' =>$request->input('descripcion'),
+                'exp_ref' =>$request->input('exp'),
+                'objetivos' => $request->input('resultados'),
+                'TEC' => $tec,]);
+
+            if ($request->input('tipo_asignacion') == "1") {
+                for ($i = 0; $i < $request->input('numero_veces'); $i++) {
+                    DB::table('actividades_prestadores')->insert([
+                        'id_prestador' => 0,
+                        'id_actividad' => $idAct,
+                        'estado' => "Creada",
+                        'id_proyecto' => $request->input('proyecto')]);
+                }
+                return redirect()->back()->with('success', 'Actividad asignada correctamente');
+            } else  if ($request->input('tipo_asignacion') == "2") {
+                
+                $prestadoresSeleccionados = $request->input('prestadores_seleccionados');
+                $tamañoArreglo = count($prestadoresSeleccionados);
+                for ($i = 0; $i < $tamañoArreglo; $i++) {
+                    $idp = $prestadoresSeleccionados[$i];
+                        DB::table('actividades_prestadores')->insert([
+                            'id_prestador' => $idp,
+                            'id_actividad' => $idAct,
+                            'estado' => "Asignada",
+                            'id_proyecto' => $request->input('proyecto')]);
+                }
+                return redirect()->back()->with('success', 'Actividad asignada correctamente');
+            }
+    
+        }catch (\Exception $e) {
+           
+            return redirect()->back()->with('error', 'Error al crear la actividad: ' . $e->getMessage());
+        }
+    }
+
     public function asign_act(){
 
         $prestadores = DB::table('solo_prestadores');
@@ -1042,6 +1175,7 @@ class AdminController extends Controller
 
         $tabla_proy = DB::table('seguimiento_proyecto3');
         $prestadores = DB::table('solo_prestadores');
+        $proyectos = DB::table('proyectos');
         $areas = DB::table('areas')
             ->select('id', 'nombre_area');
 
@@ -1051,18 +1185,23 @@ class AdminController extends Controller
                 ->where('tipo', '!=', 'coordinador');
             $areas->where('id', auth()->user()->area);
             $tabla_proy->where('id_area', auth()->user()->area);
+            $proyectos ->where('id_area', auth()->user()->area);
         }else if(auth()->user()->tipo == 'jefe area'){
             $prestadores->where('id_area', auth()->user()->area);
             $areas->where('id', auth()->user()->area);
             $tabla_proy->where('id_area', auth()->user()->area);
+            $proyectos ->where('id_area', auth()->user()->area);
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $prestadores->where('id_sede', auth()->user()->sede);    
             $areas->where('id_sede', auth()->user()->sede);
-            $tabla_proy->where('id_sede', auth()->user()->sede);    
+            $tabla_proy->where('id_sede', auth()->user()->sede);   
+            $proyectos->join('areas', 'proyectos.id_area', '=', 'areas.id')
+            ->where('areas.id_sede', auth()->user()->sede)
+            ->where('proyectos.id_area', auth()->user()->area);
         }
         $tabla_proy =  $tabla_proy->get();
         $categorias = DB::table('categorias') ->orderBy('nombre')->get();
-        $proyectos = DB::table('proyectos')->get();
+        $proyectos = $proyectos->get();
         $areas = $areas->get();
         $prestadores= $prestadores->get();
 
@@ -1206,6 +1345,17 @@ class AdminController extends Controller
         return view('admin.ver_detalles_proyecto', compact('proyecto','prestadores', 'actividades', 'proyectoId'));
     }
 
+    public function detail_act($id, $value) {
+
+        $sql= DB::table('actividades_prestadores')
+            ->where('id', $id)
+            ->update(['detalles' => $value]);
+
+        return response()->json(['message' => $sql]);
+    }
+
+    
+
     public function view_details_act($id)
     {
     
@@ -1281,13 +1431,19 @@ class AdminController extends Controller
             ->get();
 
         $dataP = DB::table('ver_impresiones')
+            ->select('ver_impresiones.*')
             ->join('users', 'ver_impresiones.id_Prestador', '=', 'users.id')
             ->where('sede', auth()->user()->sede)
+            ->orderByDesc('ver_impresiones.fecha')
+            ->get();
+        $dataC = DB::table('impresion_colores')
+            ->where('area_ref',  auth()->user()->area)
             ->get();
 
         return view('admin/modulo_impresiones',
             [ 'impresoras' =>json_encode($data),
-            'impresiones' =>json_encode($dataP)
+            'impresiones' =>json_encode($dataP),
+            'colores' =>json_encode($dataC),
         ]);
     }
 
@@ -1314,7 +1470,47 @@ class AdminController extends Controller
             ->where('id', $id)
             ->update(['estado' => $state]);
 
+        return response()->json(['message' => 'Estado cambiado exitosamente' . $id]);
+    }
+
+    public function printerstate($id, $state) {
+
+        DB::table('impresoras')
+            ->where('id', $id)
+            ->update(['estado' => $state]);
+
         return response()->json(['message' => 'Activado exitosamente' . $id]);
+    }
+
+    public function detail_printer($id, $value) {
+
+        $sql= DB::table('impresoras')
+            ->where('id', $id)
+            ->update(['observaciones' => $value]);
+
+        return response()->json(['message' => $sql]);
+    }
+
+    public function eliminarC($id) {
+        
+        DB::table('impresion_colores')->where('id', $id)
+            ->delete();
+    
+        return response()->json(['message' => 'Color eliminado']);
+    }
+
+    public function addColor (Request $request)
+    {
+        $request->validate([
+            'color' => 'string|max:50',
+        ]);
+
+        DB::table('impresion_colores')->insert([
+            'color' => $request->input('color'),
+            'area_ref' =>auth()->user()->area
+        ]);
+
+        return redirect()->back()->with('success','Agregado correctamente');
     }
 
     public function make_print(Request $request)
@@ -1334,6 +1530,87 @@ class AdminController extends Controller
         ]);
 
         return redirect()->back()->with('success','Agregado correctamente');
+    }
+
+    public function create_imps()
+    {
+        $imps = DB::table('impresoras')
+            ->where('estado', 1)
+            ->get();
+
+        $proys = DB::table('proyectos')
+            ->where('id_area', auth()->user()->area)
+            ->get();
+
+        $colors = DB::table('impresion_colores')
+            ->where('area_ref',  auth()->user()->area)
+            ->get();
+
+        return view('admin/registro_impresion',
+        compact('imps', 'proys', 'colors'));
+    }
+
+    public function register_imps(Request $request)
+    {
+        $request->validate([
+            'horas' => ['required_without:minutos', 'integer'],
+            'minutos' => ['required_without:horas', 'integer'],
+            'imp_id' => 'required|integer',
+            'proyect' => 'required|integer',
+            'color' => 'string | max:100',
+            'weight' => 'required|regex:#^\d+(\.\d{1,2})?$#',
+            'model' => 'required | string | max:100',
+            'pieces' => 'required|integer',
+        ]);
+        
+        $tiempo = $this->format_time($request->input('horas'), $request->input('minutos'));
+
+        DB::table('seguimiento_impresiones')->insert([['id_Prestador' =>Auth::user()->id, 
+        'id_Impresora' => $request->input('imp_id'), 'id_Proyecto' =>$request->input('proyect'), 
+        'nombre_modelo_stl' => $request->input('model'), 'color' => $request->input('color'), 
+        'piezas' => $request->input('pieces'), 'peso' => $request->input('weight'), 'tiempo_impresion' => $tiempo]]);
+
+        $actImp = DB::table('impresoras')
+            ->where('id', $request->input('imp_id'))
+            ->whereNotNull('act_impresion')
+            ->exists();
+
+        if($actImp){
+            $idA = DB::table('impresoras')
+                ->where('id', $request->input('imp_id'))
+                ->value('act_impresion');
+
+            $TEC = DB::table('actividades')
+                ->where('id', $idA)
+                ->value('TEC');
+
+            DB::table('actividades_prestadores')->insert([
+                'id_prestador' => Auth::user()->id, 
+                'id_actividad' => $idA,
+                'estado' => "En revision",
+                'Tiempo_Invertido' => $TEC,
+                'id_proyecto' => $request->input('proyect')]);
+        }
+        
+        $actual = DB::table('seguimiento_impresiones')
+            ->where('id_Impresora', $request->input('imp_id'))
+            ->orderByDesc('fecha')
+            ->limit(1)
+            ->value('fecha');
+
+        DB::table('impresoras')
+            ->where('id', $request->input('imp_id'))
+            ->update(['ultimo_uso' => $actual]);
+
+        return redirect()->route('admin.control_print');
+    }
+
+    public function format_time($hours,$minutes){
+
+        $formatH = str_pad($hours, 2, '0', STR_PAD_LEFT);
+        $formatM = str_pad($minutes, 2, '0', STR_PAD_LEFT);
+        return $formatH . 'h' . $formatM . 'm';
+
     }
 
     public function module_print(){
@@ -2041,6 +2318,54 @@ class AdminController extends Controller
         $actualizar = DB::table('users')->where('id', Auth::user()->id)->update(['password'=>$password]);
 
         return redirect()->route('login', ['success'=>'Actualización de credenciales, inicia sesión de nuevo']);
+    }
+
+    //GAMIFICACION 
+
+    public function gestionLvls(){
+
+        $niveles = DB::table('niveles')
+        ->where('nivel', '>', 1)
+        ->orderByDesc('nivel')
+        ->get();
+
+        return view( 'admin/gestion_niveles',  ['lvls' => json_encode($niveles)]);
+    }
+
+    public function edit_XP($lvl, $value) {
+
+        $check = DB::table('niveles')
+            ->where('nivel', $lvl)
+            ->value('experiencia_acumulada');
+
+        $ultimoNivel = DB::table('niveles')
+            ->orderByDesc('nivel')
+            ->value('nivel');
+        if($lvl != $ultimoNivel){
+            if($value >= $check){
+                DB::table('niveles')
+                    ->where('nivel', $lvl)
+                    ->update(['experiencia_acumulada' => $value+1]);
+    
+                DB::table('niveles')
+                    ->where('nivel', $lvl+1)
+                    ->update(['experiencia' => $value+2]);
+            }
+        }else{
+            DB::table('niveles')
+                ->where('nivel', $lvl)
+                ->update(['experiencia_acumulada' => $value]);        
+        }
+        
+        $sql1= DB::table('niveles')
+            ->where('nivel', $lvl)
+            ->update(['experiencia' => $value]);
+
+        DB::table('niveles')
+            ->where('nivel', $lvl-1)
+            ->update(['experiencia_acumulada' => $value-1]);
+        
+        return response()->json(['message' => $sql1]);
     }
 
 }

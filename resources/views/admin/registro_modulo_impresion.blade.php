@@ -32,7 +32,7 @@
                     @csrf
                     <div class="form-group">
                         <label for="actI">Actividad</label>
-                        <select class="form-control" id="actI" name='actI'  required>
+                        <select class="tom-select w-full" id="actI" name='actI'  required>
                             <option value= null >Selecciona una actividad</option>
                             @foreach ($actI as $act)
                                 <option value="{{ $act->id }}">{{ $act->titulo }}</option>
@@ -52,7 +52,7 @@
                     @csrf
                     <div class="form-group">
                         <label for="actM">Actividad</label>
-                        <select class="form-control" id="actM" name='actM'  required>
+                        <select  class="tom-select w-full" id="actM" name='actM'  required>
                         <option value= null >Selecciona una actividad</option>
                             @foreach ($actM as $act)
                                 <option value="{{ $act->id }}">{{ $act->titulo }}</option>

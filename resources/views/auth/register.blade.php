@@ -108,8 +108,9 @@
                                     
 
                                     <div class="intro-y col-span-12 sm:col-span-6"  id="divCode" style="display:none">
-                                        <input id="codigo" type="text" class="form-control @if(old('opc')=='1') @error('código') is-invalid @enderror @endif"  name="codigo"  value="{{ old('codigo')}}" placeholder="Código"  maxlength="9">    
                                         <label for="input-wizard-1" class="form-label">Codigo *</label>
+                                        <input id="codigo" type="text" class="form-control @if(old('opc')=='1') @error('código') is-invalid @enderror @endif"  name="codigo"  value="{{ old('codigo')}}" placeholder="Código"  maxlength="9">    
+                                        
                                             @if(old('opc')=='1')
                                                 @error('codigo')
                                                 <span class="invalid-feedback" role="alert">
@@ -319,9 +320,10 @@
                     document.getElementById('divTurno').style.display= "";
                     document.getElementById('divArea').style.display="";
 
-                    document.getElementById('sedeSelect').value ="";
-                    document.getElementById('horarios').disabled= true;
-                    document.getElementById('area').disabled=true;
+                    if(document.getElementById('sedeSelect').value === null){
+                        document.getElementById('horarios').disabled= true;
+                        document.getElementById('area').disabled=true;
+                    }
                 }else{
                     document.getElementById('formTwo').style.display = "";
                 }
