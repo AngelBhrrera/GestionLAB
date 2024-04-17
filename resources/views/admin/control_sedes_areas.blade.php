@@ -1,5 +1,14 @@
 @extends('layouts/admin-layout')
 
+@section('subhead')
+    <style>
+        .tab-scroll {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+    </style>
+@endsection
+
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
     <li class="breadcrumb-item"><a href="{{route('admin.gestHub')}}">Gestion</a></li>
@@ -23,31 +32,32 @@
         </div>
     </div>
 
-    <ul class="nav nav-tabs nav-justified" role="tablist">  
-        <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#vare">Lista de areas</a>
-        </li>
-        @if(Auth::user()->tipo == 'Superadmin' )
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#rsed">Registrar sedes</a>
-        </li>
-        @endif
-        @if(Auth::user()->tipo == 'Superadmin' || Auth::user()->tipo == 'jefe sede' || Auth::user()->tipo == 'jefe area')
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#rare">Registrar areas</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#aresed">Editar datos area/sede</a>
-        </li>
-        @endif
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#areh">Editar horarios de areas</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#arem">Editar modulos de areas</a>
-        </li>
-        
-    </ul>
+    <div class="tab-scroll">
+        <ul class="nav nav-tabs nav-justified" role="tablist">  
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#vare">Lista de areas</a>
+            </li>
+            @if(Auth::user()->tipo == 'Superadmin' )
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#rsed">Registrar sedes</a>
+            </li>
+            @endif
+            @if(Auth::user()->tipo == 'Superadmin' || Auth::user()->tipo == 'jefe sede' || Auth::user()->tipo == 'jefe area')
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#rare">Registrar areas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#aresed">Editar datos area/sede</a>
+            </li>
+            @endif
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#areh">Editar horarios de areas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#arem">Editar modulos de areas</a>
+            </li>
+        </ul>
+    </div>
 
     <div class="tab-content">
 

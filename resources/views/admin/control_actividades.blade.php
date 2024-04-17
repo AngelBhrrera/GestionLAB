@@ -1,5 +1,14 @@
 @extends('layouts/admin-layout')
 
+@section('subhead')
+    <style>
+        .tab-scroll {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+    </style>
+@endsection
+
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
     <li class="breadcrumb-item"><a href="{{route('admin.gestHub')}}">Control de Actividades</a></li>
@@ -28,28 +37,27 @@
         </div>
         
     </div>
-
-    <ul class="nav nav-tabs nav-justified" role="tablist">  
-        <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#lact">Lista de Actividades Registradas</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#lcat">Lista de Categorias</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#lsub">Lista de Subcategorias</a>
-        </li>
-        @if(Auth::user()->tipo == 'Superadmin' || Auth::user()->tipo == 'jefe sede')
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#rcat">Crear nueva Categoria</a>
-        </li>
-        @endif
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#rsub">Crear nueva Subcategoria</a>
-        </li>
-        
-    </ul>
-
+    <div class="tab-scroll">
+        <ul class="nav nav-tabs nav-justified" role="tablist">  
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#lact">Lista de Actividades Registradas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#lcat">Lista de Categorias</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#lsub">Lista de Subcategorias</a>
+            </li>
+            @if(Auth::user()->tipo == 'Superadmin' || Auth::user()->tipo == 'jefe sede')
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#rcat">Crear nueva Categoria</a>
+            </li>
+            @endif
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#rsub">Crear nueva Subcategoria</a>
+            </li>
+        </ul>
+    </div>
     <div class="tab-content">
 
         <div class="tab-pane active" id="lact">

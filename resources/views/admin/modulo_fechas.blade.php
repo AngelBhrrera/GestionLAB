@@ -1,5 +1,14 @@
 @extends('layouts/admin-layout')
 
+@section('subhead')
+    <style>
+        .tab-scroll {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+    </style>
+@endsection
+
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
     <li class="breadcrumb-item"><a href="{{route('admin.gestHub')}}">Gestion</a></li>
@@ -24,20 +33,22 @@
         </div>
     </div>
 
-    <ul class="nav nav-tabs nav-justified" role="tablist">  
-        <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#avac">Añadir periodos vacacionales</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#afes">Añadir dias festivos</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#anol">Añadir dias no laborales</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#vfes">Ver todas las fechas destacadas</a>
-        </li>
-    </ul>
+    <div class="tab-scroll">
+        <ul class="nav nav-tabs nav-justified" role="tablist">  
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#avac">Añadir periodos vacacionales</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#afes">Añadir dias festivos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#anol">Añadir dias no laborales</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#vfes">Ver todas las fechas destacadas</a>
+            </li>
+        </ul>
+    </div>
 
     <div class="tab-content">
         <div class="tab-pane active" id="avac">

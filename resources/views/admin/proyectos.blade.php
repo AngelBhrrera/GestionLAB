@@ -1,20 +1,13 @@
 @extends('layouts/admin-layout')
 
 @section('subhead')
+    <link rel="stylesheet" href="{{asset('build/assets/css/registro_proyecto_actividadess.css')}}">
     <style>
-        .tooltip {
-            cursor: pointer;
-        }
-
-        .tooltip-info {
-            background-color: #f9f9f9;
-            border: 1px solid #ccc;
-            padding: 10px;
-            position: absolute;
-            z-index: 999;
+        .tab-scroll {
+            overflow-x: auto;
+            white-space: nowrap;
         }
     </style>
-    <link rel="stylesheet" href="{{asset('build/assets/css/registro_proyecto_actividadess.css')}}">
 @endsection
 
 @section('breadcrumb')
@@ -40,31 +33,34 @@
         </div>
     </div>
 
-    <ul class="nav nav-tabs nav-justified" role="tablist">  
-        <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#cproy">Registrar Nuevo Proyecto</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#vproy">Ver Proyectos</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#aproy">Asignar Actividades a Proyecto</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#approy">Añadir Prestadores a Proyecto</a>
-        </li>
-    </ul>
+    <div class="tab-scroll">
+        <ul class="nav nav-tabs nav-justified" role="tablist">  
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#cproy">Registrar Nuevo Proyecto</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#vproy">Ver Proyectos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#aproy">Asignar Actividades a Proyecto</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#approy">Añadir Prestadores a Proyecto</a>
+            </li>
+        </ul>
+    </div>
+
 
     <div class="tab-content">
         <div class="tab-pane active" id="cproy">
-            <div class="card card-primary">
-                <h3  class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Crear Nuevo Proyecto </h3>
-            </div>
 
-            <div class="row justify-content-center">
+            <div class="card card-primary" id="titulo">
+                <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Crear Nuevo Proyecto </h3>
+            </div>
+            <div class="card-body pl-10 pr-10" id="crear_proyecto_3">
                 <form id="enviar" method="POST" action="{{route('admin.make_proy')}}">
-                @csrf
-                    <div class="form-group row" >
+                    @csrf
+                    <div class="form-group">
                         <label style="font-weight: bold; font-size: 1.2em;" for="nombre" class="col-md-4 col-form-label text-md-right">Titulo del proyecto</label>
                         <div class="col-md-8">
                             <input id="t_proyecto" name="t_nombre" type="text" class="form-control"  placeholder="Ingresa el titulo del proyecto" required></input>
@@ -84,7 +80,6 @@
                             @endif
                         </select>
                     </div>
-
                     <div class="form-group">
                         <label style="font-weight: bold; font-size: 1.2em;" for="horarios" class="form-label">Turno</label>
                         <span class="tooltip" title="Incluir un turno para el proyecto permite clasificar los proyectos por el horario en el que se trabaja en cada uno">ℹ️</span>
@@ -92,7 +87,6 @@
 
                         </select>
                     </div>
-
                     <div class="form-group">
                         <label style="font-weight: bold; font-size: 1.2em;" for="horarios" class="form-label">Particular</label>
                         <span class="tooltip" title="Los proyectos particulares tienen un numero finito de prestadores que lo conforman y solo se le pueden asignar actividades a esos prestadores. Use un proyecto no particular cuando se realicen actividades generales que cualquier prestador podria realizar.">ℹ️</span>
@@ -106,16 +100,17 @@
                             <div class="col-md-8"> 
                                 <select class="select2" name="prestadores_seleccionados[]" id="prestadores_seleccionados" multiple>  
                                     @if (isset($prestadores))
-                                    @foreach ($prestadores as $prestador)
-                                    <option value="{{$prestador->id}}">{{$prestador->name." ".$prestador->apellido}}</option>
-                                    @endforeach
+                                        @foreach ($prestadores as $prestador)
+                                            <option value="{{$prestador->id}}">{{$prestador->name." ".$prestador->apellido}}</option>
+                                        @endforeach
                                     @endif
                                 </select>
+                                <small id="Help" class="form-text text-muted">Selecciona a los prestadores que formaran parte del proyecto</small>
                             </div>
-                            <small id="Help" class="form-text text-muted">Selecciona a los prestadores que formaran parte del proyecto</small>
+                            <button id="boton_crear" type="submit" class="btn btn-primary from-prevent-multiple-submits" style="font-size: 20px;">Crear proyecto</button>
+                            <div style="height: 50px;"></div>
                         </div>
-                        <button id="boton_crear" type="submit" class="btn btn-primary from-prevent-multiple-submits">Crear proyecto</button>
-                    </div>
+                    </div>    
                 </form>
             </div>
         </div>
@@ -182,8 +177,9 @@
                     </div>
                     <br>
                     <div class="col-md-8" id="agregar_actividades"> 
-                        <button type="submit" id='asignar' class="btn btn-primary from-prevent-multiple-submits">Agregar a proyecto</button>
+                        <button type="submit" id='asignar' class="btn btn-primary from-prevent-multiple-submits" style="font-size: 20px;">Agregar a Proyecto</button>
                     </div>
+                    <div style="height: 50px;"></div>
                 </div>
                 </form>
             </div>
@@ -192,40 +188,25 @@
         <div class="tab-pane" id="approy">
 
             <div class="card card-primary" id="titulo">
-                <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Agregar prestadores a Proyecto </h3>
+                <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Agregar Prestadores a Proyecto </h3>
             </div>
             <div class="card-body pl-10 pr-10" id="crear_proyecto_3">
-                <form id="enviar" method="POST" action="{{route('admin.asign3')}}">
-                    @csrf
-                    <div class="form-group">
-                        <label style="font-weight: bold; font-size: 1.2em;" for="proyecto">Seleccionar proyecto</label>
-                        <select class="tom-select w-full" id="proyecto" name="proyecto">
-                            <option value="">Selecciona un proyecto obligatoriamente para asignar actividad</option>
-                            @foreach ($proyectos as $proyecto)
-                                <option value="{{ $proyecto->id }}">{{ $proyecto->titulo}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="container" id="card_duelist_box">
-                        <div class="row justify-content-center">
-                            <label style="font-weight: bold; font-size: 1.2em;" for="nombre" class="col-md-4 col-form-label text-md-right">Prestadores</label>
-                            <div class="col-md-8"> 
-                                <select class="select3" name="prestadores_seleccionados[]" id="prestadores_seleccionados" multiple>  
-                                    @if (isset($prestadores))
-                                        @foreach ($prestadores as $prestador)
-                                            <option value="{{$prestador->id}}">{{$prestador->name." ".$prestador->apellido}}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                            </div>
-                        </div>
-                        <button id="boton_crear" type="submit" class="btn btn-primary from-prevent-multiple-submits">Agregar a proyecto</button>
-                    </div>
-                </form>
+                <div class="form-group">
+                    <label style="font-weight: bold; font-size: 1.2em;" for="proyecto">Seleccionar proyecto</label>
+                    <select class="tom-select w-full" id="proyectoprestador" name="proyecto">
+                        <option value="">Selecciona un proyecto obligatoriamente para asignar actividad</option>
+                        @foreach ($proyectos as $proyecto)
+                            <option value="{{ $proyecto->id }}">{{ $proyecto->titulo}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="container" id="card_duelist_box">
+                    <button id="boton_filtrar" type="submit" class="btn btn-primary from-prevent-multiple-submits"  style="font-size: 20px;">Seleccionar Proyecto</button>
+                    <div style="height: 50px;"></div>
+                </div>
             </div>
-            
         </div>
+
     </div>
 </div>
 
@@ -235,53 +216,47 @@
 @section('script')
     <script type="text/javascript">
 
-        document.getElementById('enviar').addEventListener('submit', function(event) {
-
-            const prestadorSelect = document.getElementById('prestadores_seleccionados');
-            const check = document.getElementById('checkbox');
-
-            if (prestadorSelect.selectedOptions.length === 0) {
-                
-                if(check.checked){
-                    event.preventDefault();
-                    alert('Por favor, selecciona al menos un prestador.');
-                }        
-            }
-        });
-        
-        let dlb2 = new DualListbox('.select2', {
-            availableTitle: 'Prestadores disponibles',
-            selectedTitle: 'Prestadores seleccionados',
-            addButtonText: '<span style="color:black;">Agregar</span>',
-            removeButtonText: '<span style="color:black;">Quitar</span>',
-            addAllButtonText: '<span style="color:black;">Agregar todos</span>',
-            removeAllButtonText: '<span style="color:black;">Quitar todos</span>',
-            searchPlaceholder: 'Buscar prestadores'
-        });
-
-
-        let dlb3 = new DualListbox('.select3', {
-            availableTitle: 'Prestadores disponibles',
-            selectedTitle: 'Prestadores seleccionados',
-            addButtonText: '<span style="color:black;">Agregar</span>',
-            removeButtonText: '<span style="color:black;">Quitar</span>',
-            addAllButtonText: '<span style="color:black;">Agregar todos</span>',
-            removeAllButtonText: '<span style="color:black;">Quitar todos</span>',
-            searchPlaceholder: 'Buscar prestadores'
-        });
-
-        let searchInputs = document.querySelectorAll('.dual-listbox__search');
-        if (searchInputs) {
-            searchInputs.forEach(function(searchInput) {
-                searchInput.style.color = 'black';
-            });
+    document.getElementById('boton_filtrar').addEventListener('click', function(e) {
+        e.preventDefault();
+        var proyectoId = document.getElementById('proyectoprestador').value;
+        if (proyectoId) {
+            window.location.href = 'agregar_proyecto/' + proyectoId;
+        } else {
+            alert('Por favor, selecciona un proyecto.');
         }
+    });
 
-        $(document).ready(function() {
-            $('.tooltip').click(function() {
-                $('.tooltip-info').toggle();
-            });
+    document.getElementById('enviar').addEventListener('submit', function(event) {
+
+        const prestadorSelect = document.getElementById('prestadores_seleccionados');
+        const check = document.getElementById('checkbox');
+
+        if (prestadorSelect.selectedOptions.length === 0) {
+            
+            if(check.checked){
+                event.preventDefault();
+                alert('Por favor, selecciona al menos un prestador.');
+            }        
+        }
+    });
+    
+    let dlb2 = new DualListbox('.select2', {
+        availableTitle: 'Prestadores disponibles',
+        selectedTitle: 'Prestadores seleccionados',
+        addButtonText: '<span style="color:black;">Agregar</span>',
+        removeButtonText: '<span style="color:black;">Quitar</span>',
+        addAllButtonText: '<span style="color:black;">Agregar todos</span>',
+        removeAllButtonText: '<span style="color:black;">Quitar todos</span>',
+        searchPlaceholder: 'Buscar prestadores'
+    });
+
+  
+    let searchInputs = document.querySelectorAll('.dual-listbox__search');
+    if (searchInputs) {
+        searchInputs.forEach(function(searchInput) {
+            searchInput.style.color = 'black';
         });
+    }
 
         function filtroArea() {
             var areaSelect = document.getElementById('area');
@@ -527,7 +502,6 @@
                 layout: "fitDataFill",
                 resizableColumns:false,
                 layoutColumnsOnNewData:true,
-                virtualDomHoz:true,
                 columns: [{
                         title: "ID",
                         field: "id",
