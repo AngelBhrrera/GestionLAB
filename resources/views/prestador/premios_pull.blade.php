@@ -69,7 +69,23 @@
                 title: "Disponibilidad",
                 field: "limite",
                 sorter: "string",
-            }, 
+            },{
+                title: "Detalles de actividad",
+                field: "id",
+                width: 135,
+                formatter: function (cell, formatterParams, onRendered) {
+                    var value = cell.getValue();
+                    var button = document.createElement("button");
+                    button.style = "background-color: blue; color: white; border: 1px solid white; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
+                    button.textContent = "Detalles";
+                    button.title = "";
+                    button.addEventListener("click", function() {
+                        desactivarPrestador(value);
+                    });
+                    return button;
+                }, 
+                      
+            },
         ],
     });
 

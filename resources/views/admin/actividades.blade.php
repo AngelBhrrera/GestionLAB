@@ -94,6 +94,33 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Subcategoría</label>
+                                <div class="col-md-6">
+                                    <select class="form-control" id="tipo_subcategoriaC" name="tipo_subcategoria">
+                                        <option value="">Selecciona una subcategoría</option>
+                                        @foreach ($subcategorias as $subcategoria)
+                                        <option @selected(old('tipo_subcategoria')== {{$subcategoria->id}}) value="{{ $subcategoria->id }}">{{ $subcategoria->nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <br>
+                                <div class="form-group row">
+                                    <label for="tipo_actividad" class="text-center">Tipo de actividad</label>
+                                    <div class="row text-center">
+                                        <div class="col">
+                                            <select required class="form-control" name="tipo_actividad">
+                                                <option value="{{null}}">Selecciona un tipo de actividad</option>
+                                                <option  value="generica" @selected(old('tipo_actividad')== "generica")>Genérica</option>
+                                                <option  value="particular" @selected(old('tipo_actividad')== "particular")>Particular</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
                             <br>
                             <div class="col-md-6">
                             <label for="recursos">Recursos necesarios - entradas</label>
@@ -106,111 +133,42 @@
                                 @enderror
 
                             </div>
-                        </div>
+                            <div class="form-group row">
+                                <label for="descripcion" class="col-md-4 col-form-label text-md-right">Descripción del trabajo a realizar - procesos</label>
+                                <div class="col-md-6">
+                                    <textarea id="descripcion" type="text" class="form-control @error('descripcion') is-invalid @enderror" value="{{old('descripcion')}}" name="descripcion" required>{{old('descripcion')}}</textarea>
 
-                        <div class="form-group row">
-                            <label for="descripcion" class="col-md-4 col-form-label text-md-right">Descripción del trabajo a realizar - procesos</label>
-
-                            <div class="col-md-6">
-                                <textarea id="descripcion" type="text" class="form-control @error('descripcion') is-invalid @enderror" value="{{old('descripcion')}}" name="descripcion" required>{{old('descripcion')}}</textarea>
-
-                                @error('descripcion')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                                    @error('descripcion')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="resultados" class="col-md-4 col-form-label text-md-right">Objetivos, resultados que se esperan - salidas</label>
-
-                            <div class="col-md-6">
-                                <textarea id="resultados" type="text" class="form-control" value="{{old('resultados')}}" name="resultados" placeholder="Ingrese los datos separados por comas (imprimir, diseñar, pintar)" required>{{old('resultados')}}</textarea>
+                            <div class="form-group row">
+                                <label for="resultados" class="col-md-4 col-form-label text-md-right">Objetivos, resultados que se esperan - salidas</label>
+                                <div class="col-md-6">
+                                    <textarea id="resultados" type="text" class="form-control" value="{{old('resultados')}}" name="resultados" placeholder="Ingrese los datos separados por comas (imprimir, diseñar, pintar)" required>{{old('resultados')}}</textarea>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="form-group row"  style="margin-top: 5px; margin-bottom: 15px;">
+                            <div class="form-group row"  style="margin-top: 5px; margin-bottom: 15px;">
                             <label for="premios" class="col-md-4 col-form-label text-md-right">Premio para la actividad</label>
                             <div class="col-md-7" style="margin-top: 5px; margin-bottom: 5px;">
                                 <select name="premio_asignado" class="form-control sm:w-56" required>
                                     <option value="null" disabled selected>Ingresa premio o insignia</option>
                                     <option value="null">Ninguno</option>
                                     @foreach ($premios as $premio)
-                                        <option value="{{ $premio->id }}">{{ $premio->nombre }}</option>
+                                        <option value="{{ $premio->id }}|{{ $premio->limite }}">{{ $premio->nombre }}</option>
                                     @endforeach
                                 </select>
+                                
                             </div>
-                            <small id="Help" class="form-text text-muted">Ingresa un premio en caso de ser necesario </small>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Tiempo estimado (TEC)</label>
-                            <div class="form-group row">
-                                <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Subcategoría</label>
-                                <div class="col-md-6">
-                                    <select class="form-control" id="tipo_subcategoriaC" name="tipo_subcategoria">
-                                        <option value="">Selecciona una subcategoría</option>
-                                        @foreach ($subcategorias as $subcategoria)
-                                        <option @selected(old('tipo_subcategoria')== {{$subcategoria->id}}) value="{{ $subcategoria->id }}">{{ $subcategoria->nombre }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="form-group row">
-                                <label for="tipo_actividad" class="text-center">Tipo de actividad</label>
-                                <div class="row text-center">
-                                    <div class="col">
-                                        <select required class="form-control" name="tipo_actividad">
-                                            <option value="{{null}}">Selecciona un tipo de actividad</option>
-                                            <option  value="generica" @selected(old('tipo_actividad')== "generica")>Genérica</option>
-                                            <option  value="particular" @selected(old('tipo_actividad')== "particular")>Particular</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="col-md-6">
-                                <label for="recursos">Recursos necesarios - entradas</label>
-                                    <textarea required id="recursos" type="text" class="form-control" name="recursos" placeholder="Ingrese los datos separados por comas (impresora, filamento, papel, agua)">{{old('recursos')}}</textarea>
-
-                                    @error('descripcion')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="descripcion" class="col-md-4 col-form-label text-md-right">Descripción del trabajo a realizar - procesos</label>
-
-                                <div class="col-md-6">
-                                    <textarea required id="descripcion" type="text" class="form-control @error('descripcion') is-invalid @enderror" value="{{old('descripcion')}}" name="descripcion" required>{{old('descripcion')}}</textarea>
-
-                                    @error('descripcion')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="resultados" class="col-md-4 col-form-label text-md-right">Objetivos, resultados que se esperan - salidas</label>
-
-                                <div class="col-md-6">
-                                    <textarea required id="resultados" type="text" class="form-control" value="{{old('resultados')}}" name="resultados" placeholder="Ingrese los datos separados por comas (imprimir, diseñar, pintar)" required>{{old('resultados')}}</textarea>
-                                </div>
-                            </div>
-
                             <div class="form-group row">
                                 <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Tiempo estimado (TEC)</label>
-                                    <div class="col-md-6">
-                                            <input required name="horas" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" value="0" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
-                                            <input required name="minutos" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" value="0" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
-                                    </div>
+                                <div class="col-md-6">
+                                    <input required name="horas" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" value="0" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
+                                    <input required name="minutos" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" value="0" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
+                                </div>
                                     @error('horas')
                                         <strong>{{$message}}</strong>
                                     @enderror
@@ -219,8 +177,8 @@
                                     @enderror
                                 <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
                             </div>
+                        </div>
                             <br>
-
                             <div class="form-group row">
                                 <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Experiencia</label>
                                 <div class="col-md-6">

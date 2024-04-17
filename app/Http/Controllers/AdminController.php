@@ -579,7 +579,7 @@ class AdminController extends Controller
         $categorias = DB::table('categorias')->orderBy('nombre')->get();
         $subcategorias = DB::table('subcategorias')->orderBy('nombre')->get();
         $premios = DB::table("premios")
-            ->select("id","nombre")->get();
+            ->select("id","nombre","limite")->get();
 
         if( auth()->user()->tipo == 'coordinador' || auth()->user()->tipo == 'jefe area'){
             $listaActs->whereIn('id_proyecto', function ($query) {
