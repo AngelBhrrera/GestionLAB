@@ -240,6 +240,17 @@ class PrestadorController extends Controller
             ->where('hora_salida', null)->get();
         $tiempoCompleto = $this->diferencia($tiempo[0]->hora_entrada, $hor);
 
+        if($tiempoCompleto < 3){
+            DB::table('registros_checkin')
+                ->where('idusuario', $user->id)
+                ->where('fecha', date("d/m/Y"))
+                ->where('hora_salida', null)
+                ->update(['hora_salida' => $hor, 'estado'=>  'Denegado','tiempo' => $tiempoCompleto, 'horas' => $this->calculoIntervaloH($tiempoCompleto)]);
+            return 0;
+        }else if($tiempoCompleto >5){
+            $tiempoCompleto = 5;
+        }
+
         DB::table('registros_checkin')
             ->where('idusuario', $user->id)
             ->where('fecha', date("d/m/Y"))

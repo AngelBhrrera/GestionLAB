@@ -1,12 +1,18 @@
 @extends('layouts/admin-layout')
 
 @section('subhead')
-<link rel="stylesheet" href="{{asset('build/assets/css/asignar_actividadess.css')}}">
+    <link rel="stylesheet" href="{{asset('build/assets/css/asignar_actividadess.css')}}">
+    <style>
+        .tab-scroll {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+    </style>
 @endsection
 
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-<li class="breadcrumb-item active" aria-current="page">Asignar actividad a prestador</li>
+<li class="breadcrumb-item active" aria-current="page">Modulo de Actividades</li>
 @endsection
 
 @section('subcontent')
@@ -23,25 +29,26 @@
         </div>
     </div>
 
-    <ul class="nav nav-tabs nav-justified" role="tablist">  
-    <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#eactpr">Evaluar Actividades Pendientes de Revision</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#cact">Registrar Nueva Actividad</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#vacts">Ver Todas las Actividades en el Area</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#aactp">Asignar Actividades a Prestador</a>
-        </li>
-        {{--<li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#pract">Aprobar Actividades Propuestas por Prestador</a>
-        </li>--}}
-        
-    </ul>
-
+    <div class="tab-scroll">
+        <ul class="nav nav-tabs nav-justified" role="tablist">  
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#eactpr">Evaluar Actividades Pendientes de Revision</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#cact">Registrar Nueva Actividad</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#vacts">Ver Todas las Actividades en el Area</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#aactp">Asignar Actividades a Prestador</a>
+            </li>
+            {{--<li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#pract">Aprobar Actividades Propuestas por Prestador</a>
+            </li>--}}
+        </ul>
+    </div>
+    
     <div class="tab-content">
         <div class="tab-pane active" id="eactpr">
             <h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
@@ -308,7 +315,7 @@
                                 <select class="tom-select w-full" id="tipo_categoria" name="tipo_categoria" onchange="filtrarCategorias()">
                                     <option value="">Filtrar por categoría</option>
                                     @foreach ($categorias as $categoria)
-                                    <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+                                        <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -340,9 +347,10 @@
                             <small id="Help" class="form-text text-muted">Selecciona a los prestadores para realizar la actividad</small>
                         </div>
 
-                        <div class="col-md-8" id="boton_asignar"> <!-- Ancho ajustado para el botón -->
-                            <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits">Asignar</button>
+                        <div class="col-md-12 text-center"> 
+                            <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits" style="font-size: 20px;">Asignar</button> <!-- Aumentamos el tamaño de la fuente -->
                         </div>
+                        <div style="height: 50px;"></div>
                     </form>
                 </div>
             </div>

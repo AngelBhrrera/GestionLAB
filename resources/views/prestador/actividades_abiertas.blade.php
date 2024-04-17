@@ -67,6 +67,18 @@
 
     <script type="text/javascript">
 
+    function validate(h, m) {
+
+        console.log(h);
+        console.log(m);
+
+        if ((h >= 0 && m >= 1)||(h >= 1 && m >= 0)) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     function tomarActividad(idActividad) {
 
         var id = idActividad;
@@ -76,21 +88,17 @@
         const horasInput = document.getElementById(nH);
         const minutosInput = document.getElementById(nM);
 
-        if (horasInput.value || minutosInput.value) {
+        check = validate(parseInt(horasInput.value),parseInt(minutosInput.value));
+        if (check) {
 
-            if(!horasInput.value){
-                fixedHoras = 0;
+            if (!horasInput.value) {
                 var minutos = parseInt(minutosInput.value);
-            }
-            if(!minutosInput.value){
-                fixedMinutos = 0;
+            } else if (!minutosInput.value) {
                 var minutos = parseInt(horasInput.value) * 60;
-            }else{
+            } else {
                 var minutos = parseInt(horasInput.value) * 60 + parseInt(minutosInput.value);
             }
 
-            console.log(minutos);
-            
             const token = document.head.querySelector('meta[name="csrf-token"]').content;
             fetch(`tomarActividad/${idActividad}/${minutos}`, {
                     method: 'GET',
@@ -108,7 +116,7 @@
                 console.error('Error en activacion:', error);
             });
         } else {
-            alert('Por favor, ingrese las horas y los minutos.');
+            alert('Error en el ingreso de los datos. No puedes ingresar menos de cinco minutos, ni valores nulos en ambos campos.');
         }
     } 
 

@@ -10,6 +10,10 @@
             border-radius: 5px;
             margin-right: 10px; /* O ajusta el margen según tus necesidades */
         }
+        .tab-scroll {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
     </style>
 
 @endsection
@@ -38,21 +42,23 @@
         </div>
     </div>
 
-    <ul class="nav nav-tabs nav-justified" role="tablist">  
-        <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#prints">Ver Impresiones</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#cprinters">Registrar Impresoras</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#printers">Gestionar Impresoras</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#colorp">Colores de impresion</a>
-        </li>
-    </ul>
-
+    <div class="tab-scroll">
+        <ul class="nav nav-tabs nav-justified" role="tablist">  
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#prints">Ver Impresiones</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#cprinters">Registrar Impresoras</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#printers">Gestionar Impresoras</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#colorp">Colores de impresion</a>
+            </li>
+        </ul>
+    </div>
+    
     <div class="tab-content">
         <div class="tab-pane active" id="prints">
             <div class="card-header">

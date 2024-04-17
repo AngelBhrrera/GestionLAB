@@ -10,6 +10,10 @@
             border-radius: 5px;
             margin-right: 10px; /* O ajusta el margen según tus necesidades */
         }
+        .tab-scroll {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
     </style>
      <link rel="stylesheet" href="{{ asset('build/assets/css/view_premios.css') }}">
 
@@ -40,19 +44,21 @@
                 </div>
             </div>
         </div>
-        
-        <ul class="nav nav-tabs nav-justified" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#reg">Registrar</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#asi">Asignar</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#adm">Administrar</a>
-            </li>
-        </ul>
 
+        <div class="tab-scroll">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#reg">Registrar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#asi">Asignar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#adm">Administrar</a>
+                </li>
+            </ul>
+        </div>
+        
         <div class="tab-content">
             <div class="tab-pane active" id="reg">
                     <div class="card card-primary">

@@ -1,5 +1,14 @@
 @extends('layouts/admin-layout')
 
+@section('subhead')
+    <style>
+        .tab-scroll {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+    </style>
+@endsection
+
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
     <li class="breadcrumb-item active" aria-current="page">Clientes</li>
@@ -21,25 +30,26 @@
                 </div>
         </div>
     </div>
-
-    <ul class="nav nav-tabs nav-justified" role="tablist">  
-        <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#vcli">Lista de clientes</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#vvis">Lista de visitas</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#chkv">Checkin Visitante</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#lisc">Lista de solicitudes por confirmar</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#lisp">Lista de solicitudes programadas</a>
-        </li>
-        
-    </ul>
+    
+    <div class="tab-scroll">
+        <ul class="nav nav-tabs nav-justified" role="tablist">  
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#vcli">Lista de clientes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#vvis">Lista de visitas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#chkv">Checkin Visitante</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#lisc">Lista de solicitudes por confirmar</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#lisp">Lista de solicitudes programadas</a>
+            </li>
+        </ul>
+    </div>
 
     <div class="tab-content">
 
