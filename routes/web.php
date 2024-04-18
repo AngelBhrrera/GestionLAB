@@ -42,6 +42,15 @@ Route::get('/ml', function(){
     return view('testApi', compact('prestadores', 'actividades'));
 })->name('ml');
 
+Route::get('/homePredictor', function(){
+
+    $prestadores = DB::table('solo_prestadores')->get();
+    $actividades = DB::table('actividades')
+                ->whereNotNull('TEC')
+                ->get();
+    return view('homePredictionDB', compact('prestadores', 'actividades'));
+})->name('hP');
+
 Route::post('/recomendaciones', [MachineLearningController::class, 'obtenerRecomendaciones']);
 Route::post('/actualizar', [MachineLearningController::class, 'obtenerDatosDeSQL']);
 

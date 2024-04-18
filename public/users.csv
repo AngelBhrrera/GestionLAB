@@ -1,10 +1,8 @@
 id_prestador,horario,semanas_actividad,carrera,experiencia,experiencia_mensual,experiencia_semanal,periodo
-3,Matutino,11,"Ingenieria Informatica",1450,0,0,1
-4,Matutino,5,INCO,612,0,0,1
+3,Matutino,16,"Ingenieria Informatica",1472,20,0,1
 14,Matutino,0,Administración,1,0,0,1
-15,Matutino,6,"Ingeniería en computación",1,0,0,1
-16,Matutino,4,INCO,1600,0,0,1
+16,Matutino,8,INCO,1600,0,0,1
 18,Matutino,0,INCO,1,0,0,1
-19,Matutino,2,Turismo,11,0,0,1
-23,Matutino,1,INNI,1,0,0,1
+19,Matutino,7,Turismo,11,0,0,1
+23,Matutino,6,INNI,1,0,0,1
 24,Matutino,0,INNI,1,0,0,1
