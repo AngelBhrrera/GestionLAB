@@ -554,7 +554,7 @@ class AdminController extends Controller
                 $proyectos->where('id_area', Auth::user()->area)
                 ->where(function ($query) {
                     $query->where('turno', '=', Auth::user()->horario)
-                        ->orWhere('turno', 'TC');
+                        ->orWhere('turno', 'No Aplica');
                 });
                 break;
             case "jefe area":
@@ -965,7 +965,7 @@ class AdminController extends Controller
                 $proyectos = DB::table('proyectos')
                 ->where('id_area', Auth::user()->area)
                 ->where('turno', '=', Auth::user()->horario)
-                ->orWhere('turno', 'TC')
+                ->orWhere('turno', 'No Aplica')
                 ->orWhere('particular', '0')
                 ->get();
                 break;
@@ -1269,7 +1269,7 @@ class AdminController extends Controller
                 $proyectos = DB::table('proyectos')
                 ->where('id_area', Auth::user()->area)
                 ->where('turno', '=', Auth::user()->horario)
-                ->orWhere('turno', 'TC')
+                ->orWhere('turno', 'No Aplica')
                 ->orWhere('particular', '0')
                 ->get();
                 break;
