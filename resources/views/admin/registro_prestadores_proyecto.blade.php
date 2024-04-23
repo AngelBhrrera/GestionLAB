@@ -37,9 +37,8 @@
                         <div class="form-group">
                                 <label style="font-weight: bold; font-size: 1.2em;" for="proyecto">Seleccionar proyecto</label>
                                     <select class="form-control" id="proyecto" name="proyecto">
-                                    <option value="">Selecciona el area de trabajo donde estará principalmente el proyecto</option>
                                     @foreach ($proyectos as $proyecto)
-                                    <option value="{{ $proyecto->id }}">{{ $proyecto->titulo}}</option>
+                                    <option selected value="{{ $proyecto->id }}">{{ $proyecto->titulo}}</option>
                                     @endforeach
                                 </select>
                         </div>

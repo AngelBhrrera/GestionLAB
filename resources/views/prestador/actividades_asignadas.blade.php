@@ -64,8 +64,8 @@
                 @else
                     <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
                     <div class="col-md-6">
-                        <input id = "horas_{{ $actividad->id }}" name="horas_{{ $actividad->id }}"  style="width: 125px;" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" >
-                        <input id= "minutos_{{ $actividad->id }}" name="minutos_{{ $actividad->id }}"  style="width: 125px;" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" >
+                        <input id="horas_{{ $actividad->id }}" name="horas_{{ $actividad->id }}" style="width: 125px;" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1">
+                        <input id="minutos_{{ $actividad->id }}" name="minutos_{{ $actividad->id }}" style="width: 125px;" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1">
                     </div>
                 @endif
                 @if($actividad->estado == 'En Proceso')
@@ -102,26 +102,36 @@
 @section('script')
 
     <script type="text/javascript">
+
+    function validate(h, m) {
+
+        console.log(h);
+        console.log(m);
+    
+        if ((h >= 0 && m >= 1)||(h >= 1 && m >= 0)) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
         function comenzarActividad(idActividad) {
 
-        var id = idActividad;
-        
-        var nH = "horas_"+id;
-        var nM = "minutos_"+id;
-        const horasInput = document.getElementById(nH);
-        const minutosInput = document.getElementById(nM);
-        
+            var id = idActividad;
+            var nH = "horas_"+id;
+            var nM = "minutos_"+id;
+            const horasInput = document.getElementById(nH);
+            const minutosInput = document.getElementById(nM);
 
-            if (horasInput.value || minutosInput.value) {
+            check = validate(parseInt(horasInput.value),parseInt(minutosInput.value));
 
-                if(!horasInput.value){
-                    fixedHoras = 0;
+            if (check) {
+                if (!horasInput.value) {
                     var minutos = parseInt(minutosInput.value);
-                }
-                if(!minutosInput.value){
-                    fixedMinutos = 0;
+                } else if (!minutosInput.value) {
                     var minutos = parseInt(horasInput.value) * 60;
-                }else{
+                } else {
                     var minutos = parseInt(horasInput.value) * 60 + parseInt(minutosInput.value);
                 }
                 

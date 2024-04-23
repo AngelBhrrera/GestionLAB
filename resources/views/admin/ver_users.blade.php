@@ -11,6 +11,10 @@
             border: 1px solid #ccc;
             padding: 10px;
         }
+        .tab-scroll {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
     </style>
 @endsection
 
@@ -79,23 +83,25 @@
         </div>
     </div>
 
-    <ul class="nav nav-tabs nav-justified" role="tablist">  
-        <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#u">Usuarios</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#a">Admins</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#c">Coordinadores</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#p">Prestadores</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#v">Clientes - Visitantes</a>
-        </li>
-    </ul>
+    <div class="tab-scroll">
+        <ul class="nav nav-tabs nav-justified" role="tablist">  
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#u">Usuarios</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#a">Admins</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#c">Coordinadores</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#p">Prestadores</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#v">Clientes - Visitantes</a>
+            </li>
+        </ul>
+    </div>
     <div class="w-[350px] relative mx-5 my-5">
         <input id="searchInput" type="text" class="form-control pl-10" placeholder="Buscar">
         <i class="w-5 h-5 absolute inset-y-0 left-0 my-auto text-slate-400 ml-3" data-lucide="search"></i>

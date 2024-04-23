@@ -547,34 +547,44 @@ class AdminController extends Controller
 
     public function get_aProyectos(){
 
+        $proyectos = DB::table('proyectos');
         switch(Auth::user()->tipo){
             case "coordinador":
-                $proyectos = DB::table('proyectos')
-                ->where('id_area', Auth::user()->area)
-                ->where('turno', '=', Auth::user()->horario)
-                ->orWhere('turno', 'TC')
-                ->orWhere('particular', '0')
-                ->get();
+           
+                $proyectos->where('id_area', Auth::user()->area)
+                ->where(function ($query) {
+                    $query->where('turno', '=', Auth::user()->horario)
+                        ->orWhere('turno', 'No Aplica');
+                });
+                break;
+            case "jefe area":
+                $proyectos->where('id_area', Auth::user()->area);
+                break;
+            case "jefe sede":
+                $proyectos->join('areas', 'proyectos.id_area', '=', 'areas.id')
+                    ->where('areas.id_sede', '=', Auth::user()->sede);
                 break;
             default:
-                $proyectos = DB::table('proyectos')->get();
         }
+        $proyectos = $proyectos->get();
 
         return $proyectos;
-
     }
    
 
     public function actividades(){
 
-        $reviewActs = DB::table('seguimiento_actividades')
-            ->whereIn('seguimiento_actividades.estado', ['En revision', 'Error'])
+  
+        $listaActs = DB::table('seguimiento_actividades');
+
+        $reviewActs = $listaActs ->whereIn('seguimiento_actividades.estado', ['En revision', 'Error'])
             ->join('proyectos', 'seguimiento_actividades.id_proyecto', '=', 'proyectos.id')
             ->select('seguimiento_actividades.*', 'proyectos.turno');
 
-        $listaActs = DB::table('seguimiento_actividades');
-        $pR = DB::table('seguimiento_actividades')
-        ->whereIn('estado', ['En revision', 'Error']);
+        $pR = DB::table('actividades')
+            ->whereNull('TEC');
+
+
         $prestadores = DB::table('solo_prestadores');
         $categorias = DB::table('categorias')->orderBy('nombre')->get();
         $subcategorias = DB::table('subcategorias')->orderBy('nombre')->get();
@@ -585,10 +595,9 @@ class AdminController extends Controller
                     ->from('proyectos')
                     ->where('id_area', auth()->user()->area);
             });
-            $pR->whereIn('id_proyecto', function ($query) {
-                $query->select('id')
-                    ->from('proyectos')
-                    ->where('id_area', auth()->user()->area);
+            $pR->where(function($query) {
+                $query->where('tipo', 0)
+                ->orWhere('tipo', auth()->user()->area);
             });
             $prestadores->where('id_area', auth()->user()->area)
                 ->where('horario', auth()->user()->horario);
@@ -605,15 +614,6 @@ class AdminController extends Controller
             }
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $listaActs->whereIn('id_proyecto', function ($query) {
-                $query->select('id')
-                    ->from('proyectos')
-                    ->whereIn('id_area', function ($subquery) {
-                        $subquery->select('id_sede')
-                                ->from('areas')
-                                ->where('id_sede', auth()->user()->sede);
-                    });
-            });
-            $pR->whereIn('id_proyecto', function ($query) {
                 $query->select('id')
                     ->from('proyectos')
                     ->whereIn('id_area', function ($subquery) {
@@ -643,11 +643,11 @@ class AdminController extends Controller
             ->whereNotNull('TEC')
             ->get();
         $aPrestador = $this->get_aPrestadores();
-        $aProyecto = $this->get_aProyectos();
+        $aProyectos = $this->get_aProyectos();
 
         return view( 'admin/actividades', [ 'prestadores' => $prestadores,
             'categorias' => $categorias, 'subcategorias' => $subcategorias,
-            'aActividades' => $aActividad,  'aProyectos' => $aProyecto,  'aPrestadores' => $aPrestador,
+            'aActividades' => $aActividad,  'aProyectos' => $aProyectos,  'aPrestadores' => $aPrestador,
             'data1' =>json_encode($listaActs),
             'data2' =>json_encode($pR),
             'data3' =>json_encode($reviewActs)]);
@@ -956,7 +956,7 @@ class AdminController extends Controller
                 $proyectos = DB::table('proyectos')
                 ->where('id_area', Auth::user()->area)
                 ->where('turno', '=', Auth::user()->horario)
-                ->orWhere('turno', 'TC')
+                ->orWhere('turno', 'No Aplica')
                 ->orWhere('particular', '0')
                 ->get();
                 break;
@@ -1094,7 +1094,7 @@ class AdminController extends Controller
         ->update([
             'estado' => "En desarrollo",]);
 
-        return redirect(route('admin.add_to_proys'))->with('success', 'Prestadores agregados al proyecto con exito');
+        return redirect(route('admin.create_proy'))->with('success', 'Prestador agregado al proyecto correctamente');
     }
 
     public function eliminarAct($id) {
@@ -1111,7 +1111,7 @@ class AdminController extends Controller
                 Session::flash('error', 'Error al eliminar la actividad: ' . $e->getMessage());
             }
         }
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Actividad eliminada correctamente');
     }
     
     public function modificar_categoria(Request $request){
@@ -1128,7 +1128,7 @@ class AdminController extends Controller
 
         DB::table('categorias')->where('id',$request->id_categoria)->update(['nombre'=>$request->nombre]);
 
-        return redirect(route('admin.categorias'))->with('success', 'Modificada correctamente');
+        return redirect(route('admin.categorias'))->with('success', 'Categoria modificada correctamente');
     }
 
     public function modificar_subCategoria(Request $request){
@@ -1167,45 +1167,35 @@ class AdminController extends Controller
         DB::table('subcategorias')->where('id', '=' ,$id)->update(['nombre'=>$nombre, 'categoria'=> $categoria]);
         
 
-        return redirect(route('admin.categorias'))->with('success', 'Modificada correctamente');
+        return redirect(route('admin.categorias'))->with('success', 'Subcategoria modificada correctamente');
     }
     //PROYECTOS
 
     public function create_proy() {
 
         $tabla_proy = DB::table('seguimiento_proyecto3');
-        $prestadores = DB::table('solo_prestadores');
-        $proyectos = DB::table('proyectos');
         $areas = DB::table('areas')
             ->select('id', 'nombre_area');
 
         if( auth()->user()->tipo == 'coordinador'){
-            $prestadores->where('id_area', auth()->user()->area)
-                ->where('horario', auth()->user()->horario)
-                ->where('tipo', '!=', 'coordinador');
             $areas->where('id', auth()->user()->area);
             $tabla_proy->where('id_area', auth()->user()->area);
-            $proyectos ->where('id_area', auth()->user()->area);
         }else if(auth()->user()->tipo == 'jefe area'){
-            $prestadores->where('id_area', auth()->user()->area);
             $areas->where('id', auth()->user()->area);
             $tabla_proy->where('id_area', auth()->user()->area);
-            $proyectos ->where('id_area', auth()->user()->area);
         }else  if( auth()->user()->tipo == 'jefe sede'){
-            $prestadores->where('id_sede', auth()->user()->sede);    
             $areas->where('id_sede', auth()->user()->sede);
             $tabla_proy->where('id_sede', auth()->user()->sede);   
-            $proyectos->join('areas', 'proyectos.id_area', '=', 'areas.id')
-            ->where('areas.id_sede', auth()->user()->sede)
-            ->where('proyectos.id_area', auth()->user()->area);
         }
         $tabla_proy =  $tabla_proy->get();
         $categorias = DB::table('categorias') ->orderBy('nombre')->get();
-        $proyectos = $proyectos->get();
         $areas = $areas->get();
-        $prestadores= $prestadores->get();
-
-        return view('/admin/proyectos', compact('prestadores', 'areas', 'categorias', 'proyectos', 'tabla_proy'));
+        $prestadores = $this->get_aPrestadores();
+        $proyectos = $this->get_aProyectos();
+        $prestproylist = DB::table('proyectos_prestadores')
+            ->whereIn('id_proyecto', $proyectos->pluck('id'))
+            ->get();
+        return view('/admin/proyectos', compact('prestadores', 'areas', 'categorias', 'proyectos', 'tabla_proy','prestproylist'));
     }
 
     public function add_to_proys() {
@@ -1268,7 +1258,7 @@ class AdminController extends Controller
                 $proyectos = DB::table('proyectos')
                 ->where('id_area', Auth::user()->area)
                 ->where('turno', '=', Auth::user()->horario)
-                ->orWhere('turno', 'TC')
+                ->orWhere('turno', 'No Aplica')
                 ->orWhere('particular', '0')
                 ->get();
                 break;
@@ -2177,15 +2167,35 @@ class AdminController extends Controller
     }
 
     public function actTEC(Request $request){
+
         $request->validate([
-            'nombre' => 'required |string | max:255',
-            'tipo_categoria' => 'required | integer',
-            'recursos' => 'required | string', 
-            'descripcion' => 'required | string|max:500',
-            'objetivos' => 'required | string', 
-            'horas' => 'integer|min:1|max:60', 
-            'minutos' => 'integer|min:1|max:60',
+            'nombre' => 'string|max:255',
+            'tipo_categoria' => 'integer',
+            'tipo_actividad' => 'integer',
+            'recursos' => 'string', 
+            'descripcion' => 'string|max:500',
+            'objetivos' => 'string', 
+            'exp' => 'integer|min:5|max:100',
+            'horas' => [
+                'integer',
+                function ($attribute, $value, $fail) use ($request) {
+                    $minutos = $request->input('minutos');
+                    if ($value == 0 && $minutos == 0) {
+                        $fail('Las horas y los minutos no pueden ser ambos 0.');
+                    }
+                }
+            ],
+            'minutos' => [
+                'integer',
+                function ($attribute, $value, $fail) use ($request) {
+                    $horas = $request->input('horas');
+                    if ($value == 0 && $horas == 0) {
+                        $fail('Las horas y los minutos no pueden ser ambos 0.');
+                    }
+                }
+            ]
         ]);
+
         $actividad = DB::table('actividades')
             ->where('id', $request->input('id'))
             ->first();
@@ -2204,21 +2214,21 @@ class AdminController extends Controller
         if ($actividad->id_subcategoria != $subcategoria) 
             $updates['id_subcategoria'] = $subcategoria;
         if ($actividad->descripcion != $request->input('descripcion')) 
-                $updates['descripcion'] = $request->input('descripcion');    
+            $updates['descripcion'] = $request->input('descripcion');    
         if ($actividad->recursos != $request->input('recursos')) 
-                $updates['recursos'] = $request->input('recursos');
-        if ($actividad->objetivos != $request->input('resultados')) 
-                $updates['objetivos'] = $request->input('resultados'); 
+            $updates['recursos'] = $request->input('recursos');
+        if ($actividad->objetivos != $request->input('objetivos')) 
+            $updates['objetivos'] = $request->input('objetivos'); 
         if ($actividad->tipo != $request->input('tipo_actividad')) 
-                $updates['tipo'] = $request->input('tipo_actividad');
+            $updates['tipo'] = $request->input('tipo_actividad');
 
         $updates['TEC'] = $tec;
-
+        $updates['exp_ref'] =  $request->input('exp');
 
         if (!empty($updates)) {
             DB::table('actividades')->where('id', $request->input('id'))->update($updates);
         }
-        return redirect('/admin/A_actividades')->with('SUCCESS', 'Actividad agregada');
+        return redirect('admin/actividades')->with('SUCCESS', 'Actividad agregada');
     }
 
     // PREMIOS
