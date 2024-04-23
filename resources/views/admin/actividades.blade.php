@@ -43,9 +43,9 @@
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#aactp">Asignar Actividades a Prestador</a>
             </li>
-            {{--<li class="nav-item">
+            <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#pract">Aprobar Actividades Propuestas por Prestador</a>
-            </li>--}}
+            </li>
         </ul>
     </div>
     
@@ -67,7 +67,7 @@
                     <div class="card card-primary">
                         <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Crear nueva actividad </h3>
                     </div>
-                    <div class="card-body pl-10 pr-10">
+                    <div id="createActForm" class="card-body pl-10 pr-10">
                             @if (isset($tipo))
                             <input id="tipo" name="tipo" value={{ $tipo }} type="hidden">
                             @endif
@@ -118,8 +118,8 @@
                                 <label for="tipo_actividad" class="text-center">Tipo de actividad</label>
                                 <div class="row text-center">
                                     <div class="col">
-                                        <select required class="form-control" name="tipo_actividad">
-                                            <option value="{{null}}">Selecciona un tipo de actividad</option>
+                                        <select required class="form-control" id="tipo_actividad_f" name="tipo_actividad">
+                                            <option value="">Selecciona un tipo de actividad</option>
                                             <option  value="generica" @selected(old('tipo_actividad')== "generica")>Genérica</option>
                                             <option  value="particular" @selected(old('tipo_actividad')== "particular")>Particular</option>
                                         </select>
@@ -164,8 +164,8 @@
                             <div class="form-group row">
                                 <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Tiempo estimado (TEC)</label>
                                     <div class="col-md-6">
-                                            <input required name="horas" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" value="0" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
-                                            <input required name="minutos" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" value="0" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
+                                            <input id="horas" required name="horas" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" value="0" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
+                                            <input id="minutos" required name="minutos" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" value="0" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
                                     </div>
                                     @error('horas')
                                         <strong>{{$message}}</strong>
@@ -180,8 +180,8 @@
                             <div class="form-group row">
                                 <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Experiencia</label>
                                 <div class="col-md-6">
-                                    <select name="exp" class="form-control sm:w-56" required>
-                                        <option value="" selected>Ingresa la dificultad de la actividad</option>
+                                    <select id="exp_f" name="exp" class="form-control sm:w-56" required>
+                                        <option value=""selected>Ingresa la dificultad de la actividad</option>
                                         <option value="5">Fácil</option>
                                         <option value="20">Normal</option>
                                         <option value="40">Difícil</option>
@@ -191,7 +191,7 @@
                             </div>
                             <br>
                             <div class="col-md-12 text-center"> 
-                                <buttontype="button" id="siguiente" class="btn btn-primary" style="font-size: 20px;">Siguiente</button>
+                                <button type="button" id="siguiente" class="btn btn-primary" style="font-size: 20px;">Siguiente</button>
                             </div>
                             <div style="height: 50px;"></div>
 
@@ -262,6 +262,7 @@
                     </div>
                     <br>
                     <div class="col-md-12 text-center"> 
+                        <button type="button" id="atras" class="btn btn-primary" style="font-size: 20px;">Atras</button>
                         <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits" style="font-size: 20px;">Crear</button> <!-- Aumentamos el tamaño de la fuente -->
                     </div>
                     <div style="height: 50px;"></div>
@@ -637,25 +638,16 @@
         var table2 = createTabulatorInstance("#aActs", prAct, {
             ...commonConfig,
             columns: [{
-                    title: "ID",
-                        field: "id",
-                        visible: false,
-                        width: 2,
-                    }, {
-                        title: "Proyecto",
-                        field: "proyecto_origen",
-                        sorter: "string",
-                    }, {
                         title: "Titulo",
-                        field: "actividad",
+                        field: "titulo",
                         sorter: "string",
                     }, {
-                        title: "Tiempo Invertido",
-                        field: "duracion",
+                        title: "Descripcion",
+                        field: "descripcion",
                         sorter: "string",
                     }, {
-                        title: "Detalles",
-                        field: "detalles",
+                        title: "Objetivos",
+                        field: "objetivos",
                         sorter: "string",
                     }, {
                         title: "",
@@ -854,13 +846,51 @@
 
 
 <script>
+
+     function validate(h, m) {
+        if ((h >= 0 && m >= 1)||(h >= 1 && m >= 0)) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("siguiente").addEventListener("click", function() {
+
+            var campos = ["nombre", "tipo_categoriaC", "tipo_actividad_f", "recursos", "descripcion", "resultados", "horas", "minutos", "exp_f"];
+            var campoVacio = false;
+            campos.forEach(function(campoId) {
+                var campo = document.getElementById(campoId);
+                
+                if (campo && campo.value.trim() === "") {
+                    campoVacio = true;
+                }
+            });
+
+
+            correctTime = validate(document.getElementById("horas").value, document.getElementById("minutos").value);
+
+            if (campoVacio) {
+                alert("Por favor, complete todos los campos antes de continuar.");
+                return;
+            }else if (!correctTime){
+                alert("El tiempo estimado para la actividad es inválido");
+                return;
+            }else {
+
+                document.getElementById("parte1").style.display = "none";
+                document.getElementById("parte2").style.display = "block";
+            }
            
-            document.getElementById("parte1").style.display = "none";
-           
-            document.getElementById("parte2").style.display = "block";
         });
+
+        document.getElementById("atras").addEventListener("click", function() {
+           
+           document.getElementById("parte1").style.display = "block";
+          
+           document.getElementById("parte2").style.display = "none";
+       });
 
         document.getElementById("tipo_asignacion").addEventListener("change", function() {
 

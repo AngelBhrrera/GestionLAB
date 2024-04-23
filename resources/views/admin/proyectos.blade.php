@@ -270,7 +270,6 @@
                 'turnoMediodia': 'Mediodia',
                 'turnoVespertino': 'Vespertino',
                 'turnoSabatino': 'Sabatino',
-                'turnoTiempoCompleto': 'TC'
             };
 
             if (area === '') {
@@ -309,12 +308,6 @@
                                 var option1 = document.createElement('option');
                                 option1.value = 'Sabatino';
                                 option1.text = 'Sabatino';
-                                horarioSelect.appendChild(option1);
-                            }
-                            if (horariosArea[0].turnoTiempoCompleto === 1) {
-                                var option1 = document.createElement('option');
-                                option1.value = 'TC';
-                                option1.text = 'TC';
                                 horarioSelect.appendChild(option1);
                             }
                         } else {
