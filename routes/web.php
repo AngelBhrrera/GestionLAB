@@ -98,6 +98,7 @@ Route::controller(App\Http\Controllers\Auth\logsysController::class)->group(func
         //FILTRADOS DEL REGISTER ADMIN
         Route::get('admin/sede/{id}', 'filtroSedeA')->name('filtroSedeA');
         Route::get('admin/area/{id}', 'filtroArea')->name('filtroArea');
+        
         Route::get('admin/turno/{t}/{sed}', 'filtroTurno')->name('filtroTurno');
         //FILTRADOS DEL REGISTER GUEST
         Route::get('/sede/{id}', 'filtroSede')->name('filtroSede');
@@ -179,7 +180,10 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                     Route::post('/admin/n_categoria', 'nuevaCateg')->name('nuevaCateg');
                     Route::post('/admin/n_subcategoria', 'nuevaSubcateg')->name('nuevaSubcateg');
                     Route::post('/admin/modificar_categoria', 'modificar_categoria')->name('modificar_categoria');
-                    Route::post('/admin/modificar_subCategoria', 'modificar_subCategoria')->name('modificar_subCategoria'); 
+                    Route::post('/admin/modificar_subCategoria', 'modificar_subCategoria')->name('modificar_subCategoria');
+                    
+                    //Modificación de actividades
+                    Route::post('/admin/categorias', 'modificar_actividad')->name('modificar_actividad');
                     //ADMINISTRACION DEL MODULO DE IMPRESION
                     Route::get('/admin/gestion_impresion', 'module_print')->name('module_print');
                     Route::post('/admin/set_imp_act', 'set_print_act')->name('set_print_act'); 
@@ -198,6 +202,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
             Route::get('/admin/obtenerActividadesB', 'obtenerActividadesB')->name('obtenerActividadesB');
             Route::get('/admin/obtenerSubcategoria', 'obtenerSubcategoria')->name('obtenerSubcategorias');
             Route::get('/admin/obtenerPrestadores', 'obtenerPrestadores')->name('obtenerPrestadoresProyecto');
+            Route::get('/admin/filtroSubCategoria/{id}', 'filtroSubCategoria')->name('filtroSubCategoria');
             //RUTAS ACTIVIDADES Y ASIGNACIONES
 
             Route::get('/admin/C_actividades', 'actividades')->name('actividades');
