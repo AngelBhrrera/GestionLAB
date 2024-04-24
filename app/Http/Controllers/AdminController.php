@@ -1676,9 +1676,15 @@ class AdminController extends Controller
             ->select('subcategorias.*', 'categorias.nombre AS categoria')
             ->join('categorias', 'subcategorias.categoria', '=', 'categorias.id')
             ->get();
+        
 
         return view('admin.control_actividades', ['categoria'=>$categ,  'tabla_actividades' => json_encode($acts),
         'tabla_subcategorias' => json_encode($subcateg),  'tabla_categorias' => json_encode($cat), ]);
+    }
+
+    public function filtroSubCategoria($id){
+        return DB::table('subcategorias')->where('categoria', $id)->get();
+        
     }
 
     public function nuevaCateg(Request $request){
@@ -2229,6 +2235,25 @@ class AdminController extends Controller
             DB::table('actividades')->where('id', $request->input('id'))->update($updates);
         }
         return redirect('admin/actividades')->with('SUCCESS', 'Actividad agregada');
+    }
+
+    public function modificar_actividad(Request $request){
+        $request->validate(
+            [
+                'titulo' => 'required',
+                'tec' => 'required',
+                'exp' => 'required',
+                'categoria' => 'required',
+                'subcategoria' => 'required',
+                'descripcion' => 'required',
+            ]
+        );
+
+        $modificar = DB::table('actividades')->where('id', $request->id_act)
+        ->update(['titulo' => $request->titulo, 'tec' => $request->tec, 'exp_ref' => $request->exp, 
+        'id_categoria' => $request->categoria, 'id_subcategoria' => $request->subcategoria, 'descripcion' => $request->descripcion]);
+
+        return redirect()->route('admin.categorias')->with('success', 'Modificada correctamente');
     }
 
     // PREMIOS
