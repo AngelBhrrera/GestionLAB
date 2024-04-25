@@ -1,12 +1,7 @@
-@extends('layouts/admin-layout')
+@extends('layouts/main')
 
-@section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-    <li class="breadcrumb-item"><a href="{{route('admin.gestHub')}}">Gestion</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Sedes</li>
-@endsection
 
-@section('subcontent')
+@section('content')
 <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5">
     <div class="col-span-12 sm:col-span-6">
         <div class="intro-y box p-5 mt-5">

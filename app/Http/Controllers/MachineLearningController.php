@@ -220,4 +220,10 @@ class MachineLearningController extends Controller
         }
 
     }
+
+    public function pipInstall(){
+        $command = 'pip install scikit-learn';
+        $output = shell_exec($command . ' 2>&1');
+        return response()->json(['mensaje' => $output]);
+    }
 }
