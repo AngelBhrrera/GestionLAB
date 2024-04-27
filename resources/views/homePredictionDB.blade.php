@@ -1,7 +1,11 @@
-@extends('layouts/main')
+@extends('layouts/admin-layout')
 
-@section('head')
-    <title>Dashboard - Rocketman - Tailwind HTML Admin Templatee</title>
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
+<li class="breadcrumb-item active" aria-current="page">Propuestas de prestador</li>
+@endsection
+
+@section('subhead')
     <style>
         .intro-y.box {
             width: 100%; /* O el ancho que prefieras */
@@ -19,19 +23,20 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @endsection
 
-@section('content')
+@section('subcontent')
     <div class="grid grid-cols-12 gap-6">
         <div class="col-span-12 2xl:col-span-9">
             <div class="grid grid-cols-12 gap-6">
                 <!-- BEGIN: General Report -->
-                <div class="col-span-12 mt-6">
+                <div class="col-span-12 mt-4">
                     <div class="intro-y block sm:flex items-center h-10">
-                        <img class="mx-auto my-auto" alt="Inventores" width="170px" height="100px" src="{{ asset('build/assets/images/logosInventores/InventoresBannerHDWhiteBorder.png') }}">
-                        <h1 class="text-lg font-medium truncate mr-5">Sistema de Predicción del Rendimiento de los Prestadores del Servicio en el Área del Laboratorio de Inventores</h1>
+                        <h2 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 20px;">
+                            Rendimiento del Area
+                        </h2>
                     </div>
                     <br>
                     <br>
-                    <div class="intro-y report-box mt-12 sm:mt-4">
+                    <div class="intro-y report-box mt-12 sm:mt-2">
                         <div class="box py-0 xl:py-5 grid grid-cols-12 gap-0 divide-y xl:divide-y-0 divide-x divide-dashed divide-slate-200 dark:divide-white/5">
                             <div class="report-box__item py-5 xl:py-0 px-5 col-span-12 sm:col-span-6 xl:col-span-3">
                                 <div class="report-box__content">
@@ -321,7 +326,7 @@
                                         <div class="mr-auto">
                                             <div class="font-medium">Simulador de Prediccion</div>
                                         </div>
-                                        <div class= "text-success">% de precisión</div>
+                                        <div class= "text-success">71% de precisión</div>
                                     </a>
                                 </div>
 

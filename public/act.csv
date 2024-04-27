@@ -1,2 +1,2 @@
-id_actividad,exp_ref,TEC,nombre_categoria,nombre_subcategoria
-21,40,360,Impresion,"No Aplica"
+id_actividad,dificultad,nombre_categoria,nombre_subcategoria,TEC
+1,Facil,Impresion,"No Aplica",20

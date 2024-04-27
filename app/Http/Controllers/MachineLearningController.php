@@ -15,18 +15,20 @@ class MachineLearningController extends Controller
         $fileName = 'registro_acts.csv';
 
         $headers = [
-            'id_actividad',
-            'TEC',
-            'nombre_categoria',
-            'nombre_subcategoria',
             'id_prestador',
             'horario',
+            'semanas_actividad',
             'carrera',
             'experiencia',
             'experiencia_mensual',
             'experiencia_semanal',
             'periodo',
-            'exp'
+            'id_actividad',
+            'dificultad',
+            'nombre_categoria',
+            'nombre_subcategoria',
+            'TEC',
+            'resultado'
         ];
 
         $file = fopen($fileName, 'w');
@@ -41,12 +43,7 @@ class MachineLearningController extends Controller
     protected function obtenerDatosDeSQL()
     {
         $query = <<<SQL
-            SELECT
-                ap.id_actividad,
-                ap.exp,
-                a.TEC,
-                c.nombre AS nombre_categoria,
-                COALESCE(sc.nombre, 'No Aplica') AS nombre_subcategoria,
+             SELECT
                 ap.id_prestador,
                 u.horario,
                 sp.semanas_actividad,
@@ -58,7 +55,24 @@ class MachineLearningController extends Controller
                     WHEN ch.horas_servicio < 160 THEN 1
                     WHEN ch.horas_servicio >= 160 AND ch.horas_servicio < 320 THEN 2
                     ELSE 3
-                END AS periodo
+                END AS periodo,
+                ap.id_actividad,
+                CASE 
+                    WHEN a.exp_ref <= 5 THEN 'Facil'
+                    WHEN a.exp_ref > 5 AND a.exp_ref < 20 THEN 'Medio'
+                    ELSE 'Dificil'
+                END AS dificultad,
+                c.nombre AS nombre_categoria,
+                COALESCE(sc.nombre, 'No Aplica') AS nombre_subcategoria,
+                a.TEC,
+                CASE 
+                    WHEN ap.exp = a.exp_ref THEN 'Excelente'
+                    WHEN ap.exp >= 0.8 * a.exp_ref THEN 'Bueno'
+                    WHEN ap.exp >= 0.6 * a.exp_ref THEN 'Aceptable'
+                    WHEN ap.exp >= 0.4 * a.exp_ref THEN 'Regular'
+                    ELSE 'Deficiente'
+                END AS resultado
+               
             FROM
                 actividades_prestadores ap
             JOIN
@@ -77,7 +91,8 @@ class MachineLearningController extends Controller
                 lb_w ON u.id = lb_w.id_prestador
             LEFT JOIN
                 cuenta_horas ch ON u.id = ch.id
-            WHERE exp IS NOT null
+            WHERE
+                exp IS NOT NULL;
         SQL;
 
         $resultados = DB::select($query);
@@ -155,10 +170,10 @@ class MachineLearningController extends Controller
 
         $headers = [
             'id_actividad',
-            'exp_ref',
-            'TEC',
+            'dificultad',
             'nombre_categoria',
             'nombre_subcategoria',
+            'TEC'
         ];
 
         $file = fopen($fileName, 'w');
@@ -174,10 +189,14 @@ class MachineLearningController extends Controller
         $query = <<<SQL
             SELECT
                 a.id,
-                a.exp_ref,
-                a.TEC,
+                CASE 
+                    WHEN a.exp_ref <= 5 THEN 'Facil'
+                    WHEN a.exp_ref > 5 AND a.exp_ref < 20 THEN 'Medio'
+                    ELSE 'Dificil'
+                END AS dificultad,
                 c.nombre AS nombre_categoria,
-                COALESCE(sc.nombre, 'No Aplica') AS nombre_subcategoria
+                COALESCE(sc.nombre, 'No Aplica') AS nombre_subcategoria,
+                a.TEC
             FROM
                 actividades a
             JOIN
@@ -200,6 +219,8 @@ class MachineLearningController extends Controller
         $t = $request->input('otro_dato');
         $this->obtenerActividad($id);
         $this->obtenerPrestadores($t);
+
+        //$this->obtenerDatosDeSQL();
         
         $rutaPublic = public_path();
         // Agrega la ruta relativa al archivo deseado dentro de "public"

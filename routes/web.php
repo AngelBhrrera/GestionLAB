@@ -37,7 +37,9 @@ Route::get('/spiderw', function(){
 
 Route::get('/ml', function(){
 
-    $prestadores = DB::table('solo_prestadores')->get();
+    $prestadores = DB::table('solo_prestadores')
+        ->where('id_area',1)
+        ->get();
     $actividades = DB::table('actividades')
                 ->whereNotNull('TEC')
                 ->get();
@@ -46,9 +48,61 @@ Route::get('/ml', function(){
 
 Route::get('/df', function(){
 
-    $data = DB::table('solo_prestadores')->get();
+    $query = <<<SQL
+           SELECT
+                ap.id_prestador,
+                u.horario,
+                sp.semanas_actividad,
+                u.carrera,
+                u.experiencia,
+                lb_m.total_exp AS experiencia_mensual,
+                lb_w.total_exp AS experiencia_semanal,
+                CASE
+                    WHEN ch.horas_servicio < 160 THEN 1
+                    WHEN ch.horas_servicio >= 160 AND ch.horas_servicio < 320 THEN 2
+                    ELSE 3
+                END AS periodo,
+                ap.id_actividad,
+                c.nombre AS nombre_categoria,
+                COALESCE(sc.nombre, 'No Aplica') AS nombre_subcategoria,
+                a.TEC,
+                CASE 
+                    WHEN ap.exp <= a.exp_ref THEN 'Excelente'
+                    WHEN ap.exp >= 0.8 * a.exp_ref THEN 'Bueno'
+                    WHEN ap.exp >= 0.6 * a.exp_ref THEN 'Aceptable'
+                    WHEN ap.exp >= 0.4 * a.exp_ref THEN 'Regular'
+                    ELSE 'Deficiente'
+                END AS resultado,
+                CASE 
+                    WHEN a.exp_ref <= 5 THEN 'Facil'
+                    WHEN a.exp_ref > 5 AND a.exp_ref < 20 THEN 'Medio'
+                    ELSE 'Dificil'
+                END AS dificultad
+            FROM
+                actividades_prestadores ap
+            JOIN
+                actividades a ON ap.id_actividad = a.id
+            JOIN
+                categorias c ON a.id_categoria = c.id
+            LEFT JOIN
+                subcategorias sc ON a.id_subcategoria = sc.id
+            LEFT JOIN
+                users u ON ap.id_prestador = u.id
+            JOIN
+                solo_prestadores sp ON ap.id_prestador = sp.id
+            LEFT JOIN
+                lb_m ON u.id = lb_m.id_prestador
+            LEFT JOIN
+                lb_w ON u.id = lb_w.id_prestador
+            LEFT JOIN
+                cuenta_horas ch ON u.id = ch.id
+            WHERE
+                exp IS NOT NULL;
+        SQL;
+
+        $resultados = DB::select($query);
     
-    return view('dataFrame', ['data' => json_encode($data)]);
+    return view('dataFrame', ['data' => json_encode($resultados)]);
 })->name('df');
 
 Route::get('/homePredictor', function(){
