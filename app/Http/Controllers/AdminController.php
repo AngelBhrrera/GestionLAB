@@ -645,12 +645,28 @@ class AdminController extends Controller
         $aPrestador = $this->get_aPrestadores();
         $aProyectos = $this->get_aProyectos();
 
+        $acts = DB::table('actividades')
+            ->select('actividades.id', 'titulo', 'TEC' , 'exp_ref', 'descripcion', 'recursos', 'objetivos', 'categorias.nombre AS categoria', 'subcategorias.nombre AS subcategoria')
+            ->join('categorias', 'id_categoria', '=', 'categorias.id')
+            ->join('subcategorias', 'id_subcategoria', '=', 'subcategorias.id')
+            ->get();
+
+        $cat = DB::table('categorias')
+            ->select('categorias.id', 'categorias.nombre',
+                DB::raw('COALESCE(actividades.total_actividades, "No existen") AS total_actividades'),
+                DB::raw('CASE WHEN subcategorias.total_subcategorias > 0 THEN subcategorias.total_subcategorias ELSE "No aplica" END AS total_subcategorias'))
+            ->leftJoin(DB::raw('(SELECT id_categoria, COUNT(*) AS total_actividades FROM actividades GROUP BY id_categoria) as actividades'), 'categorias.id', '=', 'actividades.id_categoria')
+            ->leftJoin(DB::raw('(SELECT categoria, COUNT(*) AS total_subcategorias FROM subcategorias GROUP BY categoria) as subcategorias'), 'categorias.id', '=', 'subcategorias.categoria')
+            ->get();
+
         return view( 'admin/actividades', [ 'prestadores' => $prestadores,
             'categorias' => $categorias, 'subcategorias' => $subcategorias,
             'aActividades' => $aActividad,  'aProyectos' => $aProyectos,  'aPrestadores' => $aPrestador,
             'data1' =>json_encode($listaActs),
             'data2' =>json_encode($pR),
-            'data3' =>json_encode($reviewActs)]);
+            'data3' =>json_encode($reviewActs),
+            'data4' =>json_encode($acts),
+            'tabla_categorias' =>json_encode($cat)]);
     }
 
     public function actstate($id, $state) {
