@@ -18,14 +18,13 @@ class CreatePremiosPrestadoresTable extends Migration
         });
 
         DB::statement("
-            CREATE view total_horas_extra AS
-                SELECT u.id, u.name, SUM(p.horas) AS horas
-                FROM users AS u
-                INNER JOIN premios_prestadores AS pp ON u.id = pp.id_prestador
-                INNER JOIN premios AS p ON p.id = pp.id_premio
-                WHERE p.tipo = 'horas'
-                OR WHERE p.tipo = 'reposicion'
-                GROUP BY u.id, u.name;
+            CREATE VIEW total_horas_extra AS
+            SELECT u.id, u.name, SUM(p.horas) AS horas
+            FROM users AS u
+            INNER JOIN premios_prestadores AS pp ON u.id = pp.id_prestador
+            INNER JOIN premios AS p ON p.id = pp.id_premio
+            WHERE p.tipo = 'horas' OR p.tipo = 'reposicion'
+            GROUP BY u.id, u.name;
         ");
 
         DB::statement("

@@ -98,7 +98,7 @@ class AdminController extends Controller
             WHERE 
                 WEEK(actividades_prestadores.fecha) = ? 
                 AND YEAR(actividades_prestadores.fecha) = ?
-        ", [$rendimiento[0]->semana, $rendimiento[0]->anio]);
+        ",[$rendimiento[0]->semana, $rendimiento[0]->anio]);
     
         $todosRA = count($resultadosActual);
     

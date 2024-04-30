@@ -23,8 +23,8 @@ class CreateActividadesTable extends Migration
             $table->string('recursos', 500);
             $table->string('descripcion', 500);
             $table->string('objetivos', 500);
-            $table->integer('id_premios');   // nuevo campo de las actividades para los premios
-            $table->integer('limite_premios');   // nuevo campo de los limites de premios
+            //$table->integer('id_premios');   // nuevo campo de las actividades para los premios
+            //$table->integer('limite_premios');   // nuevo campo de los limites de premios
               
         });
 
