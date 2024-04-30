@@ -121,39 +121,49 @@ class AdminController extends Controller
         $rendimientoTT = $rendimientoTT->groupBy('semana', 'anio')->get();
         $ultimaActualizacion = $ultimaActualizacion->orderByDesc('fecha_reporte')->first();
 
-        $resultadosActual = $this->obtenerDataRendimiento($rendimiento[0]->semana, $rendimiento[0]->anio, Auth::user()->area);
-        $resultadosPrevio = $this->obtenerDataRendimiento($rendimiento[1]->semana, $rendimiento[1]->anio, Auth::user()->area);
-        $todosRA = count($resultadosActual);
-
         $notablesRA = 0;
-        foreach ($resultadosActual as $resultado) {
-            if ($resultado->comparacion_exp == 1) {
-                $notablesRA++;
-            }
-        }
         $acabadasRA = 0;
-        foreach ($resultadosActual as $resultado) {
-            if ($resultado->estado == 'Aprobada') {
-                $acabadasRA++;
-            }
-        }
-        $porcentajeA = $notablesRA * 100 / $todosRA;
-     
-        $todosRP = count($resultadosPrevio);
-    
-        $notablesRP = 0;
-        foreach ($resultadosPrevio as $resultado) {
-            if ($resultado->comparacion_exp == 1) {
-                $notablesRP++;
-            }
-        }
+
         $acabadasRP = 0;
-        foreach ($resultadosPrevio as $resultado) {
-            if ($resultado->estado == 'Aprobada') {
-                $acabadasRP++;
+        $notablesRP = 0;
+
+        if(isset($rendimiento[1])){
+            $resultadosActual = $this->obtenerDataRendimiento($rendimiento[0]->semana, $rendimiento[0]->anio, Auth::user()->area);
+            $todosRA = count($resultadosActual);
+            foreach ($resultadosActual as $resultado) {
+                if ($resultado->comparacion_exp == 1) {
+                    $notablesRA++;
+                }
             }
+            foreach ($resultadosActual as $resultado) {
+                if ($resultado->estado == 'Aprobada') {
+                    $acabadasRA++;
+                }
+            }
+            $porcentajeA = $notablesRA * 100 / $todosRA;
+
+            $resultadosPrevio = $this->obtenerDataRendimiento($rendimiento[1]->semana, $rendimiento[1]->anio, Auth::user()->area);
+            $todosRP = count($resultadosPrevio);
+            foreach ($resultadosPrevio as $resultado) {
+                if ($resultado->comparacion_exp == 1) {
+                    $notablesRP++;
+                }
+            }
+            foreach ($resultadosPrevio as $resultado) {
+                if ($resultado->estado == 'Aprobada') {
+                    $acabadasRP++;
+                }
+            }
+            $porcentajeP = ($notablesRP * 100) / $todosRP;
+
+        }else{
+            $resultadosActual = null;
+            $resultadosPrevio = null;
+            $porcentajeA = 0;
+            $porcentajeP = 0;
         }
-        $porcentajeP = ($notablesRP * 100) / $todosRP;
+
+       
     
         return view('homePredictionDB', compact('prestadores', 'carreras', 'turnos', 'periodos','np', 
         'rendimiento', 'rendimientoT', 'acabadasRA', 'acabadasRP', 'porcentajeA', 'porcentajeP',
