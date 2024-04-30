@@ -24,6 +24,7 @@ class CreatePremiosPrestadoresTable extends Migration
                 INNER JOIN premios_prestadores AS pp ON u.id = pp.id_prestador
                 INNER JOIN premios AS p ON p.id = pp.id_premio
                 WHERE p.tipo = 'horas'
+                OR WHERE p.tipo = 'reposicion'
                 GROUP BY u.id, u.name;
         ");
 

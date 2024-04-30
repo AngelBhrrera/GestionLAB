@@ -239,13 +239,14 @@ class PrestadorController extends Controller
             ->where('fecha', date("d/m/Y"))
             ->where('hora_salida', null)->get();
         $tiempoCompleto = $this->diferencia($tiempo[0]->hora_entrada, $hor);
+        $horas = $this->calculoIntervaloH($tiempoCompleto);
 
-        if($tiempoCompleto < 3){
+        if($horas < 3){
             DB::table('registros_checkin')
                 ->where('idusuario', $user->id)
                 ->where('fecha', date("d/m/Y"))
                 ->where('hora_salida', null)
-                ->update(['hora_salida' => $hor, 'estado'=>  'Denegado','tiempo' => $tiempoCompleto, 'horas' => $this->calculoIntervaloH($tiempoCompleto)]);
+                ->update(['hora_salida' => $hor, 'estado'=>  'denegado','tiempo' => $tiempoCompleto, 'horas' => $horas]);
             return 0;
         }else if($tiempoCompleto >5){
             $tiempoCompleto = 5;
@@ -765,32 +766,40 @@ class PrestadorController extends Controller
         return view('/prestador/registro_nActividad_prestador', compact('categorias', 'subcategorias'));
     }
 
-    public function make_act(Request $request)
-    {
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'tipo_actividad' => 'required | integer',
-            'tipo_categoria' => 'required | integer',
-            'recursos' => 'required|string', 
-            'descripcion' => 'required|string|max:500',
-            'objetivos' => 'required|string', 
-        ]);
+    public function make_act(Request $request){ 
+        try{
+            $request->validate([
+                'nombre' => 'string|max:255|unique:actividades,titulo',
+                'tipo' => 'integer',
+                'recursos' => 'string', 
+                'descripcion' => 'string|max:500',
+                'objetivos' => 'string', 
+            ]);
 
-        $subcategoria = $request->input('tipo_subcategoria');
-        if($subcategoria == '')
-            $subcategoria = null;
-    
-        DB::table('actividades')->insert([
-            'titulo' => $request->input('nombre'),
-            'id_categoria' =>  $request->input('tipo_categoria'),
-            'id_subcategoria' => $subcategoria,
-            'tipo' => $request->input('tipo_actividad'),                
-            'recursos' =>  $request->input('recursos'),
-            'descripcion' => $request->input('descripcion'),
-            'objetivos' => $request->input('resultados'),
-        ]);
-
-        return redirect()->route('misActividades');
+            $subcategoria = $request->input('tipo_subcategoria');
+            if($subcategoria == '')
+                $subcategoria = null;
+            if( $request->input('tipo_actividad') != 'generica'){
+                $tipo = auth()->user()->sede;
+            }else{
+                $tipo = 0;
+            }
+        
+            DB::table('actividades')->insert([
+        
+                'titulo' =>$request->input('nombre'),
+                'id_categoria' =>  $request->input('tipo_categoria'),
+                'id_subcategoria' => $subcategoria,
+                'tipo' => $tipo,
+                'recursos' => $request->input('recursos'),
+                'descripcion' =>$request->input('descripcion'),
+                'objetivos' => $request->input('resultados'),]);
+        
+                return redirect()->route('misActividades')->with('success', 'Actividad creada correctamente');
+        }catch (\Exception $e) {
+        
+            return redirect()->back()->with('error', 'Error al crear la actividad: ' . $e->getMessage());
+        }
     }
 
     public function obtenerActividades(Request $request)

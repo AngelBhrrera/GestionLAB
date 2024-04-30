@@ -10,6 +10,7 @@ use Exception;
 class MachineLearningController extends Controller
 {
 
+
     protected function exportarResultadosACSV($resultados)
     {
         $fileName = 'registro_acts.csv';

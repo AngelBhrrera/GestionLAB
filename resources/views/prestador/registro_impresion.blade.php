@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-body">
 
-                    <form class="from-prevent-multiple-submits" method="POST" action="{{ route('admin.register_imps') }}">
+                    <form class="from-prevent-multiple-submits" method="POST" action="{{ route('register_imps') }}">
                     @csrf
                         <div class="form-group" data-toggle="tooltip" data-placement="top">
                             <label for="from-group" class="form-label">Impresora</label>

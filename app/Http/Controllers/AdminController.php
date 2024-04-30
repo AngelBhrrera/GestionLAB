@@ -34,6 +34,148 @@ class AdminController extends Controller
 
     //ADMIN HOME
 
+    public function rendimientoAdmin(){
+
+        $prestadores = DB::table('perfil_prestador') ->where('area', 1)->limit(10)->get();
+        $np = DB::table('perfil_prestador')->where('area', 1)->get();
+        
+        $carreras = DB::table('perfil_prestador')
+            ->select('carrera', DB::raw('COUNT(*) as conteo'))
+            ->where('area', 1)
+            ->groupBy('carrera')
+            ->get();
+
+        $turnos = DB::table('perfil_prestador')
+            ->select('horario', DB::raw('COUNT(*) as conteo'))
+            ->where('area', 1)
+            ->groupBy('horario')
+            ->get();
+        $periodos = DB::table('perfil_prestador')
+            ->select('periodo', DB::raw('COUNT(*) as conteo'))
+            ->where('area', 1)
+            ->groupBy('periodo')
+            ->get();
+    
+        $rendimiento = DB::table('rendimiento')
+            ->select('semana', 'anio', 'id_area', DB::raw('SUM(total_exp) as total_exp_sum'), DB::raw('SUM(cantidad_actividades) as cantidad_actividades_sum'))
+            ->where('id_area', 1)
+            ->groupBy('semana','anio', 'id_area')
+            ->orderByDesc('semana')
+            ->get();
+    
+        $rendimientoT = DB::table('rendimiento')
+            ->where('id_area', 1)
+            ->orderBy('fecha_reporte')
+            ->get();
+    
+        $rendimientoTT = DB::table('rendimiento')
+            ->selectRaw('semana, anio, SUM(total_exp) as total_exp_sum, SUM(cantidad_actividades) as cantidad_actividades_sum')
+            ->where('id_area', 1)
+            ->groupBy('semana', 'anio')
+            ->get();
+    
+        $ultimaActualizacion = DB::table('rendimiento')
+            ->select('fecha_reporte')
+            ->where('id_area', 1)
+            ->orderByDesc('fecha_reporte')
+            ->first();
+    
+        $resultadosActual = DB::select("
+            SELECT 
+                actividades.titulo, 
+                actividades_prestadores.fecha, 
+                actividades_prestadores.exp, 
+                actividades.exp_ref,
+                actividades_prestadores.estado,
+                CASE 
+                    WHEN actividades_prestadores.exp >= 0.8 * actividades.exp_ref THEN 1 
+                    ELSE 0 
+                END AS comparacion_exp
+            FROM 
+                actividades_prestadores 
+            JOIN 
+                actividades ON actividades_prestadores.id_actividad = actividades.id 
+            WHERE 
+                WEEK(actividades_prestadores.fecha) = ? 
+                AND YEAR(actividades_prestadores.fecha) = ?
+        ", [$rendimiento[1]->semana, $rendimiento[1]->anio]);
+    
+        $todosRA = count($resultadosActual);
+    
+        $notablesRA = 0;
+        foreach ($resultadosActual as $resultado) {
+            if ($resultado->comparacion_exp == 1) {
+                $notablesRA++;
+            }
+        }
+        $acabadasRA = 0;
+        foreach ($resultadosActual as $resultado) {
+            if ($resultado->estado == 'Aprobada') {
+                $acabadasRA++;
+            }
+        }
+        $porcentajeA = $notablesRA * 100 / $todosRA;
+    
+        $resultadosPrevio = DB::select("
+            SELECT 
+                actividades.titulo, 
+                actividades_prestadores.fecha, 
+                actividades_prestadores.exp, 
+                actividades.exp_ref,
+                actividades_prestadores.estado,
+                CASE 
+                    WHEN actividades_prestadores.exp >= 0.8 * actividades.exp_ref THEN 1 
+                    ELSE 0 
+                END AS comparacion_exp
+            FROM 
+                actividades_prestadores 
+            JOIN 
+                actividades ON actividades_prestadores.id_actividad = actividades.id 
+            WHERE 
+                WEEK(actividades_prestadores.fecha) = ? 
+                AND YEAR(actividades_prestadores.fecha) = ?
+        ", [$rendimiento[2]->semana, $rendimiento[2]->anio]);
+    
+        
+        $todosRP = count($resultadosPrevio);
+    
+        $notablesRP = 0;
+        foreach ($resultadosPrevio as $resultado) {
+            if ($resultado->comparacion_exp == 1) {
+                $notablesRP++;
+            }
+        }
+        $acabadasRP = 0;
+        foreach ($resultadosPrevio as $resultado) {
+            if ($resultado->estado == 'Aprobada') {
+                $acabadasRP++;
+            }
+        }
+        $porcentajeP = ($notablesRP * 100) / $todosRP;
+    
+        return view('homePredictionDB', compact('prestadores', 'carreras', 'turnos', 'periodos','np', 
+        'rendimiento', 'rendimientoT', 'acabadasRA', 'acabadasRP', 'porcentajeA', 'porcentajeP',
+        'ultimaActualizacion', 'rendimientoTT'));
+    }
+
+    public function dataframe(){
+
+        $resultados = DB::table('datosML')
+            ->get();
+        return view('dataFrame', ['data' => json_encode($resultados)]);
+    }
+
+    public function predictor(){
+        $prestadores = DB::table('solo_prestadores')
+            ->where('id_area',1)
+            ->get();
+        $actividades = DB::table('actividades')
+            ->whereNotNull('TEC')
+            ->get();
+    
+        return view('testApi', compact('prestadores', 'actividades'));
+    }
+
     public function home(){
 
         $sqlproy = DB::table('proyectos as p')
@@ -554,7 +696,7 @@ class AdminController extends Controller
                 $proyectos->where('id_area', Auth::user()->area)
                 ->where(function ($query) {
                     $query->where('turno', '=', Auth::user()->horario)
-                        ->orWhere('turno', 'TC');
+                        ->orWhere('turno', 'No Aplica');
                 });
                 break;
             case "jefe area":
@@ -581,8 +723,9 @@ class AdminController extends Controller
             ->join('proyectos', 'seguimiento_actividades.id_proyecto', '=', 'proyectos.id')
             ->select('seguimiento_actividades.*', 'proyectos.turno');
 
-        $pR = DB::table('seguimiento_actividades')
-            ->whereIn('estado', ['En revision', 'Error']);
+        $pR = DB::table('actividades')
+            ->whereNull('TEC');
+
 
         $prestadores = DB::table('solo_prestadores');
         $categorias = DB::table('categorias')->orderBy('nombre')->get();
@@ -596,10 +739,9 @@ class AdminController extends Controller
                     ->from('proyectos')
                     ->where('id_area', auth()->user()->area);
             });
-            $pR->whereIn('id_proyecto', function ($query) {
-                $query->select('id')
-                    ->from('proyectos')
-                    ->where('id_area', auth()->user()->area);
+            $pR->where(function($query) {
+                $query->where('tipo', 0)
+                ->orWhere('tipo', auth()->user()->area);
             });
             $prestadores->where('id_area', auth()->user()->area)
                 ->where('horario', auth()->user()->horario);
@@ -616,15 +758,6 @@ class AdminController extends Controller
             }
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $listaActs->whereIn('id_proyecto', function ($query) {
-                $query->select('id')
-                    ->from('proyectos')
-                    ->whereIn('id_area', function ($subquery) {
-                        $subquery->select('id_sede')
-                                ->from('areas')
-                                ->where('id_sede', auth()->user()->sede);
-                    });
-            });
-            $pR->whereIn('id_proyecto', function ($query) {
                 $query->select('id')
                     ->from('proyectos')
                     ->whereIn('id_area', function ($subquery) {
@@ -656,14 +789,29 @@ class AdminController extends Controller
         $aPrestador = $this->get_aPrestadores();
         $aProyectos = $this->get_aProyectos();
 
+        $acts = DB::table('actividades')
+            ->select('actividades.id', 'titulo', 'TEC' , 'exp_ref', 'descripcion', 'recursos', 'objetivos', 'categorias.nombre AS categoria', 'subcategorias.nombre AS subcategoria')
+            ->join('categorias', 'id_categoria', '=', 'categorias.id')
+            ->join('subcategorias', 'id_subcategoria', '=', 'subcategorias.id')
+            ->get();
+
+        $cat = DB::table('categorias')
+            ->select('categorias.id', 'categorias.nombre',
+                DB::raw('COALESCE(actividades.total_actividades, "No existen") AS total_actividades'),
+                DB::raw('CASE WHEN subcategorias.total_subcategorias > 0 THEN subcategorias.total_subcategorias ELSE "No aplica" END AS total_subcategorias'))
+            ->leftJoin(DB::raw('(SELECT id_categoria, COUNT(*) AS total_actividades FROM actividades GROUP BY id_categoria) as actividades'), 'categorias.id', '=', 'actividades.id_categoria')
+            ->leftJoin(DB::raw('(SELECT categoria, COUNT(*) AS total_subcategorias FROM subcategorias GROUP BY categoria) as subcategorias'), 'categorias.id', '=', 'subcategorias.categoria')
+            ->get();
+
         return view( 'admin/actividades', [ 'prestadores' => $prestadores,
             'categorias' => $categorias, 'subcategorias' => $subcategorias,
             'aActividades' => $aActividad,  'aProyectos' => $aProyectos,  'aPrestadores' => $aPrestador,
             'data1' =>json_encode($listaActs),
             'data2' =>json_encode($pR),
             "premios" => $premios,
-            'data3' =>json_encode($reviewActs)]);
-            
+            'data3' =>json_encode($reviewActs),
+            'data4' =>json_encode($acts),
+            'tabla_categorias' =>json_encode($cat)]);
     }
 
     public function actstate($id, $state) {
@@ -975,7 +1123,7 @@ class AdminController extends Controller
                 $proyectos = DB::table('proyectos')
                 ->where('id_area', Auth::user()->area)
                 ->where('turno', '=', Auth::user()->horario)
-                ->orWhere('turno', 'TC')
+                ->orWhere('turno', 'No Aplica')
                 ->orWhere('particular', '0')
                 ->get();
                 break;
@@ -1214,8 +1362,6 @@ class AdminController extends Controller
         $prestproylist = DB::table('proyectos_prestadores')
             ->whereIn('id_proyecto', $proyectos->pluck('id'))
             ->get();
- 
-
         return view('/admin/proyectos', compact('prestadores', 'areas', 'categorias', 'proyectos', 'tabla_proy','prestproylist'));
     }
 
@@ -1279,7 +1425,7 @@ class AdminController extends Controller
                 $proyectos = DB::table('proyectos')
                 ->where('id_area', Auth::user()->area)
                 ->where('turno', '=', Auth::user()->horario)
-                ->orWhere('turno', 'TC')
+                ->orWhere('turno', 'No Aplica')
                 ->orWhere('particular', '0')
                 ->get();
                 break;
@@ -1697,9 +1843,15 @@ class AdminController extends Controller
             ->select('subcategorias.*', 'categorias.nombre AS categoria')
             ->join('categorias', 'subcategorias.categoria', '=', 'categorias.id')
             ->get();
+        
 
         return view('admin.control_actividades', ['categoria'=>$categ,  'tabla_actividades' => json_encode($acts),
         'tabla_subcategorias' => json_encode($subcateg),  'tabla_categorias' => json_encode($cat), ]);
+    }
+
+    public function filtroSubCategoria($id){
+        return DB::table('subcategorias')->where('categoria', $id)->get();
+        
     }
 
     public function nuevaCateg(Request $request){
@@ -2188,15 +2340,35 @@ class AdminController extends Controller
     }
 
     public function actTEC(Request $request){
+
         $request->validate([
-            'nombre' => 'required |string | max:255',
-            'tipo_categoria' => 'required | integer',
-            'recursos' => 'required | string', 
-            'descripcion' => 'required | string|max:500',
-            'objetivos' => 'required | string', 
-            'horas' => 'integer|min:1|max:60', 
-            'minutos' => 'integer|min:1|max:60',
+            'nombre' => 'string|max:255',
+            'tipo_categoria' => 'integer',
+            'tipo_actividad' => 'integer',
+            'recursos' => 'string', 
+            'descripcion' => 'string|max:500',
+            'objetivos' => 'string', 
+            'exp' => 'integer|min:5|max:100',
+            'horas' => [
+                'integer',
+                function ($attribute, $value, $fail) use ($request) {
+                    $minutos = $request->input('minutos');
+                    if ($value == 0 && $minutos == 0) {
+                        $fail('Las horas y los minutos no pueden ser ambos 0.');
+                    }
+                }
+            ],
+            'minutos' => [
+                'integer',
+                function ($attribute, $value, $fail) use ($request) {
+                    $horas = $request->input('horas');
+                    if ($value == 0 && $horas == 0) {
+                        $fail('Las horas y los minutos no pueden ser ambos 0.');
+                    }
+                }
+            ]
         ]);
+
         $actividad = DB::table('actividades')
             ->where('id', $request->input('id'))
             ->first();
@@ -2215,21 +2387,40 @@ class AdminController extends Controller
         if ($actividad->id_subcategoria != $subcategoria) 
             $updates['id_subcategoria'] = $subcategoria;
         if ($actividad->descripcion != $request->input('descripcion')) 
-                $updates['descripcion'] = $request->input('descripcion');    
+            $updates['descripcion'] = $request->input('descripcion');    
         if ($actividad->recursos != $request->input('recursos')) 
-                $updates['recursos'] = $request->input('recursos');
-        if ($actividad->objetivos != $request->input('resultados')) 
-                $updates['objetivos'] = $request->input('resultados'); 
+            $updates['recursos'] = $request->input('recursos');
+        if ($actividad->objetivos != $request->input('objetivos')) 
+            $updates['objetivos'] = $request->input('objetivos'); 
         if ($actividad->tipo != $request->input('tipo_actividad')) 
-                $updates['tipo'] = $request->input('tipo_actividad');
+            $updates['tipo'] = $request->input('tipo_actividad');
 
         $updates['TEC'] = $tec;
-
+        $updates['exp_ref'] =  $request->input('exp');
 
         if (!empty($updates)) {
             DB::table('actividades')->where('id', $request->input('id'))->update($updates);
         }
-        return redirect('/admin/A_actividades')->with('SUCCESS', 'Actividad agregada');
+        return redirect('admin/actividades')->with('SUCCESS', 'Actividad agregada');
+    }
+
+    public function modificar_actividad(Request $request){
+        $request->validate(
+            [
+                'titulo' => 'required',
+                'tec' => 'required',
+                'exp' => 'required',
+                'categoria' => 'required',
+                'subcategoria' => 'required',
+                'descripcion' => 'required',
+            ]
+        );
+
+        $modificar = DB::table('actividades')->where('id', $request->id_act)
+        ->update(['titulo' => $request->titulo, 'tec' => $request->tec, 'exp_ref' => $request->exp, 
+        'id_categoria' => $request->categoria, 'id_subcategoria' => $request->subcategoria, 'descripcion' => $request->descripcion]);
+
+        return redirect()->route('admin.categorias')->with('success', 'Modificada correctamente');
     }
 
     // PREMIOS

@@ -43,9 +43,12 @@
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#aactp">Asignar Actividades a Prestador</a>
             </li>
-            {{--<li class="nav-item">
+            <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#pract">Aprobar Actividades Propuestas por Prestador</a>
-            </li>--}}
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#edact">Gestionar y editar Actividades</a>
+            </li>
         </ul>
     </div>
     
@@ -67,7 +70,7 @@
                     <div class="card card-primary">
                         <h3 class="text-2xl font-medium leading-none mt-3 pl-10" style="padding-top: 20px; padding-bottom: 10px;"> Crear nueva actividad </h3>
                     </div>
-                    <div class="card-body pl-10 pr-10">
+                    <div id="createActForm" class="card-body pl-10 pr-10">
                             @if (isset($tipo))
                             <input id="tipo" name="tipo" value={{ $tipo }} type="hidden">
                             @endif
@@ -113,16 +116,14 @@
                             </div>
                             <br>
                             <div class="form-group row">
-                                <div class="form-group row">
-                                    <label for="tipo_actividad" class="text-center">Tipo de actividad</label>
-                                    <div class="row text-center">
-                                        <div class="col">
-                                            <select required class="form-control" name="tipo_actividad">
-                                                <option value="{{null}}">Selecciona un tipo de actividad</option>
-                                                <option  value="generica" @selected(old('tipo_actividad')== "generica")>Genérica</option>
-                                                <option  value="particular" @selected(old('tipo_actividad')== "particular")>Particular</option>
-                                            </select>
-                                        </div>
+                                <label for="tipo_actividad" class="text-center">Tipo de actividad</label>
+                                <div class="row text-center">
+                                    <div class="col">
+                                        <select required class="form-control" id="tipo_actividad_f" name="tipo_actividad">
+                                            <option value="">Selecciona un tipo de actividad</option>
+                                            <option  value="generica" @selected(old('tipo_actividad')== "generica")>Genérica</option>
+                                            <option  value="particular" @selected(old('tipo_actividad')== "particular")>Particular</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -159,10 +160,10 @@
                             <div class="form-group row"  style="margin-top: 5px; margin-bottom: 15px;">
                             <div class="form-group row">
                                 <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Tiempo estimado (TEC)</label>
-                                <div class="col-md-6">
-                                    <input required name="horas" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" value="0" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
-                                    <input required name="minutos" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" value="0" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
-                                </div>
+                                    <div class="col-md-6">
+                                            <input id="horas" required name="horas" type="number" class="form-control sm:w-56" placeholder="Horas" min="0" max="23" step="1" value="0" value="{{ isset($actm[0]->horas) ? $actm[0]->horas : old('horas') }}">
+                                            <input id="minutos" required name="minutos" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" value="0" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
+                                    </div>
                                     @error('horas')
                                         <strong>{{$message}}</strong>
                                     @enderror
@@ -175,8 +176,8 @@
                             <div class="form-group row">
                                 <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Experiencia</label>
                                 <div class="col-md-6">
-                                    <select name="exp" class="form-control sm:w-56" required>
-                                        <option value="" selected>Ingresa la dificultad de la actividad</option>
+                                    <select id="exp_f" name="exp" class="form-control sm:w-56" required>
+                                        <option value=""selected>Ingresa la dificultad de la actividad</option>
                                         <option value="5">Fácil</option>
                                         <option value="20">Normal</option>
                                         <option value="40">Difícil</option>
@@ -186,7 +187,7 @@
                             </div>
                             <br>
                             <div class="col-md-12 text-center"> 
-                                <buttontype="button" id="siguiente" class="btn btn-primary" style="font-size: 20px;">Siguiente</button>
+                                <button type="button" id="siguiente" class="btn btn-primary" style="font-size: 20px;">Siguiente</button>
                             </div>
                             <div style="height: 50px;"></div>
 
@@ -258,6 +259,7 @@
                     </div>
                     <br>
                     <div class="col-md-12 text-center"> 
+                        <button type="button" id="atras" class="btn btn-primary" style="font-size: 20px;">Atras</button>
                         <button type="submit" id='enviar' class="btn btn-primary from-prevent-multiple-submits" style="font-size: 20px;">Crear</button> <!-- Aumentamos el tamaño de la fuente -->
                     </div>
                     <div style="height: 50px;"></div>
@@ -350,8 +352,66 @@
             <div id="aActs"></div>
         </div>
 
+        <div class="tab-pane" id="edact">
+            <div class="intro-y box p-5 mt-5">
+                <h3 class="text-2xl mt-5 font-small">Editar Actividades</h3>
+                <div class="text-center mx-auto" style="padding-left: 10px" id="activ"></div>
+            </div>
+        </div>
         
     </div>
+
+    <!-- BEGIN: Modal 3 Content -->
+    <div id="static" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body px-5 py-10">
+                    <div class="text-center">
+                        <div class="mb-5"></div>
+                        <h2 class="text-2xl mt-5 font-small">Modificar actividad</h2><br>
+                        <input type="hidden" id="subcatAux">
+                        <form action="{{route('admin.modificar_actividad')}}" method="POST">
+                            @csrf
+                            <input type="hidden" value="" id="id_act" name="id_act">
+
+                            <label for="titulo">Título</label>
+                            <input id="titulo" value="" type="text" class="form-control" name="titulo" placeholder="Título" style="width: 200px">
+                            
+                            <br><label for="tec">TEC (minutos)</label>
+                            <input id="tec" value="" type="number" class="form-control mt-5" name="tec" placeholder="TEC" style="width: 200px">
+                            
+                            <br><label for="exp">Experiencia</label>
+                            <input id="exp" value="" type="number" class="form-control mt-5" name="exp" placeholder="exp" style="width: 200px">
+
+                            <br><br><label for="categoria">Categoría</label>
+                            <select class="form-control" name="categoria" id="categoria_act" style="width: 200px" onchange="obtenerSubcategorias()">
+                                    @foreach (json_decode($tabla_categorias) as $categoria)
+                                        <option value="{{$categoria->id}}" id="{{$categoria->nombre.'_aux'}}">{{$categoria->nombre}}</option>
+                                    @endforeach
+                            </select>
+                            
+                            <br><br><label for="subcategoria">Sub-categoría</label>
+                            <select class="form-control" name="subcategoria" id="subcategoria_act" style="width: 200px">
+                                
+                            </select>
+                            
+                            <br><label for="descripcion">Descripción</label>
+                            <input type="text" id="descripcion" value="" class="form-control mt-5" name="descripcion" placeholder="descripcion" style="width: 200px">
+                            <div class="intro-y col-span-12 sm:col-span-6" id="botones">
+                                <br><br>
+                                <div class="text-center">
+                                    <button type="button" data-tw-dismiss="modal" class="btn btn-danger w-24">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary w-24">Guardar</button>
+                                </div>
+                                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 @endsection
@@ -558,6 +618,7 @@
         var allAct = {!! $data1 !!};
         var prAct = {!! $data2 !!};
         var revAct = {!! $data3 !!};
+        var a = {!! $data4 !!};
 
         function createTabulatorInstance(selector, data, config) {
             return new Tabulator(selector, {
@@ -575,6 +636,53 @@
             headerFilterPlaceholder: "Buscar..",
             tooltips: true,
         };
+
+        var table4 = createTabulatorInstance("#activ", a, {
+            ...commonConfig,
+            groupBy: "categoria",
+            columns: [
+                {
+                    title: "ID",
+                    field: "id",
+                    visible: false,
+                    width: 2,
+
+                },  {
+                    title: "Titulo",
+                    field: "titulo",
+                    sorter: "string",
+                    headerFilter: "input",
+                },  {
+                    title: "Categoria",
+                    field: "categoria",
+                    sorter: "string",
+                    headerFilter: "input",
+                },  {
+                    title: "Subcategoria",
+                    field: "subcategoria",
+                    sorter: "string",
+                },  {
+                    title: "Modificar",
+                    formatter: function (cell, formatterParams, onRendered) {
+                        var value = cell.getValue();
+                        
+                        var button = document.createElement("a");
+                        button.href = "javascript:;";
+                        button.style = "background-color: blue; color: white; border: 1px solid dark-red; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
+                        button.textContent = "⚙️";
+                        button.setAttribute("data-tw-toggle", "modal");
+                        button.setAttribute("data-tw-target", "#static");
+                        button.addEventListener("click", function() {
+                            llenarCamposAct(cell.getRow().getData());
+                        });
+                        return button;
+                    },     
+                },  {
+                    title: "Descripcion",
+                    field: "descripcion",
+                },
+            ]
+        });
 
         var table = createTabulatorInstance("#vActs", allAct, {
             ...commonConfig,
@@ -633,25 +741,16 @@
         var table2 = createTabulatorInstance("#aActs", prAct, {
             ...commonConfig,
             columns: [{
-                    title: "ID",
-                        field: "id",
-                        visible: false,
-                        width: 2,
-                    }, {
-                        title: "Proyecto",
-                        field: "proyecto_origen",
-                        sorter: "string",
-                    }, {
                         title: "Titulo",
-                        field: "actividad",
+                        field: "titulo",
                         sorter: "string",
                     }, {
-                        title: "Tiempo Invertido",
-                        field: "duracion",
+                        title: "Descripcion",
+                        field: "descripcion",
                         sorter: "string",
                     }, {
-                        title: "Detalles",
-                        field: "detalles",
+                        title: "Objetivos",
+                        field: "objetivos",
                         sorter: "string",
                     }, {
                         title: "",
@@ -846,17 +945,107 @@
             });
         });
 
-    </script>
+        
+        function llenarCamposAct(data){
+            document.getElementById('id_act').value = data.id;
+            document.getElementById('titulo').value = data.titulo;
+            document.getElementById('exp').value = data.exp_ref;
+            document.getElementById('tec').value = data.TEC;
+            document.getElementById('descripcion').value = data.descripcion;
+            document.getElementById('subcatAux').value = data.subcategoria;
+            categoria = document.getElementById('categoria_act');
+            subcat = document.getElementById('subcategoria_act');
 
+            // Seleccionar la opción deseada
+            var cat = document.getElementById(data.categoria + "_aux");
+            cat.selected = true;
+
+            obtenerSubcategorias();
+        }
+
+        function obtenerSubcategorias() {    
+            
+            categoria = document.getElementById('categoria_act');
+            var valorSelect = categoria.options[categoria.selectedIndex].value;
+
+            fetch(`filtroSubCategoria/${valorSelect}`)
+                .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al obtener las subcategorías');
+                }
+                return response.json();
+                })
+                .then(data => {
+                mostrarSubcategorias(data);
+                })
+                .catch(error => {
+                console.error('Error:', error);
+                });
+        }
+
+        function mostrarSubcategorias(subcategorias) {
+            var subcatSelect = document.getElementById('subcategoria_act');
+            subcategoriaActual = document.getElementById('subcatAux').value;
+            subcatSelect.innerHTML = '<option id="default" value="null"> Selecciona una sub-categoría</option>';
+            subcategorias.forEach(function(subcategoria) {
+                var option = document.createElement('option');
+                option.value = subcategoria.id;
+                option.textContent = subcategoria.nombre;
+                option.id = subcategoria.nombre;
+                subcatSelect.appendChild(option);
+                if(option.id == subcategoriaActual){
+                    option.selected = true;
+                }
+            });
+        }
+</script>
 
 <script>
+
+     function validate(h, m) {
+        if ((h >= 0 && m >= 1)||(h >= 1 && m >= 0)) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("siguiente").addEventListener("click", function() {
+
+            var campos = ["nombre", "tipo_categoriaC", "tipo_actividad_f", "recursos", "descripcion", "resultados", "horas", "minutos", "exp_f"];
+            var campoVacio = false;
+            campos.forEach(function(campoId) {
+                var campo = document.getElementById(campoId);
+                
+                if (campo && campo.value.trim() === "") {
+                    campoVacio = true;
+                }
+            });
+
+
+            correctTime = validate(document.getElementById("horas").value, document.getElementById("minutos").value);
+
+            if (campoVacio) {
+                alert("Por favor, complete todos los campos antes de continuar.");
+                return;
+            }else if (!correctTime){
+                alert("El tiempo estimado para la actividad es inválido");
+                return;
+            }else {
+
+                document.getElementById("parte1").style.display = "none";
+                document.getElementById("parte2").style.display = "block";
+            }
            
-            document.getElementById("parte1").style.display = "none";
-           
-            document.getElementById("parte2").style.display = "block";
         });
+
+        document.getElementById("atras").addEventListener("click", function() {
+           
+           document.getElementById("parte1").style.display = "block";
+          
+           document.getElementById("parte2").style.display = "none";
+       });
 
         document.getElementById("tipo_asignacion").addEventListener("change", function() {
 

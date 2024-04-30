@@ -90,7 +90,7 @@
                         <label for="resultados" class="col-md-4 col-form-label text-md-right">Objetivos, resultados que se esperan - salidas</label>
 
                         <div class="col-md-6">
-                            <textarea id="resultados" type="text" class="form-control" name="resultados" > {{$actividad->objetivos}} </textarea>
+                            <textarea id="objetivos" type="text" class="form-control" name="objetivos" > {{$actividad->objetivos}} </textarea>
 
                         </div>
                     </div>
@@ -102,6 +102,19 @@
                                     <input name="minutos" type="number" class="form-control sm:w-56" placeholder="Minutos" min="0" max="59" step="1" value="{{ isset($actm[0]->minutos) ? $actm[0]->minutos : old('minutos') }}">
                             </div>
                             <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Experiencia</label>
+                        <div class="col-md-6">
+                            <select id="exp_f" name="exp" class="form-control sm:w-56" required>
+                                <option value=""selected>Ingresa la dificultad de la actividad</option>
+                                <option value="5">Fácil</option>
+                                <option value="20">Normal</option>
+                                <option value="40">Difícil</option>
+                            </select>
+                        </div>
+                        <small id="Help" class="form-text text-muted">Ingresa la cantidad de experiencia que puede ganar el prestador en caso de un trabajo óptimo</small>
                     </div>
 
 

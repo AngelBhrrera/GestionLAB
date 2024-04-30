@@ -1,9 +1,8 @@
 @extends('layouts/admin-layout')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-    <li class="breadcrumb-item"><a href="{{route('admin.gestHub')}}">Gestion</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Sedes</li>
+<li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
+<li class="breadcrumb-item active" aria-current="page">Predictor</li>
 @endsection
 
 @section('subcontent')
@@ -107,22 +106,18 @@
 
                         const resultado = recomendacion.resultado;
                         let textoIndicador = '';
-                        if (resultado === 10) {
+                        if (resultado === 'Excelente') {
                             row.style.color = 'green';
-                            textoIndicador = 'Trabajo excelente esperado';
-                        } else if (resultado === 8) {
+                        } else if (resultado === 'Bueno') {
                             row.style.color = 'blue';
-                            textoIndicador = 'Trabajo muy bueno';
-                        } else if (resultado === 5) {
-                            row.style.color = 'yellow';
-                            textoIndicador = 'Trabajo aceptable';
-                        } else if (resultado === 3) {
+                        } else if (resultado === 'Aceptable') {
+                            row.style.color = 'darkgoldenrod';
+                        } else if (resultado === 'Regular') {
                             row.style.color = 'orange';
-                            textoIndicador = 'Trabajo regular';
-                        } else if (resultado === -3) {
+                        } else if (resultado < 'Deficiente') {
                             row.style.color = 'red';
-                            textoIndicador = 'Trabajo insatisfactorio';
                         }
+                        textoIndicador = 'Trabajo ' + resultado + ' esperado';
 
                         row.appendChild(nameCell);
                         row.appendChild(horarioCell);

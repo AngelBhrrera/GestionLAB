@@ -1,14 +1,5 @@
 @extends('layouts/admin-layout')
 
-@section('subhead')
-    <style>
-        .tab-scroll {
-            overflow-x: auto;
-            white-space: nowrap;
-        }
-    </style>
-@endsection
-
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
     <li class="breadcrumb-item"><a href="{{route('admin.gestHub')}}">Control de Actividades</a></li>
@@ -37,27 +28,28 @@
         </div>
         
     </div>
-    <div class="tab-scroll">
-        <ul class="nav nav-tabs nav-justified" role="tablist">  
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#lact">Lista de Actividades Registradas</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#lcat">Lista de Categorias</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#lsub">Lista de Subcategorias</a>
-            </li>
-            @if(Auth::user()->tipo == 'Superadmin' || Auth::user()->tipo == 'jefe sede')
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#rcat">Crear nueva Categoria</a>
-            </li>
-            @endif
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#rsub">Crear nueva Subcategoria</a>
-            </li>
-        </ul>
-    </div>
+
+    <ul class="nav nav-tabs nav-justified" role="tablist">  
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#lact">Lista de Actividades Registradas</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#lcat">Lista de Categorias</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#lsub">Lista de Subcategorias</a>
+        </li>
+        @if(Auth::user()->tipo == 'Superadmin' || Auth::user()->tipo == 'jefe sede')
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#rcat">Crear nueva Categoria</a>
+        </li>
+        @endif
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#rsub">Crear nueva Subcategoria</a>
+        </li>
+        
+    </ul>
+
     <div class="tab-content">
 
         <div class="tab-pane active" id="lact">
@@ -179,6 +171,57 @@
                             </select>
                             <div class="intro-y col-span-12 sm:col-span-6">
                                 <br>
+                                <div class="text-center">
+                                    <button type="button" data-tw-dismiss="modal" class="btn btn-danger w-24">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary w-24">Guardar</button>
+                                </div>
+                                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- BEGIN: Modal 3 Content -->
+    <div id="static" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body px-5 py-10">
+                    <div class="text-center">
+                        <div class="mb-5"></div>
+                        <h2 class="text-2xl mt-5 font-small">Modificar actividad</h2><br>
+                        <input type="hidden" id="subcatAux">
+                        <form action="{{route('admin.modificar_actividad')}}" method="POST">
+                            @csrf
+                            <input type="hidden" value="" id="id_act" name="id_act">
+
+                            <label for="titulo">Título</label>
+                            <input id="titulo" value="" type="text" class="form-control" name="titulo" placeholder="Título" style="width: 200px">
+                            
+                            <br><label for="tec">TEC (minutos)</label>
+                            <input id="tec" value="" type="number" class="form-control mt-5" name="tec" placeholder="TEC" style="width: 200px">
+                            
+                            <br><label for="exp">Experiencia</label>
+                            <input id="exp" value="" type="number" class="form-control mt-5" name="exp" placeholder="exp" style="width: 200px">
+
+                            <br><br><label for="categoria">Categoría</label>
+                            <select class="form-control" name="categoria" id="categoria_act" style="width: 200px" onchange="obtenerSubcategorias()">
+                                    
+                                    @foreach (json_decode($tabla_categorias) as $categoria)
+                                        <option value="{{$categoria->id}}" id="{{$categoria->nombre.'_aux'}}">{{$categoria->nombre}}</option>
+                                    @endforeach
+                            </select>
+                            
+                            <br><br><label for="subcategoria">Sub-categoría</label>
+                            <select class="form-control" name="subcategoria" id="subcategoria_act" style="width: 200px">
+                                
+                            </select>
+                            
+                            <br><label for="descripcion">Descripción</label>
+                            <input type="text" id="descripcion" value="" class="form-control mt-5" name="descripcion" placeholder="descripcion" style="width: 200px">
+                            <div class="intro-y col-span-12 sm:col-span-6" id="botones">
+                                <br><br>
                                 <div class="text-center">
                                     <button type="button" data-tw-dismiss="modal" class="btn btn-danger w-24">Cancelar</button>
                                     <button type="submit" class="btn btn-primary w-24">Guardar</button>
@@ -326,11 +369,16 @@
                     title: "TEC",
                     field: "TEC",
                     sorter: "number",
-                },   {
+                }, {
                     title: "Experiencia",
                     field: "exp_ref",
                     sorter: "number",
-                },  {
+                },{
+                    title: "categoria",
+                    field: "categoria",
+                    sorter: "string",
+                    //visible: false,
+                },{
                     title: "Subcategoria",
                     field: "subcategoria",
                     sorter: "string",
@@ -341,11 +389,15 @@
                     title: "Modificar",
                     formatter: function (cell, formatterParams, onRendered) {
                         var value = cell.getValue();
-                        var button = document.createElement("button");
+                        
+                        var button = document.createElement("a");
+                        button.href = "javascript:;";
                         button.style = "background-color: blue; color: white; border: 1px solid dark-red; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
                         button.textContent = "⚙️";
+                        button.setAttribute("data-tw-toggle", "modal");
+                        button.setAttribute("data-tw-target", "#static");
                         button.addEventListener("click", function() {
-                            eliminarActividad(value);
+                            llenarCamposAct(cell.getRow().getData());
                         });
                         return button;
                     },     
@@ -434,6 +486,59 @@
             })
             .catch(error => {
                 console.error('Error al eliminar:', error);
+            });
+        }
+
+        function llenarCamposAct(data){
+            document.getElementById('id_act').value = data.id;
+            document.getElementById('titulo').value = data.titulo;
+            document.getElementById('exp').value = data.exp_ref;
+            document.getElementById('tec').value = data.TEC;
+            document.getElementById('descripcion').value = data.descripcion;
+            document.getElementById('subcatAux').value = data.subcategoria;
+            categoria = document.getElementById('categoria_act');
+            subcat = document.getElementById('subcategoria_act');
+
+            // Seleccionar la opción deseada
+            var cat = document.getElementById(data.categoria + "_aux");
+            cat.selected = true;
+
+            obtenerSubcategorias();
+        }
+
+        function obtenerSubcategorias() {    
+            
+            categoria = document.getElementById('categoria_act');
+            var valorSelect = categoria.options[categoria.selectedIndex].value;
+
+            fetch(`filtroSubCategoria/${valorSelect}`)
+                .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al obtener las subcategorías');
+                }
+                return response.json();
+                })
+                .then(data => {
+                mostrarSubcategorias(data);
+                })
+                .catch(error => {
+                console.error('Error:', error);
+                });
+        }
+
+        function mostrarSubcategorias(subcategorias) {
+            var subcatSelect = document.getElementById('subcategoria_act');
+            subcategoriaActual = document.getElementById('subcatAux').value;
+            subcatSelect.innerHTML = '<option id="default" value="null"> Selecciona una sub-categoría</option>';
+            subcategorias.forEach(function(subcategoria) {
+                var option = document.createElement('option');
+                option.value = subcategoria.id;
+                option.textContent = subcategoria.nombre;
+                option.id = subcategoria.nombre;
+                subcatSelect.appendChild(option);
+                if(option.id == subcategoriaActual){
+                    option.selected = true;
+                }
             });
         }
 
