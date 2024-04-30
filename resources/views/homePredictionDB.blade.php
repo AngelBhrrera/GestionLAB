@@ -10,7 +10,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Propuestas de prestador</li>
+    <li class="breadcrumb-item active" aria-current="page">Rendimiento del Area</li>
 @endsection
 
 @section('subhead')
@@ -49,6 +49,7 @@
                     <br>
                     <div class="intro-y report-box mt-12 sm:mt-2">
                         <div class="box py-0 xl:py-5 grid grid-cols-12 gap-0 divide-y xl:divide-y-0 divide-x divide-dashed divide-slate-200 dark:divide-white/5">
+                            @if(isset ($rendimiento))    
                             <div class="report-box__item py-5 xl:py-0 px-5 col-span-12 sm:col-span-6 xl:col-span-3">
                                 <div class="report-box__content">
                                     <div class="flex">
@@ -81,6 +82,8 @@
                                     <div class="text-slate-500 mt-1">Diferencial Experiencia Semanal</div>
                                 </div>
                             </div>
+                            @endif
+                            @if(isset ($acabadasRA))
                             <div class="report-box__item py-5 xl:py-0 px-5 sm:!border-t-0 col-span-12 sm:col-span-6 xl:col-span-3">
                                 <div class="report-box__content">
                                     <div class="flex">
@@ -113,6 +116,8 @@
                                     <div class="text-slate-500 mt-1">Total de Actividades Exitosas de la Semana</div>
                                 </div>
                             </div>
+                            @endif
+                            @if(isset ($porcentajeA))
                             <div class="report-box__item py-5 xl:py-0 px-5 col-span-12 sm:col-span-6 xl:col-span-3">
                                 <div class="report-box__content">
                                     <div class="flex">
@@ -144,6 +149,7 @@
                                     <div class="text-slate-500 mt-1">% de Actividades con Exito Notable y Excelente</div>
                                 </div>
                             </div>
+                            @endif
                             <div class="report-box__item py-5 xl:py-0 px-5 col-span-12 sm:col-span-6 xl:col-span-3">
                                 <div class="report-box__content">
                                     <div class="flex">
@@ -202,7 +208,7 @@
 
                 </div>
                 <!-- END: Top Users -->
-                
+                @if(isset ($rendimientoTT))
                 <!-- BEGIN: Rendimiento Semanal -->
                 <div class="col-span-12 md:col-span-8 lg:col-span-10 mt-7 ml-4">
                     <div class="intro-y block sm:flex items-center h-10">
@@ -256,6 +262,7 @@
                     </div>
                 </div>
                 <!-- END: Rendimiento Semanal -->
+                @endif
 
             </div>
         </div>
