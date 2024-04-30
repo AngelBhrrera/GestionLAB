@@ -34,6 +34,148 @@ class AdminController extends Controller
 
     //ADMIN HOME
 
+    public function rendimientoAdmin(){
+
+        $prestadores = DB::table('perfil_prestador') ->where('area', 1)->limit(10)->get();
+        $np = DB::table('perfil_prestador')->where('area', 1)->get();
+        
+        $carreras = DB::table('perfil_prestador')
+            ->select('carrera', DB::raw('COUNT(*) as conteo'))
+            ->where('area', 1)
+            ->groupBy('carrera')
+            ->get();
+
+        $turnos = DB::table('perfil_prestador')
+            ->select('horario', DB::raw('COUNT(*) as conteo'))
+            ->where('area', 1)
+            ->groupBy('horario')
+            ->get();
+        $periodos = DB::table('perfil_prestador')
+            ->select('periodo', DB::raw('COUNT(*) as conteo'))
+            ->where('area', 1)
+            ->groupBy('periodo')
+            ->get();
+    
+        $rendimiento = DB::table('rendimiento')
+            ->select('semana', 'anio', 'id_area', DB::raw('SUM(total_exp) as total_exp_sum'), DB::raw('SUM(cantidad_actividades) as cantidad_actividades_sum'))
+            ->where('id_area', 1)
+            ->groupBy('semana','anio', 'id_area')
+            ->orderByDesc('semana')
+            ->get();
+    
+        $rendimientoT = DB::table('rendimiento')
+            ->where('id_area', 1)
+            ->orderBy('fecha_reporte')
+            ->get();
+    
+        $rendimientoTT = DB::table('rendimiento')
+            ->selectRaw('semana, anio, SUM(total_exp) as total_exp_sum, SUM(cantidad_actividades) as cantidad_actividades_sum')
+            ->where('id_area', 1)
+            ->groupBy('semana', 'anio')
+            ->get();
+    
+        $ultimaActualizacion = DB::table('rendimiento')
+            ->select('fecha_reporte')
+            ->where('id_area', 1)
+            ->orderByDesc('fecha_reporte')
+            ->first();
+    
+        $resultadosActual = DB::select("
+            SELECT 
+                actividades.titulo, 
+                actividades_prestadores.fecha, 
+                actividades_prestadores.exp, 
+                actividades.exp_ref,
+                actividades_prestadores.estado,
+                CASE 
+                    WHEN actividades_prestadores.exp >= 0.8 * actividades.exp_ref THEN 1 
+                    ELSE 0 
+                END AS comparacion_exp
+            FROM 
+                actividades_prestadores 
+            JOIN 
+                actividades ON actividades_prestadores.id_actividad = actividades.id 
+            WHERE 
+                WEEK(actividades_prestadores.fecha) = ? 
+                AND YEAR(actividades_prestadores.fecha) = ?
+        ", [$rendimiento[1]->semana, $rendimiento[1]->anio]);
+    
+        $todosRA = count($resultadosActual);
+    
+        $notablesRA = 0;
+        foreach ($resultadosActual as $resultado) {
+            if ($resultado->comparacion_exp == 1) {
+                $notablesRA++;
+            }
+        }
+        $acabadasRA = 0;
+        foreach ($resultadosActual as $resultado) {
+            if ($resultado->estado == 'Aprobada') {
+                $acabadasRA++;
+            }
+        }
+        $porcentajeA = $notablesRA * 100 / $todosRA;
+    
+        $resultadosPrevio = DB::select("
+            SELECT 
+                actividades.titulo, 
+                actividades_prestadores.fecha, 
+                actividades_prestadores.exp, 
+                actividades.exp_ref,
+                actividades_prestadores.estado,
+                CASE 
+                    WHEN actividades_prestadores.exp >= 0.8 * actividades.exp_ref THEN 1 
+                    ELSE 0 
+                END AS comparacion_exp
+            FROM 
+                actividades_prestadores 
+            JOIN 
+                actividades ON actividades_prestadores.id_actividad = actividades.id 
+            WHERE 
+                WEEK(actividades_prestadores.fecha) = ? 
+                AND YEAR(actividades_prestadores.fecha) = ?
+        ", [$rendimiento[2]->semana, $rendimiento[2]->anio]);
+    
+        
+        $todosRP = count($resultadosPrevio);
+    
+        $notablesRP = 0;
+        foreach ($resultadosPrevio as $resultado) {
+            if ($resultado->comparacion_exp == 1) {
+                $notablesRP++;
+            }
+        }
+        $acabadasRP = 0;
+        foreach ($resultadosPrevio as $resultado) {
+            if ($resultado->estado == 'Aprobada') {
+                $acabadasRP++;
+            }
+        }
+        $porcentajeP = ($notablesRP * 100) / $todosRP;
+    
+        return view('homePredictionDB', compact('prestadores', 'carreras', 'turnos', 'periodos','np', 
+        'rendimiento', 'rendimientoT', 'acabadasRA', 'acabadasRP', 'porcentajeA', 'porcentajeP',
+        'ultimaActualizacion', 'rendimientoTT'));
+    }
+
+    public function dataframe(){
+
+        $resultados = DB::table('datosML')
+            ->get();
+        return view('dataFrame', ['data' => json_encode($resultados)]);
+    }
+
+    public function predictor(){
+        $prestadores = DB::table('solo_prestadores')
+            ->where('id_area',1)
+            ->get();
+        $actividades = DB::table('actividades')
+            ->whereNotNull('TEC')
+            ->get();
+    
+        return view('testApi', compact('prestadores', 'actividades'));
+    }
+
     public function home(){
 
         $sqlproy = DB::table('proyectos as p')

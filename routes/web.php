@@ -203,7 +203,10 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
                 });
             });
 
-            Route::get('/admin/home', 'home')->name('home');
+            Route::get('/admin/home', 'rendimientoAdmin')->name('home');
+            Route::get('/admin/dataframe', 'dataframe')->name('df');
+            Route::get('/admin/predictor', 'predictor')->name('predictor');
+
             Route::get('/admin/firmas', 'firmas')->name('firmas');
             Route::get('admin/check-in', 'checkin')->name('checkin');
             //FILTROS PARA ACTIVIDADES
