@@ -163,7 +163,6 @@ class AdminController extends Controller
             $porcentajeP = 0;
         }
 
-       
     
         return view('homePredictionDB', compact('prestadores', 'carreras', 'turnos', 'periodos','np', 
         'rendimiento', 'rendimientoT', 'acabadasRA', 'acabadasRP', 'porcentajeA', 'porcentajeP',

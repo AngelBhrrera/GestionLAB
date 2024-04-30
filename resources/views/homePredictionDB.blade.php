@@ -34,7 +34,6 @@
 
 @section('subcontent')
     <div class="grid grid-cols-12 gap-6">
-        @if ($filtro->gamificacion == 1)
         <div class="col-span-12 2xl:col-span-9">
             <div class="grid grid-cols-12 gap-6">
            
@@ -49,7 +48,7 @@
                     <br>
                     <div class="intro-y report-box mt-12 sm:mt-2">
                         <div class="box py-0 xl:py-5 grid grid-cols-12 gap-0 divide-y xl:divide-y-0 divide-x divide-dashed divide-slate-200 dark:divide-white/5">
-                            @if(isset ($rendimiento))    
+                            @if($rendimiento->count() > 0)   
                             <div class="report-box__item py-5 xl:py-0 px-5 col-span-12 sm:col-span-6 xl:col-span-3">
                                 <div class="report-box__content">
                                     <div class="flex">
@@ -83,7 +82,6 @@
                                 </div>
                             </div>
                             @endif
-                            @if(isset ($acabadasRA))
                             <div class="report-box__item py-5 xl:py-0 px-5 sm:!border-t-0 col-span-12 sm:col-span-6 xl:col-span-3">
                                 <div class="report-box__content">
                                     <div class="flex">
@@ -104,6 +102,7 @@
                                                         $arrow = 'arrow-down';
                                                     } else {
                                                         $color = 'text-warning';
+                                                        $arrow = 'arrow-down';
                                                     }
                                                 
                                             @endphp
@@ -116,8 +115,7 @@
                                     <div class="text-slate-500 mt-1">Total de Actividades Exitosas de la Semana</div>
                                 </div>
                             </div>
-                            @endif
-                            @if(isset ($porcentajeA))
+
                             <div class="report-box__item py-5 xl:py-0 px-5 col-span-12 sm:col-span-6 xl:col-span-3">
                                 <div class="report-box__content">
                                     <div class="flex">
@@ -138,6 +136,7 @@
                                                         $arrow = 'arrow-down';
                                                     } else {
                                                         $color = 'text-warning';
+                                                        $arrow = 'arrow-down';
                                                     }
                                             @endphp
                                             <div class="report-box__item__indicator {{ $color }} tooltip cursor-pointer" title="{{ $diferencial }} menos que la ultima semana">
@@ -149,7 +148,7 @@
                                     <div class="text-slate-500 mt-1">% de Actividades con Exito Notable y Excelente</div>
                                 </div>
                             </div>
-                            @endif
+
                             <div class="report-box__item py-5 xl:py-0 px-5 col-span-12 sm:col-span-6 xl:col-span-3">
                                 <div class="report-box__content">
                                     <div class="flex">
@@ -208,7 +207,7 @@
 
                 </div>
                 <!-- END: Top Users -->
-                @if(isset ($rendimientoTT))
+                @if($rendimiento->count() > 0)   
                 <!-- BEGIN: Rendimiento Semanal -->
                 <div class="col-span-12 md:col-span-8 lg:col-span-10 mt-7 ml-4">
                     <div class="intro-y block sm:flex items-center h-10">
@@ -266,13 +265,13 @@
 
             </div>
         </div>
-        @endif
 
+      
         <div class="col-span-12 2xl:col-span-3">
             <div class="2xl:border-l border-slate-300/50 h-full 2xl:pt-6 pb-6">
-                <div class="2xl:pl-6 grid grid-cols-12 gap-x-6 gap-y-8">
-                    @if ($filtro->gamificacion == 1)                           
+                <div class="2xl:pl-6 grid grid-cols-12 gap-x-6 gap-y-8">                          
                     <!-- BEGIN: Otras opciones-->
+                    @if(isset($iltimaActualizacion))   
                     <div class="col-span-12 md:col-span-6 xl:col-span-4 2xl:col-span-12">
                         <div class="intro-x flex items-center h-10">
                             <h2 class="text-lg font-medium truncate mr-5">ACCIONES</h2>
@@ -302,7 +301,6 @@
                     </div>
                     <!-- END: Otras Opciones -->
                     @endif
-
                     <!-- START: Perfil prestador -->
                     <div class="col-span-12 md:col-span-6 xl:col-span-4 2xl:col-span-12">
                         <div class="col-span-12 sm:col-span-6 lg:col-span-3 sm:row-start-4 md:row-start-3 lg:row-start-auto mt-4">
@@ -352,23 +350,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-
-document.querySelectorAll('.nav-link').forEach(tab => {
-    tab.addEventListener('click', function() {
-        document.querySelectorAll('canvas').forEach(canvas => {
-            canvas.style.display = 'none';
-        });
-        // Mostrar el gráfico correspondiente
-        const targetCanvas = document.querySelector(this.dataset.twTarget);
-        if (targetCanvas) {
-            targetCanvas.style.display = 'block';
-            var ctx = document.getElementById('scatter-chart')
-            ctx.style.display = 'block';
-        }
-    });
-});
-
-
     var carreraData = {!! json_encode($carreras) !!};
     var carreraLabels = carreraData.map(item => item.carrera);
     var carreraValues = carreraData.map(item => item.conteo);
@@ -402,6 +383,25 @@ document.querySelectorAll('.nav-link').forEach(tab => {
                 ]
             }]
         }
+    });
+
+</script>
+
+<script>
+
+    document.querySelectorAll('.nav-link').forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('canvas').forEach(canvas => {
+                canvas.style.display = 'none';
+            });
+            // Mostrar el gráfico correspondiente
+            const targetCanvas = document.querySelector(this.dataset.twTarget);
+            if (targetCanvas) {
+                targetCanvas.style.display = 'block';
+                var ctx = document.getElementById('scatter-chart')
+                ctx.style.display = 'block';
+            }
+        });
     });
 
     var carreraChartCtx = document.getElementById('carrera-chart').getContext('2d');
@@ -449,9 +449,7 @@ document.querySelectorAll('.nav-link').forEach(tab => {
             }]
         }
     });
-</script>
 
-<script>
     // Datos de rendimiento
     var rendimientoData = {!! json_encode($rendimientoT) !!};
     var rendimientoDataT = {!! json_encode($rendimientoTT) !!};
