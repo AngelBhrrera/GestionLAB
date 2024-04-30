@@ -1,8 +1,16 @@
 @extends('layouts/admin-layout')
 
+    <?php  
+        $area = Auth::user()->area;
+
+        $filtro = DB::table('modulos')
+            ->where('id', $area)
+            ->first();
+    ?>
+
 @section('breadcrumb')
-<li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
-<li class="breadcrumb-item active" aria-current="page">Propuestas de prestador</li>
+    <li class="breadcrumb-item"><a href="{{route('admin.home')}}">{{$userRol=ucfirst(Auth::user()->tipo)}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Propuestas de prestador</li>
 @endsection
 
 @section('subhead')
@@ -23,10 +31,13 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @endsection
 
+
 @section('subcontent')
     <div class="grid grid-cols-12 gap-6">
+        @if ($filtro->gamificacion == 1)
         <div class="col-span-12 2xl:col-span-9">
             <div class="grid grid-cols-12 gap-6">
+           
                 <!-- BEGIN: General Report -->
                 <div class="col-span-12 mt-4">
                     <div class="intro-y block sm:flex items-center h-10">
@@ -153,7 +164,7 @@
                     </div>
                 </div>
                 <!-- END: General Report -->
-
+ 
                 <!-- BEGIN: Top Users -->
                 <div class="col-span-12 md:col-span-4 lg:col-span-3 mt-4 md:mt-7 ml-4">
                     <div class="intro-y flex items-center h-10">
@@ -192,7 +203,7 @@
                 </div>
                 <!-- END: Top Users -->
                 
-                <!-- BEGIN: Sales Report -->
+                <!-- BEGIN: Rendimiento Semanal -->
                 <div class="col-span-12 md:col-span-8 lg:col-span-10 mt-7 ml-4">
                     <div class="intro-y block sm:flex items-center h-10">
                         <h2 class="text-lg font-medium truncate mr-5">Rendimiento de Experiencia Semanal</h2>
@@ -201,6 +212,7 @@
                             <input type="text" class="datepicker form-control sm:w-56 box pl-10">
                         </div>
                     </div>
+
                     <div class="intro-y box p-5 mt-12 sm:mt-4">
                         <div class="md:flex items-center">
                             <div class="mr-auto">
@@ -223,7 +235,7 @@
                                         }
                                     @endphp
                                     <div class="flex items-center text-danger cursor-pointer ml-3">
-                                    {{ $diferencial }} @if ($arrow) <i data-lucide="{{ $arrow }}" class="w-4 h-4 ml-0.5"></i> @endif
+                                        {{ $diferencial }} @if ($arrow) <i data-lucide="{{ $arrow }}" class="w-4 h-4 ml-0.5"></i> @endif
                                     </div>
                                 </div>
                                 <div class="text-slate-500 mt-1">Total de Experiencia</div>
@@ -240,15 +252,19 @@
                                     <canvas id="scatter-chart"></canvas>
                                 </div>
                             </div>
+                        </div>
                     </div>
                 </div>
-                </div>
+                <!-- END: Rendimiento Semanal -->
+
             </div>
         </div>
+        @endif
+
         <div class="col-span-12 2xl:col-span-3">
             <div class="2xl:border-l border-slate-300/50 h-full 2xl:pt-6 pb-6">
                 <div class="2xl:pl-6 grid grid-cols-12 gap-x-6 gap-y-8">
-
+                    @if ($filtro->gamificacion == 1)                           
                     <!-- BEGIN: Otras opciones-->
                     <div class="col-span-12 md:col-span-6 xl:col-span-4 2xl:col-span-12">
                         <div class="intro-x flex items-center h-10">
@@ -278,7 +294,7 @@
                         </div>
                     </div>
                     <!-- END: Otras Opciones -->
-
+                    @endif
 
                     <!-- START: Perfil prestador -->
                     <div class="col-span-12 md:col-span-6 xl:col-span-4 2xl:col-span-12">

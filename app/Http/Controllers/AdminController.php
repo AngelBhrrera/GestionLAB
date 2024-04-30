@@ -41,42 +41,42 @@ class AdminController extends Controller
         
         $carreras = DB::table('perfil_prestador')
             ->select('carrera', DB::raw('COUNT(*) as conteo'))
-            ->where('area', 1)
+            ->where('area', Auth::user()->area)
             ->groupBy('carrera')
             ->get();
 
         $turnos = DB::table('perfil_prestador')
             ->select('horario', DB::raw('COUNT(*) as conteo'))
-            ->where('area', 1)
+            ->where('area', Auth::user()->area)
             ->groupBy('horario')
             ->get();
         $periodos = DB::table('perfil_prestador')
             ->select('periodo', DB::raw('COUNT(*) as conteo'))
-            ->where('area', 1)
+            ->where('area', Auth::user()->area)
             ->groupBy('periodo')
             ->get();
     
         $rendimiento = DB::table('rendimiento')
             ->select('semana', 'anio', 'id_area', DB::raw('SUM(total_exp) as total_exp_sum'), DB::raw('SUM(cantidad_actividades) as cantidad_actividades_sum'))
-            ->where('id_area', 1)
+            ->where('id_area', Auth::user()->area)
             ->groupBy('semana','anio', 'id_area')
             ->orderByDesc('semana')
             ->get();
     
         $rendimientoT = DB::table('rendimiento')
-            ->where('id_area', 1)
+            ->where('id_area', Auth::user()->area)
             ->orderBy('fecha_reporte')
             ->get();
     
         $rendimientoTT = DB::table('rendimiento')
             ->selectRaw('semana, anio, SUM(total_exp) as total_exp_sum, SUM(cantidad_actividades) as cantidad_actividades_sum')
-            ->where('id_area', 1)
+            ->where('id_area', Auth::user()->area)
             ->groupBy('semana', 'anio')
             ->get();
     
         $ultimaActualizacion = DB::table('rendimiento')
             ->select('fecha_reporte')
-            ->where('id_area', 1)
+            ->where('id_area', Auth::user()->area)
             ->orderByDesc('fecha_reporte')
             ->first();
     
@@ -98,7 +98,7 @@ class AdminController extends Controller
             WHERE 
                 WEEK(actividades_prestadores.fecha) = ? 
                 AND YEAR(actividades_prestadores.fecha) = ?
-        ", [$rendimiento[1]->semana, $rendimiento[1]->anio]);
+        ", [$rendimiento[0]->semana, $rendimiento[0]->anio]);
     
         $todosRA = count($resultadosActual);
     
@@ -134,7 +134,7 @@ class AdminController extends Controller
             WHERE 
                 WEEK(actividades_prestadores.fecha) = ? 
                 AND YEAR(actividades_prestadores.fecha) = ?
-        ", [$rendimiento[2]->semana, $rendimiento[2]->anio]);
+        ", [$rendimiento[1]->semana, $rendimiento[1]->anio]);
     
         
         $todosRP = count($resultadosPrevio);
@@ -167,7 +167,7 @@ class AdminController extends Controller
 
     public function predictor(){
         $prestadores = DB::table('solo_prestadores')
-            ->where('id_area',1)
+            ->where('id_area', Auth::user()->area)
             ->get();
         $actividades = DB::table('actividades')
             ->whereNotNull('TEC')
