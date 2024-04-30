@@ -34,7 +34,58 @@ class AdminController extends Controller
 
     //ADMIN HOME
 
-    
+    public function obtenerDataRendimiento($week,$year,$area){
+
+        if($area != 0){
+            $resultadosActual = DB::select("
+                SELECT 
+                    actividades.titulo, 
+                    actividades_prestadores.fecha, 
+                    actividades_prestadores.exp, 
+                    actividades.exp_ref,
+                    actividades_prestadores.estado,
+                    CASE 
+                        WHEN actividades_prestadores.exp >= 0.8 * actividades.exp_ref THEN 1 
+                        ELSE 0 
+                    END AS comparacion_exp
+                FROM 
+                    actividades_prestadores 
+                JOIN 
+                    actividades ON actividades_prestadores.id_actividad = actividades.id 
+                WHERE 
+                    WEEK(actividades_prestadores.fecha) = ? 
+                    AND YEAR(actividades_prestadores.fecha) = ?
+                    AND actividades_prestadores.id_prestador IN (
+                        SELECT id 
+                        FROM users 
+                        WHERE area = ?
+                    )
+            ", [$week, $year, $area]);
+        }else{
+            $resultadosActual = DB::select("
+                SELECT 
+                    actividades.titulo, 
+                    actividades_prestadores.fecha, 
+                    actividades_prestadores.exp, 
+                    actividades.exp_ref,
+                    actividades_prestadores.estado,
+                    CASE 
+                        WHEN actividades_prestadores.exp >= 0.8 * actividades.exp_ref THEN 1 
+                        ELSE 0 
+                    END AS comparacion_exp
+                FROM 
+                    actividades_prestadores 
+                JOIN 
+                    actividades ON actividades_prestadores.id_actividad = actividades.id 
+                WHERE 
+                    WEEK(actividades_prestadores.fecha) = ? 
+                    AND YEAR(actividades_prestadores.fecha) = ?
+            ", [$week, $year]);
+        }
+        
+
+        return $resultadosActual;
+    }
 
     public function rendimientoAdmin(){
 
@@ -70,50 +121,10 @@ class AdminController extends Controller
         $rendimientoTT = $rendimientoTT->groupBy('semana', 'anio')->get();
         $ultimaActualizacion = $ultimaActualizacion->orderByDesc('fecha_reporte')->first();
 
-        $resultadosActual = DB::select("
-            SELECT 
-                actividades.titulo, 
-                actividades_prestadores.fecha, 
-                actividades_prestadores.exp, 
-                actividades.exp_ref,
-                actividades_prestadores.estado,
-                CASE 
-                    WHEN actividades_prestadores.exp >= 0.8 * actividades.exp_ref THEN 1 
-                    ELSE 0 
-                END AS comparacion_exp
-            FROM 
-                actividades_prestadores 
-            JOIN 
-                actividades ON actividades_prestadores.id_actividad = actividades.id 
-            WHERE 
-                WEEK(actividades_prestadores.fecha) = ? 
-                AND YEAR(actividades_prestadores.fecha) = ?
-        ", [$rendimiento[0]->semana, $rendimiento[0]->anio]);
-
-        $resultadosPrevio = DB::select("
-        SELECT 
-            actividades.titulo, 
-            actividades_prestadores.fecha, 
-            actividades_prestadores.exp, 
-            actividades.exp_ref,
-            actividades_prestadores.estado,
-            CASE 
-                WHEN actividades_prestadores.exp >= 0.8 * actividades.exp_ref THEN 1 
-                ELSE 0 
-            END AS comparacion_exp
-        FROM 
-            actividades_prestadores 
-        JOIN 
-            actividades ON actividades_prestadores.id_actividad = actividades.id 
-        WHERE 
-            WEEK(actividades_prestadores.fecha) = ? 
-            AND YEAR(actividades_prestadores.fecha) = ?
-        ", [$rendimiento[1]->semana, $rendimiento[1]->anio]);
-
-        
-    
+        $resultadosActual = $this->obtenerDataRendimiento($rendimiento[0]->semana, $rendimiento[0]->anio, Auth::user()->area);
+        $resultadosPrevio = $this->obtenerDataRendimiento($rendimiento[1]->semana, $rendimiento[1]->anio, Auth::user()->area);
         $todosRA = count($resultadosActual);
-    
+
         $notablesRA = 0;
         foreach ($resultadosActual as $resultado) {
             if ($resultado->comparacion_exp == 1) {
