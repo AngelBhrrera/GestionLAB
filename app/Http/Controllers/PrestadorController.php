@@ -475,20 +475,29 @@ class PrestadorController extends Controller
     }
 
     private function obtenerActividadesAsignadas(){
+
         $proys = DB::table('proyectos_prestadores')
             ->where('id_prestador', auth()->user()->id)
             ->pluck('id_proyecto');
 
-        return DB::table('seguimiento_actividades')
+            $actividades_premios = DB::table('seguimiento_actividades')
             ->where('id_prestador', auth()->user()->id)
             ->whereNotIn('estado', ['Aprobada'])
             ->orWhere(function($query) use ($proys) {
                 $query->whereIn('id_proyecto', $proys)
-                        ->where('id_prestador', 0);
+                      ->where('id_prestador', 0);
             })
             ->orderByDesc('fecha')
             ->get();
 
+        foreach ($actividades_premios as $actividad){
+    
+            $ids_usuario_premio[] = [
+                'id_premio' => $actividad->id_premio,
+            ];  
+        }
+        print_r($ids_usuario_premio);
+        return $actividades_premios;
     }
 
     private function obtenerActividadesTerminadas(){
@@ -518,7 +527,7 @@ class PrestadorController extends Controller
             ->whereNull('proyectos_prestadores.id_proyecto')
             ->pluck('proyectos.id');
 
-        $actividades = DB::table('seguimiento_actividades')
+        $actividades = DB::table('seguimiento_actividades') // se muestran los datos en las tarjetas de los premios
             ->where('id_prestador', 0)
             ->whereIn('id_proyecto', $proys)
             ->get();

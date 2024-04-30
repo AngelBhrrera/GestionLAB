@@ -39,6 +39,8 @@
                     <span class="Subcategoria"> {{ $actividad->subcategoria }}</span>
                 @endif
                 <br>
+                <span class="subtitulo">Premio disponible:</span>
+                <br>
                 <span class="subtitulo">Fecha:</span> {{ $actividad->fecha }} 
             </div>
             <div class="detalle">

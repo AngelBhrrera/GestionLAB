@@ -41,7 +41,8 @@ class Seguimiento extends Migration
             Tiempo_Invertido AS duracion, 
             fecha, 
             detalles,
-            exp
+            exp,
+            id_premio
             FROM actividades_prestadores 
             INNER JOIN actividades AS a ON actividades_prestadores.id_actividad = a.id
             LEFT JOIN users AS u ON actividades_prestadores.id_prestador = u.id

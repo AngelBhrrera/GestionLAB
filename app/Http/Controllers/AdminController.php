@@ -867,7 +867,7 @@ class AdminController extends Controller
     public function makeasign_act(Request $request) {
 
         try{
-            
+
             $request->validate([
                 'nombre' => 'string|max:255|unique:actividades,titulo',
                 'tipo' => 'integer',
@@ -875,6 +875,7 @@ class AdminController extends Controller
                 'descripcion' => 'string|max:500',
                 'objetivos' => 'string', 
                 'exp' => 'integer|min:5|max:100',
+                'premios_asignado' => 'null',
                 'horas' => [
                     'integer',
                     function ($attribute, $value, $fail) use ($request) {
@@ -921,6 +922,7 @@ class AdminController extends Controller
                 'descripcion' =>$request->input('descripcion'),
                 'exp_ref' =>$request->input('exp'),
                 'objetivos' => $request->input('resultados'),
+                'id_premios' => $request ->input('premio_asignado'),
                 'TEC' => $tec,]);
 
             if ($request->input('tipo_asignacion') == "1") {
@@ -929,6 +931,7 @@ class AdminController extends Controller
                         'id_prestador' => 0,
                         'id_actividad' => $idAct,
                         'estado' => "Creada",
+                        'id_premios' => $request ->input('premio_asignado'),
                         'id_proyecto' => $request->input('proyecto')]);
                 }
                 return redirect()->back()->with('success', 'Actividad asignada correctamente');
@@ -942,6 +945,7 @@ class AdminController extends Controller
                             'id_prestador' => $idp,
                             'id_actividad' => $idAct,
                             'estado' => "Asignada",
+                            'id_premio' => $request ->input('premio_asignado'),
                             'id_proyecto' => $request->input('proyecto')]);
                 }
                 return redirect()->back()->with('success', 'Actividad asignada correctamente');

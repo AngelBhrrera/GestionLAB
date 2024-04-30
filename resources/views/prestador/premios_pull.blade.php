@@ -80,7 +80,7 @@
                     button.textContent = "Detalles";
                     button.title = "";
                     button.addEventListener("click", function() {
-                        desactivarPrestador(value);
+                        window.location.href = "prestador/actividadesAbiertas"; // recordar actualizar la redireccion de los botones de detalles. 
                     });
                     return button;
                 }, 

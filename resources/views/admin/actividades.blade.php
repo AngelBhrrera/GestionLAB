@@ -75,7 +75,6 @@
                             <input id="id" name="id" type="hidden" value="{{!isset($actm[0]->id) ? old('id') : $actm[0]->id }}">
                             <input name="TipoOriginal" type="hidden" value="{{isset($actm[0]->tipo) ? $actm[0]->tipo : old('TipoOriginal') }}">
                             @csrf
-
                             <div class="form-group row">
                                 <label for="nombre" class="col-md-4 col-form-label text-md-right">Nombre de la actividad</label>
 
@@ -89,7 +88,6 @@
 
                                 </div>
                             </div>
-
                             <div class="form-group row">
                                 <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Categoría</label>
                                 <div class="col-md-6">
@@ -101,6 +99,7 @@
                                     </select>
                                 </div>
                             </div>
+                            <br>
                             <div class="form-group row">
                                 <label for="tipo_categoria" class="col-md-4 col-form-label text-md-right">Subcategoría</label>
                                 <div class="col-md-6">
@@ -112,8 +111,8 @@
                                     </select>
                                 </div>
                             </div>
+                            <br>
                             <div class="form-group row">
-                                <br>
                                 <div class="form-group row">
                                     <label for="tipo_actividad" class="text-center">Tipo de actividad</label>
                                     <div class="row text-center">
@@ -125,7 +124,6 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <br>
                                 </div>
                             </div>
                             <br>
@@ -159,17 +157,6 @@
                                 </div>
                             </div>
                             <div class="form-group row"  style="margin-top: 5px; margin-bottom: 15px;">
-                            <label for="premios" class="col-md-4 col-form-label text-md-right">Premio para la actividad</label>
-                            <div class="col-md-7" style="margin-top: 5px; margin-bottom: 5px;">
-                                <select name="premio_asignado" class="form-control sm:w-56" required>
-                                    <option value="null" disabled selected>Ingresa premio o insignia</option>
-                                    <option value="null">Ninguno</option>
-                                    @foreach ($premios as $premio)
-                                        <option value="{{ $premio->id }}|{{ $premio->limite }}">{{ $premio->nombre }}</option>
-                                    @endforeach
-                                </select>
-                                
-                            </div>
                             <div class="form-group row">
                                 <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Tiempo estimado (TEC)</label>
                                 <div class="col-md-6">
@@ -185,7 +172,6 @@
                                 <small id="Help" class="form-text text-muted">Ingresa el tiempo que crees tardar en completar la actividad</small>
                             </div>
                         </div>
-                            <br>
                             <div class="form-group row">
                                 <label for="tiempo_estimado" class="col-md-4 col-form-label text-md-right">Experiencia</label>
                                 <div class="col-md-6">
@@ -225,8 +211,12 @@
                         <div class="form-group row">
                             <label for="select_premio" class="col-md-4 col-form-label text-md-right">Premio</label>
                             <div class="col-md-6">
-                                <select  class="tom-select" id="select_premio" name="premio">
-                                
+                                <select name="premio_asignado" class="tom-select" required>
+                                    <option value="null" disabled selected>Ingresa premio o insignia</option>
+                                    <option value="null">Ninguno</option>
+                                    @foreach ($premios as $premio)
+                                        <option value="{{ $premio->id }}">{{ $premio->nombre }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -242,8 +232,6 @@
                                 </select>
                             </div>
                         </div>
-
-
                         <div id="campo_adicional_prestador" style="display: none;">
                             <div class="form-group row">
                                 <label for="select_prestador" class="col-md-4 col-form-label text-md-right">Prestador/es</label>
@@ -259,7 +247,6 @@
                                 <small id="Help" class="form-text text-muted">Selecciona a los prestadores para realizar la actividad</small>
                             </div>
                         </div>
-
                         <div id="campo_adicional_proyecto" style="display: none;">
                             <div class="form-group row">
                                 <label for="numero_veces" class="col-md-4 col-form-label text-md-right">Número de veces</label>

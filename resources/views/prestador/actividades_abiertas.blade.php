@@ -30,10 +30,10 @@
             <div class="detalle">
                 <span class="subtitulo">Proyecto:</span> {{ $actividad->proyecto_origen }}
                 <br>{{ $actividad->categoria }} | </span>
-
                 @if(isset($actividad->subcategoria))
                     <span class="subcategoria">{{ $actividad->subcategoria }}</span><br>
                 @endif
+                <span class="subtitulo">Premio disponible:</span> <br>
                 <span class="subtitulo">Fecha:</span> {{ $actividad->fecha }} 
             </div>
             <div class="detalle">
