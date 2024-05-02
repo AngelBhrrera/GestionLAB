@@ -271,7 +271,7 @@
             <div class="2xl:border-l border-slate-300/50 h-full 2xl:pt-6 pb-6">
                 <div class="2xl:pl-6 grid grid-cols-12 gap-x-6 gap-y-8">                          
                     <!-- BEGIN: Otras opciones-->
-                    @if(isset($iltimaActualizacion))   
+                    @if(isset($ultimaActualizacion))   
                     <div class="col-span-12 md:col-span-6 xl:col-span-4 2xl:col-span-12">
                         <div class="intro-x flex items-center h-10">
                             <h2 class="text-lg font-medium truncate mr-5">ACCIONES</h2>
