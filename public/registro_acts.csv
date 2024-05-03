@@ -1,131 +1,240 @@
-id_prestador,horario,semanas_actividad,carrera,experiencia,experiencia_mensual,experiencia_semanal,periodo,id_actividad,dificultad,nombre_categoria,nombre_subcategoria,TEC,resultado
-25,Matutino,0,INBI,61,0,0,1,1,Facil,Impresion,"No Aplica",20,Excelente
-104,Vespertino,0,ICOM,1,20,0,1,1,Facil,Impresion,"No Aplica",20,Bueno
-34,Matutino,6,ICOM,71,0,0,1,1,Facil,Impresion,"No Aplica",20,Excelente
-63,Matutino,3,INNI,55,50,0,1,9,Medio,Diseño,"No Aplica",490,Excelente
-62,Matutino,3,INNI,61,30,0,1,9,Medio,Diseño,"No Aplica",490,Regular
-61,Matutino,3,INCE,61,10,0,1,9,Medio,Diseño,"No Aplica",490,Excelente
-60,Matutino,3,INME,25,49,0,1,9,Medio,Diseño,"No Aplica",490,Bueno
-59,Matutino,3,INNI,59,36,0,1,9,Medio,Diseño,"No Aplica",490,Excelente
-58,Matutino,3,INNI,91,50,0,1,9,Medio,Diseño,"No Aplica",490,Excelente
-55,Matutino,3,INCE,37,44,0,1,9,Medio,Diseño,"No Aplica",490,Excelente
-54,Matutino,3,INCE,9,50,0,1,9,Medio,Diseño,"No Aplica",490,Excelente
-53,Matutino,3,INNI,81,50,0,1,9,Medio,Diseño,"No Aplica",490,Excelente
-51,Matutino,3,LIFI,47,48,0,1,9,Medio,Diseño,"No Aplica",490,Excelente
-50,Matutino,3,INBI,65,80,0,1,9,Medio,Diseño,"No Aplica",490,Excelente
-49,Matutino,2,ICOM,59,46,0,1,9,Medio,Diseño,"No Aplica",490,Excelente
-48,Matutino,3,INNI,73,40,0,1,9,Medio,Diseño,"No Aplica",490,Bueno
-47,Matutino,2,ICOM,21,26,0,1,9,Medio,Diseño,"No Aplica",490,Excelente
-46,Matutino,3,ICOM,37,0,0,1,9,Medio,Diseño,"No Aplica",490,Bueno
-45,Matutino,3,INNI,6,70,0,1,9,Medio,Diseño,"No Aplica",490,Excelente
-43,Sabatino,3,ICOM,1,38,0,1,9,Medio,Diseño,"No Aplica",490,Bueno
-41,Matutino,3,INME,41,50,0,1,9,Medio,Diseño,"No Aplica",490,Bueno
-40,Mediodia,3,ICOM,21,62,0,1,9,Medio,Diseño,"No Aplica",490,Excelente
-39,Matutino,3,ICOM,21,10,0,1,9,Medio,Diseño,"No Aplica",490,Excelente
-38,Matutino,3,ICOM,6,26,0,1,9,Medio,Diseño,"No Aplica",490,Excelente
-35,Vespertino,3,ICOM,1,46,0,1,9,Medio,Diseño,"No Aplica",490,Excelente
-28,Mediodia,2,INDU,1,30,0,1,9,Medio,Diseño,"No Aplica",490,Excelente
-26,Sabatino,3,INNI,4,10,0,1,9,Medio,Diseño,"No Aplica",490,Excelente
-36,Matutino,3,ICOM,69,50,0,1,9,Medio,Diseño,"No Aplica",490,Excelente
-37,Matutino,3,ICOM,68,50,0,1,9,Medio,Diseño,"No Aplica",490,Excelente
-40,Mediodia,3,ICOM,21,62,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-66,Matutino,3,ICOM,61,26,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-63,Matutino,3,INNI,55,50,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-62,Matutino,3,INNI,61,30,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-61,Matutino,3,INCE,61,10,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-60,Matutino,3,INME,25,49,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-59,Matutino,3,INNI,59,36,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-58,Matutino,3,INNI,91,50,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-55,Matutino,3,INCE,37,44,0,1,13,Medio,Diseño,"No Aplica",481,Bueno
-54,Matutino,3,INCE,9,50,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-53,Matutino,3,INNI,81,50,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-52,Matutino,3,INME,11,24,0,1,13,Medio,Diseño,"No Aplica",481,Bueno
-51,Matutino,3,LIFI,47,48,0,1,13,Medio,Diseño,"No Aplica",481,Bueno
-50,Matutino,3,INBI,65,80,0,1,13,Medio,Diseño,"No Aplica",481,Bueno
-49,Matutino,2,ICOM,59,46,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-48,Matutino,3,INNI,73,40,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-47,Matutino,2,ICOM,21,26,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-45,Matutino,3,INNI,6,70,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-44,Matutino,2,ICOM,57,10,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-43,Sabatino,3,ICOM,1,38,0,1,13,Medio,Diseño,"No Aplica",481,Bueno
-41,Matutino,3,INME,41,50,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-39,Matutino,3,ICOM,21,10,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-38,Matutino,3,ICOM,6,26,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-35,Vespertino,3,ICOM,1,46,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-28,Mediodia,2,INDU,1,30,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-26,Sabatino,3,INNI,4,10,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-36,Matutino,3,ICOM,69,50,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-37,Matutino,3,ICOM,68,50,0,1,13,Medio,Diseño,"No Aplica",481,Excelente
-104,Vespertino,0,ICOM,1,20,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-66,Matutino,3,ICOM,61,26,0,1,14,Dificil,Diseño,"No Aplica",490,Bueno
-63,Matutino,3,INNI,55,50,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-62,Matutino,3,INNI,61,30,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-60,Matutino,3,INME,25,49,0,1,14,Dificil,Diseño,"No Aplica",490,Bueno
-59,Matutino,3,INNI,59,36,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-55,Matutino,3,INCE,37,44,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-54,Matutino,3,INCE,9,50,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-53,Matutino,3,INNI,81,50,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-52,Matutino,3,INME,11,24,0,1,14,Dificil,Diseño,"No Aplica",490,Bueno
-51,Matutino,3,LIFI,47,48,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-50,Matutino,3,INBI,65,80,0,1,14,Dificil,Diseño,"No Aplica",490,Bueno
-49,Matutino,2,ICOM,59,46,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-48,Matutino,3,INNI,73,40,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-47,Matutino,2,ICOM,21,26,0,1,14,Dificil,Diseño,"No Aplica",490,Bueno
-45,Matutino,3,INNI,6,70,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-43,Sabatino,3,ICOM,1,38,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-41,Matutino,3,INME,41,50,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-40,Mediodia,3,ICOM,21,62,0,1,14,Dificil,Diseño,"No Aplica",490,Bueno
-38,Matutino,3,ICOM,6,26,0,1,14,Dificil,Diseño,"No Aplica",490,Bueno
-35,Vespertino,3,ICOM,1,46,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-28,Mediodia,2,INDU,1,30,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-36,Matutino,3,ICOM,69,50,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-37,Matutino,3,ICOM,68,50,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-110,Vespertino,2,INNI,1,20,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-94,Mediodia,2,INBI,1,20,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-91,Mediodia,0,ICOM,6,24,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-90,Mediodia,2,ICOM,1,25,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-89,Mediodia,2,INNI,17,20,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-88,Mediodia,3,ICOM,21,20,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-87,Mediodia,3,INBI,21,20,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-85,Matutino,2,INCE,1,18,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-80,Matutino,2,ICOM,1,20,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-79,Matutino,2,INCE,1,20,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-65,Matutino,2,ICOM,1,20,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-56,Matutino,3,INNI,49,20,0,1,14,Dificil,Diseño,"No Aplica",490,Excelente
-85,Matutino,2,INCE,1,18,0,1,1,Facil,Impresion,"No Aplica",20,Deficiente
-91,Mediodia,0,ICOM,6,24,0,1,1,Facil,Impresion,"No Aplica",20,Bueno
-112,Vespertino,2,DATI,1,5,0,1,6,Facil,Programacion,Web,720,Excelente
-48,Matutino,3,INNI,73,40,0,1,16,Dificil,Diseño,"No Aplica",360,Regular
-59,Matutino,3,INNI,59,36,0,1,16,Dificil,Diseño,"No Aplica",360,Deficiente
-63,Matutino,3,INNI,55,50,0,1,16,Dificil,Diseño,"No Aplica",360,Excelente
-55,Matutino,3,INCE,37,44,0,1,17,Dificil,Diseño,"No Aplica",360,Bueno
-51,Matutino,3,LIFI,47,48,0,1,17,Dificil,Diseño,"No Aplica",360,Excelente
-37,Matutino,3,ICOM,68,50,0,1,18,Dificil,Diseño,"No Aplica",360,Excelente
-41,Matutino,3,INME,41,50,0,1,18,Dificil,Diseño,"No Aplica",360,Excelente
-36,Matutino,3,ICOM,69,50,0,1,18,Dificil,Diseño,"No Aplica",360,Excelente
-40,Mediodia,3,ICOM,21,62,0,1,17,Dificil,Diseño,"No Aplica",360,Excelente
-49,Matutino,2,ICOM,59,46,0,1,17,Dificil,Diseño,"No Aplica",360,Bueno
-60,Matutino,3,INME,25,49,0,1,20,Dificil,Impresion,"No Aplica",360,Regular
-50,Matutino,3,INBI,65,80,0,1,21,Dificil,Impresion,"No Aplica",360,Excelente
-54,Matutino,3,INCE,9,50,0,1,22,Dificil,Impresion,"No Aplica",360,Regular
-45,Matutino,3,INNI,6,70,0,1,21,Dificil,Impresion,"No Aplica",360,Excelente
-43,Sabatino,3,ICOM,1,38,0,1,23,Dificil,Investigación,"No Aplica",120,Regular
-40,Mediodia,3,ICOM,21,62,0,1,23,Dificil,Investigación,"No Aplica",120,Bueno
-58,Matutino,3,INNI,91,50,0,1,24,Dificil,Impresion,"No Aplica",900,Excelente
-83,Matutino,3,ICOM,1,5,0,1,25,Facil,Programacion,Software,480,Excelente
-78,Matutino,3,ICOM,1,5,0,1,25,Facil,Programacion,Software,480,Excelente
-90,Mediodia,2,ICOM,1,25,0,1,25,Facil,Programacion,Software,480,Excelente
-60,Matutino,3,INME,25,49,0,1,26,Facil,Impresion,"No Aplica",250,Aceptable
-50,Matutino,3,INBI,65,80,0,1,27,Dificil,Eventos,"No Aplica",724,Bueno
-35,Vespertino,3,ICOM,1,46,0,1,27,Dificil,Eventos,"No Aplica",724,Bueno
-53,Matutino,3,INNI,81,50,0,1,28,Dificil,Electronica,"No Aplica",970,Excelente
-127,Mediodia,1,INCE,1,3,0,1,2,Medio,Mantenimiento,"No Aplica",90,Deficiente
-124,Sabatino,1,ICOM,4,10,0,1,2,Medio,Mantenimiento,"No Aplica",90,Excelente
-118,Sabatino,1,ICOM,1,3,0,1,1,Facil,Impresion,"No Aplica",20,Aceptable
-117,Sabatino,1,ICOM,1,10,0,1,8,Medio,Diseño,"No Aplica",310,Excelente
-119,Sabatino,1,ICOM,11,10,0,1,8,Medio,Diseño,"No Aplica",310,Excelente
-125,Sabatino,1,ICOM,4,10,0,1,8,Medio,Diseño,"No Aplica",310,Excelente
-126,Sabatino,1,ICOM,11,10,0,1,8,Medio,Diseño,"No Aplica",310,Excelente
-129,Matutino,1,INNI,1,10,0,1,8,Medio,Diseño,"No Aplica",310,Excelente
-123,Sabatino,1,ICOM,11,10,0,1,8,Medio,Diseño,"No Aplica",310,Excelente
-122,Sabatino,1,ICOM,11,10,0,1,8,Medio,Diseño,"No Aplica",310,Excelente
+"Horario","Carrera","Periodo","Semanas","Experiencia total","Exp Mensual","Exp Semanal","Dificultad","Categoria","Subcategoria","Tiempo Estimado","Resultado"
+"Matutino","INNI","1","8","1570","0","0","Facil","Impresion","No Aplica","20","Excelente"
+"Matutino","INNI","1","8","1570","0","0","Facil","Impresion","No Aplica","20","Excelente"
+"Matutino","INCO","1","9","1575","0","0","Facil","Impresion","No Aplica","20","Excelente"
+"Matutino","INNI","1","8","1570","0","0","Facil","Impresion","No Aplica","20","Excelente"
+"Matutino","INCO","1","9","69","0","7","Dificil","Mantenimiento","Preventivo","70","Excelente"
+"Matutino","INCO","1","0","6","0","0","Facil","Impresion","No Aplica","20","Excelente"
+"Matutino","INCO","1","7","71","0","0","Facil","Impresion","No Aplica","20","Excelente"
+"Matutino","INCO","1","9","1575","0","0","Facil","Impresion","No Aplica","20","Excelente"
+"Matutino","INME","1","4","25","0","0","Facil","Impresion","No Aplica","20","Bueno"
+"Matutino","INNI","1","7","6","0","0","Facil","Impresion","No Aplica","20","Excelente"
+"Matutino","INME","1","7","71","0","0","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INME","1","7","46","0","0","Medio","Diseño","No Aplica","490","Regular"
+"Matutino","INBI","1","7","21","0","0","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INCO","1","7","84","20","20","Medio","Diseño","No Aplica","490","Bueno"
+"Matutino","INCO","1","7","67","0","0","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INCO","1","7","61","0","0","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INNI","1","7","75","0","0","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INNI","1","7","67","0","0","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INCE","1","7","55","0","0","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INNI","1","7","79","0","0","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INNI","1","7","137","20","30","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INNI","1","7","72","5","5","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INNI","1","7","92","20","33","Medio","Diseño","No Aplica","490","Bueno"
+"Matutino","INCE","1","7","57","0","0","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INCE","1","7","9","0","0","Medio","Diseño","No Aplica","490","Bueno"
+"Matutino","INNI","1","7","87","0","0","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","LIFI","1","7","72","0","0","Medio","Diseño","No Aplica","490","Bueno"
+"Matutino","INCO","1","7","85","20","20","Medio","Diseño","No Aplica","490","Bueno"
+"Matutino","INNI","1","7","89","0","0","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INCO","1","7","21","0","0","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INBI","1","7","37","0","0","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INBI","1","7","57","0","0","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INME","1","4","41","0","0","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INCO","1","7","46","20","25","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INCO","1","9","69","0","7","Medio","Diseño","No Aplica","490","Bueno"
+"Matutino","INCO","1","9","103","0","-2","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INCO","1","7","71","0","0","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INCO","1","7","67","0","8","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INBI","1","7","61","0","0","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INBI","1","7","61","0","0","Medio","Diseño","No Aplica","490","Excelente"
+"Matutino","INCO","1","9","1575","0","0","Medio","Diseño","No Aplica","490","Excelente"
+"Mediodia","INCO","1","7","41","0","0","Medio","Diseño","No Aplica","250","Excelente"
+"Matutino","INCO","1","7","71","0","0","Facil","Impresion","No Aplica","20","Excelente"
+"Matutino","INNI","1","7","89","0","0","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INCO","1","7","27","0","0","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INME","1","7","71","0","0","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INME","1","7","46","0","0","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INBI","1","7","21","0","0","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INCO","1","7","84","20","20","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INCO","1","7","67","0","0","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INCO","1","7","61","0","0","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INNI","1","7","75","0","0","Medio","Diseño","No Aplica","481","Bueno"
+"Matutino","INNI","1","7","67","0","0","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INCE","1","7","55","0","0","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INME","1","4","25","0","0","Medio","Diseño","No Aplica","481","Bueno"
+"Matutino","INNI","1","7","79","0","0","Medio","Diseño","No Aplica","481","Bueno"
+"Matutino","INNI","1","7","137","20","30","Medio","Diseño","No Aplica","481","Bueno"
+"Matutino","INNI","1","7","72","5","5","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INNI","1","7","92","20","33","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INCE","1","7","57","0","0","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INNI","1","7","87","0","0","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INME","1","4","11","0","0","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","LIFI","1","7","72","0","0","Medio","Diseño","No Aplica","481","Bueno"
+"Matutino","INCO","1","7","69","0","0","Medio","Diseño","No Aplica","481","Bueno"
+"Matutino","INCO","1","7","85","20","20","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INCO","1","7","21","0","0","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INBI","1","7","37","0","0","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INBI","1","7","57","0","0","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INME","1","4","41","0","0","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INCO","1","7","46","20","25","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INCO","1","9","69","0","7","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INCO","1","9","103","0","-2","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INCO","1","7","71","0","0","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INCO","1","7","67","0","8","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INBI","1","7","61","0","0","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INBI","1","7","61","0","0","Medio","Diseño","No Aplica","481","Excelente"
+"Matutino","INME","1","4","25","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Matutino","INCO","1","7","27","0","0","Dificil","Diseño","No Aplica","490","Bueno"
+"Matutino","INME","1","7","71","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Matutino","INME","1","7","46","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Matutino","INCO","1","7","84","20","20","Dificil","Diseño","No Aplica","490","Bueno"
+"Matutino","INCO","1","7","67","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Matutino","INNI","1","7","75","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Matutino","INNI","1","7","67","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Matutino","INCE","1","7","55","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Matutino","INME","1","4","25","0","0","Dificil","Diseño","No Aplica","490","Bueno"
+"Matutino","INNI","1","7","79","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Matutino","INNI","1","7","137","20","30","Dificil","Diseño","No Aplica","490","Bueno"
+"Matutino","INNI","1","7","72","5","5","Dificil","Diseño","No Aplica","490","Excelente"
+"Matutino","INNI","1","7","92","20","33","Dificil","Diseño","No Aplica","490","Excelente"
+"Matutino","INCE","1","7","57","0","0","Dificil","Diseño","No Aplica","490","Bueno"
+"Matutino","INNI","1","7","87","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Matutino","LIFI","1","7","72","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Matutino","INCO","1","7","69","0","0","Dificil","Diseño","No Aplica","490","Bueno"
+"Matutino","INCO","1","7","85","20","20","Dificil","Diseño","No Aplica","490","Excelente"
+"Matutino","INNI","1","7","89","0","0","Dificil","Diseño","No Aplica","490","Bueno"
+"Matutino","INBI","1","7","37","0","0","Dificil","Diseño","No Aplica","490","Bueno"
+"Matutino","INBI","1","7","57","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Matutino","INME","1","4","41","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Matutino","INCO","1","9","69","0","7","Dificil","Diseño","No Aplica","490","Bueno"
+"Matutino","INCO","1","9","103","0","-2","Dificil","Diseño","No Aplica","490","Bueno"
+"Matutino","INCO","1","7","71","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Matutino","INCO","1","7","67","0","8","Dificil","Diseño","No Aplica","490","Bueno"
+"Matutino","INBI","1","7","61","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Matutino","INBI","1","7","61","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Matutino","INDI","1","3","21","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Mediodia","INCE","1","4","17","0","0","Dificil","Diseño","No Aplica","490","Bueno"
+"Mediodia","INCO","1","4","21","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Mediodia","Artes visuales para su expresión plástica","1","4","18","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Mediodia","INNI","1","3","31","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Mediodia","INBI","1","4","35","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Mediodia","INCO","1","4","36","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Mediodia","INCO","1","4","35","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Mediodia","INDU","1","4","26","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Mediodia","INBI","1","4","31","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Mediodia","INCO","1","4","30","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Mediodia","INNI","1","4","20","0","0","Dificil","Diseño","No Aplica","490","Bueno"
+"Mediodia","ICOM","1","4","31","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Mediodia","ICOM","1","4","31","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Mediodia","INCO","1","4","21","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Mediodia","INCO","1","7","41","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Mediodia","INCO","1","7","36","0","0","Dificil","Diseño","No Aplica","490","Excelente"
+"Mediodia","INCO","1","4","30","0","0","Facil","Impresion","No Aplica","20","Deficiente"
+"Mediodia","INBI","1","4","35","0","0","Facil","Impresion","No Aplica","20","Bueno"
+"Matutino","INCO","1","9","103","0","-2","Dificil","Mantenimiento","Correctivo","480","Excelente"
+"Matutino","INCO","1","7","71","0","0","Dificil","Mantenimiento","Correctivo","480","Excelente"
+"Matutino","INME","1","3","6","0","0","Facil","Programacion","Web","720","Excelente"
+"Matutino","INNI","1","7","92","20","33","Dificil","Diseño","No Aplica","360","Regular"
+"Matutino","INCO","1","7","67","0","0","Dificil","Diseño","No Aplica","360","Deficiente"
+"Matutino","INCE","1","7","55","0","0","Dificil","Diseño","No Aplica","360","Deficiente"
+"Matutino","INME","1","7","71","0","0","Dificil","Diseño","No Aplica","360","Excelente"
+"Matutino","INNI","1","7","75","0","0","Dificil","Diseño","No Aplica","360","Bueno"
+"Matutino","INNI","1","7","79","0","0","Dificil","Diseño","No Aplica","360","Excelente"
+"Matutino","INBI","1","7","61","0","0","Dificil","Diseño","No Aplica","360","Excelente"
+"Matutino","INCO","1","7","67","0","8","Dificil","Diseño","No Aplica","360","Bueno"
+"Matutino","INCO","1","7","85","20","20","Dificil","Diseño","No Aplica","360","Excelente"
+"Matutino","INBI","1","7","61","0","0","Dificil","Diseño","No Aplica","360","Excelente"
+"Matutino","INNI","1","7","89","0","0","Dificil","Diseño","No Aplica","360","Excelente"
+"Matutino","INNI","1","7","72","5","5","Dificil","Diseño","No Aplica","360","Bueno"
+"Matutino","INCO","1","9","103","0","-2","Dificil","Impresion","No Aplica","360","Deficiente"
+"Matutino","INCO","1","7","84","20","20","Dificil","Impresion","No Aplica","360","Regular"
+"Matutino","INNI","1","7","137","20","30","Dificil","Impresion","No Aplica","360","Excelente"
+"Matutino","INNI","1","7","67","0","0","Dificil","Impresion","No Aplica","360","Regular"
+"Matutino","INNI","1","7","87","0","0","Dificil","Impresion","No Aplica","360","Excelente"
+"Matutino","INCO","1","7","69","0","0","Dificil","Impresion","No Aplica","360","Excelente"
+"Matutino","LIFI","1","7","72","0","0","Dificil","Investigación","No Aplica","120","Regular"
+"Matutino","INNI","1","7","89","0","0","Dificil","Investigación","No Aplica","120","Bueno"
+"Matutino","INCO","1","7","61","0","0","Dificil","Impresion","No Aplica","900","Excelente"
+"Mediodia","INCO","1","4","35","0","0","Facil","Programacion","Software","480","Bueno"
+"Mediodia","INCO","1","4","6","0","0","Facil","Programacion","Software","480","Excelente"
+"Mediodia","INNI","1","4","20","0","0","Facil","Programacion","Software","480","Deficiente"
+"Mediodia","ICOM","1","4","31","0","0","Facil","Programacion","Software","480","Regular"
+"Mediodia","INCO","1","7","36","0","0","Facil","Programacion","Software","480","Excelente"
+"Mediodia","ICOM","1","4","6","0","0","Facil","Programacion","Software","480","Excelente"
+"Mediodia","ICOM","1","4","31","0","0","Facil","Programacion","Software","480","Regular"
+"Mediodia","INCO","1","4","30","0","0","Facil","Programacion","Software","480","Aceptable"
+"Mediodia","INCO","1","4","36","0","0","Facil","Programacion","Software","480","Excelente"
+"Matutino","INCO","1","7","84","20","20","Facil","Impresion","No Aplica","250","Aceptable"
+"Matutino","INCO","1","9","69","0","7","Facil","Impresion","No Aplica","250","Aceptable"
+"Matutino","INNI","1","7","137","20","30","Dificil","Eventos","No Aplica","724","Bueno"
+"Matutino","INBI","1","7","57","0","0","Dificil","Eventos","No Aplica","724","Bueno"
+"Matutino","INCE","1","7","57","0","0","Dificil","Electronica","No Aplica","970","Excelente"
+"Matutino","INCE","1","7","55","0","0","Dificil","Electronica","No Aplica","970","Excelente"
+"Matutino","INME","1","7","71","0","0","Dificil","Eventos","No Aplica","610","Regular"
+"Matutino","INCO","1","9","103","0","-2","Dificil","Eventos","No Aplica","610","Excelente"
+"Matutino","INME","1","7","46","0","0","Dificil","Eventos","No Aplica","610","Regular"
+"Matutino","INCO","1","3","1560","0","0","Facil","Impresion","No Aplica","20","Excelente"
+"Sabatino","INNI","1","8","4","0","0","Medio","Mantenimiento","No Aplica","90","Deficiente"
+"Sabatino","INCO","1","2","10","0","0","Medio","Mantenimiento","No Aplica","90","Deficiente"
+"Sabatino","INCO","1","2","10","0","0","Medio","Mantenimiento","No Aplica","90","Deficiente"
+"Sabatino","LIFI","1","2","5","0","0","Medio","Mantenimiento","No Aplica","90","Excelente"
+"Sabatino","INRO","1","2","16","0","0","Facil","Impresion","No Aplica","20","Aceptable"
+"Sabatino","ICOM","1","2","17","0","0","Medio","Diseño","No Aplica","310","Excelente"
+"Sabatino","ICOM","1","2","17","0","0","Medio","Diseño","No Aplica","310","Excelente"
+"Sabatino","INCO","1","2","17","0","0","Medio","Diseño","No Aplica","310","Excelente"
+"Sabatino","INCO","1","2","17","0","0","Medio","Diseño","No Aplica","310","Excelente"
+"Sabatino","INCO","1","2","11","0","0","Medio","Diseño","No Aplica","310","Excelente"
+"Sabatino","ICOM","1","2","4","0","0","Medio","Diseño","No Aplica","310","Deficiente"
+"Sabatino","INCO","1","2","17","0","0","Medio","Diseño","No Aplica","310","Excelente"
+"Sabatino","INCO","1","2","17","0","0","Medio","Diseño","No Aplica","310","Excelente"
+"Vespertino","ICOM","1","3","6","0","0","Facil","Impresion","No Aplica","20","Excelente"
+"Vespertino","INNI","1","3","6","0","0","Facil","Impresion","No Aplica","20","Excelente"
+"Mediodia","Artes visuales para su expresión plástica","1","4","18","0","0","Medio","Diseño","No Aplica","250","Deficiente"
+"Mediodia","INNI","1","3","31","0","0","Medio","Diseño","No Aplica","250","Excelente"
+"Mediodia","INBI","1","4","35","0","0","Medio","Diseño","No Aplica","250","Excelente"
+"Mediodia","INCO","1","4","36","0","0","Medio","Diseño","No Aplica","250","Excelente"
+"Mediodia","INCO","1","4","35","0","0","Medio","Diseño","No Aplica","250","Excelente"
+"Mediodia","INDU","1","4","26","0","0","Medio","Diseño","No Aplica","250","Regular"
+"Mediodia","INBI","1","4","31","0","0","Medio","Diseño","No Aplica","250","Excelente"
+"Mediodia","INCO","1","4","30","0","0","Medio","Diseño","No Aplica","250","Bueno"
+"Mediodia","INNI","1","4","20","0","0","Medio","Diseño","No Aplica","250","Regular"
+"Mediodia","ICOM","1","4","31","0","0","Medio","Diseño","No Aplica","250","Bueno"
+"Mediodia","ICOM","1","4","31","0","0","Medio","Diseño","No Aplica","250","Bueno"
+"Mediodia","INCO","1","7","41","0","0","Medio","Diseño","No Aplica","250","Excelente"
+"Mediodia","INCO","1","7","36","0","0","Medio","Diseño","No Aplica","250","Excelente"
+"Matutino","INCO","1","7","69","0","0","Facil","Impresion","No Aplica","250","Bueno"
+"Matutino","LIFI","1","7","72","0","0","Facil","Impresion","No Aplica","20","Excelente"
+"Matutino","INNI","1","7","75","0","0","Dificil","Programacion","Software","240","Excelente"
+"Matutino","INNI","1","7","92","20","33","Dificil","Programacion","Software","240","Regular"
+"Matutino","INNI","1","7","79","0","0","Dificil","Programacion","Software","240","Excelente"
+"Matutino","INNI","1","7","89","0","0","Dificil","Programacion","Software","240","Bueno"
+"Matutino","INCO","1","7","84","20","20","Dificil","Programacion","Software","240","Deficiente"
+"Matutino","INCO","1","7","85","20","20","Dificil","Programacion","Software","240","Deficiente"
+"Matutino","INCO","1","7","67","0","8","Dificil","Programacion","Software","240","Deficiente"
+"Matutino","INCO","1","9","103","0","-2","Dificil","Programacion","Software","240","Bueno"
+"Matutino","INCO","1","7","67","0","0","Dificil","Programacion","Software","240","Excelente"
+"Matutino","INCO","1","9","69","0","7","Dificil","Programacion","Software","240","Deficiente"
+"Matutino","INNI","1","7","137","20","30","Dificil","Programacion","Software","240","Bueno"
+"Matutino","INNI","1","7","67","0","0","Dificil","Programacion","Software","240","Deficiente"
+"Matutino","INNI","1","7","87","0","0","Dificil","Programacion","Software","240","Deficiente"
+"Matutino","INNI","1","7","72","5","5","Dificil","Programacion","Software","240","Regular"
+"Matutino","LIFI","1","7","72","0","0","Dificil","Programacion","Software","240","Excelente"
+"Sabatino","ICOM","1","2","17","0","0","Dificil","Programacion","Web","345","Deficiente"
+"Sabatino","ICOM","1","2","17","0","0","Dificil","Programacion","Web","345","Deficiente"
+"Sabatino","INCO","1","2","17","0","0","Dificil","Programacion","Web","345","Deficiente"
+"Sabatino","LIFI","1","2","5","0","0","Dificil","Programacion","Web","345","Deficiente"
+"Sabatino","INCO","1","2","17","0","0","Dificil","Programacion","Web","345","Deficiente"
+"Sabatino","INCO","1","2","17","0","0","Dificil","Programacion","Web","345","Deficiente"
+"Sabatino","INCO","1","2","10","0","0","Dificil","Programacion","Web","345","Deficiente"
+"Sabatino","INCO","1","2","10","0","0","Dificil","Programacion","Web","345","Deficiente"
+"Sabatino","INCO","1","2","17","0","0","Dificil","Programacion","Web","345","Deficiente"
+"Sabatino","INRO","1","2","16","0","0","Dificil","Diseño","No Aplica","300","Deficiente"
+"Matutino","INNI","1","7","92","20","33","Facil","Impresion","No Aplica","20","Aceptable"
+"Matutino","INCO","1","9","69","0","7","Facil","Impresion","No Aplica","20","Regular"
+"Matutino","INCO","1","9","103","0","-2","Facil","Impresion","No Aplica","20","Deficiente"
+"Matutino","INCO","1","7","67","0","8","Facil","Impresion","No Aplica","20","Aceptable"
+"Matutino","INCO","1","9","69","0","7","Facil","Impresion","No Aplica","20","Excelente"
+"Matutino","INNI","1","7","137","20","30","Facil","Administracion","No Aplica","240","Excelente"
+"Matutino","INNI","1","7","137","20","30","Facil","Administracion","No Aplica","240","Excelente"
+"Matutino","INCO","1","7","46","20","25","Facil","Administracion","No Aplica","240","Excelente"
+"Matutino","INNI","1","7","92","20","33","Facil","Administracion","No Aplica","240","Excelente"
+"Matutino","INNI","1","7","92","20","33","Facil","Impresion","No Aplica","20","Excelente"
+"Matutino","INCO","1","7","67","0","8","Facil","Impresion","No Aplica","20","Excelente"
+"Matutino","INCO","1","7","46","20","25","Dificil","IA","No Aplica","730","Excelente"
+"Matutino","INNI","1","7","92","20","33","Dificil","IA","No Aplica","730","Excelente"
+"Matutino","INCO","1","7","84","20","20","Dificil","IA","No Aplica","730","Excelente"
+"Matutino","INNI","1","7","137","20","30","Dificil","IA","No Aplica","730","Excelente"
+"Matutino","INCO","1","7","85","20","20","Dificil","Investigación","No Aplica","490","Excelente"
+"Matutino","INNI","1","7","72","5","5","Facil","Impresion","No Aplica","20","Excelente"
