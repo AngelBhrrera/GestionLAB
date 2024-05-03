@@ -18,7 +18,7 @@
                     <option value="Vespertino">Vespertino</option>
                     <option value="Sabatino">Sabatino</option>
                 </select>
-                <select name="id">
+                <select name="id" id="id">
                 <option value="">Selecciona una actividad</option>
                     @foreach($actividades as $actividad)
                         <option value="{{ $actividad->id }}">{{ $actividad->titulo }}</option>
@@ -52,9 +52,12 @@
 
 @section('script')
 
+    <script>
 
-        <script>
+        var idArea = "{{ Auth::user()->area }}";
+
         var prestadores = @json($prestadores);
+
         document.getElementById('horarioSelect').addEventListener('change', function() {
                 var selectedHorario = this.value;
                 var prestadoresTable = document.getElementById('prestadoresTable');
@@ -75,29 +78,41 @@
             });
 
             document.getElementById('miFormulario').addEventListener('submit', function(event) {
-                event.preventDefault(); // Evitar que el formulario se envíe de forma predeterminada
-                // Obtener los datos del formulario
-                const formData = new FormData(event.target);
-                // Realizar la solicitud POST
-                fetch('recomendaciones', {
-                    method: 'POST',
-                    body: formData
+                event.preventDefault(); 
+
+                let idAct = document.getElementById('id').value;
+                console.log(idAct);
+               
+                let turno = document.getElementById('horarioSelect').value;
+                console.log(turno);
+                console.log(idArea);
+
+                let url = `http://127.0.0.1:5000/predict/${idAct}/${idArea}/${turno}`;
+
+                fetch(url, {
+                method: "GET"
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        
+                    }
+                    console.log(response);
+                    return response.json();
+                })
                 .then(data => {
 
-                    console.log(data);
                     const tableBody = document.getElementById('prestadoresTable').getElementsByTagName('tbody')[0];
    
                     tableBody.innerHTML = '';
-                    const recomendaciones = JSON.parse(data.recomendaciones);
+                    const recomendaciones = data;
 
                     recomendaciones.forEach(recomendacion => {
                         const row = document.createElement('tr');
 
                         const nameCell = document.createElement('td');
                         const horarioCell = document.createElement('td');
-                        
+
+                        console.log(recomendacion);
 
                         const prestador = prestadores.find(p => p.id === recomendacion.id_prestador);
                         if (prestador) {
@@ -131,7 +146,7 @@
                     });
                 })
                 .catch(error => {
-                    // Manejar errores
+                    console.log(error);
                     console.error('Error:', error);
                 });
             });

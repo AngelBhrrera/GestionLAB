@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Exception;
+use GuzzleHttp\Client;
 
 class MachineLearningController extends Controller
 {
@@ -222,7 +223,7 @@ class MachineLearningController extends Controller
 
     }
 
-    public function obtenerRecomendaciones(Request $request)
+    public function obtenerRecomendacionesDelta(Request $request)
     {
         $id = $request->input('id');
         $t = $request->input('otro_dato');
@@ -232,12 +233,7 @@ class MachineLearningController extends Controller
         try {
             // Hacer una petición POST al otro servicio
             $client = new \GuzzleHttp\Client();
-            $response = $client->request('POST', 'http://http://icaroia.inventores.org/resultados.json', [
-                'json' => [
-                    'id' => $id,
-                    'otro_dato' => $t
-                ]
-            ]);
+            $response = $client->request('POST', 'http://127.0.0.1:5000/predict');
 
             // Decodificar la respuesta JSON del otro servicio
             $recomendaciones = json_decode($response->getBody()->getContents(), true);
@@ -246,6 +242,54 @@ class MachineLearningController extends Controller
             return response()->json(['recomendaciones' => $recomendaciones]);
         } catch (Exception $e) {
             // Manejar el error: imprime el mensaje de error o haz lo que consideres adecuado
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function obtenerRecomendaciones(Request $request)
+    {
+        echo "a";
+        $id = $request->input('id');
+        $t = $request->input('otro_dato');
+        $this->obtenerActividad($id);
+        $this->obtenerPrestadores($t);
+    
+        try {
+            echo "b";
+            // Crear un nuevo cliente Guzzle
+            $client = new \GuzzleHttp\Client();
+    
+            // Hacer la solicitud GET
+            $response = $client->request('POST', 'http://127.0.0.1:5000/predict');
+
+            echo $response;
+            echo $response->getBody();
+    
+            // Verificar que la respuesta HTTP es 200
+            if ($response->getStatusCode() !== 200) {
+                throw new Exception('La respuesta HTTP no fue 200');
+            }
+    
+            // Obtener el cuerpo de la respuesta
+            $body = $response->getBody()->getContents();
+    
+            // Verificar que el cuerpo de la respuesta no está vacío
+            if (empty($body)) {
+                throw new Exception('El cuerpo de la respuesta está vacío');
+            }
+    
+            // Intentar decodificar la respuesta JSON
+            $datos = json_decode($body, true);
+    
+            // Verificar si la decodificación fue exitosa
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception('Error al decodificar la respuesta JSON: ' . json_last_error_msg());
+            }
+    
+            // Devolver los datos como respuesta
+            return response()->json(['recomendaciones' => $datos]);
+        } catch (Exception $e) {
+            echo "c";
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

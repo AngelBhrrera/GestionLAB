@@ -183,8 +183,9 @@ class AdminController extends Controller
         $actividades = DB::table('actividades')
             ->whereNotNull('TEC')
             ->get();
+        $area = Auth::user()->area;  
     
-        return view('testApi', compact('prestadores', 'actividades'));
+        return view('testApi', compact('prestadores', 'actividades', 'area'));
     }
 
     public function home(){
