@@ -571,18 +571,14 @@ class AdminController extends Controller
         return $proyectos;
     }
    
-
     public function actividades(){
 
-  
         $listaActs = DB::table('seguimiento_actividades');
-
         $reviewActs = $listaActs ->whereIn('seguimiento_actividades.estado', ['En revision', 'Error'])
             ->join('proyectos', 'seguimiento_actividades.id_proyecto', '=', 'proyectos.id')
             ->select('seguimiento_actividades.*', 'proyectos.turno');
-
-        $pR = DB::table('seguimiento_actividades')
-            ->whereIn('estado', ['En revision', 'Error']);
+        $pR = DB::table('actividades')
+            ->whereNull('TEC');
 
         $prestadores = DB::table('solo_prestadores');
         $categorias = DB::table('categorias')->orderBy('nombre')->get();
@@ -594,10 +590,9 @@ class AdminController extends Controller
                     ->from('proyectos')
                     ->where('id_area', auth()->user()->area);
             });
-            $pR->whereIn('id_proyecto', function ($query) {
-                $query->select('id')
-                    ->from('proyectos')
-                    ->where('id_area', auth()->user()->area);
+            $pR->where(function($query) {
+                $query->where('tipo', 0)
+                ->orWhere('tipo', auth()->user()->area);
             });
             $prestadores->where('id_area', auth()->user()->area)
                 ->where('horario', auth()->user()->horario);
@@ -614,15 +609,6 @@ class AdminController extends Controller
             }
         }else  if( auth()->user()->tipo == 'jefe sede'){
             $listaActs->whereIn('id_proyecto', function ($query) {
-                $query->select('id')
-                    ->from('proyectos')
-                    ->whereIn('id_area', function ($subquery) {
-                        $subquery->select('id_sede')
-                                ->from('areas')
-                                ->where('id_sede', auth()->user()->sede);
-                    });
-            });
-            $pR->whereIn('id_proyecto', function ($query) {
                 $query->select('id')
                     ->from('proyectos')
                     ->whereIn('id_area', function ($subquery) {
@@ -654,14 +640,29 @@ class AdminController extends Controller
         $aPrestador = $this->get_aPrestadores();
         $aProyectos = $this->get_aProyectos();
 
+        $acts = DB::table('actividades')
+            ->select('actividades.id', 'titulo', 'TEC' , 'exp_ref', 'descripcion', 'recursos', 'objetivos', 'categorias.nombre AS categoria', 'subcategorias.nombre AS subcategoria')
+            ->join('categorias', 'id_categoria', '=', 'categorias.id')
+            ->join('subcategorias', 'id_subcategoria', '=', 'subcategorias.id')
+            ->get();
+
+        $cat = DB::table('categorias')
+            ->select('categorias.id', 'categorias.nombre',
+                DB::raw('COALESCE(actividades.total_actividades, "No existen") AS total_actividades'),
+                DB::raw('CASE WHEN subcategorias.total_subcategorias > 0 THEN subcategorias.total_subcategorias ELSE "No aplica" END AS total_subcategorias'))
+            ->leftJoin(DB::raw('(SELECT id_categoria, COUNT(*) AS total_actividades FROM actividades GROUP BY id_categoria) as actividades'), 'categorias.id', '=', 'actividades.id_categoria')
+            ->leftJoin(DB::raw('(SELECT categoria, COUNT(*) AS total_subcategorias FROM subcategorias GROUP BY categoria) as subcategorias'), 'categorias.id', '=', 'subcategorias.categoria')
+            ->get();
+
         return view( 'admin/actividades', [ 'prestadores' => $prestadores,
             'categorias' => $categorias, 'subcategorias' => $subcategorias,
             'aActividades' => $aActividad,  'aProyectos' => $aProyectos,  'aPrestadores' => $aPrestador,
             'data1' =>json_encode($listaActs),
             'data2' =>json_encode($pR),
-            'data3' =>json_encode($reviewActs)]);
+            'data3' =>json_encode($reviewActs),
+            'data4' =>json_encode($acts),
+            'tabla_categorias' =>json_encode($cat)]);
     }
-
     public function actstate($id, $state) {
         DB::table('actividades_prestadores')
             ->where('id', $id)
