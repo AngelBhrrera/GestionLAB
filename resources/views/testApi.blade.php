@@ -18,7 +18,7 @@
                     <option value="Vespertino">Vespertino</option>
                     <option value="Sabatino">Sabatino</option>
                 </select>
-                <select name="id">
+                <select name="id" id="id">
                 <option value="">Selecciona una actividad</option>
                     @foreach($actividades as $actividad)
                         <option value="{{ $actividad->id }}">{{ $actividad->titulo }}</option>
@@ -51,53 +51,65 @@
 @endsection
 
 @section('script')
-
-
         <script>
+        var idArea = "{{ Auth::user()->area }}";
         var prestadores = @json($prestadores);
-        document.getElementById('horarioSelect').addEventListener('change', function() {
-                var selectedHorario = this.value;
-                var prestadoresTable = document.getElementById('prestadoresTable');
-                var rows = prestadoresTable.getElementsByTagName('tr');
 
-                // Oculta todas las filas de la tabla
-                for (var i = 1; i < rows.length; i++) {
-                    var horarioCell = rows[i].getElementsByTagName('td')[1];
-                    if (horarioCell) {
-                        var horario = horarioCell.textContent || horarioCell.innerText;
-                        if (selectedHorario === '' || horario === selectedHorario) {
-                            rows[i].style.display = '';
-                        } else {
-                            rows[i].style.display = 'none';
-                        }
+        document.getElementById('horarioSelect').addEventListener('change', function() {
+            var selectedHorario = this.value;
+            var prestadoresTable = document.getElementById('prestadoresTable');
+            var rows = prestadoresTable.getElementsByTagName('tr');
+
+            // Oculta todas las filas de la tabla
+            for (var i = 1; i < rows.length; i++) {
+                var horarioCell = rows[i].getElementsByTagName('td')[1];
+                if (horarioCell) {
+                    var horario = horarioCell.textContent || horarioCell.innerText;
+                    if (selectedHorario === '' || horario === selectedHorario) {
+                        rows[i].style.display = '';
+                    } else {
+                        rows[i].style.display = 'none';
                     }
                 }
-            });
+            }
+        });
 
-            document.getElementById('miFormulario').addEventListener('submit', function(event) {
-                event.preventDefault(); // Evitar que el formulario se envíe de forma predeterminada
-                // Obtener los datos del formulario
-                const formData = new FormData(event.target);
-                // Realizar la solicitud POST
-                fetch('recomendaciones', {
-                    method: 'POST',
-                    body: formData
+        document.getElementById('miFormulario').addEventListener('submit', function(event) {
+                event.preventDefault(); 
+
+                let idAct = document.getElementById('id').value;
+                console.log(idAct);
+               
+                let turno = document.getElementById('horarioSelect').value;
+                console.log(turno);
+                console.log(idArea);
+
+                let url = `https://icaro-predict-ia-7537333b72c8.herokuapp.com/predict/${idAct}/${idArea}/${turno}`;
+                
+                fetch(url, {
+                method: "GET"
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        
+                    }
+                    console.log(response);
+                    return response.json();
+                })
                 .then(data => {
 
-                    console.log(data);
                     const tableBody = document.getElementById('prestadoresTable').getElementsByTagName('tbody')[0];
    
                     tableBody.innerHTML = '';
-                    const recomendaciones = JSON.parse(data.recomendaciones);
+                    const recomendaciones = data;
 
                     recomendaciones.forEach(recomendacion => {
                         const row = document.createElement('tr');
 
                         const nameCell = document.createElement('td');
                         const horarioCell = document.createElement('td');
-                        
+
+                        console.log(recomendacion);
 
                         const prestador = prestadores.find(p => p.id === recomendacion.id_prestador);
                         if (prestador) {
@@ -131,9 +143,10 @@
                     });
                 })
                 .catch(error => {
-                    // Manejar errores
+                    console.log(error);
                     console.error('Error:', error);
                 });
             });
-        </script>
+
+    </script>
 @endsection

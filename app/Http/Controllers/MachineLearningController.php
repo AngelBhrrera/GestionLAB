@@ -209,24 +209,7 @@ class MachineLearningController extends Controller
         $command = 'python ' . $scriptPath;
         $output = shell_exec($command . ' 2>&1');
         $recomendaciones = json_decode($output, true);
-
         return $recomendaciones;
-
-        // Devolver las recomendaciones como respuesta
-        return response()->json(['recomendaciones' => $output]);
-
-        try {
-          
-            $command = 'python ' . $scriptPath;
-            $output = shell_exec($command . ' 2>&1');
-            $recomendaciones = json_decode($output, true);
-
-            // Devolver las recomendaciones como respuesta
-            return response()->json(['recomendaciones' => $output]);
-        } catch (Exception $e) {
-            
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
 
     }
 
@@ -248,8 +231,7 @@ class MachineLearningController extends Controller
             // Devolver las recomendaciones como respuesta
             return response()->json(['recomendaciones' => $recomendaciones]);
         } catch (Exception $e) {
-            // Manejar el error: imprime el mensaje de error o haz lo que consideres adecuado
-            return response()->json(['error' => $e->getMessage()], 500);
+            echo 'Excepción capturada: ',  $e->getMessage(), "\n";
         }
     }
 
