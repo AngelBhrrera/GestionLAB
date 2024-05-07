@@ -196,7 +196,7 @@ class MachineLearningController extends Controller
         return 0;
     }
 
-    public function obtenerRecomendacionesAlfa(Request $request)
+    public function obtenerRecomendaciones(Request $request)
     {
         $id = $request->input('id');
         $t = $request->input('otro_dato');
@@ -215,7 +215,7 @@ class MachineLearningController extends Controller
             $recomendaciones = json_decode($output, true);
 
             // Devolver las recomendaciones como respuesta
-            return response()->json(['recomendaciones' => $output]);
+            return response()->json(['recomendaciones' => $recomendaciones]);
         } catch (Exception $e) {
             // Manejar el error: imprime el mensaje de error o haz lo que consideres adecuado
             return response()->json(['error' => $e->getMessage()], 500);
@@ -246,7 +246,7 @@ class MachineLearningController extends Controller
         }
     }
 
-    public function obtenerRecomendaciones(Request $request)
+    public function obtenerRecomendacionesGamma(Request $request) //EL BUENO
     {
         echo "a";
         $id = $request->input('id');
