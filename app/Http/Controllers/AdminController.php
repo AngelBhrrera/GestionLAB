@@ -731,13 +731,12 @@ class AdminController extends Controller
   
         $listaActs = DB::table('seguimiento_actividades');
 
-        $reviewActs = $listaActs ->whereIn('seguimiento_actividades.estado', ['En revision', 'Error'])
+        $reviewActs = DB::table('seguimiento_actividades')->whereIn('seguimiento_actividades.estado', ['En revision', 'Error'])
             ->join('proyectos', 'seguimiento_actividades.id_proyecto', '=', 'proyectos.id')
             ->select('seguimiento_actividades.*', 'proyectos.turno');
 
         $pR = DB::table('actividades')
             ->whereNull('TEC');
-
 
         $prestadores = DB::table('solo_prestadores');
         $categorias = DB::table('categorias')->orderBy('nombre')->get();
@@ -800,12 +799,12 @@ class AdminController extends Controller
         $aProyectos = $this->get_aProyectos();
 
         $acts = DB::table('actividades')
-            ->select('actividades.id', 'titulo', 'TEC' , 'exp_ref', 'descripcion', 'recursos', 'objetivos', 'categorias.nombre AS categoria', 'subcategorias.nombre AS subcategoria')
-            ->join('categorias', 'id_categoria', '=', 'categorias.id')
-            ->join('subcategorias', 'id_subcategoria', '=', 'subcategorias.id')
-            ->get();
-
+        ->select('actividades.id', 'titulo', 'TEC' , 'exp_ref', 'descripcion', 'recursos', 'objetivos', 'categorias.nombre AS categoria', DB::raw('COALESCE(subcategorias.nombre, "No Aplica") AS subcategoria'))
+        ->join('categorias', 'id_categoria', '=', 'categorias.id')
+        ->leftJoin('subcategorias', 'id_subcategoria', '=', 'subcategorias.id')
+        ->get();
         $cat = DB::table('categorias')
+        
             ->select('categorias.id', 'categorias.nombre',
                 DB::raw('COALESCE(actividades.total_actividades, "No existen") AS total_actividades'),
                 DB::raw('CASE WHEN subcategorias.total_subcategorias > 0 THEN subcategorias.total_subcategorias ELSE "No aplica" END AS total_subcategorias'))

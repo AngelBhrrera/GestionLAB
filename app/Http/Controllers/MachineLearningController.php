@@ -206,18 +206,25 @@ class MachineLearningController extends Controller
         $rutaPublic = public_path();
         // Agrega la ruta relativa al archivo deseado dentro de "public"
         $scriptPath  = $rutaPublic . '/decisionTreeModel.py';
+        $command = 'python ' . $scriptPath;
+        $output = shell_exec($command . ' 2>&1');
+        $recomendaciones = json_decode($output, true);
+
+        return $recomendaciones;
+
+        // Devolver las recomendaciones como respuesta
+        return response()->json(['recomendaciones' => $output]);
 
         try {
           
             $command = 'python ' . $scriptPath;
             $output = shell_exec($command . ' 2>&1');
-            // Decodificar la salida JSON del script Python
             $recomendaciones = json_decode($output, true);
 
             // Devolver las recomendaciones como respuesta
-            return response()->json(['recomendaciones' => $recomendaciones]);
+            return response()->json(['recomendaciones' => $output]);
         } catch (Exception $e) {
-            // Manejar el error: imprime el mensaje de error o haz lo que consideres adecuado
+            
             return response()->json(['error' => $e->getMessage()], 500);
         }
 

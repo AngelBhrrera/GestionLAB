@@ -643,52 +643,6 @@
             tooltips: true,
         };
 
-        var table4 = createTabulatorInstance("#activ", a, {
-            ...commonConfig,
-            groupBy: "categoria",
-            columns: [
-                {
-                    title: "ID",
-                    field: "id",
-                    visible: false,
-                    width: 2,
-
-                },  {
-                    title: "Titulo",
-                    field: "titulo",
-                    sorter: "string",
-                    headerFilter: "input",
-                },  {
-                    title: "Categoria",
-                    field: "categoria",
-                    sorter: "string",
-                    headerFilter: "input",
-                },  {
-                    title: "Subcategoria",
-                    field: "subcategoria",
-                    sorter: "string",
-                },  {
-                    title: "Modificar",
-                    formatter: function (cell, formatterParams, onRendered) {
-                        var value = cell.getValue();
-                        
-                        var button = document.createElement("a");
-                        button.href = "javascript:;";
-                        button.style = "background-color: blue; color: white; border: 1px solid dark-red; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
-                        button.textContent = "⚙️";
-                        button.setAttribute("data-tw-toggle", "modal");
-                        button.setAttribute("data-tw-target", "#static");
-                        button.addEventListener("click", function() {
-                            llenarCamposAct(cell.getRow().getData());
-                        });
-                        return button;
-                    },     
-                },  {
-                    title: "Descripcion",
-                    field: "descripcion",
-                },
-            ]
-        });
 
         var table = createTabulatorInstance("#vActs", allAct, {
             ...commonConfig,
@@ -858,6 +812,54 @@
                     },        
             ],
         });
+
+        var table4 = createTabulatorInstance("#activ", a, {
+            ...commonConfig,
+            groupBy: "categoria",
+            columns: [
+                {
+                    title: "ID",
+                    field: "id",
+                    visible: false,
+                    width: 2,
+
+                },  {
+                    title: "Titulo",
+                    field: "titulo",
+                    sorter: "string",
+                    headerFilter: "input",
+                },  {
+                    title: "Categoria",
+                    field: "categoria",
+                    sorter: "string",
+                    headerFilter: "input",
+                },  {
+                    title: "Subcategoria",
+                    field: "subcategoria",
+                    sorter: "string",
+                },  {
+                    title: "Modificar",
+                    formatter: function (cell, formatterParams, onRendered) {
+                        var value = cell.getValue();
+                        
+                        var button = document.createElement("a");
+                        button.href = "javascript:;";
+                        button.style = "background-color: blue; color: white; border: 1px solid dark-red; padding: 5px 15px; border-radius: 5px; font-size: 16px;";
+                        button.textContent = "⚙️";
+                        button.setAttribute("data-tw-toggle", "modal");
+                        button.setAttribute("data-tw-target", "#static");
+                        button.addEventListener("click", function() {
+                            llenarCamposAct(cell.getRow().getData());
+                        });
+                        return button;
+                    },     
+                },  {
+                    title: "Descripcion",
+                    field: "descripcion",
+                },
+            ]
+        });
+
 
         function agregarObservaciones(id, value) {
             const token = document.head.querySelector('meta[name="csrf-token"]').content;
